@@ -1,0 +1,127 @@
+# Deploying PokéInvest to AWS Amplify
+
+## Prerequisites
+- AWS Account (ID: 825081952316)
+- GitHub repo: `tuliosoria/pokemon-investing`
+
+---
+
+## Option A — Deploy via AWS Console (Easiest)
+
+### Step 1: Open AWS Amplify
+1. Go to **https://console.aws.amazon.com/amplify/**
+2. Make sure you're in your preferred region (e.g. `us-east-1`)
+3. Click **"Create new app"**
+
+### Step 2: Connect GitHub
+1. Select **GitHub** as the source provider
+2. Click **"Authorize AWS Amplify"** when prompted
+3. Select the repository **`tuliosoria/pokemon-investing`**
+4. Select branch **`main`**
+5. Click **Next**
+
+### Step 3: Build Settings
+Amplify will auto-detect the `amplify.yml` in the repo. Verify it shows:
+- Framework: **Next.js**
+- Build command: `npm run build`
+- Output directory: `.next`
+
+Click **Next**
+
+### Step 4: Review & Deploy
+1. Review the settings
+2. Click **"Save and deploy"**
+3. Wait 2-3 minutes for the build to complete
+4. You'll get a live URL like: `https://main.d1234abcdef.amplifyapp.com`
+
+---
+
+## Option B — Deploy via AWS CLI (Terminal)
+
+### Step 1: Configure AWS Credentials
+```bash
+aws configure
+```
+Enter:
+- **Access Key ID**: (from IAM)
+- **Secret Access Key**: (from IAM)
+- **Default region**: `us-east-1`
+- **Output format**: `json`
+
+If you don't have an access key:
+1. Go to https://console.aws.amazon.com/iam/
+2. Click **Users** → **Create user** (name: `amplify-deploy`)
+3. Attach policy: **AdministratorAccess-Amplify**
+4. **Security credentials** tab → **Create access key** → **CLI**
+5. Copy the key pair
+
+### Step 2: Create the Amplify App
+```bash
+cd ~/Desktop/pokemon-investing
+
+aws amplify create-app \
+  --name "pokemon-investing" \
+  --repository "https://github.com/tuliosoria/pokemon-investing" \
+  --platform WEB_COMPUTE \
+  --region us-east-1
+```
+
+> Note: This requires a GitHub access token. Amplify will prompt for it, or you can generate one at https://github.com/settings/tokens with `repo` scope and pass it via `--access-token`.
+
+### Step 3: Create the Branch
+```bash
+aws amplify create-branch \
+  --app-id <APP_ID_FROM_STEP_2> \
+  --branch-name main \
+  --region us-east-1
+```
+
+### Step 4: Start the Deployment
+```bash
+aws amplify start-job \
+  --app-id <APP_ID_FROM_STEP_2> \
+  --branch-name main \
+  --job-type RELEASE \
+  --region us-east-1
+```
+
+### Step 5: Check Status
+```bash
+aws amplify get-branch \
+  --app-id <APP_ID_FROM_STEP_2> \
+  --branch-name main \
+  --region us-east-1
+```
+
+---
+
+## After Deployment
+
+### Custom Domain (Optional)
+1. In Amplify Console → **Domain management**
+2. Click **"Add domain"**
+3. Enter your domain name
+4. Follow the DNS verification steps (add CNAME records)
+5. SSL certificate is provisioned automatically
+
+### Auto-Deploy on Push
+Amplify automatically redeploys when you push to `main` — no extra setup needed.
+
+### Environment Variables
+If you add Supabase, OpenAI, etc. later:
+1. Amplify Console → **Environment variables**
+2. Add variables like:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `SUPABASE_ANON_KEY`
+   - `OPENAI_API_KEY`
+   - `RESEND_API_KEY`
+
+---
+
+## Cost Estimate
+AWS Amplify free tier includes:
+- **1,000 build minutes/month**
+- **15 GB served/month**
+- **5 GB storage**
+
+For a low-traffic MVP, this is effectively **free**.
