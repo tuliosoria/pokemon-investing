@@ -12,7 +12,7 @@ export default function HomePage() {
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage:
-              "url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80')",
+              "url('/hero.jpg')",
           }}
         />
         {/* Dark overlay with brand gradient */}

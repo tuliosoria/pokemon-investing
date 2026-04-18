@@ -10,9 +10,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ResultDisplay, formatMetricValue } from "./result-display";
-import { SealedProductSearch } from "./sealed-product-search";
+import { SealedProductSearch, type SealedProductSelection } from "./sealed-product-search";
 import { useState } from "react";
-import type { SealedProduct } from "@/lib/data/sealed-products";
 
 export function SealedCalculator() {
   const [result, setResult] = useState<SealedResult | null>(null);
@@ -36,9 +35,9 @@ export function SealedCalculator() {
     },
   });
 
-  const handleProductSelect = (product: SealedProduct) => {
-    setValue("acquisitionPrice", product.msrp);
-    setValue("currentMarketPrice", product.estimatedMarket);
+  const handleProductSelect = (selection: SealedProductSelection) => {
+    setValue("acquisitionPrice", selection.product.msrp);
+    setValue("currentMarketPrice", selection.marketPrice);
     setResult(null);
   };
 
