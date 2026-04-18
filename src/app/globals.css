@@ -1,50 +1,56 @@
 @import "tailwindcss";
 
+/* Pokémon Brand Palette */
 :root {
+  --poke-red: 0 100% 40%;        /* #CC0000 */
+  --poke-yellow: 48 100% 51%;    /* #FFCB05 */
+  --poke-blue: 209 100% 22%;     /* #003A70 */
+  --poke-white: 0 0% 100%;       /* #FFFFFF */
+
   --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
+  --foreground: 209 100% 12%;
   --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
+  --card-foreground: 209 100% 12%;
   --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 221.2 83.2% 53.3%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
+  --popover-foreground: 209 100% 12%;
+  --primary: 0 100% 40%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 48 100% 51%;
+  --secondary-foreground: 209 100% 12%;
+  --muted: 210 20% 95%;
+  --muted-foreground: 209 30% 45%;
+  --accent: 48 100% 51%;
+  --accent-foreground: 209 100% 12%;
   --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 221.2 83.2% 53.3%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 210 20% 88%;
+  --input: 210 20% 88%;
+  --ring: 0 100% 40%;
   --radius: 0.5rem;
   --success: 142.1 76.2% 36.3%;
-  --warning: 45.4 93.4% 47.5%;
+  --warning: 48 96% 53%;
 }
 
 .dark {
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-  --card: 222.2 84% 4.9%;
-  --card-foreground: 210 40% 98%;
-  --popover: 222.2 84% 4.9%;
-  --popover-foreground: 210 40% 98%;
-  --primary: 217.2 91.2% 59.8%;
-  --primary-foreground: 222.2 47.4% 11.2%;
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
+  --background: 215 40% 7%;
+  --foreground: 210 40% 96%;
+  --card: 215 35% 10%;
+  --card-foreground: 210 40% 96%;
+  --popover: 215 35% 10%;
+  --popover-foreground: 210 40% 96%;
+  --primary: 0 100% 44%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 48 100% 51%;
+  --secondary-foreground: 209 100% 12%;
+  --muted: 215 30% 15%;
+  --muted-foreground: 215 20% 60%;
+  --accent: 48 100% 51%;
+  --accent-foreground: 209 100% 12%;
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 224.3 76.3% 48%;
+  --border: 215 25% 18%;
+  --input: 215 25% 18%;
+  --ring: 0 100% 44%;
   --success: 142.1 70.6% 45.3%;
   --warning: 48 96% 53%;
 }
@@ -53,4 +59,71 @@ body {
   background: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Animations */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.7s ease-out both;
+}
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out both;
+}
+.animate-slide-in-left {
+  animation: slide-in-left 0.6s ease-out both;
+}
+
+/* Staggered delays */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
+.delay-700 { animation-delay: 0.7s; }
+
+/* Scroll-triggered fade-in */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hover effects */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.hover-scale {
+  transition: transform 0.15s ease;
+}
+.hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* Pokéball decoration */
+.pokeball-divider {
+  position: relative;
+  height: 2px;
+  background: linear-gradient(to right, hsl(var(--poke-red)), hsl(var(--poke-yellow)), hsl(var(--poke-blue)));
 }

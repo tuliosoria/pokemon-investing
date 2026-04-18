@@ -9,20 +9,11 @@ import { SealedCalculator } from "@/components/calculator/sealed-calculator";
 export default function CalculatorPage() {
   return (
     <div className="min-h-screen bg-[hsl(var(--background))]">
-      <header className="border-b border-[hsl(var(--border))]">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <a href="/" className="text-xl font-bold text-[hsl(var(--foreground))]">
-            PokéInvest
-          </a>
-          <span className="text-xs text-[hsl(var(--muted-foreground))] bg-[hsl(var(--muted))] px-2 py-1 rounded">
-            Beta
-          </span>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8 max-w-3xl">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Card Calculator</h1>
+      <div className="container mx-auto px-4 py-8 max-w-3xl">
+        <div className="mb-8 animate-fade-in-up">
+          <h1 className="text-3xl font-bold mb-2">
+            <span className="text-[hsl(var(--poke-red))]">Card</span> Calculator
+          </h1>
           <p className="text-[hsl(var(--muted-foreground))]">
             Run the numbers before you decide. No guessing.
           </p>
@@ -40,9 +31,8 @@ export default function CalculatorPage() {
               <CardHeader>
                 <CardTitle>Should I grade this card?</CardTitle>
                 <CardDescription>
-                  Calculate expected value across possible grades. Enter the
-                  card&apos;s raw value, graded values, and your probability
-                  estimates.
+                  Search for a card to auto-fill prices, or enter values
+                  manually. Adjust probabilities and costs to match your situation.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -56,8 +46,8 @@ export default function CalculatorPage() {
               <CardHeader>
                 <CardTitle>Is this flip worth it?</CardTitle>
                 <CardDescription>
-                  Calculate net profit and ROI after all marketplace fees,
-                  shipping, and costs.
+                  Search for a card to get market prices, then calculate net
+                  profit after all fees and costs.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -81,7 +71,7 @@ export default function CalculatorPage() {
             </Card>
           </TabsContent>
         </Tabs>
-      </main>
+      </div>
     </div>
   );
 }

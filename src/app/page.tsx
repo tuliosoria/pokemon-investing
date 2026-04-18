@@ -1,90 +1,200 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { FadeIn } from "@/components/ui/fade-in";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[hsl(var(--background))] flex flex-col">
-      {/* Nav */}
-      <header className="border-b border-[hsl(var(--border))]">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <span className="text-xl font-bold">PokéInvest</span>
-          <nav className="flex items-center gap-4">
-            <Link
-              href="/calculator"
-              className="text-sm text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors"
-            >
-              Calculator
-            </Link>
-          </nav>
-        </div>
-      </header>
+    <div className="flex flex-col">
+      {/* Hero with background image */}
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+        {/* Background image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80')",
+          }}
+        />
+        {/* Dark overlay with brand gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--poke-blue))/0.85] via-[hsl(var(--background))/0.75] to-[hsl(var(--background))]" />
 
-      {/* Hero */}
-      <main className="flex-1 flex items-center justify-center">
-        <div className="container mx-auto px-4 py-24 text-center max-w-3xl">
-          <div className="mb-6">
-            <span className="inline-block text-xs font-medium bg-[hsl(var(--primary)/0.1)] text-[hsl(var(--primary))] border border-[hsl(var(--primary)/0.3)] rounded-full px-3 py-1">
-              Free &middot; No login required
+        {/* Content */}
+        <div className="relative z-10 container mx-auto px-4 text-center max-w-4xl">
+          <div className="animate-fade-in-up">
+            <span className="inline-block text-xs font-semibold bg-[hsl(var(--poke-yellow))] text-[hsl(var(--poke-blue))] rounded-full px-4 py-1.5 mb-6 shadow-md">
+              Free · No login required
             </span>
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 leading-tight">
-            Should you grade
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-[1.1] animate-fade-in-up delay-100">
+            <span className="text-white">Should you grade</span>
             <br />
-            <span className="text-[hsl(var(--primary))]">that card?</span>
+            <span className="text-[hsl(var(--poke-yellow))] drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">
+              that card?
+            </span>
           </h1>
 
-          <p className="text-xl text-[hsl(var(--muted-foreground))] mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-200">
             Stop guessing. Calculate the expected value of grading, flipping, or
-            holding any trading card — with real fees, real costs, and no
-            hand-waving.
+            holding any Pokémon card — with real market prices, real fees, and
+            no hand-waving.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-300">
             <Link href="/calculator">
-              <Button size="lg" className="text-base px-8">
+              <Button size="lg" className="text-base px-10 py-3 bg-[hsl(var(--poke-red))] text-white hover:opacity-90 shadow-lg hover-scale">
                 Open Calculator
               </Button>
             </Link>
-          </div>
-
-          {/* Feature bullets */}
-          <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-            <div className="space-y-2">
-              <div className="text-2xl">📊</div>
-              <h3 className="font-semibold">Grading EV</h3>
-              <p className="text-sm text-[hsl(var(--muted-foreground))]">
-                Probability-weighted expected value across PSA 10, 9, and 8
-                outcomes. Know your break-even before you ship.
-              </p>
-            </div>
-            <div className="space-y-2">
-              <div className="text-2xl">💰</div>
-              <h3 className="font-semibold">Flip ROI</h3>
-              <p className="text-sm text-[hsl(var(--muted-foreground))]">
-                Net profit after eBay fees, PayPal, shipping, and packing.
-                See your real margin, not the gross.
-              </p>
-            </div>
-            <div className="space-y-2">
-              <div className="text-2xl">📦</div>
-              <h3 className="font-semibold">Sealed Returns</h3>
-              <p className="text-sm text-[hsl(var(--muted-foreground))]">
-                Project annualized returns for sealed product holds with
-                storage costs and exit fees factored in.
-              </p>
-            </div>
+            <a href="#features">
+              <Button
+                variant="outline"
+                size="lg"
+                className="text-base px-10 py-3 border-white/30 text-white hover:bg-white/10 hover-scale"
+              >
+                Learn More
+              </Button>
+            </a>
           </div>
         </div>
-      </main>
 
-      {/* Footer */}
-      <footer className="border-t border-[hsl(var(--border))] py-6">
-        <div className="container mx-auto px-4 text-center text-xs text-[hsl(var(--muted-foreground))]">
-          PokéInvest is a calculation tool. Not financial advice. Market data is
-          user-supplied.
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[hsl(var(--background))] to-transparent" />
+      </section>
+
+      {/* Features */}
+      <section id="features" className="py-20 bg-[hsl(var(--background))]">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <FadeIn>
+            <div className="text-center mb-14">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3">
+                <span className="text-[hsl(var(--poke-red))]">Three tools.</span>{" "}
+                One mission.
+              </h2>
+              <p className="text-[hsl(var(--muted-foreground))] max-w-xl mx-auto">
+                Every decision backed by math, not hype.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <FadeIn delay={0}>
+              <div className="hover-lift rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 h-full">
+                <div className="w-12 h-12 rounded-lg bg-[hsl(var(--poke-red))/0.1] flex items-center justify-center mb-4">
+                  <span className="text-2xl">📊</span>
+                </div>
+                <h3 className="text-lg font-bold mb-2 text-[hsl(var(--foreground))]">
+                  Grading EV
+                </h3>
+                <p className="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed">
+                  Probability-weighted expected value across PSA 10, 9, and 8
+                  outcomes. Know your break-even before you ship.
+                </p>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={150}>
+              <div className="hover-lift rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 h-full">
+                <div className="w-12 h-12 rounded-lg bg-[hsl(var(--poke-yellow))/0.1] flex items-center justify-center mb-4">
+                  <span className="text-2xl">💰</span>
+                </div>
+                <h3 className="text-lg font-bold mb-2 text-[hsl(var(--foreground))]">
+                  Flip ROI
+                </h3>
+                <p className="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed">
+                  Net profit after eBay fees, PayPal, shipping, and packing.
+                  See your real margin, not the gross.
+                </p>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={300}>
+              <div className="hover-lift rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 h-full">
+                <div className="w-12 h-12 rounded-lg bg-[hsl(var(--poke-blue))/0.1] flex items-center justify-center mb-4">
+                  <span className="text-2xl">📦</span>
+                </div>
+                <h3 className="text-lg font-bold mb-2 text-[hsl(var(--foreground))]">
+                  Sealed Returns
+                </h3>
+                <p className="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed">
+                  Project annualized returns for sealed product holds with
+                  storage costs and exit fees factored in.
+                </p>
+              </div>
+            </FadeIn>
+          </div>
         </div>
-      </footer>
+      </section>
+
+      {/* How it works */}
+      <section className="py-20 bg-[hsl(var(--card))]">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <FadeIn>
+            <div className="text-center mb-14">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3">
+                How it works
+              </h2>
+              <p className="text-[hsl(var(--muted-foreground))]">
+                From card search to decision in seconds.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                step: "1",
+                title: "Search your card",
+                desc: "Find any Pokémon card by name. Real-time prices pulled from TCGPlayer.",
+              },
+              {
+                step: "2",
+                title: "Run the numbers",
+                desc: "Prices auto-fill into the calculator. Adjust probabilities, fees, and costs.",
+              },
+              {
+                step: "3",
+                title: "Get a clear answer",
+                desc: "See expected profit, ROI, and a straight-up recommendation: grade it or skip it.",
+              },
+            ].map((item, i) => (
+              <FadeIn key={item.step} delay={i * 150}>
+                <div className="text-center">
+                  <div className="w-12 h-12 rounded-full bg-[hsl(var(--poke-red))] text-white text-lg font-bold flex items-center justify-center mx-auto mb-4 shadow-md">
+                    {item.step}
+                  </div>
+                  <h3 className="font-bold mb-2">{item.title}</h3>
+                  <p className="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 bg-[hsl(var(--background))]">
+        <FadeIn>
+          <div className="container mx-auto px-4 text-center max-w-2xl">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Ready to run the numbers?
+            </h2>
+            <p className="text-[hsl(var(--muted-foreground))] mb-8">
+              No sign-up. No paywall. Just math.
+            </p>
+            <Link href="/calculator">
+              <Button
+                size="lg"
+                className="text-base px-12 py-3 bg-[hsl(var(--poke-red))] text-white hover:opacity-90 shadow-lg hover-scale"
+              >
+                Open Calculator — It&apos;s Free
+              </Button>
+            </Link>
+          </div>
+        </FadeIn>
+      </section>
     </div>
   );
 }
