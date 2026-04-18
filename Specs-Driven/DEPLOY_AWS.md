@@ -3,6 +3,26 @@
 ## Prerequisites
 - AWS Account (ID: 825081952316)
 - GitHub repo: `tuliosoria/pokemon-investing`
+- AWS CLI is installed and configured with IAM user `amplify-deploy`
+
+---
+
+## ⚠️ REQUIRED FIRST: Attach Permissions to IAM User
+
+The `amplify-deploy` IAM user needs permissions before deployment will work.
+
+1. Sign in to **https://825081952316.signin.aws.amazon.com/console** with your **root account** (not the amplify-deploy user)
+2. Go to **https://console.aws.amazon.com/iam/** → **Users** → **amplify-deploy**
+3. Click **Permissions** tab → **Add permissions** → **Attach policies directly**
+4. Search and check **AdministratorAccess-Amplify**
+5. Also search and check **AdministratorAccess** (Amplify needs to create IAM roles)
+6. Click **Next** → **Add permissions**
+
+Once done, either deploy via Console (Option A) or run this in terminal:
+```bash
+cd ~/Desktop/pokemon-investing
+aws amplify create-app --name "pokemon-investing" --platform WEB_COMPUTE --region us-east-1
+```
 
 ---
 
