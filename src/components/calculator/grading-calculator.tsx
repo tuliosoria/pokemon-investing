@@ -7,17 +7,22 @@ import {
   calculateGradeExpectedValue,
   type GradeEvResult,
 } from "@/lib/domain/grading";
+import { estimateGradedValues } from "@/lib/domain/price-estimates";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ResultDisplay, formatMetricValue } from "./result-display";
+import { CardSearch } from "./card-search";
 import { useState } from "react";
+import type { CardSearchResult } from "@/lib/types/card";
 
 export function GradingCalculator() {
   const [result, setResult] = useState<GradeEvResult | null>(null);
+  const [isEstimated, setIsEstimated] = useState(false);
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<GradeEvFormValues>({
     resolver: zodResolver(gradeEvSchema),
@@ -37,6 +42,17 @@ export function GradingCalculator() {
     },
   });
 
+  const handleCardSelect = (_card: CardSearchResult, rawPrice: number) => {
+    if (rawPrice <= 0) return;
+    setValue("rawCardValue", rawPrice);
+    const est = estimateGradedValues(rawPrice);
+    setValue("psa10Value", est.psa10);
+    setValue("psa9Value", est.psa9);
+    setValue("psa8Value", est.psa8);
+    setIsEstimated(true);
+    setResult(null);
+  };
+
   const onSubmit = (data: GradeEvFormValues) => {
     const res = calculateGradeExpectedValue(data);
     setResult(res);
@@ -44,6 +60,8 @@ export function GradingCalculator() {
 
   return (
     <div className="space-y-6">
+      <CardSearch onCardSelect={handleCardSelect} />
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-4">
           <h4 className="text-sm font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
@@ -71,6 +89,7 @@ export function GradingCalculator() {
               type="number"
               step="0.01"
               error={errors.psa10Value?.message}
+              hint={isEstimated ? "⚠️ Estimated" : undefined}
               {...register("psa10Value")}
             />
             <Input
@@ -78,17 +97,23 @@ export function GradingCalculator() {
               type="number"
               step="0.01"
               error={errors.psa9Value?.message}
+              hint={isEstimated ? "⚠️ Estimated" : undefined}
               {...register("psa9Value")}
             />
             <Input
               label="PSA 8 Value ($)"
               type="number"
               step="0.01"
-              hint="Optional"
               error={errors.psa8Value?.message}
+              hint={isEstimated ? "⚠️ Estimated" : "Optional"}
               {...register("psa8Value")}
             />
           </div>
+          {isEstimated && (
+            <p className="text-xs text-yellow-500">
+              ⚠️ Graded values are heuristic estimates based on raw price. Replace with real comps for accuracy.
+            </p>
+          )}
         </div>
 
         <div className="space-y-4">

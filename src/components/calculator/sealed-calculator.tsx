@@ -10,7 +10,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ResultDisplay, formatMetricValue } from "./result-display";
+import { CardSearch } from "./card-search";
 import { useState } from "react";
+import type { CardSearchResult } from "@/lib/types/card";
 
 export function SealedCalculator() {
   const [result, setResult] = useState<SealedResult | null>(null);
@@ -18,6 +20,7 @@ export function SealedCalculator() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<SealedFormValues>({
     resolver: zodResolver(sealedSchema),
@@ -33,12 +36,21 @@ export function SealedCalculator() {
     },
   });
 
+  const handleCardSelect = (_card: CardSearchResult, rawPrice: number) => {
+    if (rawPrice <= 0) return;
+    setValue("acquisitionPrice", rawPrice);
+    setValue("currentMarketPrice", rawPrice);
+    setResult(null);
+  };
+
   const onSubmit = (data: SealedFormValues) => {
     setResult(calculateSealedRoi(data));
   };
 
   return (
     <div className="space-y-6">
+      <CardSearch onCardSelect={handleCardSelect} />
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-4">
           <h4 className="text-sm font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
