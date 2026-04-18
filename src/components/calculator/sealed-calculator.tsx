@@ -10,9 +10,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ResultDisplay, formatMetricValue } from "./result-display";
-import { CardSearch } from "./card-search";
+import { SealedProductSearch } from "./sealed-product-search";
 import { useState } from "react";
-import type { CardSearchResult } from "@/lib/types/card";
+import type { SealedProduct } from "@/lib/data/sealed-products";
 
 export function SealedCalculator() {
   const [result, setResult] = useState<SealedResult | null>(null);
@@ -36,10 +36,9 @@ export function SealedCalculator() {
     },
   });
 
-  const handleCardSelect = (_card: CardSearchResult, rawPrice: number) => {
-    if (rawPrice <= 0) return;
-    setValue("acquisitionPrice", rawPrice);
-    setValue("currentMarketPrice", rawPrice);
+  const handleProductSelect = (product: SealedProduct) => {
+    setValue("acquisitionPrice", product.msrp);
+    setValue("currentMarketPrice", product.estimatedMarket);
     setResult(null);
   };
 
@@ -49,7 +48,7 @@ export function SealedCalculator() {
 
   return (
     <div className="space-y-6">
-      <CardSearch onCardSelect={handleCardSelect} />
+      <SealedProductSearch onProductSelect={handleProductSelect} />
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-4">
