@@ -52,37 +52,37 @@ export function GradingCalculator() {
     },
   });
 
-  const handleCardSelect = (_card: CardSearchResult, rawPrice: number, _variant: string, gradeData?: GradeData | null) => {
-    if (gradeData) {
-      // Keep tcgapi.dev raw price — it matches the specific listing the user selected
-      if (rawPrice > 0) setValue("rawCardValue", rawPrice);
-
-      // Use real PSA grading prices from PokeData
-      const psa10 = gradeData.gradedPrices["PSA 10.0"] ?? 0;
-      const psa9 = gradeData.gradedPrices["PSA 9.0"] ?? 0;
-      const psa8 = gradeData.gradedPrices["PSA 8.0"] ?? 0;
-
-      if (psa10 > 0) setValue("psa10Value", Math.round(psa10 * 100) / 100);
-      if (psa9 > 0) setValue("psa9Value", Math.round(psa9 * 100) / 100);
-      if (psa8 > 0) setValue("psa8Value", Math.round(psa8 * 100) / 100);
-
-      if (gradeData.psa10Probability !== null) {
-        setValue("probabilityPsa10", gradeData.psa10Probability);
-        const remaining = 100 - gradeData.psa10Probability;
-        setValue("probabilityPsa9", Math.round(remaining * 0.5));
-        setValue("probabilityPsa8", Math.round(remaining * 0.3));
-      }
-
-      setIsEstimated(false);
-    } else if (rawPrice > 0) {
-      // Fallback to heuristic estimates
+  const handleCardSelect = (_card: CardSearchResult, rawPrice: number) => {
+    if (rawPrice > 0) {
       setValue("rawCardValue", rawPrice);
+      // Set heuristic estimates until PokeData loads
       const est = estimateGradedValues(rawPrice);
       setValue("psa10Value", est.psa10);
       setValue("psa9Value", est.psa9);
       setValue("psa8Value", est.psa8);
       setIsEstimated(true);
     }
+    setResult(null);
+  };
+
+  const handleGradeDataLoaded = (gradeData: GradeData) => {
+    // Only update PSA grading values — never touch raw price
+    const psa10 = gradeData.gradedPrices["PSA 10.0"] ?? 0;
+    const psa9 = gradeData.gradedPrices["PSA 9.0"] ?? 0;
+    const psa8 = gradeData.gradedPrices["PSA 8.0"] ?? 0;
+
+    if (psa10 > 0) setValue("psa10Value", Math.round(psa10 * 100) / 100);
+    if (psa9 > 0) setValue("psa9Value", Math.round(psa9 * 100) / 100);
+    if (psa8 > 0) setValue("psa8Value", Math.round(psa8 * 100) / 100);
+
+    if (gradeData.psa10Probability !== null) {
+      setValue("probabilityPsa10", gradeData.psa10Probability);
+      const remaining = 100 - gradeData.psa10Probability;
+      setValue("probabilityPsa9", Math.round(remaining * 0.5));
+      setValue("probabilityPsa8", Math.round(remaining * 0.3));
+    }
+
+    setIsEstimated(false);
     setResult(null);
   };
 
@@ -101,7 +101,7 @@ export function GradingCalculator() {
   return (
     <div className="space-y-5">
       {/* Card search */}
-      <CardSearch onCardSelect={handleCardSelect} />
+      <CardSearch onCardSelect={handleCardSelect} onGradeDataLoaded={handleGradeDataLoaded} />
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Price inputs */}

@@ -5,10 +5,11 @@ import type { CardSearchResult, GradeData } from "@/lib/types/card";
 import { getBestPrice } from "@/lib/types/card";
 
 interface CardSearchProps {
-  onCardSelect: (card: CardSearchResult, rawPrice: number, variant: string, gradeData?: GradeData | null) => void;
+  onCardSelect: (card: CardSearchResult, rawPrice: number, variant: string) => void;
+  onGradeDataLoaded: (gradeData: GradeData) => void;
 }
 
-export function CardSearch({ onCardSelect }: CardSearchProps) {
+export function CardSearch({ onCardSelect, onGradeDataLoaded }: CardSearchProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<CardSearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -78,10 +79,10 @@ export function CardSearch({ onCardSelect }: CardSearchProps) {
 
     if (best) {
       setSelectedVariant(best.variant);
-      onCardSelect(card, best.price, best.variant, null);
+      onCardSelect(card, best.price, best.variant);
     } else {
       setSelectedVariant("");
-      onCardSelect(card, 0, "", null);
+      onCardSelect(card, 0, "");
     }
 
     // Fetch real grade data from PokeData in background
@@ -94,7 +95,7 @@ export function CardSearch({ onCardSelect }: CardSearchProps) {
         const body = await res.json();
         if (body.gradeData) {
           setGradeData(body.gradeData);
-          onCardSelect(card, best?.price ?? 0, best?.variant ?? "", body.gradeData);
+          onGradeDataLoaded(body.gradeData);
         }
       }
     } catch {
@@ -116,7 +117,7 @@ export function CardSearch({ onCardSelect }: CardSearchProps) {
       (priceData.low != null && priceData.high != null
         ? (priceData.low + priceData.high) / 2
         : 0);
-    onCardSelect(selectedCard, price, variant, gradeData);
+    onCardSelect(selectedCard, price, variant);
   }
 
   function clearCard() {
