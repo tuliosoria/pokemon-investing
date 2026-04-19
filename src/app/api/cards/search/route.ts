@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { CardSearchResult, CardPrices } from "@/lib/types/card";
 import { cacheGet, cachePut } from "@/lib/db/cache";
+import {
+  getCardMeta,
+  putCardMeta,
+  putCardTcgPrices,
+  getCardTcgPrices,
+  shouldRefreshPrices,
+} from "@/lib/db/card-cache";
 
 const TCG_API_BASE = "https://api.tcgapi.dev/v1/search";
-const CACHE_TTL = 5 * 60; // 5 minutes in seconds
+const CACHE_TTL = 5 * 60; // 5 minutes — for search query→results mapping
 
 // --- Query parsing ---
 
@@ -150,7 +157,7 @@ export async function GET(request: NextRequest) {
 
   const cacheKey = q.toLowerCase();
 
-  // Check cache (L1 memory + L2 DynamoDB)
+  // Check short-lived query cache (L1 memory + L2 DynamoDB)
   const cached = await cacheGet<CardSearchResult[]>("card-search", cacheKey);
   if (cached) {
     return NextResponse.json({ cards: cached });
@@ -192,7 +199,11 @@ export async function GET(request: NextRequest) {
         .map(({ card }) => card);
     }
 
-    // Cache results (L1 + L2)
+    // Persist static card data + prices to DynamoDB (fire-and-forget)
+    // Each card gets: META (permanent) + TCG_PRICES (timestamped)
+    persistCardData(cards);
+
+    // Cache the search query→results mapping (short-lived)
     await cachePut("card-search", cacheKey, cards, CACHE_TTL);
 
     return NextResponse.json({ cards });
@@ -202,5 +213,32 @@ export async function GET(request: NextRequest) {
       { error: "Failed to search cards" },
       { status: 500 }
     );
+  }
+}
+
+/**
+ * Persist static card metadata and current prices to DynamoDB.
+ * Runs in the background — does not block the response.
+ */
+function persistCardData(cards: CardSearchResult[]): void {
+  // Limit to first 20 cards to avoid excessive DDB writes
+  const batch = cards.slice(0, 20);
+
+  for (const card of batch) {
+    // Upsert META (idempotent — skips if schema version matches)
+    putCardMeta(card.id, {
+      name: card.name,
+      set: card.set,
+      setId: card.setId,
+      number: card.number,
+      rarity: card.rarity,
+      imageSmall: card.imageSmall,
+      imageLarge: card.imageLarge,
+      tcgplayerUrl: card.tcgplayerUrl,
+      pokedataId: null,
+    }).catch(() => {});
+
+    // Save current TCG prices with timestamp
+    putCardTcgPrices(card.id, card.prices).catch(() => {});
   }
 }

@@ -484,7 +484,7 @@ async function processProduct(product: RawProduct, metaOnly: boolean): Promise<b
 
   try {
     if (CONFIG.DRY_RUN && metaOnly) {
-      log("DRY", `${label} (META)`, { type: product.type, set: product.set_name });
+      log("DRY", `${label} (META)`, { type: product.type, set: product.set_id });
       return true;
     }
 

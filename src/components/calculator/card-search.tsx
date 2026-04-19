@@ -90,6 +90,7 @@ export function CardSearch({ onCardSelect, onGradeDataLoaded }: CardSearchProps)
     try {
       const params = new URLSearchParams({ name: card.name, set: card.set });
       if (card.number) params.set("number", card.number);
+      if (card.id) params.set("tcgId", card.id);
       const res = await fetch(`/api/cards/grade-data?${params}`);
       if (res.ok) {
         const body = await res.json();

@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cacheGet, cachePut } from "@/lib/db/cache";
+import {
+  getCardMeta,
+  getCardGradeData,
+  putCardGradeData,
+  setPokedataId,
+  shouldRefreshPrices,
+  type CardGradeData,
+} from "@/lib/db/card-cache";
 
 const POKEDATA_BASE = "https://www.pokedata.io/v0";
-const CACHE_TTL = 30 * 60; // 30 minutes in seconds
+const CACHE_TTL = 30 * 60; // 30 minutes — for legacy name-based cache
 
 export interface PokeDataGradeData {
   pokedataId: string;
@@ -43,20 +51,13 @@ export async function GET(request: NextRequest) {
   const name = request.nextUrl.searchParams.get("name")?.trim();
   const set = request.nextUrl.searchParams.get("set")?.trim();
   const number = request.nextUrl.searchParams.get("number")?.trim();
+  const tcgId = request.nextUrl.searchParams.get("tcgId")?.trim();
 
   if (!name) {
     return NextResponse.json(
       { error: "Card name required" },
       { status: 400 }
     );
-  }
-
-  const cacheKey = `${name}|${set ?? ""}|${number ?? ""}`.toLowerCase();
-
-  // Check cache (L1 memory + L2 DynamoDB)
-  const cached = await cacheGet<PokeDataGradeData>("grade-data", cacheKey);
-  if (cached) {
-    return NextResponse.json({ gradeData: cached });
   }
 
   const apiKey = process.env.POKEDATA_API_KEY;
@@ -67,87 +68,124 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  // --- Fast path: check DynamoDB for cached grade data ---
+  if (tcgId) {
+    const cachedGrade = await getCardGradeData(tcgId);
+    if (cachedGrade && !shouldRefreshPrices(cachedGrade.lastGradeFetched)) {
+      // Grade data is fresh (< 1 hour old) — return from cache, no API calls
+      const gradeData: PokeDataGradeData = {
+        pokedataId: cachedGrade.pokedataId,
+        name,
+        set: set ?? "",
+        rawPrice: cachedGrade.rawPrice,
+        tcgplayerPrice: cachedGrade.tcgplayerPrice,
+        ebayRawPrice: cachedGrade.ebayRawPrice,
+        gradedPrices: cachedGrade.gradedPrices,
+        population: cachedGrade.population,
+        psa10Probability: cachedGrade.psa10Probability,
+      };
+      return NextResponse.json({ gradeData, cached: true });
+    }
+  }
+
+  // --- Check legacy name-based cache ---
+  const cacheKey = `${name}|${set ?? ""}|${number ?? ""}`.toLowerCase();
+  const cached = await cacheGet<PokeDataGradeData>("grade-data", cacheKey);
+  if (cached) {
+    return NextResponse.json({ gradeData: cached });
+  }
+
   try {
-    // Search for the card on PokeData
-    const searchUrl = new URL(`${POKEDATA_BASE}/search`);
-    searchUrl.searchParams.set("query", name);
-    searchUrl.searchParams.set("asset_type", "CARD");
+    // --- Resolve PokeData ID ---
+    let pokedataId: string | null = null;
 
-    const searchRes = await fetch(searchUrl.toString(), {
-      headers: { Authorization: `Bearer ${apiKey}` },
-    });
-
-    if (!searchRes.ok) {
-      console.error(`PokeData search error: ${searchRes.status}`);
-      return NextResponse.json(
-        { error: "Failed to search PokeData" },
-        { status: 502 }
-      );
+    // Check if we already know the PokeData ID from a previous lookup
+    if (tcgId) {
+      const meta = await getCardMeta(tcgId);
+      if (meta?.pokedataId) {
+        pokedataId = meta.pokedataId;
+      }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const cards: any[] = await searchRes.json();
-
-    if (!cards || cards.length === 0) {
-      return NextResponse.json({ gradeData: null });
-    }
-
-    // Normalize card number for comparison (strip leading zeros, slashes)
-    const normalizeNum = (n: string) =>
-      n.replace(/^0+/, "").split("/")[0].trim().toLowerCase();
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const nameLower = name.toLowerCase();
-    const setLower = set?.toLowerCase() ?? "";
-    const numNorm = number ? normalizeNum(number) : "";
-
-    // Scoring: find best match by name + set + number
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let bestMatch: any = null;
-    let bestScore = -1;
 
-    for (const card of cards) {
-      if (card.name?.toLowerCase() !== nameLower) continue;
-      // Only consider English cards
-      if (card.language && card.language !== "ENGLISH") continue;
+    if (pokedataId) {
+      // We already know the PokeData ID — skip search entirely!
+      bestMatch = { id: pokedataId, name, set_name: set };
+    } else {
+      // Search PokeData to find the card
+      const searchUrl = new URL(`${POKEDATA_BASE}/search`);
+      searchUrl.searchParams.set("query", name);
+      searchUrl.searchParams.set("asset_type", "CARD");
 
-      let score = 0;
+      const searchRes = await fetch(searchUrl.toString(), {
+        headers: { Authorization: `Bearer ${apiKey}` },
+      });
 
-      // Exact set match
-      const cardSet = (card.set_name ?? "").toLowerCase();
-      if (setLower && cardSet === setLower) {
-        score += 10;
-      } else if (setLower && cardSet.includes(setLower)) {
-        score += 5;
-      } else if (setLower && setLower.includes(cardSet)) {
-        score += 5;
+      if (!searchRes.ok) {
+        console.error(`PokeData search error: ${searchRes.status}`);
+        return NextResponse.json(
+          { error: "Failed to search PokeData" },
+          { status: 502 }
+        );
       }
 
-      // Number match (most reliable for reprints/prize packs)
-      if (numNorm && card.num) {
-        const cardNum = normalizeNum(String(card.num));
-        if (cardNum === numNorm) score += 8;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const cards: any[] = await searchRes.json();
+
+      if (!cards || cards.length === 0) {
+        return NextResponse.json({ gradeData: null });
       }
 
-      // Prefer cards with more recent release dates (more likely to have pricing data)
-      if (card.release_date) {
-        const year = parseInt(card.release_date.substring(0, 4));
-        if (year >= 2020) score += 1;
+      // Normalize card number for comparison
+      const normalizeNum = (n: string) =>
+        n.replace(/^0+/, "").split("/")[0].trim().toLowerCase();
+
+      const nameLower = name.toLowerCase();
+      const setLower = set?.toLowerCase() ?? "";
+      const numNorm = number ? normalizeNum(number) : "";
+
+      let bestScore = -1;
+
+      for (const card of cards) {
+        if (card.name?.toLowerCase() !== nameLower) continue;
+        if (card.language && card.language !== "ENGLISH") continue;
+
+        let score = 0;
+        const cardSet = (card.set_name ?? "").toLowerCase();
+        if (setLower && cardSet === setLower) score += 10;
+        else if (setLower && cardSet.includes(setLower)) score += 5;
+        else if (setLower && setLower.includes(cardSet)) score += 5;
+
+        if (numNorm && card.num) {
+          const cardNum = normalizeNum(String(card.num));
+          if (cardNum === numNorm) score += 8;
+        }
+
+        if (card.release_date) {
+          const year = parseInt(card.release_date.substring(0, 4));
+          if (year >= 2020) score += 1;
+        }
+
+        if (score > bestScore) {
+          bestScore = score;
+          bestMatch = card;
+        }
       }
 
-      if (score > bestScore) {
-        bestScore = score;
-        bestMatch = card;
+      if (!bestMatch) {
+        bestMatch = cards.find(
+          (c) =>
+            c.name?.toLowerCase() === nameLower &&
+            (!c.language || c.language === "ENGLISH")
+        ) ?? cards[0];
       }
-    }
 
-    // Fallback to first exact-name English card
-    if (!bestMatch) {
-      bestMatch = cards.find(
-        (c) =>
-          c.name?.toLowerCase() === nameLower &&
-          (!c.language || c.language === "ENGLISH")
-      ) ?? cards[0];
+      // Save the PokeData ID mapping for future lookups
+      if (tcgId && bestMatch?.id) {
+        setPokedataId(tcgId, String(bestMatch.id)).catch(() => {});
+      }
     }
 
     const cardId = bestMatch.id;
@@ -167,22 +205,16 @@ export async function GET(request: NextRequest) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let populationData: any = {};
 
-    if (pricingRes.ok) {
-      pricingData = await pricingRes.json();
-    }
-    if (populationRes.ok) {
-      populationData = await populationRes.json();
-    }
+    if (pricingRes.ok) pricingData = await pricingRes.json();
+    if (populationRes.ok) populationData = await populationRes.json();
 
-    // Extract graded prices (PSA grades)
+    // Extract graded prices
     const gradedPrices: Record<string, number> = {};
     const pricing = pricingData.pricing ?? {};
     for (const [key, val] of Object.entries(pricing)) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const v = val as any;
-      if (v.value > 0) {
-        gradedPrices[key] = v.value;
-      }
+      if (v.value > 0) gradedPrices[key] = v.value;
     }
 
     // Extract population counts
@@ -191,24 +223,39 @@ export async function GET(request: NextRequest) {
     for (const [key, val] of Object.entries(pop)) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const v = val as any;
-      if (v.count > 0) {
-        population[key] = v.count;
-      }
+      if (v.count > 0) population[key] = v.count;
     }
+
+    const psa10Probability = calculatePsa10Probability(population);
 
     const gradeData: PokeDataGradeData = {
       pokedataId: String(cardId),
-      name: bestMatch.name,
-      set: bestMatch.set_name ?? "",
+      name: bestMatch.name ?? name,
+      set: bestMatch.set_name ?? set ?? "",
       rawPrice: gradedPrices["Pokedata Raw"] ?? gradedPrices["TCGPlayer"] ?? null,
       tcgplayerPrice: gradedPrices["TCGPlayer"] ?? null,
       ebayRawPrice: gradedPrices["eBay Raw"] ?? null,
       gradedPrices,
       population,
-      psa10Probability: calculatePsa10Probability(population),
+      psa10Probability,
     };
 
-    // Cache result (L1 + L2)
+    // Persist grade data to DynamoDB (with timestamp)
+    if (tcgId) {
+      const gradeCache: CardGradeData = {
+        pokedataId: String(cardId),
+        rawPrice: gradeData.rawPrice,
+        tcgplayerPrice: gradeData.tcgplayerPrice,
+        ebayRawPrice: gradeData.ebayRawPrice,
+        gradedPrices,
+        population,
+        psa10Probability,
+        lastGradeFetched: new Date().toISOString(),
+      };
+      putCardGradeData(tcgId, gradeCache).catch(() => {});
+    }
+
+    // Also cache in legacy name-based cache for backward compat
     await cachePut("grade-data", cacheKey, gradeData, CACHE_TTL);
 
     return NextResponse.json({ gradeData });
