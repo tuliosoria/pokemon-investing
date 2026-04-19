@@ -17,7 +17,8 @@ export default function HomePage() {
           }}
         />
         {/* Dark overlay with brand gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--poke-blue))/0.85] via-[hsl(var(--background))/0.75] to-[hsl(var(--background))]" />
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--poke-blue))/0.5] via-transparent to-[hsl(var(--background))]" />
 
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4 text-center max-w-4xl">
