@@ -8,6 +8,7 @@ import {
   type ProductType,
 } from "@/lib/data/sealed-products";
 import type { EbayListing } from "@/lib/api/ebay";
+import { BarChart3, Lightbulb, AlertTriangle, KeyRound } from "lucide-react";
 
 export interface SealedProductSelection {
   product: SealedProduct;
@@ -282,8 +283,8 @@ export function SealedProductSearch({
           {priceSource === "ebay" && ebayPriceData && (
             <div className="rounded-md bg-[hsl(var(--background))] p-2 text-xs">
               <div className="flex items-center gap-1 mb-1">
-                <span className="font-semibold text-[var(--poke-blue)]">
-                  📊 Live eBay Data
+                <span className="font-semibold text-[var(--poke-blue)] flex items-center gap-1">
+                  <BarChart3 className="w-3.5 h-3.5" /> Live eBay Data
                 </span>
                 <span className="text-[hsl(var(--muted-foreground))]">
                   ({ebayPriceData.total} listings)
@@ -347,8 +348,8 @@ export function SealedProductSearch({
 
           <p className="text-[10px] text-[hsl(var(--muted-foreground))]">
             {priceSource === "ebay"
-              ? "💡 Prices from live eBay Buy It Now listings (New condition)."
-              : "⚠️ Static estimate — connect eBay API for live prices. See setup guide below."}
+              ? (<span className="flex items-center gap-1"><Lightbulb className="w-3 h-3 shrink-0" /> Prices from live eBay Buy It Now listings (New condition).</span>)
+              : (<span className="flex items-center gap-1"><AlertTriangle className="w-3 h-3 shrink-0" /> Static estimate — connect eBay API for live prices. See setup guide below.</span>)}
           </p>
         </div>
       )}
@@ -357,7 +358,7 @@ export function SealedProductSearch({
       {selected && priceSource === "static" && !ebayLoading && (
         <details className="rounded-lg border border-dashed border-[hsl(var(--border))] p-3 text-xs text-[hsl(var(--muted-foreground))]">
           <summary className="cursor-pointer font-medium">
-            🔑 Enable live eBay pricing
+            <KeyRound className="w-3.5 h-3.5 inline mr-1" />Enable live eBay pricing
           </summary>
           <ol className="mt-2 space-y-1 list-decimal list-inside">
             <li>

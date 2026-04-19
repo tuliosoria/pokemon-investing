@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/ui/fade-in";
+import { BarChart3, DollarSign, Package } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -81,7 +82,7 @@ export default function HomePage() {
             <FadeIn delay={0}>
               <div className="hover-lift rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 h-full">
                 <div className="w-12 h-12 rounded-lg bg-[hsl(var(--poke-red))/0.1] flex items-center justify-center mb-4">
-                  <span className="text-2xl">📊</span>
+                  <BarChart3 className="w-6 h-6 text-[var(--poke-red)]" />
                 </div>
                 <h3 className="text-lg font-bold mb-2 text-[hsl(var(--foreground))]">
                   Grading EV
@@ -96,7 +97,7 @@ export default function HomePage() {
             <FadeIn delay={150}>
               <div className="hover-lift rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 h-full">
                 <div className="w-12 h-12 rounded-lg bg-[hsl(var(--poke-yellow))/0.1] flex items-center justify-center mb-4">
-                  <span className="text-2xl">💰</span>
+                  <DollarSign className="w-6 h-6 text-[var(--poke-yellow)]" />
                 </div>
                 <h3 className="text-lg font-bold mb-2 text-[hsl(var(--foreground))]">
                   Flip ROI
@@ -111,7 +112,7 @@ export default function HomePage() {
             <FadeIn delay={300}>
               <div className="hover-lift rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 h-full">
                 <div className="w-12 h-12 rounded-lg bg-[hsl(var(--poke-blue))/0.1] flex items-center justify-center mb-4">
-                  <span className="text-2xl">📦</span>
+                  <Package className="w-6 h-6 text-[var(--poke-blue)]" />
                 </div>
                 <h3 className="text-lg font-bold mb-2 text-[hsl(var(--foreground))]">
                   Sealed Returns

@@ -8,6 +8,7 @@ import {
   type GradeEvResult,
 } from "@/lib/domain/grading";
 import { estimateGradedValues } from "@/lib/domain/price-estimates";
+import { AlertTriangle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ResultDisplay, formatMetricValue } from "./result-display";
@@ -89,7 +90,7 @@ export function GradingCalculator() {
               type="number"
               step="0.01"
               error={errors.psa10Value?.message}
-              hint={isEstimated ? "⚠️ Estimated" : undefined}
+              hint={isEstimated ? "Estimated" : undefined}
               {...register("psa10Value")}
             />
             <Input
@@ -97,7 +98,7 @@ export function GradingCalculator() {
               type="number"
               step="0.01"
               error={errors.psa9Value?.message}
-              hint={isEstimated ? "⚠️ Estimated" : undefined}
+              hint={isEstimated ? "Estimated" : undefined}
               {...register("psa9Value")}
             />
             <Input
@@ -105,13 +106,14 @@ export function GradingCalculator() {
               type="number"
               step="0.01"
               error={errors.psa8Value?.message}
-              hint={isEstimated ? "⚠️ Estimated" : "Optional"}
+              hint={isEstimated ? "Estimated" : "Optional"}
               {...register("psa8Value")}
             />
           </div>
           {isEstimated && (
-            <p className="text-xs text-yellow-500">
-              ⚠️ Graded values are heuristic estimates based on raw price. Replace with real comps for accuracy.
+            <p className="text-xs text-yellow-500 flex items-center gap-1">
+              <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+              Graded values are heuristic estimates based on raw price. Replace with real comps for accuracy.
             </p>
           )}
         </div>
