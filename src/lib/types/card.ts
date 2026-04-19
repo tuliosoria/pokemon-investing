@@ -27,8 +27,8 @@ export function getBestPrice(prices: CardPrices): {
   variant: string;
   price: number;
 } | null {
-  // Prefer Normal printing, then Foil
-  const priority = ["Normal", "Foil"];
+  // Prefer Normal, then common premium printings from tcgapi.dev
+  const priority = ["Normal", "Foil", "Holofoil", "Reverse Holofoil"];
 
   for (const variant of priority) {
     if (prices[variant]) {
