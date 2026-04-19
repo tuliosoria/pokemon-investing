@@ -88,6 +88,7 @@ export function CardSearch({ onCardSelect }: CardSearchProps) {
     setIsLoadingGrades(true);
     try {
       const params = new URLSearchParams({ name: card.name, set: card.set });
+      if (card.number) params.set("number", card.number);
       const res = await fetch(`/api/cards/grade-data?${params}`);
       if (res.ok) {
         const body = await res.json();
@@ -180,7 +181,7 @@ export function CardSearch({ onCardSelect }: CardSearchProps) {
             )}
             {gradeData && !isLoadingGrades && (
               <p className="text-xs text-green-500 mt-1">
-                ✓ Real PSA prices loaded
+                ✓ PSA prices loaded ({gradeData.set})
               </p>
             )}
           </div>

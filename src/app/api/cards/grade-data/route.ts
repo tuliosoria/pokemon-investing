@@ -60,6 +60,7 @@ function calculatePsa10Probability(
 export async function GET(request: NextRequest) {
   const name = request.nextUrl.searchParams.get("name")?.trim();
   const set = request.nextUrl.searchParams.get("set")?.trim();
+  const number = request.nextUrl.searchParams.get("number")?.trim();
 
   if (!name) {
     return NextResponse.json(
@@ -68,7 +69,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const cacheKey = `${name}|${set ?? ""}`.toLowerCase();
+  const cacheKey = `${name}|${set ?? ""}|${number ?? ""}`.toLowerCase();
   const cached = cache.get(cacheKey);
   if (cached && cached.expires > Date.now()) {
     return NextResponse.json({ gradeData: cached.data });
@@ -107,20 +108,65 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ gradeData: null });
     }
 
-    // Find best match — prefer exact name + set match
+    // Normalize card number for comparison (strip leading zeros, slashes)
+    const normalizeNum = (n: string) =>
+      n.replace(/^0+/, "").split("/")[0].trim().toLowerCase();
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let match: any = cards[0];
-    if (set) {
-      const setLower = set.toLowerCase();
-      const exactMatch = cards.find(
-        (c) =>
-          c.name?.toLowerCase() === name.toLowerCase() &&
-          c.set_name?.toLowerCase() === setLower
-      );
-      if (exactMatch) match = exactMatch;
+    const nameLower = name.toLowerCase();
+    const setLower = set?.toLowerCase() ?? "";
+    const numNorm = number ? normalizeNum(number) : "";
+
+    // Scoring: find best match by name + set + number
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let bestMatch: any = null;
+    let bestScore = -1;
+
+    for (const card of cards) {
+      if (card.name?.toLowerCase() !== nameLower) continue;
+      // Only consider English cards
+      if (card.language && card.language !== "ENGLISH") continue;
+
+      let score = 0;
+
+      // Exact set match
+      const cardSet = (card.set_name ?? "").toLowerCase();
+      if (setLower && cardSet === setLower) {
+        score += 10;
+      } else if (setLower && cardSet.includes(setLower)) {
+        score += 5;
+      } else if (setLower && setLower.includes(cardSet)) {
+        score += 5;
+      }
+
+      // Number match (most reliable for reprints/prize packs)
+      if (numNorm && card.num) {
+        const cardNum = normalizeNum(String(card.num));
+        if (cardNum === numNorm) score += 8;
+      }
+
+      // Prefer cards with more recent release dates (more likely to have pricing data)
+      if (card.release_date) {
+        const year = parseInt(card.release_date.substring(0, 4));
+        if (year >= 2020) score += 1;
+      }
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestMatch = card;
+      }
     }
 
-    const cardId = match.id;
+    // Fallback to first exact-name English card
+    if (!bestMatch) {
+      bestMatch = cards.find(
+        (c) =>
+          c.name?.toLowerCase() === nameLower &&
+          (!c.language || c.language === "ENGLISH")
+      ) ?? cards[0];
+    }
+
+    const cardId = bestMatch.id;
 
     // Fetch pricing and population in parallel
     const [pricingRes, populationRes] = await Promise.all([
@@ -168,8 +214,8 @@ export async function GET(request: NextRequest) {
 
     const gradeData: PokeDataGradeData = {
       pokedataId: String(cardId),
-      name: match.name,
-      set: match.set_name ?? "",
+      name: bestMatch.name,
+      set: bestMatch.set_name ?? "",
       rawPrice: gradedPrices["Pokedata Raw"] ?? gradedPrices["TCGPlayer"] ?? null,
       tcgplayerPrice: gradedPrices["TCGPlayer"] ?? null,
       ebayRawPrice: gradedPrices["eBay Raw"] ?? null,

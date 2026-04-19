@@ -54,10 +54,10 @@ export function GradingCalculator() {
 
   const handleCardSelect = (_card: CardSearchResult, rawPrice: number, _variant: string, gradeData?: GradeData | null) => {
     if (gradeData) {
-      // Use real PSA data from PokeData
-      const raw = gradeData.rawPrice ?? rawPrice;
-      if (raw > 0) setValue("rawCardValue", raw);
+      // Keep tcgapi.dev raw price — it matches the specific listing the user selected
+      if (rawPrice > 0) setValue("rawCardValue", rawPrice);
 
+      // Use real PSA grading prices from PokeData
       const psa10 = gradeData.gradedPrices["PSA 10.0"] ?? 0;
       const psa9 = gradeData.gradedPrices["PSA 9.0"] ?? 0;
       const psa8 = gradeData.gradedPrices["PSA 8.0"] ?? 0;
@@ -68,7 +68,6 @@ export function GradingCalculator() {
 
       if (gradeData.psa10Probability !== null) {
         setValue("probabilityPsa10", gradeData.psa10Probability);
-        // Distribute remaining probability
         const remaining = 100 - gradeData.psa10Probability;
         setValue("probabilityPsa9", Math.round(remaining * 0.5));
         setValue("probabilityPsa8", Math.round(remaining * 0.3));
