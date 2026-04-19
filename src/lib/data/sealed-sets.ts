@@ -9,6 +9,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 1999,
     currentPrice: 36600,
     gradient: "linear-gradient(135deg, #8B0000, #DAA520)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Base+Set+Unlimited+Booster+Box.webp",
     factors: {
       marketValue: 5,
       chaseCardIndex: 95,
@@ -31,6 +32,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2000,
     currentPrice: 65444,
     gradient: "linear-gradient(135deg, #4B0082, #C0C0C0)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Neo+Genesis+Unlimited+Booster+Box.webp",
     factors: {
       marketValue: 3,
       chaseCardIndex: 78,
@@ -53,6 +55,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2004,
     currentPrice: 16595,
     gradient: "linear-gradient(135deg, #B22222, #228B22)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/FireRed+%26+LeafGreen+Booster+Box.webp",
     factors: {
       marketValue: 10,
       chaseCardIndex: 82,
@@ -75,6 +78,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2016,
     currentPrice: 2006,
     gradient: "linear-gradient(135deg, #1E90FF, #FF4500)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Evolutions+Booster+Box.webp",
     factors: {
       marketValue: 32,
       chaseCardIndex: 78,
@@ -97,6 +101,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2019,
     currentPrice: 518,
     gradient: "linear-gradient(135deg, #FFD700, #2F4F4F)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Hidden+Fates+Elite+Trainer+Box.webp",
     factors: {
       marketValue: 52,
       chaseCardIndex: 88,
@@ -119,6 +124,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2020,
     currentPrice: 166,
     gradient: "linear-gradient(135deg, #CD853F, #8B4513)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Champion%27s+Path+Elite+Trainer+Box.webp",
     factors: {
       marketValue: 68,
       chaseCardIndex: 65,
@@ -141,6 +147,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2021,
     currentPrice: 2613,
     gradient: "linear-gradient(135deg, #00CED1, #9370DB)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Evolving+Skies+Booster+Box.webp",
     factors: {
       marketValue: 28,
       chaseCardIndex: 95,
@@ -163,6 +170,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2022,
     currentPrice: 593,
     gradient: "linear-gradient(135deg, #FF69B4, #4169E1)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Brilliant+Stars+Booster+Box.webp",
     factors: {
       marketValue: 50,
       chaseCardIndex: 72,
@@ -185,6 +193,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2023,
     currentPrice: 315,
     gradient: "linear-gradient(135deg, #FFD700, #4682B4)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Crown+Zenith+Elite+Trainer+Box.webp",
     factors: {
       marketValue: 58,
       chaseCardIndex: 62,
@@ -207,6 +216,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2023,
     currentPrice: 640,
     gradient: "linear-gradient(135deg, #CC0000, #003A70)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Pokemon+151+Elite+Trainer+Box.webp",
     factors: {
       marketValue: 48,
       chaseCardIndex: 88,
@@ -229,6 +239,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2023,
     currentPrice: 367,
     gradient: "linear-gradient(135deg, #8B0000, #2F2F2F)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Obsidian+Flames+Booster+Box.webp",
     factors: {
       marketValue: 58,
       chaseCardIndex: 58,
@@ -251,6 +262,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2023,
     currentPrice: 447,
     gradient: "linear-gradient(135deg, #9932CC, #32CD32)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Paldea+Evolved+Booster+Box.webp",
     factors: {
       marketValue: 55,
       chaseCardIndex: 55,
@@ -273,6 +285,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2024,
     currentPrice: 250,
     gradient: "linear-gradient(135deg, #FFD700, #FF6347)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Surging+Sparks+Booster+Box.webp",
     factors: {
       marketValue: 62,
       chaseCardIndex: 72,
@@ -295,6 +308,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2025,
     currentPrice: 76,
     gradient: "linear-gradient(135deg, #FF1493, #00BFFF)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Prismatic+Evolutions+Booster+Bundle.webp",
     factors: {
       marketValue: 82,
       chaseCardIndex: 80,
@@ -317,6 +331,7 @@ export const SEALED_SETS: SealedSetData[] = [
     releaseYear: 2023,
     currentPrice: 250,
     gradient: "linear-gradient(135deg, #DC143C, #7B68EE)",
+    imageUrl: "https://pokemonproductimages.pokedata.io/Products/Scarlet+%26+Violet+Booster+Box.webp",
     factors: {
       marketValue: 62,
       chaseCardIndex: 48,

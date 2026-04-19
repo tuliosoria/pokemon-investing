@@ -4,6 +4,7 @@ import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
 import { computeForecast } from "@/lib/domain/sealed-forecast";
 import { buildDynamicSetData, inferProductType } from "@/lib/domain/sealed-estimate";
+import { getTopBuyOpportunities } from "@/lib/domain/top-buys";
 import type {
   SortField,
   FilterSignal,
@@ -41,8 +42,11 @@ export function ForecastDashboard() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [showCurated, setShowCurated] = useState(true);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [showingTopBuys, setShowingTopBuys] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const abortRef = useRef<AbortController>(undefined);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Google Trends scores: maps set ID → popularity score
   const [trendScores, setTrendScores] = useState<
@@ -53,6 +57,12 @@ export function ForecastDashboard() {
   const curatedForecasts = useMemo(
     () =>
       SEALED_SETS.map((set) => ({ set, forecast: computeForecast(set) })),
+    []
+  );
+
+  // Top buy opportunities (pre-computed, no API call needed)
+  const topBuys = useMemo(
+    () => getTopBuyOpportunities(15),
     []
   );
 
@@ -102,7 +112,7 @@ export function ForecastDashboard() {
       const VARIANT_WORDS = ["costco", "walmart", "target", "pokemon center", "display"];
 
       const processPricing = (pricing: SealedPricing | null) => {
-        if (!pricing || !pricing.bestPrice || pricing.bestPrice <= 0) return;
+        if (!pricing) return;
         if (seenPokedataIds.has(pricing.pokedataId)) return;
         seenPokedataIds.add(pricing.pokedataId);
 
@@ -123,7 +133,7 @@ export function ForecastDashboard() {
           usedCuratedIds.add(curatedMatch.id);
           const updated = {
             ...curatedMatch,
-            currentPrice: pricing.bestPrice,
+            currentPrice: pricing.bestPrice ?? curatedMatch.currentPrice,
             pokedataId: pricing.pokedataId,
             imageUrl: pricing.imageUrl ?? curatedMatch.imageUrl,
           };
@@ -146,7 +156,19 @@ export function ForecastDashboard() {
                 `/api/sealed/pricing?id=${p.pokedataId}`,
                 { signal: controller.signal }
               );
-              if (!res.ok) return null;
+              if (!res.ok) {
+                // Pricing unavailable — build a stub from search result metadata
+                return {
+                  pokedataId: p.pokedataId,
+                  name: p.name,
+                  releaseDate: p.releaseDate,
+                  imageUrl: p.imageUrl ?? null,
+                  tcgplayerPrice: null,
+                  ebayPrice: null,
+                  pokedataPrice: null,
+                  bestPrice: null,
+                } as SealedPricing;
+              }
               const { pricing } = (await res.json()) as { pricing: SealedPricing };
               return pricing;
             } catch {
@@ -212,6 +234,10 @@ export function ForecastDashboard() {
   const handleSearchChange = useCallback(
     (value: string) => {
       setSearch(value);
+      if (value.trim().length > 0) {
+        setHasInteracted(true);
+        setShowingTopBuys(false);
+      }
 
       // For local filtering, apply immediately
       // For API search, debounce
@@ -283,8 +309,18 @@ export function ForecastDashboard() {
     [trendScores]
   );
 
-  // Combine curated + API results
+   // Combine curated + API results
   const allSets = useMemo(() => {
+    // Top Buys mode: show pre-computed top buy opportunities
+    if (showingTopBuys) {
+      return applyTrends(topBuys);
+    }
+
+    // Not yet interacted: return empty so the empty state shows
+    if (!hasInteracted) {
+      return [];
+    }
+
     const hasApiSearch = apiQuery.length >= 2;
 
     // If searching, show API results + matching curated
@@ -312,7 +348,7 @@ export function ForecastDashboard() {
 
     // No search: show all curated
     return applyTrends(curatedForecasts);
-  }, [curatedForecasts, apiResults, apiQuery, search, showCurated, applyTrends]);
+  }, [curatedForecasts, apiResults, apiQuery, search, showCurated, applyTrends, hasInteracted, showingTopBuys, topBuys]);
 
   const filtered = useMemo(() => {
     let result = allSets;
@@ -370,6 +406,7 @@ export function ForecastDashboard() {
         {/* Search */}
         <div className="flex-1 relative">
           <input
+            ref={searchInputRef}
             type="text"
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
@@ -389,7 +426,13 @@ export function ForecastDashboard() {
             <button
               key={s}
               type="button"
-              onClick={() => setFilter(s)}
+              onClick={() => {
+                setFilter(s);
+                if (!hasInteracted) {
+                  setHasInteracted(true);
+                  setShowingTopBuys(false);
+                }
+              }}
               className={`px-3 py-2 font-medium transition-colors ${
                 filter === s
                   ? s === "Buy"
@@ -454,33 +497,117 @@ export function ForecastDashboard() {
       </div>
 
       {/* Results count */}
-      <div className="flex items-center gap-3">
-        <p className="text-xs text-[hsl(var(--muted-foreground))]">
-          Showing {filtered.length} {apiQuery.length >= 2 ? "results" : `of ${totalSets} sets`}
-          {apiQuery.length >= 2 && apiResults.length > 0 && (
-            <span className="ml-1">
-              ({apiResults.filter((r) => !r.set.curated).length} from PokeData)
-            </span>
-          )}
-        </p>
-        {isSearching && apiResults.length > 0 && (
-          <p className="text-xs text-[hsl(var(--poke-yellow))] animate-pulse">
-            Loading more products…
+      {hasInteracted && (
+        <div className="flex items-center gap-3">
+          <p className="text-xs text-[hsl(var(--muted-foreground))]">
+            Showing {filtered.length} {showingTopBuys ? "top buy opportunities" : apiQuery.length >= 2 ? "results" : `of ${totalSets} sets`}
+            {apiQuery.length >= 2 && apiResults.length > 0 && (
+              <span className="ml-1">
+                ({apiResults.filter((r) => !r.set.curated).length} from PokeData)
+              </span>
+            )}
           </p>
-        )}
-        {searchError && (
-          <p className="text-xs text-red-400">{searchError}</p>
-        )}
-      </div>
+          {showingTopBuys && (
+            <button
+              type="button"
+              onClick={() => {
+                setShowingTopBuys(false);
+                setHasInteracted(false);
+                setFilter("All");
+              }}
+              className="text-xs text-[hsl(var(--poke-yellow))] hover:underline"
+            >
+              ← Back
+            </button>
+          )}
+          {isSearching && apiResults.length > 0 && (
+            <p className="text-xs text-[hsl(var(--poke-yellow))] animate-pulse">
+              Loading more products…
+            </p>
+          )}
+          {searchError && (
+            <p className="text-xs text-red-400">{searchError}</p>
+          )}
+        </div>
+      )}
+
+      {/* Empty state — shown before any interaction */}
+      {!hasInteracted && !showingTopBuys && (
+        <div className="flex items-center justify-center py-16 animate-fade-in-up">
+          <div className="text-center max-w-lg px-6">
+            {/* Pokéball + magnifying glass icon */}
+            <div className="relative mx-auto mb-6 w-24 h-24">
+              <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-lg" aria-hidden="true">
+                {/* Pokéball body */}
+                <circle cx="50" cy="50" r="46" fill="none" stroke="hsl(var(--poke-yellow))" strokeWidth="3" opacity="0.3" />
+                <path d="M 4 50 A 46 46 0 0 1 96 50" fill="hsl(var(--poke-red))" opacity="0.15" />
+                <path d="M 4 50 A 46 46 0 0 0 96 50" fill="hsl(var(--border))" opacity="0.1" />
+                <line x1="4" y1="50" x2="96" y2="50" stroke="hsl(var(--poke-yellow))" strokeWidth="2.5" opacity="0.25" />
+                <circle cx="50" cy="50" r="12" fill="none" stroke="hsl(var(--poke-yellow))" strokeWidth="2.5" opacity="0.4" />
+                <circle cx="50" cy="50" r="6" fill="hsl(var(--poke-yellow))" opacity="0.3" />
+                {/* Magnifying glass */}
+                <circle cx="62" cy="38" r="14" fill="none" stroke="hsl(var(--poke-yellow))" strokeWidth="3" opacity="0.7" />
+                <line x1="72" y1="48" x2="84" y2="60" stroke="hsl(var(--poke-yellow))" strokeWidth="3.5" strokeLinecap="round" opacity="0.7" />
+              </svg>
+            </div>
+
+            <h3 className="text-2xl font-bold text-[hsl(var(--foreground))] mb-2">
+              Discover What&apos;s Worth Buying
+            </h3>
+            <p className="text-sm text-[hsl(var(--muted-foreground))] mb-6 leading-relaxed">
+              Search for any sealed Pokémon product by name or set — like{" "}
+              <span className="text-[hsl(var(--poke-yellow))] font-medium">&quot;Prismatic Evolutions&quot;</span>,{" "}
+              <span className="text-[hsl(var(--poke-yellow))] font-medium">&quot;Evolving Skies ETB&quot;</span>, or{" "}
+              <span className="text-[hsl(var(--poke-yellow))] font-medium">&quot;Booster Box&quot;</span>
+              . Or jump straight to our highest-rated investment picks.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                type="button"
+                onClick={() => searchInputRef.current?.focus()}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[hsl(var(--muted))] text-[hsl(var(--foreground))] text-sm font-medium hover:bg-[hsl(var(--muted))]/80 transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" strokeLinecap="round" />
+                </svg>
+                Start Searching
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowingTopBuys(true);
+                  setHasInteracted(true);
+                  setSortBy("score");
+                  setSortDir("desc");
+                }}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-green-500/15 text-green-400 text-sm font-medium hover:bg-green-500/25 border border-green-500/30 transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Show Top Buys
+              </button>
+            </div>
+
+            <p className="text-[11px] text-[hsl(var(--muted-foreground))]/60 mt-6">
+              Powered by live PokeData pricing &amp; 8-factor composite scoring
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Cards grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-        {filtered.map(({ set, forecast }) => (
-          <SetForecastCard key={set.id} set={set} forecast={forecast} />
-        ))}
-      </div>
+      {(hasInteracted || showingTopBuys) && filtered.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          {filtered.map(({ set, forecast }) => (
+            <SetForecastCard key={set.id} set={set} forecast={forecast} />
+          ))}
+        </div>
+      )}
 
-      {filtered.length === 0 && !isSearching && (
+      {hasInteracted && filtered.length === 0 && !isSearching && (
         <div className="text-center py-12 text-[hsl(var(--muted-foreground))]">
           <p className="text-lg font-semibold mb-1">
             {apiQuery.length >= 2

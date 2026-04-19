@@ -67,15 +67,27 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
         <div className="flex items-baseline justify-between">
           <div>
             <p className="text-xs text-[hsl(var(--muted-foreground))]">Current</p>
-            <p className="text-lg font-bold font-mono">
-              ${set.currentPrice.toLocaleString()}
-            </p>
+            {set.currentPrice > 0 ? (
+              <p className="text-lg font-bold font-mono">
+                ${set.currentPrice.toLocaleString()}
+              </p>
+            ) : (
+              <p className="text-sm font-medium text-[hsl(var(--muted-foreground))]">
+                Price Unavailable
+              </p>
+            )}
           </div>
           <div className="text-right">
             <p className="text-xs text-[hsl(var(--muted-foreground))]">5yr Target</p>
-            <p className="text-lg font-bold font-mono text-[hsl(var(--poke-yellow))]">
-              ${forecast.projectedValue.toLocaleString()}
-            </p>
+            {forecast.projectedValue > 0 ? (
+              <p className="text-lg font-bold font-mono text-[hsl(var(--poke-yellow))]">
+                ${forecast.projectedValue.toLocaleString()}
+              </p>
+            ) : (
+              <p className="text-sm font-medium text-[hsl(var(--muted-foreground))]">
+                —
+              </p>
+            )}
           </div>
         </div>
 
