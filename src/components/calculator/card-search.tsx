@@ -103,8 +103,7 @@ export function CardSearch({ onCardSelect }: CardSearchProps) {
     setQuery("");
   }
 
-  const formatVariant = (v: string) =>
-    v.replace(/([A-Z])/g, " $1").replace(/1st/, "1st ").trim();
+  const formatVariant = (v: string) => v;
 
   const availableVariants = selectedCard
     ? Object.keys(selectedCard.prices)

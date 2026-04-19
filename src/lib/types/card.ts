@@ -27,22 +27,17 @@ export function getBestPrice(prices: CardPrices): {
   variant: string;
   price: number;
 } | null {
-  const variantPriority = [
-    "holofoil",
-    "reverseHolofoil",
-    "normal",
-    "1stEditionHolofoil",
-    "1stEditionNormal",
-    "unlimitedHolofoil",
-  ];
+  // Prefer Normal printing, then Foil
+  const priority = ["Normal", "Foil"];
 
-  for (const variant of variantPriority) {
+  for (const variant of priority) {
     if (prices[variant]) {
       const price = resolvePrice(prices[variant]);
       if (price !== null) return { variant, price };
     }
   }
 
+  // Fallback: any variant with a price
   for (const [variant, data] of Object.entries(prices)) {
     const price = resolvePrice(data);
     if (price !== null) return { variant, price };
