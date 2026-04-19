@@ -6,7 +6,7 @@ frontend:
         - npm ci
     build:
       commands:
-        - env | grep -E '^TCG_|^POKEDATA_' >> .env.production
+        - env | grep -E '^TCG_|^POKEDATA_|^DYNAMODB_' >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next

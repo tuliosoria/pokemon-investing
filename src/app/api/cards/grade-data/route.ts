@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cacheGet, cachePut } from "@/lib/db/cache";
 
 const POKEDATA_BASE = "https://www.pokedata.io/v0";
+const CACHE_TTL = 30 * 60; // 30 minutes in seconds
 
 export interface PokeDataGradeData {
   pokedataId: string;
@@ -12,26 +14,6 @@ export interface PokeDataGradeData {
   gradedPrices: Record<string, number>;
   population: Record<string, number>;
   psa10Probability: number | null;
-}
-
-// Cache grade data for 30 min (pricing changes slowly)
-const cache = new Map<string, { data: PokeDataGradeData; expires: number }>();
-const MAX_CACHE = 100;
-const CACHE_TTL = 30 * 60 * 1000;
-
-function cleanCache() {
-  const now = Date.now();
-  for (const [key, val] of cache) {
-    if (val.expires < now) cache.delete(key);
-  }
-  if (cache.size > MAX_CACHE) {
-    const oldest = [...cache.entries()].sort(
-      (a, b) => a[1].expires - b[1].expires
-    );
-    for (let i = 0; i < oldest.length - MAX_CACHE; i++) {
-      cache.delete(oldest[i][0]);
-    }
-  }
 }
 
 function calculatePsa10Probability(
@@ -70,9 +52,11 @@ export async function GET(request: NextRequest) {
   }
 
   const cacheKey = `${name}|${set ?? ""}|${number ?? ""}`.toLowerCase();
-  const cached = cache.get(cacheKey);
-  if (cached && cached.expires > Date.now()) {
-    return NextResponse.json({ gradeData: cached.data });
+
+  // Check cache (L1 memory + L2 DynamoDB)
+  const cached = await cacheGet<PokeDataGradeData>("grade-data", cacheKey);
+  if (cached) {
+    return NextResponse.json({ gradeData: cached });
   }
 
   const apiKey = process.env.POKEDATA_API_KEY;
@@ -224,9 +208,8 @@ export async function GET(request: NextRequest) {
       psa10Probability: calculatePsa10Probability(population),
     };
 
-    // Cache result
-    cleanCache();
-    cache.set(cacheKey, { data: gradeData, expires: Date.now() + CACHE_TTL });
+    // Cache result (L1 + L2)
+    await cachePut("grade-data", cacheKey, gradeData, CACHE_TTL);
 
     return NextResponse.json({ gradeData });
   } catch (err) {

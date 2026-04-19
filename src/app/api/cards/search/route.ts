@@ -1,27 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { CardSearchResult, CardPrices } from "@/lib/types/card";
+import { cacheGet, cachePut } from "@/lib/db/cache";
 
 const TCG_API_BASE = "https://api.tcgapi.dev/v1/search";
-
-// Simple in-memory cache (5 min TTL, max 200 entries)
-const cache = new Map<string, { data: CardSearchResult[]; expires: number }>();
-const MAX_CACHE = 200;
-const CACHE_TTL = 5 * 60 * 1000;
-
-function cleanCache() {
-  const now = Date.now();
-  for (const [key, val] of cache) {
-    if (val.expires < now) cache.delete(key);
-  }
-  if (cache.size > MAX_CACHE) {
-    const oldest = [...cache.entries()].sort(
-      (a, b) => a[1].expires - b[1].expires
-    );
-    for (let i = 0; i < oldest.length - MAX_CACHE; i++) {
-      cache.delete(oldest[i][0]);
-    }
-  }
-}
+const CACHE_TTL = 5 * 60; // 5 minutes in seconds
 
 // --- Query parsing ---
 
@@ -167,9 +149,11 @@ export async function GET(request: NextRequest) {
   }
 
   const cacheKey = q.toLowerCase();
-  const cached = cache.get(cacheKey);
-  if (cached && cached.expires > Date.now()) {
-    return NextResponse.json({ cards: cached.data });
+
+  // Check cache (L1 memory + L2 DynamoDB)
+  const cached = await cacheGet<CardSearchResult[]>("card-search", cacheKey);
+  if (cached) {
+    return NextResponse.json({ cards: cached });
   }
 
   try {
@@ -208,9 +192,8 @@ export async function GET(request: NextRequest) {
         .map(({ card }) => card);
     }
 
-    // Cache results
-    cleanCache();
-    cache.set(cacheKey, { data: cards, expires: Date.now() + CACHE_TTL });
+    // Cache results (L1 + L2)
+    await cachePut("card-search", cacheKey, cards, CACHE_TTL);
 
     return NextResponse.json({ cards });
   } catch (err) {

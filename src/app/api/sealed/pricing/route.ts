@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cacheGet, cachePut } from "@/lib/db/cache";
 
 const POKEDATA_BASE = "https://www.pokedata.io/v0";
-
-// Cache pricing for 30 min
-const cache = new Map<string, { data: SealedPricing; expires: number }>();
-const MAX_CACHE = 200;
-const CACHE_TTL = 30 * 60 * 1000;
+const CACHE_TTL = 30 * 60; // 30 minutes in seconds
 
 interface SealedPricing {
   pokedataId: string;
@@ -17,30 +14,16 @@ interface SealedPricing {
   bestPrice: number | null;
 }
 
-function cleanCache() {
-  const now = Date.now();
-  for (const [key, val] of cache) {
-    if (val.expires < now) cache.delete(key);
-  }
-  if (cache.size > MAX_CACHE) {
-    const oldest = [...cache.entries()].sort(
-      (a, b) => a[1].expires - b[1].expires
-    );
-    for (let i = 0; i < oldest.length - MAX_CACHE; i++) {
-      cache.delete(oldest[i][0]);
-    }
-  }
-}
-
 export async function GET(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id")?.trim();
   if (!id) {
     return NextResponse.json({ error: "Product ID required" }, { status: 400 });
   }
 
-  const cached = cache.get(id);
-  if (cached && cached.expires > Date.now()) {
-    return NextResponse.json({ pricing: cached.data });
+  // Check cache (L1 memory + L2 DynamoDB)
+  const cached = await cacheGet<SealedPricing>("sealed-pricing", id);
+  if (cached) {
+    return NextResponse.json({ pricing: cached });
   }
 
   const apiKey = process.env.POKEDATA_API_KEY;
@@ -86,8 +69,8 @@ export async function GET(request: NextRequest) {
       bestPrice: bestPrice ? Math.round(bestPrice * 100) / 100 : null,
     };
 
-    cleanCache();
-    cache.set(id, { data: result, expires: Date.now() + CACHE_TTL });
+    // Cache result (L1 + L2)
+    await cachePut("sealed-pricing", id, result, CACHE_TTL);
 
     return NextResponse.json({ pricing: result });
   } catch (err) {
