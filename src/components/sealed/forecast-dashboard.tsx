@@ -87,25 +87,8 @@ export function ForecastDashboard() {
         return;
       }
 
-      // Fetch pricing for top 12 results in parallel
-      const top = products.slice(0, 12);
-      const pricingPromises = top.map(async (p) => {
-        try {
-          const res = await fetch(
-            `/api/sealed/pricing?id=${p.pokedataId}`,
-            { signal: controller.signal }
-          );
-          if (!res.ok) return null;
-          const { pricing } = (await res.json()) as { pricing: SealedPricing };
-          return pricing;
-        } catch {
-          return null;
-        }
-      });
-
-      const pricings = await Promise.all(pricingPromises);
-
-      // Build SealedSetData from each pricing result
+      // Fetch pricing for ALL results in batches, updating UI progressively
+      const BATCH_SIZE = 8;
       const results: SetWithForecast[] = [];
       const seenPokedataIds = new Set<string>();
       const usedCuratedIds = new Set<string>();
@@ -118,14 +101,11 @@ export function ForecastDashboard() {
       // Variant keywords that prevent curated matching (Costco bundles, cases, etc.)
       const VARIANT_WORDS = ["costco", "walmart", "target", "pokemon center", "display"];
 
-      for (const pricing of pricings) {
-        if (!pricing || !pricing.bestPrice || pricing.bestPrice <= 0) continue;
-
-        // Deduplicate by pokedataId
-        if (seenPokedataIds.has(pricing.pokedataId)) continue;
+      const processPricing = (pricing: SealedPricing | null) => {
+        if (!pricing || !pricing.bestPrice || pricing.bestPrice <= 0) return;
+        if (seenPokedataIds.has(pricing.pokedataId)) return;
         seenPokedataIds.add(pricing.pokedataId);
 
-        // Match curated set: require set name + product type + no variant words
         const pricingProductType = inferProductType(pricing.name);
         const pricingNorm = norm(pricing.name);
         const isVariant = VARIANT_WORDS.some((v) => pricingNorm.includes(v));
@@ -149,14 +129,38 @@ export function ForecastDashboard() {
           results.push({ set: updated, forecast: computeForecast(updated) });
         } else {
           const dynamicSet = buildDynamicSetData(pricing);
-          results.push({
-            set: dynamicSet,
-            forecast: computeForecast(dynamicSet),
-          });
+          results.push({ set: dynamicSet, forecast: computeForecast(dynamicSet) });
         }
-      }
+      };
 
-      setApiResults(results);
+      // Process in batches to avoid overwhelming the API while showing results fast
+      for (let i = 0; i < products.length; i += BATCH_SIZE) {
+        if (controller.signal.aborted) break;
+
+        const batch = products.slice(i, i + BATCH_SIZE);
+        const batchPricings = await Promise.all(
+          batch.map(async (p) => {
+            try {
+              const res = await fetch(
+                `/api/sealed/pricing?id=${p.pokedataId}`,
+                { signal: controller.signal }
+              );
+              if (!res.ok) return null;
+              const { pricing } = (await res.json()) as { pricing: SealedPricing };
+              return pricing;
+            } catch {
+              return null;
+            }
+          })
+        );
+
+        for (const pricing of batchPricings) {
+          processPricing(pricing);
+        }
+
+        // Update UI after each batch so results appear progressively
+        setApiResults([...results]);
+      }
     } catch (err) {
       if ((err as Error).name !== "AbortError") {
         setSearchError("Search failed. Try again.");
@@ -454,10 +458,15 @@ export function ForecastDashboard() {
           Showing {filtered.length} {apiQuery.length >= 2 ? "results" : `of ${totalSets} sets`}
           {apiQuery.length >= 2 && apiResults.length > 0 && (
             <span className="ml-1">
-              ({apiResults.filter((r) => r.set.curated !== true && r.set.curated !== undefined).length} from PokeData)
+              ({apiResults.filter((r) => !r.set.curated).length} from PokeData)
             </span>
           )}
         </p>
+        {isSearching && apiResults.length > 0 && (
+          <p className="text-xs text-[hsl(var(--poke-yellow))] animate-pulse">
+            Loading more products…
+          </p>
+        )}
         {searchError && (
           <p className="text-xs text-red-400">{searchError}</p>
         )}

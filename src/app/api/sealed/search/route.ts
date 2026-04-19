@@ -141,7 +141,7 @@ export async function GET(request: NextRequest) {
       return true;
     });
 
-    const products = deduped.slice(0, 30).map((s) => ({
+    const products = deduped.map((s) => ({
       pokedataId: String(s.product.id),
       name: s.product.name,
       releaseDate: s.product.release_date ?? null,
