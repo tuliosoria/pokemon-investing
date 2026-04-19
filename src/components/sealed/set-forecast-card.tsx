@@ -16,6 +16,7 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
   const [showChart, setShowChart] = useState(false);
   const projectionData = getProjectionData(set, forecast);
   const outperforms = forecast.roiPercent > forecast.spRoi;
+  const isEstimated = forecast.estimatedFactors > 0;
 
   return (
     <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] overflow-hidden hover-lift">
@@ -32,9 +33,19 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
             </h3>
             <p className="text-white/70 text-[10px] mt-0.5">
               {set.productType} · {set.releaseYear}
+              {set.curated && (
+                <span className="ml-1.5 text-yellow-300/80" title="Curated analysis">★</span>
+              )}
             </p>
           </div>
-          <SignalBadge signal={forecast.signal} />
+          <div className="flex items-center gap-1.5">
+            {isEstimated && (
+              <span className="rounded-full bg-orange-500/30 border border-orange-500/50 text-orange-300 px-2 py-0.5 text-[9px] font-semibold">
+                Estimated
+              </span>
+            )}
+            <SignalBadge signal={forecast.signal} />
+          </div>
         </div>
       </div>
 
@@ -87,16 +98,18 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
         </p>
 
         {/* Chase cards */}
-        <div className="flex flex-wrap gap-1">
-          {set.chaseCards.map((card) => (
-            <span
-              key={card}
-              className="inline-block rounded-full bg-[hsl(var(--muted))] px-2 py-0.5 text-[10px] text-[hsl(var(--muted-foreground))]"
-            >
-              {card}
-            </span>
-          ))}
-        </div>
+        {set.chaseCards.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {set.chaseCards.map((card) => (
+              <span
+                key={card}
+                className="inline-block rounded-full bg-[hsl(var(--muted))] px-2 py-0.5 text-[10px] text-[hsl(var(--muted-foreground))]"
+              >
+                {card}
+              </span>
+            ))}
+          </div>
+        )}
 
         {/* Supply + notes */}
         <div className="flex items-center gap-2 text-[10px]">

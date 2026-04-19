@@ -22,6 +22,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Charizard", "Blastoise", "Venusaur", "Mewtwo"],
     printRunLabel: "Limited",
     notes: "The most iconic Pokémon set ever. Sealed boxes are exceedingly rare and command museum-level prices.",
+    curated: true,
   },
   {
     id: "neo-genesis",
@@ -43,6 +44,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Lugia", "Typhlosion", "Pichu"],
     printRunLabel: "Limited",
     notes: "First Gen 2 set with Lugia as the headline chase. Sealed supply is dwindling fast.",
+    curated: true,
   },
   {
     id: "ex-firered-leafgreen",
@@ -64,6 +66,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Charizard ex", "Venusaur ex", "Blastoise ex"],
     printRunLabel: "Limited",
     notes: "Peak ex-era nostalgia. Sealed boxes are extremely scarce and appreciating steadily.",
+    curated: true,
   },
   {
     id: "xy-evolutions",
@@ -85,6 +88,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Charizard Holo", "Mewtwo EX", "Dragonite EX"],
     printRunLabel: "Overprinted",
     notes: "Base Set nostalgia reprint. Was massively overprinted but price has surged — Charizard nostalgia is powerful.",
+    curated: true,
   },
   {
     id: "hidden-fates",
@@ -106,6 +110,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Shiny Charizard GX", "Shiny Mewtwo GX", "Shiny Rayquaza GX"],
     printRunLabel: "Limited",
     notes: "Shiny Vault sub-set with incredible chase cards. Limited print run makes sealed ETBs highly sought after.",
+    curated: true,
   },
   {
     id: "champions-path",
@@ -127,6 +132,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Shiny Charizard V", "Machamp V"],
     printRunLabel: "Standard",
     notes: "Initially overhyped but has climbed well above retail. Limited chase depth beyond Charizard.",
+    curated: true,
   },
   {
     id: "evolving-skies",
@@ -148,6 +154,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Umbreon VMAX Alt Art", "Rayquaza VMAX Alt Art", "Dragonite V Alt Art", "Sylveon VMAX Alt Art"],
     printRunLabel: "Standard",
     notes: "Widely considered the best modern set. Has 10×'d from retail — Umbreon VMAX Alt Art drives insane demand.",
+    curated: true,
   },
   {
     id: "brilliant-stars",
@@ -169,6 +176,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Charizard VSTAR", "Arceus VSTAR", "Trainer Gallery"],
     printRunLabel: "Standard",
     notes: "Solid set with Charizard VSTAR as the headline. Trainer Gallery adds depth. Strong appreciation from retail.",
+    curated: true,
   },
   {
     id: "crown-zenith",
@@ -190,6 +198,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Galarian Gallery Cards", "Mewtwo VSTAR"],
     printRunLabel: "Limited",
     notes: "Special set closing the SWSH era. Galarian Gallery has beautiful art. Strong appreciation from $50 retail.",
+    curated: true,
   },
   {
     id: "pokemon-151",
@@ -211,6 +220,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Charizard ex IR", "Mew ex SAR", "Mewtwo ex IR", "Alakazam ex IR"],
     printRunLabel: "Standard",
     notes: "Massive nostalgia play featuring all original 151. 14× retail appreciation — one of the best modern performers.",
+    curated: true,
   },
   {
     id: "obsidian-flames",
@@ -232,6 +242,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Charizard ex", "Tyranitar ex", "Dragonite ex"],
     printRunLabel: "Standard",
     notes: "Standard SV-era set. Has Charizard but lacks the art quality and depth of top-tier sets. Still 3× retail.",
+    curated: true,
   },
   {
     id: "paldea-evolved",
@@ -253,6 +264,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Iono SAR", "Tinkaton ex", "Palafin ex"],
     printRunLabel: "Standard",
     notes: "Iono SAR drives collector interest. Solid 4× appreciation from retail shows steady demand.",
+    curated: true,
   },
   {
     id: "surging-sparks",
@@ -274,6 +286,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Pikachu ex SAR", "Charizard ex", "Umbreon ex"],
     printRunLabel: "Standard",
     notes: "Strong chase lineup with Pikachu SAR. Recently out of print — appreciation just beginning.",
+    curated: true,
   },
   {
     id: "prismatic-evolutions",
@@ -295,6 +308,7 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Umbreon ex IR", "Sylveon ex IR", "Eevee ex IR", "Jolteon ex IR"],
     printRunLabel: "Standard",
     notes: "Eevee evolution theme drives massive hype. Very new — near retail, long-term potential depends on print run ending.",
+    curated: true,
   },
   {
     id: "sv-base",
@@ -316,5 +330,6 @@ export const SEALED_SETS: SealedSetData[] = [
     chaseCards: ["Miraidon ex", "Koraidon ex", "Arcanine ex"],
     printRunLabel: "Standard",
     notes: "First Scarlet & Violet set. Era transition marker — 2.5× from retail shows steady appreciation.",
+    curated: true,
   },
 ];

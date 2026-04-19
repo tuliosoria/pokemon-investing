@@ -62,10 +62,17 @@ export function computeForecast(set: SealedSetData): Forecast {
   const roiPercent = Math.round(((projectedValue / set.currentPrice) - 1) * 100);
   const spRoi = Math.round((Math.pow(1 + SP500_ANNUAL_RETURN, 5) - 1) * 100);
 
-  // Confidence based on data maturity
-  const dataQuality = (set.factors.setAge + set.factors.priceTrajectory) / 2;
-  const confidence: Confidence =
-    dataQuality >= 55 ? "High" : dataQuality >= 30 ? "Medium" : "Low";
+  // Estimated factor count (5 of 8 for dynamic products)
+  const estimatedFactors = set.curated === false ? 5 : 0;
+
+  // Confidence: curated uses data quality; dynamic is always Low
+  let confidence: Confidence;
+  if (estimatedFactors > 3) {
+    confidence = "Low";
+  } else {
+    const dataQuality = (set.factors.setAge + set.factors.priceTrajectory) / 2;
+    confidence = dataQuality >= 55 ? "High" : dataQuality >= 30 ? "Medium" : "Low";
+  }
 
   return {
     compositeScore,
@@ -77,6 +84,7 @@ export function computeForecast(set: SealedSetData): Forecast {
     roiPercent,
     spRoi,
     factorContributions,
+    estimatedFactors,
   };
 }
 
