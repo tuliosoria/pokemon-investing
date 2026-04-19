@@ -97,6 +97,30 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
           {Math.abs(forecast.roiPercent - forecast.spRoi)}% over 5 years
         </p>
 
+        {/* Google Trends indicator */}
+        {set.trendData && (
+          <div className="flex items-center gap-2 text-[11px]">
+            <span
+              className={`rounded-full px-2 py-0.5 font-semibold ${
+                set.trendData.direction === "rising"
+                  ? "bg-green-500/20 text-green-400"
+                  : set.trendData.direction === "declining"
+                    ? "bg-red-500/20 text-red-400"
+                    : "bg-gray-500/20 text-gray-400"
+              }`}
+            >
+              {set.trendData.direction === "rising"
+                ? "📈 Trending Up"
+                : set.trendData.direction === "declining"
+                  ? "📉 Trending Down"
+                  : "➡️ Stable Interest"}
+            </span>
+            <span className="text-[hsl(var(--muted-foreground))]">
+              Google Trends: {set.trendData.current}/100
+            </span>
+          </div>
+        )}
+
         {/* Chase cards */}
         {set.chaseCards.length > 0 && (
           <div className="flex flex-wrap gap-1">

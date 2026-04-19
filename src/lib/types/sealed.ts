@@ -27,6 +27,12 @@ export interface SealedSetData {
   curated?: boolean;
   /** PokeData product ID for API-sourced products */
   pokedataId?: string;
+  /** Google Trends data when available */
+  trendData?: {
+    current: number;
+    average: number;
+    direction: "rising" | "stable" | "declining";
+  };
 }
 
 export type Signal = "Buy" | "Hold" | "Sell";

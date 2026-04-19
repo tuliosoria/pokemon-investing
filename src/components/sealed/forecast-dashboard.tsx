@@ -18,6 +18,19 @@ interface SetWithForecast {
   forecast: ReturnType<typeof computeForecast>;
 }
 
+/** Build a Google Trends search keyword from a product name */
+function buildTrendKeyword(name: string): string {
+  // Strip common suffixes that dilute the search
+  const cleaned = name
+    .replace(/\b(Pokemon Center|Pokémon Center)\b/gi, "")
+    .trim();
+  // Prepend "Pokemon" if not already present
+  if (!/pokemon|pokémon/i.test(cleaned)) {
+    return `Pokemon ${cleaned}`;
+  }
+  return cleaned;
+}
+
 export function ForecastDashboard() {
   const [sortBy, setSortBy] = useState<SortField>("roi");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
@@ -30,6 +43,12 @@ export function ForecastDashboard() {
   const [showCurated, setShowCurated] = useState(true);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const abortRef = useRef<AbortController>(undefined);
+
+  // Google Trends scores: maps set ID → popularity score
+  const [trendScores, setTrendScores] = useState<
+    Map<string, { score: number; current: number; average: number; direction: string }>
+  >(new Map());
+  const trendFetchedRef = useRef<Set<string>>(new Set());
 
   const curatedForecasts = useMemo(
     () =>
@@ -126,6 +145,42 @@ export function ForecastDashboard() {
     }
   }, []);
 
+  // Fetch Google Trends data for a batch of sets (sequential with delay to avoid rate limits)
+  const fetchTrends = useCallback(async (sets: SetWithForecast[]) => {
+    const toFetch = sets.filter((s) => !trendFetchedRef.current.has(s.set.id));
+    if (toFetch.length === 0) return;
+
+    for (const { set } of toFetch) {
+      if (trendFetchedRef.current.has(set.id)) continue;
+      trendFetchedRef.current.add(set.id);
+
+      const keyword = buildTrendKeyword(set.name);
+      try {
+        const res = await fetch(
+          `/api/trends?keyword=${encodeURIComponent(keyword)}`
+        );
+        if (!res.ok) continue;
+        const { trend } = await res.json();
+        if (trend && typeof trend.popularityScore === "number") {
+          setTrendScores((prev) => {
+            const next = new Map(prev);
+            next.set(set.id, {
+              score: trend.popularityScore,
+              current: trend.current,
+              average: trend.average,
+              direction: trend.trendDirection,
+            });
+            return next;
+          });
+        }
+      } catch {
+        // Trend fetch is best-effort
+      }
+      // Small delay between requests to avoid Google rate limiting
+      await new Promise((r) => setTimeout(r, 300));
+    }
+  }, []);
+
   // Debounced search trigger
   const handleSearchChange = useCallback(
     (value: string) => {
@@ -157,6 +212,50 @@ export function ForecastDashboard() {
     };
   }, []);
 
+  // Fetch Google Trends for curated sets on initial load
+  useEffect(() => {
+    fetchTrends(curatedForecasts);
+  }, [curatedForecasts, fetchTrends]);
+
+  // Fetch Google Trends for API results when they change
+  useEffect(() => {
+    if (apiResults.length > 0) {
+      fetchTrends(apiResults);
+    }
+  }, [apiResults, fetchTrends]);
+
+  // Apply trend scores to sets and recompute forecasts
+  const applyTrends = useCallback(
+    (items: SetWithForecast[]): SetWithForecast[] => {
+      if (trendScores.size === 0) return items;
+
+      return items.map((item) => {
+        const trend = trendScores.get(item.set.id);
+        if (!trend) return item;
+
+        // For dynamic products: replace neutral popularity with trend score
+        // For curated products: blend hand-tuned (60%) with trend (40%)
+        const newPopularity =
+          item.set.curated === false
+            ? trend.score
+            : Math.round(item.set.factors.popularity * 0.6 + trend.score * 0.4);
+
+        const updatedSet: SealedSetData = {
+          ...item.set,
+          factors: { ...item.set.factors, popularity: newPopularity },
+          trendData: {
+            current: trend.current,
+            average: trend.average,
+            direction: trend.direction as "rising" | "stable" | "declining",
+          },
+        };
+
+        return { set: updatedSet, forecast: computeForecast(updatedSet) };
+      });
+    },
+    [trendScores]
+  );
+
   // Combine curated + API results
   const allSets = useMemo(() => {
     const hasApiSearch = apiQuery.length >= 2;
@@ -181,12 +280,12 @@ export function ForecastDashboard() {
         (r) => !curatedIds.has(r.set.id) && !r.set.id.startsWith("dynamic-") || r.set.id.startsWith("dynamic-")
       );
 
-      return [...matchingCurated, ...apiDeduped];
+      return applyTrends([...matchingCurated, ...apiDeduped]);
     }
 
     // No search: show all curated
-    return curatedForecasts;
-  }, [curatedForecasts, apiResults, apiQuery, search, showCurated]);
+    return applyTrends(curatedForecasts);
+  }, [curatedForecasts, apiResults, apiQuery, search, showCurated, applyTrends]);
 
   const filtered = useMemo(() => {
     let result = allSets;
@@ -385,11 +484,17 @@ export function ForecastDashboard() {
           collector demand ratio). All prices are live from PokeData.io.
         </p>
         <p>
+          <strong className="text-[hsl(var(--foreground))]">📈 Google Trends</strong> data
+          is fetched live for all sets to power the Popularity factor. For curated sets,
+          trends are blended with hand-tuned scores. For dynamic products, Google Trends
+          replaces the neutral default — giving real demand signal.
+        </p>
+        <p>
           <strong className="text-[hsl(var(--foreground))]">Search results</strong> from
           PokeData use live pricing with auto-estimated factors (set age, price
-          trajectory, market value). Chase card index, print run, popularity, market
-          cycle, and demand ratio default to neutral (50) — these forecasts are
-          screening estimates, not full analyses. Look for the
+          trajectory, market value, popularity via Google Trends). Chase card index, print
+          run, market cycle, and demand ratio default to neutral (50) — these forecasts
+          are screening estimates, not full analyses. Look for the
           <span className="inline-block mx-1 rounded-full bg-orange-500/20 text-orange-400 px-1.5 py-0.5 text-[9px] font-semibold">
             Estimated
           </span>

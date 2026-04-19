@@ -16,7 +16,7 @@ const FACTOR_CONFIG: Record<
   printRun: { label: "Print Run / Supply", weight: 3.0, weightLabel: "High" },
   setAge: { label: "Set Age", weight: 2.0, weightLabel: "Medium" },
   priceTrajectory: { label: "Historical Price Trajectory", weight: 3.0, weightLabel: "High" },
-  popularity: { label: "Set Popularity / Nostalgia", weight: 2.0, weightLabel: "Medium" },
+  popularity: { label: "Popularity / Google Trends", weight: 2.0, weightLabel: "Medium" },
   marketCycle: { label: "Market Cycle Position", weight: 2.0, weightLabel: "Medium" },
   demandRatio: { label: "Collector Demand Ratio", weight: 1.5, weightLabel: "Low–Med" },
 };
@@ -62,8 +62,9 @@ export function computeForecast(set: SealedSetData): Forecast {
   const roiPercent = Math.round(((projectedValue / set.currentPrice) - 1) * 100);
   const spRoi = Math.round((Math.pow(1 + SP500_ANNUAL_RETURN, 5) - 1) * 100);
 
-  // Estimated factor count (5 of 8 for dynamic products)
-  const estimatedFactors = set.curated === false ? 5 : 0;
+  // Estimated factor count: dynamic products have 5 defaults, minus 1 if trend data present
+  const hasTrends = !!set.trendData;
+  const estimatedFactors = set.curated === false ? (hasTrends ? 4 : 5) : 0;
 
   // Confidence: curated uses data quality; dynamic is always Low
   let confidence: Confidence;
