@@ -2,7 +2,75 @@ import { NextRequest, NextResponse } from "next/server";
 import { cacheGet, cachePut } from "@/lib/db/cache";
 
 const POKEDATA_BASE = "https://www.pokedata.io/v0";
-const CACHE_TTL = 10 * 60; // 10 minutes in seconds
+const CACHE_TTL = 10 * 60; // 10 minutes
+
+// Abbreviation → full-form expansions for product type aliases
+const TERM_ALIASES: Record<string, string[]> = {
+  etb: ["elite trainer box", "etb"],
+  upc: ["ultra premium collection", "upc"],
+  bb: ["booster box"],
+};
+
+// Variant keywords that indicate non-canonical products (penalized in ranking)
+const VARIANT_PENALTY_WORDS = [
+  "costco", "walmart", "target", "case", "display",
+  "2-pack", "3-pack", "blister",
+];
+
+/** Strip diacritics and punctuation for normalized comparison */
+function normalize(s: string): string {
+  return s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")  // strip accents
+    .replace(/[''`]/g, "")            // strip apostrophes
+    .replace(/&/g, "and")             // & → and
+    .toLowerCase()
+    .trim();
+}
+
+/**
+ * Expand query terms: if a term is a known alias, add its expansion.
+ * Returns expanded list of terms (all normalized).
+ */
+function expandTerms(rawQuery: string): string[] {
+  const terms = normalize(rawQuery).split(/\s+/).filter(Boolean);
+  const expanded: string[] = [];
+  for (const t of terms) {
+    if (TERM_ALIASES[t]) {
+      expanded.push(...TERM_ALIASES[t]);
+    } else {
+      expanded.push(t);
+    }
+  }
+  return expanded;
+}
+
+/**
+ * Score how well a product name matches the search terms.
+ * Higher = better match.
+ */
+function scoreProduct(productName: string, expandedTerms: string[]): number {
+  const norm = normalize(productName);
+
+  // Count how many expanded terms match (aliases count as 1 group)
+  let matched = 0;
+  for (const term of expandedTerms) {
+    // Multi-word terms (from alias expansion) matched as phrase
+    if (norm.includes(term)) matched++;
+  }
+
+  let score = matched * 100;
+
+  // Bonus for shorter names (more specific products rank higher)
+  score += Math.max(0, 50 - norm.length);
+
+  // Penalty for variant/bundle keywords
+  for (const vw of VARIANT_PENALTY_WORDS) {
+    if (norm.includes(vw)) score -= 30;
+  }
+
+  return score;
+}
 
 export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams.get("q")?.trim();
@@ -22,9 +90,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const cacheKey = q.toLowerCase();
+    const cacheKey = normalize(q);
 
-    // Check cache (L1 memory + L2 DynamoDB)
     const cached = await cacheGet<{ pokedataId: string; name: string; releaseDate: string | null }[]>(
       "sealed-search", cacheKey
     );
@@ -55,13 +122,31 @@ export async function GET(request: NextRequest) {
       (p) => !p.language || p.language === "ENGLISH"
     );
 
-    const products = english.slice(0, 30).map((p) => ({
-      pokedataId: String(p.id),
-      name: p.name,
-      releaseDate: p.release_date ?? null,
+    // Expand aliases and score every product against the full English set
+    const expandedTerms = expandTerms(q);
+    const scored = english.map((p) => ({
+      product: p,
+      score: scoreProduct(p.name ?? "", expandedTerms),
     }));
 
-    // Cache results (L1 + L2)
+    // Sort by score desc (stable sort preserves API order for ties)
+    scored.sort((a, b) => b.score - a.score);
+
+    // Deduplicate by product ID
+    const seen = new Set<string>();
+    const deduped = scored.filter((s) => {
+      const id = String(s.product.id);
+      if (seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+
+    const products = deduped.slice(0, 30).map((s) => ({
+      pokedataId: String(s.product.id),
+      name: s.product.name,
+      releaseDate: s.product.release_date ?? null,
+    }));
+
     await cachePut("sealed-search", cacheKey, products, CACHE_TTL);
 
     return NextResponse.json({ products });

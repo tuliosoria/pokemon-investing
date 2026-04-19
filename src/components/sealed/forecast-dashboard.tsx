@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
 import { computeForecast } from "@/lib/domain/sealed-forecast";
-import { buildDynamicSetData } from "@/lib/domain/sealed-estimate";
+import { buildDynamicSetData, inferProductType } from "@/lib/domain/sealed-estimate";
 import type {
   SortField,
   FilterSignal,
@@ -107,18 +107,40 @@ export function ForecastDashboard() {
 
       // Build SealedSetData from each pricing result
       const results: SetWithForecast[] = [];
+      const seenPokedataIds = new Set<string>();
+      const usedCuratedIds = new Set<string>();
+
+      // Normalize for comparison: strip diacritics, punctuation, lowercase
+      const norm = (s: string) =>
+        s.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+          .replace(/[''`]/g, "").replace(/&/g, "and").toLowerCase().trim();
+
+      // Variant keywords that prevent curated matching (Costco bundles, cases, etc.)
+      const VARIANT_WORDS = ["costco", "walmart", "target", "pokemon center", "display"];
+
       for (const pricing of pricings) {
         if (!pricing || !pricing.bestPrice || pricing.bestPrice <= 0) continue;
 
-        // Check if this product matches a curated set (by name similarity)
-        const curatedMatch = SEALED_SETS.find(
-          (s) =>
-            s.name.toLowerCase() === pricing.name.toLowerCase() ||
-            pricing.name.toLowerCase().includes(s.name.toLowerCase())
-        );
+        // Deduplicate by pokedataId
+        if (seenPokedataIds.has(pricing.pokedataId)) continue;
+        seenPokedataIds.add(pricing.pokedataId);
+
+        // Match curated set: require set name + product type + no variant words
+        const pricingProductType = inferProductType(pricing.name);
+        const pricingNorm = norm(pricing.name);
+        const isVariant = VARIANT_WORDS.some((v) => pricingNorm.includes(v));
+
+        const curatedMatch = !isVariant
+          ? SEALED_SETS.find(
+              (s) =>
+                !usedCuratedIds.has(s.id) &&
+                s.productType === pricingProductType &&
+                pricingNorm.includes(norm(s.name))
+            )
+          : undefined;
 
         if (curatedMatch) {
-          // Use curated data but update price from API
+          usedCuratedIds.add(curatedMatch.id);
           const updated = {
             ...curatedMatch,
             currentPrice: pricing.bestPrice,
