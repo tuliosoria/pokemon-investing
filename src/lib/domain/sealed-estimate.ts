@@ -119,6 +119,7 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
     currentPrice: price,
     gradient: GRADIENTS[productType],
     pokedataId: pricing.pokedataId,
+    imageUrl: pricing.imageUrl ?? undefined,
     curated: false,
 
     factors: {

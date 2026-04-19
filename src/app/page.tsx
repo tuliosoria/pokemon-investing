@@ -59,7 +59,7 @@ export default function HomePage() {
                 size="lg"
                 className="text-base px-10 py-3 border-white/30 text-white hover:bg-white/10 hover-scale"
               >
-                See All Tools
+                Learn More
               </Button>
             </a>
           </div>

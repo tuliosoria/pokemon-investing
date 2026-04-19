@@ -145,6 +145,7 @@ export async function GET(request: NextRequest) {
       pokedataId: String(s.product.id),
       name: s.product.name,
       releaseDate: s.product.release_date ?? null,
+      imageUrl: s.product.img_url ?? null,
     }));
 
     await cachePut("sealed-search", cacheKey, products, CACHE_TTL);

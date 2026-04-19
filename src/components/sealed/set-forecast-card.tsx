@@ -26,8 +26,20 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
         style={{ background: set.gradient }}
       >
         <div className="absolute inset-0 bg-black/30" />
+
+        {/* Product image */}
+        {set.imageUrl && (
+          <div className="absolute right-3 -bottom-6 z-20 drop-shadow-lg">
+            <img
+              src={set.imageUrl}
+              alt={set.name}
+              className="h-24 w-auto object-contain"
+            />
+          </div>
+        )}
+
         <div className="relative z-10 flex items-center justify-between w-full">
-          <div>
+          <div className={set.imageUrl ? "max-w-[65%]" : ""}>
             <h3 className="text-white font-bold text-sm leading-tight drop-shadow">
               {set.name}
             </h3>
@@ -38,7 +50,7 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
               )}
             </p>
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className={`flex items-center gap-1.5 ${set.imageUrl ? "mr-20" : ""}`}>
             {isEstimated && (
               <span className="rounded-full bg-orange-500/30 border border-orange-500/50 text-orange-300 px-2 py-0.5 text-[9px] font-semibold">
                 Estimated

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cacheGet, cachePut } from "@/lib/db/cache";
+import { getDynamo, getTableName } from "@/lib/db/dynamo";
+import { GetCommand } from "@aws-sdk/lib-dynamodb";
 
 const POKEDATA_BASE = "https://www.pokedata.io/v0";
 const CACHE_TTL = 30 * 60; // 30 minutes in seconds
@@ -8,6 +10,7 @@ interface SealedPricing {
   pokedataId: string;
   name: string;
   releaseDate: string | null;
+  imageUrl: string | null;
   tcgplayerPrice: number | null;
   ebayPrice: number | null;
   pokedataPrice: number | null;
@@ -59,10 +62,30 @@ export async function GET(request: NextRequest) {
     const bestPrice =
       tcg && tcg > 0 ? tcg : poke && poke > 0 ? poke : ebay && ebay > 0 ? ebay : null;
 
+    // Look up product image from DynamoDB META record
+    let imageUrl: string | null = null;
+    try {
+      const dynamo = getDynamo();
+      if (dynamo) {
+        const table = getTableName();
+        const metaRes = await dynamo.send(
+          new GetCommand({
+            TableName: table,
+            Key: { pk: `PRODUCT#${id}`, sk: "META" },
+            ProjectionExpression: "imgUrl",
+          })
+        );
+        imageUrl = metaRes.Item?.imgUrl ?? null;
+      }
+    } catch {
+      // Image lookup is best-effort
+    }
+
     const result: SealedPricing = {
       pokedataId: String(data.id ?? id),
       name: data.name ?? "",
       releaseDate: data.release_date ?? null,
+      imageUrl,
       tcgplayerPrice: tcg,
       ebayPrice: ebay,
       pokedataPrice: poke,

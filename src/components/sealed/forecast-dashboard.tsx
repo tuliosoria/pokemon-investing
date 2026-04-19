@@ -125,6 +125,7 @@ export function ForecastDashboard() {
             ...curatedMatch,
             currentPrice: pricing.bestPrice,
             pokedataId: pricing.pokedataId,
+            imageUrl: pricing.imageUrl ?? curatedMatch.imageUrl,
           };
           results.push({ set: updated, forecast: computeForecast(updated) });
         } else {

@@ -27,6 +27,8 @@ export interface SealedSetData {
   curated?: boolean;
   /** PokeData product ID for API-sourced products */
   pokedataId?: string;
+  /** Product image URL from PokeData */
+  imageUrl?: string;
   /** Google Trends data when available */
   trendData?: {
     current: number;
@@ -57,6 +59,7 @@ export interface SealedSearchResult {
   pokedataId: string;
   name: string;
   releaseDate: string | null;
+  imageUrl: string | null;
 }
 
 /** Pricing returned from PokeData sealed pricing */
@@ -64,6 +67,7 @@ export interface SealedPricing {
   pokedataId: string;
   name: string;
   releaseDate: string | null;
+  imageUrl: string | null;
   tcgplayerPrice: number | null;
   ebayPrice: number | null;
   pokedataPrice: number | null;
