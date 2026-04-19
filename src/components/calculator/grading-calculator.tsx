@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CardSearch } from "./card-search";
 import { useState, useRef, useEffect } from "react";
-import type { CardSearchResult } from "@/lib/types/card";
+import type { CardSearchResult, GradeData } from "@/lib/types/card";
 
 export function GradingCalculator() {
   const [result, setResult] = useState<GradeEvResult | null>(null);
@@ -52,14 +52,38 @@ export function GradingCalculator() {
     },
   });
 
-  const handleCardSelect = (_card: CardSearchResult, rawPrice: number) => {
-    if (rawPrice <= 0) return;
-    setValue("rawCardValue", rawPrice);
-    const est = estimateGradedValues(rawPrice);
-    setValue("psa10Value", est.psa10);
-    setValue("psa9Value", est.psa9);
-    setValue("psa8Value", est.psa8);
-    setIsEstimated(true);
+  const handleCardSelect = (_card: CardSearchResult, rawPrice: number, _variant: string, gradeData?: GradeData | null) => {
+    if (gradeData) {
+      // Use real PSA data from PokeData
+      const raw = gradeData.rawPrice ?? rawPrice;
+      if (raw > 0) setValue("rawCardValue", raw);
+
+      const psa10 = gradeData.gradedPrices["PSA 10.0"] ?? 0;
+      const psa9 = gradeData.gradedPrices["PSA 9.0"] ?? 0;
+      const psa8 = gradeData.gradedPrices["PSA 8.0"] ?? 0;
+
+      if (psa10 > 0) setValue("psa10Value", Math.round(psa10 * 100) / 100);
+      if (psa9 > 0) setValue("psa9Value", Math.round(psa9 * 100) / 100);
+      if (psa8 > 0) setValue("psa8Value", Math.round(psa8 * 100) / 100);
+
+      if (gradeData.psa10Probability !== null) {
+        setValue("probabilityPsa10", gradeData.psa10Probability);
+        // Distribute remaining probability
+        const remaining = 100 - gradeData.psa10Probability;
+        setValue("probabilityPsa9", Math.round(remaining * 0.5));
+        setValue("probabilityPsa8", Math.round(remaining * 0.3));
+      }
+
+      setIsEstimated(false);
+    } else if (rawPrice > 0) {
+      // Fallback to heuristic estimates
+      setValue("rawCardValue", rawPrice);
+      const est = estimateGradedValues(rawPrice);
+      setValue("psa10Value", est.psa10);
+      setValue("psa9Value", est.psa9);
+      setValue("psa8Value", est.psa8);
+      setIsEstimated(true);
+    }
     setResult(null);
   };
 

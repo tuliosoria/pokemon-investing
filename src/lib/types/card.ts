@@ -23,6 +23,18 @@ export interface CardSearchResult {
   tcgplayerUrl: string | null;
 }
 
+export interface GradeData {
+  pokedataId: string;
+  name: string;
+  set: string;
+  rawPrice: number | null;
+  tcgplayerPrice: number | null;
+  ebayRawPrice: number | null;
+  gradedPrices: Record<string, number>;
+  population: Record<string, number>;
+  psa10Probability: number | null;
+}
+
 export function getBestPrice(prices: CardPrices): {
   variant: string;
   price: number;

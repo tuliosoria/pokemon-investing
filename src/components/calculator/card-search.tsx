@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import type { CardSearchResult } from "@/lib/types/card";
+import type { CardSearchResult, GradeData } from "@/lib/types/card";
 import { getBestPrice } from "@/lib/types/card";
 
 interface CardSearchProps {
-  onCardSelect: (card: CardSearchResult, rawPrice: number, variant: string) => void;
+  onCardSelect: (card: CardSearchResult, rawPrice: number, variant: string, gradeData?: GradeData | null) => void;
 }
 
 export function CardSearch({ onCardSelect }: CardSearchProps) {
@@ -13,8 +13,10 @@ export function CardSearch({ onCardSelect }: CardSearchProps) {
   const [results, setResults] = useState<CardSearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingGrades, setIsLoadingGrades] = useState(false);
   const [selectedCard, setSelectedCard] = useState<CardSearchResult | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<string>("");
+  const [gradeData, setGradeData] = useState<GradeData | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -66,19 +68,38 @@ export function CardSearch({ onCardSelect }: CardSearchProps) {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  function handleSelect(card: CardSearchResult) {
+  async function handleSelect(card: CardSearchResult) {
     const best = getBestPrice(card.prices);
     setSelectedCard(card);
     setQuery("");
     setIsOpen(false);
     setResults([]);
+    setGradeData(null);
 
     if (best) {
       setSelectedVariant(best.variant);
-      onCardSelect(card, best.price, best.variant);
+      onCardSelect(card, best.price, best.variant, null);
     } else {
       setSelectedVariant("");
-      onCardSelect(card, 0, "");
+      onCardSelect(card, 0, "", null);
+    }
+
+    // Fetch real grade data from PokeData in background
+    setIsLoadingGrades(true);
+    try {
+      const params = new URLSearchParams({ name: card.name, set: card.set });
+      const res = await fetch(`/api/cards/grade-data?${params}`);
+      if (res.ok) {
+        const body = await res.json();
+        if (body.gradeData) {
+          setGradeData(body.gradeData);
+          onCardSelect(card, best?.price ?? 0, best?.variant ?? "", body.gradeData);
+        }
+      }
+    } catch {
+      // Grade data is optional — fallback to estimates
+    } finally {
+      setIsLoadingGrades(false);
     }
   }
 
@@ -94,12 +115,13 @@ export function CardSearch({ onCardSelect }: CardSearchProps) {
       (priceData.low != null && priceData.high != null
         ? (priceData.low + priceData.high) / 2
         : 0);
-    onCardSelect(selectedCard, price, variant);
+    onCardSelect(selectedCard, price, variant, gradeData);
   }
 
   function clearCard() {
     setSelectedCard(null);
     setSelectedVariant("");
+    setGradeData(null);
     setQuery("");
   }
 
@@ -149,6 +171,17 @@ export function CardSearch({ onCardSelect }: CardSearchProps) {
               >
                 View on TCGPlayer →
               </a>
+            )}
+            {isLoadingGrades && (
+              <p className="text-xs text-yellow-500 mt-1 flex items-center gap-1">
+                <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-yellow-500 border-t-transparent" />
+                Loading PSA grade data…
+              </p>
+            )}
+            {gradeData && !isLoadingGrades && (
+              <p className="text-xs text-green-500 mt-1">
+                ✓ Real PSA prices loaded
+              </p>
             )}
           </div>
           <button
