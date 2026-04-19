@@ -23,6 +23,93 @@ function cleanCache() {
   }
 }
 
+// --- Query parsing ---
+
+interface ParsedQuery {
+  apiSearch: string;       // Text to send to the API (card name)
+  number: string | null;   // Card number like "225/217" or "225"
+  extraTerms: string[];    // Additional words for set/name matching
+  isNumberOnly: boolean;   // True if query was just a card number
+}
+
+function parseSearchQuery(raw: string): ParsedQuery {
+  const q = raw.trim();
+
+  // Match card number patterns: "225/217", "#225/217", "#225", standalone numbers
+  // Use lookahead to avoid matching numbers inside words like "25th"
+  const numMatch = q.match(/(?:^|\s)#?(\d{1,4}(?:\/\d{1,4})?)(?=\s|$)/);
+  const number = numMatch ? numMatch[1] : null;
+
+  // Remove the number from text to get search terms
+  let textPart = q;
+  if (numMatch) {
+    textPart =
+      q.slice(0, numMatch.index!) + q.slice(numMatch.index! + numMatch[0].length);
+  }
+  textPart = textPart.replace(/[#]/g, "").replace(/\s+/g, " ").trim();
+
+  const terms = textPart.split(" ").filter((w) => w.length > 0);
+
+  const cleanedRaw = q.replace(/[#]/g, "").trim();
+
+  return {
+    apiSearch: textPart || cleanedRaw, // Fall back to cleaned raw query if number-only
+    number,
+    extraTerms: terms,
+    isNumberOnly: !textPart && !!number,
+  };
+}
+
+// Score a result based on how well it matches parsed query filters
+function scoreResult(card: CardSearchResult, parsed: ParsedQuery): number {
+  let score = 0;
+
+  // Number match (highest priority)
+  if (parsed.number) {
+    const queryNum = parsed.number.split("/")[0];
+    const cardNum = (card.number || "").split("/")[0];
+
+    if (card.number === parsed.number) score += 1000;
+    else if (cardNum === queryNum) score += 500;
+  }
+
+  // Extra terms matching against set name and card name
+  if (parsed.extraTerms.length > 0) {
+    const setLower = (card.set || "").toLowerCase();
+    const nameLower = (card.name || "").toLowerCase();
+
+    for (const term of parsed.extraTerms) {
+      const tLower = term.toLowerCase();
+      if (setLower.includes(tLower)) score += 100;
+      if (nameLower.includes(tLower)) score += 50;
+    }
+  }
+
+  return score;
+}
+
+// --- API fetching ---
+
+async function fetchCards(
+  searchTerm: string,
+  apiKey: string
+): Promise<CardSearchResult[]> {
+  const url = new URL(TCG_API_BASE);
+  url.searchParams.set("q", searchTerm);
+  url.searchParams.set("game", "pokemon");
+  url.searchParams.set("type", "Cards");
+  url.searchParams.set("per_page", "50");
+
+  const res = await fetch(url.toString(), {
+    headers: { "X-API-Key": apiKey },
+  });
+
+  if (!res.ok) return [];
+
+  const body = await res.json();
+  return groupResults(body.data ?? []);
+}
+
 // tcgapi.dev returns separate rows per printing — group into one CardSearchResult per card
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function groupResults(data: any[]): CardSearchResult[] {
@@ -95,26 +182,31 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const url = new URL(TCG_API_BASE);
-    url.searchParams.set("q", q);
-    url.searchParams.set("game", "pokemon");
-    url.searchParams.set("type", "Cards");
-    url.searchParams.set("per_page", "50");
+    const parsed = parseSearchQuery(q);
 
-    const res = await fetch(url.toString(), {
-      headers: { "X-API-Key": apiKey },
-    });
+    // Primary search
+    let cards = await fetchCards(parsed.apiSearch, apiKey);
 
-    if (!res.ok) {
-      console.error(`tcgapi.dev error: ${res.status}`);
-      return NextResponse.json(
-        { error: "Failed to search cards" },
-        { status: 502 }
-      );
+    // Fallback: if few results and multi-word text, retry with just the first word
+    // Handles "Scorbunny Ascended Heroes" → search "Scorbunny", score by set match
+    if (cards.length < 3 && parsed.extraTerms.length > 1) {
+      const fallbackCards = await fetchCards(parsed.extraTerms[0], apiKey);
+      const seen = new Set(cards.map((c) => c.id));
+      for (const c of fallbackCards) {
+        if (!seen.has(c.id)) {
+          cards.push(c);
+          seen.add(c.id);
+        }
+      }
     }
 
-    const body = await res.json();
-    const cards = groupResults(body.data ?? []);
+    // Score and sort when query has number or multiple terms
+    if (parsed.number || parsed.extraTerms.length > 1) {
+      cards = cards
+        .map((card) => ({ card, score: scoreResult(card, parsed) }))
+        .sort((a, b) => b.score - a.score)
+        .map(({ card }) => card);
+    }
 
     // Cache results
     cleanCache();
