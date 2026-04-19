@@ -49,12 +49,6 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/calculator"
-              className="inline-flex items-center justify-center rounded-md bg-[hsl(var(--poke-red))] px-4 py-1.5 text-sm font-medium text-white hover:opacity-90 transition-opacity"
-            >
-              Start Free
-            </Link>
           </nav>
 
           {/* Mobile menu button */}
@@ -97,13 +91,6 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/calculator"
-              onClick={() => setMobileOpen(false)}
-              className="mt-2 block w-full rounded-md bg-[hsl(var(--poke-red))] px-4 py-2 text-center text-sm font-medium text-white"
-            >
-              Start Free
-            </Link>
           </nav>
         )}
       </div>
