@@ -8,17 +8,26 @@ import {
   type GradeEvResult,
 } from "@/lib/domain/grading";
 import { estimateGradedValues } from "@/lib/domain/price-estimates";
-import { AlertTriangle } from "lucide-react";
+import { bandToVerdict, VERDICT_CONFIG } from "@/lib/domain/fees";
+import { formatCurrency } from "@/lib/utils";
+import {
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  HelpCircle,
+  ChevronDown,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ResultDisplay, formatMetricValue } from "./result-display";
 import { CardSearch } from "./card-search";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { CardSearchResult } from "@/lib/types/card";
 
 export function GradingCalculator() {
   const [result, setResult] = useState<GradeEvResult | null>(null);
   const [isEstimated, setIsEstimated] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const {
     register,
@@ -59,34 +68,43 @@ export function GradingCalculator() {
     setResult(res);
   };
 
+  // Scroll to result on mobile
+  useEffect(() => {
+    if (result && resultRef.current) {
+      resultRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [result]);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
+      {/* Card search */}
       <CardSearch onCardSelect={handleCardSelect} />
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div className="space-y-4">
-          <h4 className="text-sm font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
-            Card Values
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        {/* Price inputs */}
+        <div className="space-y-3">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
+            Prices
           </h4>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3">
             <Input
-              label="Raw Card Value ($)"
+              label="Raw price ($)"
               type="number"
               step="0.01"
               error={errors.rawCardValue?.message}
               {...register("rawCardValue")}
             />
             <Input
-              label="Grading Cost ($)"
+              label="Grading cost ($)"
               type="number"
               step="0.01"
               error={errors.gradingCost?.message}
               {...register("gradingCost")}
             />
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-3">
             <Input
-              label="PSA 10 Value ($)"
+              label="PSA 10 value ($)"
               type="number"
               step="0.01"
               error={errors.psa10Value?.message}
@@ -94,40 +112,45 @@ export function GradingCalculator() {
               {...register("psa10Value")}
             />
             <Input
-              label="PSA 9 Value ($)"
+              label="PSA 9 value ($)"
               type="number"
               step="0.01"
               error={errors.psa9Value?.message}
               hint={isEstimated ? "Estimated" : undefined}
               {...register("psa9Value")}
             />
-            <Input
-              label="PSA 8 Value ($)"
-              type="number"
-              step="0.01"
-              error={errors.psa8Value?.message}
-              hint={isEstimated ? "Estimated" : "Optional"}
-              {...register("psa8Value")}
-            />
           </div>
           {isEstimated && (
             <p className="text-xs text-yellow-500 flex items-center gap-1">
               <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-              Graded values are heuristic estimates based on raw price. Replace with real comps for accuracy.
+              Graded values are estimates. Replace with real comps for accuracy.
             </p>
           )}
         </div>
 
-        <div className="space-y-4">
-          <h4 className="text-sm font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
-            Grade Probabilities (%)
+        {/* Probabilities */}
+        <div className="space-y-3">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
+            Grade probability (%)
           </h4>
-          <div className="grid grid-cols-3 gap-4">
+          {errors.probabilityPsa10?.message ===
+            "Total grade probabilities cannot exceed 100%" && (
+            <p className="text-xs text-red-500 flex items-center gap-1">
+              <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+              Total probabilities cannot exceed 100%
+            </p>
+          )}
+          <div className="grid grid-cols-2 gap-3">
             <Input
               label="PSA 10 %"
               type="number"
               step="1"
-              error={errors.probabilityPsa10?.message}
+              error={
+                errors.probabilityPsa10?.message !==
+                "Total grade probabilities cannot exceed 100%"
+                  ? errors.probabilityPsa10?.message
+                  : undefined
+              }
               {...register("probabilityPsa10")}
             />
             <Input
@@ -137,137 +160,222 @@ export function GradingCalculator() {
               error={errors.probabilityPsa9?.message}
               {...register("probabilityPsa9")}
             />
-            <Input
-              label="PSA 8 %"
-              type="number"
-              step="1"
-              error={errors.probabilityPsa8?.message}
-              {...register("probabilityPsa8")}
-            />
           </div>
         </div>
 
-        <div className="space-y-4">
-          <h4 className="text-sm font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
-            Fees & Costs
-          </h4>
-          <div className="grid grid-cols-2 gap-4">
-            <Input
-              label="Marketplace Fee %"
-              type="number"
-              step="0.01"
-              hint="eBay: 13.25%, TCGPlayer: 10.25%"
-              error={errors.marketplaceFeePct?.message}
-              {...register("marketplaceFeePct")}
-            />
-            <Input
-              label="Shipping ($)"
-              type="number"
-              step="0.01"
-              error={errors.shippingCost?.message}
-              {...register("shippingCost")}
-            />
-            <Input
-              label="Insurance ($)"
-              type="number"
-              step="0.01"
-              hint="Optional"
-              error={errors.insuranceCost?.message}
-              {...register("insuranceCost")}
-            />
-            <Input
-              label="Tax Adjustment ($)"
-              type="number"
-              step="0.01"
-              hint="Optional"
-              error={errors.taxAdjustment?.message}
-              {...register("taxAdjustment")}
-            />
-          </div>
-        </div>
+        {/* Advanced toggle */}
+        <button
+          type="button"
+          onClick={() => setShowAdvanced(!showAdvanced)}
+          className="flex items-center gap-1.5 text-xs font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors"
+        >
+          <ChevronDown
+            className={`w-4 h-4 transition-transform ${showAdvanced ? "rotate-180" : ""}`}
+          />
+          Advanced settings
+        </button>
 
-        <Button type="submit" size="lg" className="w-full">
-          Calculate Expected Value
+        {showAdvanced && (
+          <div className="space-y-3 animate-fade-in">
+            <div className="grid grid-cols-2 gap-3">
+              <Input
+                label="PSA 8 value ($)"
+                type="number"
+                step="0.01"
+                hint={isEstimated ? "Estimated" : "Optional"}
+                error={errors.psa8Value?.message}
+                {...register("psa8Value")}
+              />
+              <Input
+                label="PSA 8 %"
+                type="number"
+                step="1"
+                error={errors.probabilityPsa8?.message}
+                {...register("probabilityPsa8")}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Input
+                label="Marketplace fee %"
+                type="number"
+                step="0.01"
+                hint="eBay: 13.25%"
+                error={errors.marketplaceFeePct?.message}
+                {...register("marketplaceFeePct")}
+              />
+              <Input
+                label="Shipping ($)"
+                type="number"
+                step="0.01"
+                error={errors.shippingCost?.message}
+                {...register("shippingCost")}
+              />
+              <Input
+                label="Insurance ($)"
+                type="number"
+                step="0.01"
+                hint="Optional"
+                error={errors.insuranceCost?.message}
+                {...register("insuranceCost")}
+              />
+              <Input
+                label="Tax adjustment ($)"
+                type="number"
+                step="0.01"
+                hint="Optional"
+                error={errors.taxAdjustment?.message}
+                {...register("taxAdjustment")}
+              />
+            </div>
+          </div>
+        )}
+
+        <Button type="submit" size="lg" className="w-full text-base py-6">
+          Should I Grade?
         </Button>
       </form>
 
-      {result && (
-        <>
-          <ResultDisplay
-            recommendation={result.recommendation}
-            metrics={[
-              {
-                label: "Expected Profit",
-                value: formatMetricValue(result.expectedProfit, "currency"),
-                highlight: true,
-              },
-              {
-                label: "Expected Value",
-                value: formatMetricValue(result.expectedValue, "currency"),
-              },
-              {
-                label: "Total Cost",
-                value: formatMetricValue(result.totalCost, "currency"),
-              },
-              {
-                label: "Break-even PSA10 %",
-                value: `${result.breakEvenProbability.toFixed(1)}%`,
-              },
-            ]}
-          />
+      {/* Result — verdict panel */}
+      {result && <GradeDecision result={result} ref={resultRef} />}
+    </div>
+  );
+}
 
-          <div className="space-y-2">
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
-              Scenario Breakdown
-            </h4>
-            <div className="rounded-lg border border-[hsl(var(--border))] overflow-hidden">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-[hsl(var(--muted))]">
-                    <th className="text-left p-3">Grade</th>
-                    <th className="text-right p-3">Prob.</th>
-                    <th className="text-right p-3">Gross</th>
-                    <th className="text-right p-3">Net</th>
-                    <th className="text-right p-3">Weighted</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {result.scenarioBreakdown.map((s) => (
-                    <tr
-                      key={s.grade}
-                      className="border-t border-[hsl(var(--border))]"
-                    >
-                      <td className="p-3 font-medium">{s.grade}</td>
-                      <td className="p-3 text-right">{s.probability.toFixed(0)}%</td>
-                      <td className="p-3 text-right">
-                        {formatMetricValue(s.grossValue, "currency")}
-                      </td>
-                      <td
-                        className={`p-3 text-right ${
-                          s.netValue >= 0
-                            ? "text-green-400"
-                            : "text-red-400"
-                        }`}
-                      >
-                        {formatMetricValue(s.netValue, "currency")}
-                      </td>
-                      <td
-                        className={`p-3 text-right ${
-                          s.weightedValue >= 0
-                            ? "text-green-400"
-                            : "text-red-400"
-                        }`}
-                      >
-                        {formatMetricValue(s.weightedValue, "currency")}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+/* ─── Decision output ──────────────────────────────────── */
+
+import { forwardRef } from "react";
+
+const GradeDecision = forwardRef<HTMLDivElement, { result: GradeEvResult }>(
+  function GradeDecision({ result }, ref) {
+    const verdict = bandToVerdict(result.recommendation);
+    const config = VERDICT_CONFIG[verdict];
+
+    const VerdictIcon =
+      verdict === "grade"
+        ? CheckCircle
+        : verdict === "dont_grade"
+          ? XCircle
+          : HelpCircle;
+
+    return (
+      <div ref={ref} className="space-y-4 animate-fade-in-up">
+        {/* Main verdict */}
+        <div
+          className={`rounded-2xl ${config.bgColor} border border-current/10 p-6 text-center`}
+        >
+          <VerdictIcon
+            className={`w-12 h-12 mx-auto mb-3 ${config.color}`}
+          />
+          <h2 className={`text-2xl font-bold ${config.color}`}>
+            {config.label}
+          </h2>
+          <p className="text-sm text-[hsl(var(--muted-foreground))] mt-1">
+            {result.expectedProfit >= 0
+              ? `Expected profit +${formatCurrency(result.expectedProfit)}`
+              : `Expected loss ${formatCurrency(result.expectedProfit)}`}
+          </p>
+        </div>
+
+        {/* Key metrics */}
+        <div className="grid grid-cols-2 gap-3">
+          <MetricCard
+            label="Expected profit"
+            value={formatCurrency(result.expectedProfit)}
+            positive={result.expectedProfit >= 0}
+            highlight
+          />
+          <MetricCard
+            label="ROI"
+            value={`${result.roiPct >= 0 ? "+" : ""}${result.roiPct.toFixed(1)}%`}
+            positive={result.roiPct >= 0}
+            highlight
+          />
+          <MetricCard
+            label="Total cost"
+            value={formatCurrency(result.totalCost)}
+          />
+          <MetricCard
+            label="Break-even PSA 10"
+            value={`${result.breakEvenPsa10Pct.toFixed(1)}%`}
+          />
+        </div>
+
+        {/* Explanation */}
+        <p className="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed">
+          {result.expectedProfit >= 0
+            ? `Positive EV of +${formatCurrency(result.expectedProfit)}. You need at least ${result.breakEvenPsa10Pct.toFixed(0)}% chance of PSA 10 to break even.`
+            : `Negative EV of ${formatCurrency(result.expectedProfit)}. You would need at least ${result.breakEvenPsa10Pct.toFixed(0)}% chance of PSA 10 to break even.`}
+        </p>
+
+        {/* Scenario breakdown — mobile-friendly cards */}
+        <details className="group">
+          <summary className="flex items-center gap-1.5 text-xs font-medium text-[hsl(var(--muted-foreground))] cursor-pointer hover:text-[hsl(var(--foreground))]">
+            <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180" />
+            Scenario breakdown
+          </summary>
+          <div className="mt-3 space-y-2">
+            {result.scenarioBreakdown.map((s) => (
+              <div
+                key={s.grade}
+                className="flex items-center justify-between rounded-lg bg-[hsl(var(--muted))] px-4 py-3 text-sm"
+              >
+                <div>
+                  <span className="font-medium">{s.grade}</span>
+                  <span className="text-[hsl(var(--muted-foreground))] ml-2">
+                    {s.probability.toFixed(0)}%
+                  </span>
+                </div>
+                <div className="text-right">
+                  <span
+                    className={
+                      s.netValue >= 0 ? "text-green-500" : "text-red-500"
+                    }
+                  >
+                    {formatCurrency(s.netValue)}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
-        </>
-      )}
+        </details>
+      </div>
+    );
+  }
+);
+
+function MetricCard({
+  label,
+  value,
+  positive,
+  highlight,
+}: {
+  label: string;
+  value: string;
+  positive?: boolean;
+  highlight?: boolean;
+}) {
+  return (
+    <div
+      className={`rounded-xl p-4 ${
+        highlight
+          ? "bg-[hsl(var(--card))] border border-[hsl(var(--border))]"
+          : "bg-[hsl(var(--muted))]"
+      }`}
+    >
+      <p className="text-[11px] uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
+        {label}
+      </p>
+      <p
+        className={`text-xl font-bold mt-1 ${
+          positive !== undefined
+            ? positive
+              ? "text-green-500"
+              : "text-red-500"
+            : ""
+        }`}
+      >
+        {value}
+      </p>
     </div>
   );
 }

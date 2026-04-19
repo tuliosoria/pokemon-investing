@@ -31,38 +31,34 @@ export type RecommendationBand =
   | "no"
   | "strong_no";
 
-export const RECOMMENDATION_CONFIG: Record<
-  RecommendationBand,
-  { label: string; color: string; emoji: string; description: string }
+export type Verdict = "grade" | "maybe" | "dont_grade";
+
+export function bandToVerdict(band: RecommendationBand): Verdict {
+  if (band === "strong_yes" || band === "yes") return "grade";
+  if (band === "marginal") return "maybe";
+  return "dont_grade";
+}
+
+export const VERDICT_CONFIG: Record<
+  Verdict,
+  { label: string; color: string; bgColor: string; description: string }
 > = {
-  strong_yes: {
-    label: "Strong Yes",
-    color: "text-green-400",
-    emoji: "🟢",
-    description: "This looks like a great opportunity.",
+  grade: {
+    label: "Grade it",
+    color: "text-green-500",
+    bgColor: "bg-green-500/10",
+    description: "Positive expected value. This card is worth grading.",
   },
-  yes: {
-    label: "Yes",
-    color: "text-green-300",
-    emoji: "🟢",
-    description: "Solid expected return with acceptable risk.",
+  maybe: {
+    label: "Maybe",
+    color: "text-yellow-500",
+    bgColor: "bg-yellow-500/10",
+    description: "Thin margins. Could go either way.",
   },
-  marginal: {
-    label: "Marginal",
-    color: "text-yellow-400",
-    emoji: "🟡",
-    description: "Slightly positive, but thin margins. Proceed with caution.",
-  },
-  no: {
-    label: "No",
-    color: "text-orange-400",
-    emoji: "🟠",
-    description: "Expected return is negative or too thin.",
-  },
-  strong_no: {
-    label: "Strong No",
-    color: "text-red-400",
-    emoji: "🔴",
-    description: "Significant expected loss. Avoid.",
+  dont_grade: {
+    label: "Don't grade",
+    color: "text-red-500",
+    bgColor: "bg-red-500/10",
+    description: "Negative expected value. Not worth it.",
   },
 };

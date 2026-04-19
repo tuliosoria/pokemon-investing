@@ -22,8 +22,8 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">2. Description of Service</h2>
             <p>
-              PokéInvest provides calculator tools for estimating the potential value of grading,
-              flipping, or holding Pokémon trading cards. The Service is provided &quot;as is&quot; for
+              PokéInvest provides a calculator tool for estimating the expected value of grading
+              Pokémon trading cards. The Service is provided &quot;as is&quot; for
               informational and educational purposes only.
             </p>
           </section>

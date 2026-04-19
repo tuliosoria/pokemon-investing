@@ -23,7 +23,8 @@ export interface GradeEvInput {
 export interface GradeEvResult {
   expectedValue: number;
   expectedProfit: number;
-  breakEvenProbability: number;
+  roiPct: number;
+  breakEvenPsa10Pct: number;
   totalCost: number;
   recommendation: "strong_yes" | "yes" | "marginal" | "no" | "strong_no";
   scenarioBreakdown: {
@@ -92,14 +93,33 @@ export function calculateGradeExpectedValue(
     0
   );
   const expectedValue = expectedProfit + totalCost;
+  const roiPct = totalCost > 0 ? (expectedProfit / totalCost) * 100 : 0;
 
-  // Break-even: what PSA 10 probability would make EV = 0?
-  const psa10NetIfGotten = input.psa10Value * feeMultiplier - totalCost;
-  const breakEvenProbability =
-    psa10NetIfGotten > 0 ? (totalCost / (input.psa10Value * feeMultiplier)) * 100 : 100;
+  // Break-even: what PSA 10 probability makes EV = 0?
+  // EV = p10*net10 + p9*net9 + p8*net8 + pBelow*netBelow = 0
+  // Holding p9/p8 fixed, solve for p10:
+  const net10 = input.psa10Value * feeMultiplier - totalCost;
+  const netBelow = input.rawCardValue * 0.7 * feeMultiplier - totalCost;
+  const p9 = input.probabilityPsa9 / 100;
+  const p8 = input.probabilityPsa8 / 100;
+  const net9 = input.psa9Value * feeMultiplier - totalCost;
+  const net8 = input.psa8Value * feeMultiplier - totalCost;
+  // Fixed contributions from PSA 9 and PSA 8
+  const fixedEV = p9 * net9 + p8 * net8;
+  // p10 * net10 + (1 - p10 - p9 - p8) * netBelow + fixedEV = 0
+  // p10 * (net10 - netBelow) + (1 - p9 - p8) * netBelow + fixedEV = 0
+  const denom = net10 - netBelow;
+  let breakEvenPsa10Pct: number;
+  if (denom > 0) {
+    const pBelowBase = 1 - p9 - p8;
+    breakEvenPsa10Pct =
+      (-(pBelowBase * netBelow + fixedEV) / denom) * 100;
+    breakEvenPsa10Pct = Math.min(100, Math.max(0, breakEvenPsa10Pct));
+  } else {
+    breakEvenPsa10Pct = 100;
+  }
 
   let recommendation: GradeEvResult["recommendation"];
-  const roiPct = (expectedProfit / totalCost) * 100;
   if (roiPct > 50) recommendation = "strong_yes";
   else if (roiPct > 15) recommendation = "yes";
   else if (roiPct > 0) recommendation = "marginal";
@@ -109,7 +129,8 @@ export function calculateGradeExpectedValue(
   return {
     expectedValue,
     expectedProfit,
-    breakEvenProbability: Math.min(100, Math.max(0, breakEvenProbability)),
+    roiPct,
+    breakEvenPsa10Pct,
     totalCost,
     recommendation,
     scenarioBreakdown: breakdown,

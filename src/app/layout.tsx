@@ -6,7 +6,7 @@ import { Footer } from "@/components/layout/footer";
 export const metadata: Metadata = {
   title: "PokéInvest — Should You Grade That Card?",
   description:
-    "Calculate grading expected value, flip ROI, and sealed product returns. Make data-driven decisions for your Pokémon card investments.",
+    "Calculate the expected value of grading any Pokémon card. Get a clear Grade or Don't Grade decision backed by real math.",
 };
 
 export default function RootLayout({

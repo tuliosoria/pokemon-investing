@@ -25,18 +25,12 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Calculators */}
+          {/* Tool */}
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-[hsl(var(--foreground))]">Tools</h4>
+            <h4 className="text-sm font-semibold text-[hsl(var(--foreground))]">Tool</h4>
             <nav className="flex flex-col gap-2">
               <Link href="/calculator" className="text-xs text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--poke-red))] transition-colors">
-                Grading EV Calculator
-              </Link>
-              <Link href="/calculator" className="text-xs text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--poke-red))] transition-colors">
-                Flip ROI Calculator
-              </Link>
-              <Link href="/calculator" className="text-xs text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--poke-red))] transition-colors">
-                Sealed ROI Calculator
+                Grading Calculator
               </Link>
             </nav>
           </div>
