@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/calculator", label: "Grade Check" },
+  { href: "/sealed-forecast", label: "Sealed Forecast" },
 ];
 
 export function Header() {
