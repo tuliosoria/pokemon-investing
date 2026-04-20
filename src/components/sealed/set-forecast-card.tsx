@@ -46,22 +46,26 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[hsl(var(--card))] hover-lift shadow-[0_18px_50px_rgba(0,0,0,0.24)]">
       <div className="relative h-[200px] flex-shrink-0 overflow-hidden bg-[#0b1220]">
-        {set.imageUrl ? (
+        <div
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ background: "radial-gradient(circle at top, #1e2a3a 0%, #0b1220 72%)" }}
+        >
+          <PlaceholderArtwork />
+        </div>
+        {set.imageUrl && (
           <>
             <img
+              key={set.imageUrl}
               src={set.imageUrl}
               alt={set.name}
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.style.opacity = "0";
+              }}
             />
             <div className="absolute inset-0 bg-black/10" />
           </>
-        ) : (
-          <div
-            className="absolute inset-0 flex items-center justify-center"
-            style={{ background: "radial-gradient(circle at top, #1e2a3a 0%, #0b1220 72%)" }}
-          >
-            <PlaceholderArtwork />
-          </div>
         )}
         <div className="absolute inset-0" style={{ background: CARD_HEADER_OVERLAY }} />
 

@@ -40,6 +40,8 @@ interface TrendSnapshot {
   direction: "rising" | "stable" | "declining";
 }
 
+type ImagePreloadStatus = "loaded" | "timeout" | "error";
+
 /** Build a Google Trends search keyword from a product name */
 function buildTrendKeyword(name: string): string {
   const cleaned = name
@@ -82,12 +84,12 @@ function applyTrendToResult(
   return { set: updatedSet, forecast: computeForecast(updatedSet) };
 }
 
-async function preloadImage(url: string): Promise<boolean> {
+async function preloadImage(url: string): Promise<ImagePreloadStatus> {
   return new Promise((resolve) => {
     const image = new window.Image();
     const timeout = window.setTimeout(() => {
       cleanup();
-      resolve(false);
+      resolve("timeout");
     }, IMAGE_PRELOAD_TIMEOUT_MS);
 
     const cleanup = () => {
@@ -98,35 +100,35 @@ async function preloadImage(url: string): Promise<boolean> {
 
     image.onload = () => {
       cleanup();
-      resolve(true);
+      resolve("loaded");
     };
 
     image.onerror = () => {
       cleanup();
-      resolve(false);
+      resolve("error");
     };
 
     image.src = url;
   });
 }
 
-async function preloadImages(urls: string[]): Promise<Set<string>> {
+async function preloadImages(urls: string[]): Promise<Map<string, ImagePreloadStatus>> {
   const uniqueUrls = [...new Set(urls.filter(Boolean))];
   const settled = await Promise.allSettled(
     uniqueUrls.map(async (url) => ({
       url,
-      loaded: await preloadImage(url),
+      status: await preloadImage(url),
     }))
   );
 
-  const loaded = new Set<string>();
+  const statuses = new Map<string, ImagePreloadStatus>();
   for (const result of settled) {
-    if (result.status === "fulfilled" && result.value.loaded) {
-      loaded.add(result.value.url);
+    if (result.status === "fulfilled") {
+      statuses.set(result.value.url, result.value.status);
     }
   }
 
-  return loaded;
+  return statuses;
 }
 
 function SearchUnavailableCard({
@@ -137,17 +139,21 @@ function SearchUnavailableCard({
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-900/80 shadow-[0_18px_50px_rgba(0,0,0,0.24)]">
       <div className="relative h-[200px] flex-shrink-0 overflow-hidden bg-[#101827]">
-        {card.imageUrl ? (
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#334155_0%,#0f172a_72%)]" />
+        {card.imageUrl && (
           <>
             <img
+              key={card.imageUrl}
               src={card.imageUrl}
               alt={card.name}
-              className="absolute inset-0 h-full w-full object-cover grayscale opacity-30"
+              className="absolute inset-0 h-full w-full object-cover grayscale opacity-30 transition-opacity duration-300"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.style.opacity = "0";
+              }}
             />
             <div className="absolute inset-0 bg-slate-950/55" />
           </>
-        ) : (
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#334155_0%,#0f172a_72%)]" />
         )}
 
         <div className="absolute left-4 top-4 rounded-full border border-slate-500/50 bg-slate-700/80 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-100">
@@ -431,7 +437,7 @@ export function ForecastDashboard() {
             return trend ? applyTrendToResult(result, trend) : result;
           });
 
-          const loadedImages = await preloadImages([
+          const imageStatuses = await preloadImages([
             ...trendedResults.map((result) => result.set.imageUrl ?? ""),
             ...unavailableCards.map((card) => card.imageUrl ?? ""),
           ]);
@@ -441,7 +447,8 @@ export function ForecastDashboard() {
             set: {
               ...result.set,
               imageUrl:
-                result.set.imageUrl && loadedImages.has(result.set.imageUrl)
+                result.set.imageUrl &&
+                imageStatuses.get(result.set.imageUrl) !== "error"
                   ? result.set.imageUrl
                   : undefined,
             },
@@ -449,7 +456,10 @@ export function ForecastDashboard() {
 
           const withFallbackImages = unavailableCards.map((card) => ({
             ...card,
-            imageUrl: card.imageUrl && loadedImages.has(card.imageUrl) ? card.imageUrl : null,
+            imageUrl:
+              card.imageUrl && imageStatuses.get(card.imageUrl) !== "error"
+                ? card.imageUrl
+                : null,
           }));
 
           const liveIds = new Set(liveResults.map((result) => result.set.id));
