@@ -19,28 +19,28 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
   const isEstimated = forecast.estimatedFactors > 0;
 
   return (
-    <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] overflow-hidden hover-lift">
-      {/* Header with gradient */}
-      <div
-        className="h-20 relative flex items-end p-4"
-        style={{ background: set.gradient }}
-      >
-        <div className="absolute inset-0 bg-black/30" />
+    <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] overflow-hidden hover-lift flex flex-col">
+      {/* Header — dark semi-transparent overlay, image contained inside */}
+      <div className="relative h-28 overflow-hidden flex-shrink-0">
+        {/* Gradient background */}
+        <div className="absolute inset-0" style={{ background: set.gradient }} />
+        <div className="absolute inset-0 bg-black/40" />
 
-        {/* Product image */}
+        {/* Product image — contained, consistent placement */}
         {set.imageUrl && (
-          <div className="absolute right-3 -bottom-6 z-20 drop-shadow-lg">
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 h-24 w-24 flex items-center justify-center">
             <img
               src={set.imageUrl}
               alt={set.name}
-              className="h-24 w-auto object-contain"
+              className="max-h-full max-w-full object-contain drop-shadow-lg"
             />
           </div>
         )}
 
-        <div className="relative z-10 flex items-center justify-between w-full">
-          <div className={set.imageUrl ? "max-w-[65%]" : ""}>
-            <h3 className="text-white font-bold text-sm leading-tight drop-shadow">
+        {/* Text overlay */}
+        <div className="relative z-10 h-full flex flex-col justify-end p-4">
+          <div className={set.imageUrl ? "pr-28" : ""}>
+            <h3 className="text-white font-bold text-sm leading-tight drop-shadow line-clamp-2">
               {set.name}
             </h3>
             <p className="text-white/70 text-[10px] mt-0.5">
@@ -50,10 +50,10 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
               )}
             </p>
           </div>
-          <div className={`flex items-center gap-1.5 ${set.imageUrl ? "mr-20" : ""}`}>
+          <div className="absolute top-3 right-3 flex items-center gap-1.5">
             {isEstimated && (
               <span className="rounded-full bg-orange-500/30 border border-orange-500/50 text-orange-300 px-2 py-0.5 text-[9px] font-semibold">
-                Estimated
+                Est.
               </span>
             )}
             <SignalBadge signal={forecast.signal} />
@@ -61,8 +61,8 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
         </div>
       </div>
 
-      {/* Body */}
-      <div className="p-4 space-y-3">
+      {/* Body — flex-grow so cards stretch to equal height */}
+      <div className="p-4 space-y-3 flex-1 flex flex-col">
         {/* Price row */}
         <div className="flex items-baseline justify-between">
           <div>
@@ -177,7 +177,10 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
           </span>
         </div>
 
-        {/* Chart toggle */}
+        {/* Spacer to push chart button to bottom */}
+        <div className="flex-1" />
+
+        {/* Chart toggle — always pinned at bottom */}
         <button
           type="button"
           onClick={() => setShowChart(!showChart)}
