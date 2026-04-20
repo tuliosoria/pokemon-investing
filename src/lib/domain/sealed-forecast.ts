@@ -134,7 +134,7 @@ export function getSignalColor(signal: Signal): string {
     case "Buy":
       return "text-green-400";
     case "Hold":
-      return "text-yellow-400";
+      return "text-[#F59E0B]";
     case "Sell":
       return "text-red-400";
   }
@@ -143,11 +143,11 @@ export function getSignalColor(signal: Signal): string {
 export function getSignalBg(signal: Signal): string {
   switch (signal) {
     case "Buy":
-      return "bg-green-500/20 border-green-500/40 text-green-400";
+      return "bg-emerald-500 border-emerald-300 text-white";
     case "Hold":
-      return "bg-yellow-500/20 border-yellow-500/40 text-yellow-400";
+      return "bg-[#F59E0B] border-[#FCD34D] text-[#1F2937]";
     case "Sell":
-      return "bg-red-500/20 border-red-500/40 text-red-400";
+      return "bg-[#EF4444] border-[#F87171] text-white";
   }
 }
 

@@ -6,70 +6,65 @@
  */
 export function SkeletonForecastCard() {
   return (
-    <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] overflow-hidden flex flex-col">
-      {/* Header gradient area — matches h-28 */}
-      <div className="relative h-28 overflow-hidden flex-shrink-0 bg-[hsl(var(--muted))]">
+    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[hsl(var(--card))]">
+      <div className="relative h-[200px] flex-shrink-0 overflow-hidden bg-[hsl(var(--muted))]">
         <div className="absolute inset-0 skeleton-shimmer" />
-        {/* Fake badge top-right */}
-        <div className="absolute top-3 right-3">
-          <div className="h-5 w-12 rounded-full bg-white/5" />
+        <div className="absolute top-4 left-4">
+          <div className="h-8 w-20 rounded-full bg-white/10" />
         </div>
-        {/* Fake title bottom-left */}
-        <div className="absolute bottom-3 left-4 space-y-1.5 w-[60%]">
-          <div className="h-4 rounded bg-white/10 w-full" />
-          <div className="h-2.5 rounded bg-white/5 w-2/3" />
+        <div className="absolute top-4 right-4">
+          <div className="h-6 w-16 rounded-full bg-white/10" />
         </div>
-        {/* Fake image placeholder */}
-        <div className="absolute right-2 top-1/2 -translate-y-1/2 h-20 w-20 rounded-lg bg-white/5" />
+        <div className="absolute bottom-5 left-5 w-[70%] space-y-2">
+          <div className="h-3 w-24 rounded bg-white/10" />
+          <div className="h-5 w-full rounded bg-white/15" />
+          <div className="h-5 w-3/4 rounded bg-white/10" />
+        </div>
       </div>
 
-      {/* Body — matches real card body structure */}
-      <div className="p-4 space-y-3 flex-1 flex flex-col">
-        {/* Price row */}
-        <div className="flex items-baseline justify-between">
-          <div className="space-y-1.5">
-            <div className="h-2.5 w-12 rounded bg-[hsl(var(--muted))]" />
-            <div className="h-6 w-16 rounded bg-[hsl(var(--muted))] skeleton-shimmer" />
+      <div className="flex flex-1 flex-col p-5">
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="h-2.5 w-14 rounded bg-[hsl(var(--muted))]" />
+              <div className="h-8 w-20 rounded bg-[hsl(var(--muted))] skeleton-shimmer" />
+            </div>
+            <div className="space-y-2 text-right">
+              <div className="ml-auto h-2.5 w-16 rounded bg-[hsl(var(--muted))]" />
+              <div className="ml-auto h-10 w-28 rounded bg-[hsl(var(--muted))] skeleton-shimmer" />
+            </div>
           </div>
-          <div className="space-y-1.5 text-right">
-            <div className="h-2.5 w-14 rounded bg-[hsl(var(--muted))] ml-auto" />
-            <div className="h-6 w-16 rounded bg-[hsl(var(--muted))] skeleton-shimmer ml-auto" />
+
+          <div className="space-y-2">
+            <div className="h-5 w-40 rounded bg-[hsl(var(--muted))] skeleton-shimmer" />
+            <div className="h-5 w-24 rounded-full bg-[hsl(var(--muted))]" />
+          </div>
+
+          <div className="h-3 w-4/5 rounded bg-[hsl(var(--muted))]" />
+
+          <div className="h-5 w-32 rounded-full bg-[hsl(var(--muted))]" />
+
+          <div className="flex flex-wrap gap-2">
+            <div className="h-7 w-24 rounded-md bg-[hsl(var(--muted))]" />
+            <div className="h-7 w-28 rounded-md bg-[hsl(var(--muted))]" />
+            <div className="h-7 w-20 rounded-md bg-[hsl(var(--muted))]" />
+          </div>
+
+          <div className="flex gap-2">
+            <div className="h-5 w-24 rounded-full bg-[hsl(var(--muted))]" />
+            <div className="h-5 w-16 rounded bg-[hsl(var(--muted))]" />
           </div>
         </div>
 
-        {/* ROI row */}
-        <div className="flex items-center justify-between">
-          <div className="h-4 w-28 rounded bg-[hsl(var(--muted))] skeleton-shimmer" />
-          <div className="h-5 w-16 rounded-full bg-[hsl(var(--muted))]" />
+        <div className="mt-auto pt-5">
+          <div className="h-10 w-full rounded-lg border border-white/10 bg-[hsl(var(--muted))]" />
         </div>
-
-        {/* S&P comparison */}
-        <div className="h-3 w-3/4 rounded bg-[hsl(var(--muted))]" />
-
-        {/* Chase card tags */}
-        <div className="flex flex-wrap gap-1">
-          <div className="h-5 w-20 rounded-full bg-[hsl(var(--muted))]" />
-          <div className="h-5 w-16 rounded-full bg-[hsl(var(--muted))]" />
-          <div className="h-5 w-24 rounded-full bg-[hsl(var(--muted))]" />
-        </div>
-
-        {/* Supply line */}
-        <div className="flex gap-2">
-          <div className="h-4 w-20 rounded-full bg-[hsl(var(--muted))]" />
-          <div className="h-4 w-14 rounded bg-[hsl(var(--muted))]" />
-        </div>
-
-        <div className="flex-1" />
-
-        {/* Chart button */}
-        <div className="h-4 w-48 rounded bg-[hsl(var(--muted))] mx-auto" />
       </div>
 
-      {/* Factor breakdown area */}
-      <div className="border-t border-[hsl(var(--border))] px-4 py-3">
+      <div className="border-t border-white/10 bg-white/[0.02] px-5 py-4">
         <div className="flex items-center justify-between">
-          <div className="h-3 w-24 rounded bg-[hsl(var(--muted))]" />
-          <div className="h-5 w-16 rounded-full bg-[hsl(var(--muted))] skeleton-shimmer" />
+          <div className="h-3 w-28 rounded bg-[hsl(var(--muted))]" />
+          <div className="h-7 w-24 rounded-full bg-[hsl(var(--muted))] skeleton-shimmer" />
         </div>
       </div>
     </div>

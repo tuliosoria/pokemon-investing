@@ -20,15 +20,15 @@ export function FactorBreakdown({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-t border-[hsl(var(--border))]">
+    <div className="border-t border-white/10 bg-white/[0.02]">
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between px-4 py-3 text-xs font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors"
+        className="flex w-full items-center justify-between px-5 py-4 text-xs font-medium text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
       >
         <span>Factor Breakdown</span>
         <span className="flex items-center gap-2">
-          <span className="font-mono text-[hsl(var(--foreground))]">
+          <span className="rounded-full bg-white/5 px-2.5 py-1 font-mono text-[hsl(var(--foreground))]">
             Score: {compositeScore}/100
           </span>
           <svg
@@ -43,7 +43,7 @@ export function FactorBreakdown({
       </button>
 
       {open && (
-        <div className="px-4 pb-4 space-y-2.5 animate-fade-in">
+        <div className="animate-fade-in space-y-2.5 px-5 pb-5 pt-1">
           {contributions.map((f) => (
             <div key={f.key}>
               <div className="flex items-center justify-between text-xs mb-1">

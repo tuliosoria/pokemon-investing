@@ -4,11 +4,8 @@ import { getSignalBg, getConfidenceBg } from "@/lib/domain/sealed-forecast";
 export function SignalBadge({ signal }: { signal: Signal }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${getSignalBg(signal)}`}
+      className={`inline-flex min-w-[5rem] items-center justify-center rounded-full border px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em] shadow-[0_8px_20px_rgba(0,0,0,0.2)] ${getSignalBg(signal)}`}
     >
-      {signal === "Buy" && "● "}
-      {signal === "Hold" && "◐ "}
-      {signal === "Sell" && "○ "}
       {signal}
     </span>
   );
@@ -17,7 +14,7 @@ export function SignalBadge({ signal }: { signal: Signal }) {
 export function ConfidenceBadge({ confidence }: { confidence: Confidence }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${getConfidenceBg(confidence)}`}
+      className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] ${getConfidenceBg(confidence)}`}
     >
       {confidence} confidence
     </span>
