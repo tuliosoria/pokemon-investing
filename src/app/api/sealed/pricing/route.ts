@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cacheGet, cachePut } from "@/lib/db/cache";
 import { getDynamo, getTableName } from "@/lib/db/dynamo";
 import { GetCommand } from "@aws-sdk/lib-dynamodb";
+import { buildPokeDataProductImageUrl } from "@/lib/domain/sealed-image";
 
 const POKEDATA_BASE = "https://www.pokedata.io/v0";
 const CACHE_TTL = 30 * 60; // 30 minutes in seconds
@@ -26,7 +27,12 @@ export async function GET(request: NextRequest) {
   // Check cache (L1 memory + L2 DynamoDB)
   const cached = await cacheGet<SealedPricing>("sealed-pricing", id);
   if (cached) {
-    return NextResponse.json({ pricing: cached });
+    return NextResponse.json({
+      pricing: {
+        ...cached,
+        imageUrl: cached.imageUrl ?? buildPokeDataProductImageUrl(cached.name),
+      },
+    });
   }
 
   const apiKey = process.env.POKEDATA_API_KEY;
@@ -85,7 +91,10 @@ export async function GET(request: NextRequest) {
       pokedataId: String(data.id ?? id),
       name: data.name ?? "",
       releaseDate: data.release_date ?? null,
-      imageUrl: imageUrl ?? data.img_url ?? null,
+      imageUrl:
+        imageUrl ??
+        data.img_url ??
+        buildPokeDataProductImageUrl(data.name ?? null),
       tcgplayerPrice: tcg,
       ebayPrice: ebay,
       pokedataPrice: poke,

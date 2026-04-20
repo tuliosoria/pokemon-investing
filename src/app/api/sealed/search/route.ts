@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cacheGet, cachePut } from "@/lib/db/cache";
+import { buildPokeDataProductImageUrl } from "@/lib/domain/sealed-image";
 
 const POKEDATA_BASE = "https://www.pokedata.io/v0";
 const CACHE_TTL = 10 * 60; // 10 minutes
@@ -101,7 +102,12 @@ export async function GET(request: NextRequest) {
       "sealed-search", cacheKey
     );
     if (cached) {
-      return NextResponse.json({ products: cached });
+      return NextResponse.json({
+        products: cached.map((product) => ({
+          ...product,
+          imageUrl: product.imageUrl ?? buildPokeDataProductImageUrl(product.name),
+        })),
+      });
     }
 
     const url = new URL(`${POKEDATA_BASE}/search`);
@@ -155,7 +161,9 @@ export async function GET(request: NextRequest) {
       pokedataId: String(s.product.id),
       name: s.product.name,
       releaseDate: s.product.release_date ?? null,
-      imageUrl: s.product.img_url ?? null,
+      imageUrl:
+        s.product.img_url ??
+        buildPokeDataProductImageUrl(s.product.name ?? null),
     }));
 
     await cachePut("sealed-search", cacheKey, products, CACHE_TTL);
