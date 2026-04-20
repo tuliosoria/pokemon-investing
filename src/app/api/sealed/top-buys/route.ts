@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cacheGet, cachePut } from "@/lib/db/cache";
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
+import { getSealedForecastModels } from "@/lib/db/sealed-forecast-models";
 import { buildDynamicSetData } from "@/lib/domain/sealed-estimate";
 import { getTopBuyOpportunities } from "@/lib/domain/top-buys";
 import type { ProductType, SealedSetData, SealedPricing } from "@/lib/types/sealed";
@@ -144,7 +145,9 @@ export async function GET(request: NextRequest) {
     .map(toDynamicPricing)
     .map(buildDynamicSetData);
 
+  const models = await getSealedForecastModels();
   const results = getTopBuyOpportunities(
+    models,
     limit,
     filters,
     mergeTopBuySets(catalogSets)

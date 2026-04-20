@@ -3,11 +3,15 @@
 import { useState } from "react";
 import type { FactorContribution } from "@/lib/types/sealed";
 
-function barColor(score: number): string {
-  if (score >= 75) return "bg-green-500";
-  if (score >= 50) return "bg-yellow-500";
-  if (score >= 30) return "bg-orange-500";
-  return "bg-red-500";
+function barColor(direction: FactorContribution["direction"]): string {
+  switch (direction) {
+    case "Positive":
+      return "bg-green-500";
+    case "Negative":
+      return "bg-red-500";
+    case "Neutral":
+      return "bg-slate-400";
+  }
 }
 
 export function FactorBreakdown({
@@ -26,7 +30,7 @@ export function FactorBreakdown({
         onClick={() => setOpen(!open)}
         className="flex w-full items-center justify-between px-5 py-4 text-xs font-medium text-[hsl(var(--muted-foreground))] transition-colors hover:text-[hsl(var(--foreground))]"
       >
-        <span>Factor Breakdown</span>
+        <span>Model Drivers</span>
         <span className="flex items-center gap-2">
           <span className="rounded-full bg-white/5 px-2.5 py-1 font-mono text-[hsl(var(--foreground))]">
             Score: {compositeScore}/100
@@ -46,23 +50,36 @@ export function FactorBreakdown({
         <div className="animate-fade-in space-y-2.5 px-5 pb-5 pt-1">
           {contributions.map((f) => (
             <div key={f.key}>
-              <div className="flex items-center justify-between text-xs mb-1">
-                <span className="text-[hsl(var(--muted-foreground))]">
-                  {f.name}
-                </span>
-                <span className="flex items-center gap-2">
-                  <span className="text-[10px] text-[hsl(var(--muted-foreground))] opacity-60">
-                    wt: {f.weightLabel}
+              <div className="mb-1 flex items-start justify-between gap-3 text-xs">
+                <div>
+                  <span className="text-[hsl(var(--muted-foreground))]">
+                    {f.name}
                   </span>
-                  <span className="font-mono font-semibold w-7 text-right">
-                    {f.score}
+                  <div className="mt-0.5 text-[10px] text-[hsl(var(--muted-foreground))]/75">
+                    {f.valueLabel}
+                  </div>
+                </div>
+                <span className="flex items-center gap-2">
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                      f.direction === "Positive"
+                        ? "bg-green-500/15 text-green-400"
+                        : f.direction === "Negative"
+                          ? "bg-red-500/15 text-red-400"
+                          : "bg-slate-500/15 text-slate-300"
+                    }`}
+                  >
+                    {f.direction}
+                  </span>
+                  <span className="w-14 text-right font-mono font-semibold">
+                    {f.influence.toFixed(1)}%
                   </span>
                 </span>
               </div>
               <div className="h-1.5 w-full rounded-full bg-[hsl(var(--muted))]">
                 <div
-                  className={`h-full rounded-full transition-all duration-500 ${barColor(f.score)}`}
-                  style={{ width: `${f.score}%` }}
+                  className={`h-full rounded-full transition-all duration-500 ${barColor(f.direction)}`}
+                  style={{ width: `${Math.max(f.influence, 2)}%` }}
                 />
               </div>
             </div>

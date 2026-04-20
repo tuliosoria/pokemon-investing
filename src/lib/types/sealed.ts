@@ -24,7 +24,7 @@ export interface SealedSetData {
   printRunLabel: "Limited" | "Standard" | "Overprinted";
   notes: string;
 
-  /** true for curated sets with hand-tuned factor scores */
+  /** true for curated sets with richer manually maintained metadata */
   curated?: boolean;
   /** PokeData product ID for API-sourced products */
   pokedataId?: string;
@@ -51,8 +51,14 @@ export interface Forecast {
   roiPercent: number;
   spRoi: number;
   factorContributions: FactorContribution[];
-  /** Number of factors that are estimated vs hand-tuned (0-8) */
+  /** Number of ML inputs estimated heuristically instead of resolved from data */
   estimatedFactors: number;
+  predictionSpreadPercent: number;
+  horizonPredictions: {
+    oneYear: number;
+    threeYear: number;
+    fiveYear: number;
+  };
 }
 
 /** Product returned from PokeData sealed search */
@@ -80,10 +86,9 @@ export interface SealedPricing {
 export interface FactorContribution {
   key: string;
   name: string;
-  score: number;
-  weight: number;
-  weightLabel: string;
-  contribution: number;
+  influence: number;
+  direction: "Positive" | "Negative" | "Neutral";
+  valueLabel: string;
 }
 
 export interface ProjectionPoint {

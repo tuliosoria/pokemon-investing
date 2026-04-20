@@ -1,0 +1,88 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Monthly sealed-product XGBoost retraining pipeline
+
+Parameters:
+  RetrainerImageUri:
+    Type: String
+    Description: ECR image URI for the sealed ML retraining container.
+  DynamoDbTableName:
+    Type: String
+    Description: Existing DynamoDB table used by the app.
+  PokeDataApiKey:
+    Type: String
+    NoEcho: true
+    Description: API key used to fetch current sealed pricing from PokeData.
+  ScheduleExpression:
+    Type: String
+    Default: cron(0 5 1 * ? *)
+    Description: EventBridge schedule for monthly retraining.
+
+Resources:
+  SealedMlRetrainerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: sealed-ml-retrainer-dynamodb
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                  - dynamodb:UpdateItem
+                Resource:
+                  - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${DynamoDbTableName}
+
+  SealedMlRetrainerFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: pokealpha-sealed-ml-retrainer
+      PackageType: Image
+      Code:
+        ImageUri: !Ref RetrainerImageUri
+      Role: !GetAtt SealedMlRetrainerRole.Arn
+      Timeout: 900
+      MemorySize: 3072
+      Environment:
+        Variables:
+          AWS_REGION: !Ref AWS::Region
+          DYNAMODB_TABLE: !Ref DynamoDbTableName
+          POKEDATA_API_KEY: !Ref PokeDataApiKey
+          SEALED_ML_OUTPUT_DIR: /tmp/sealed-ml-artifacts
+
+  SealedMlRetrainerSchedule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: Monthly sealed ML retraining trigger
+      ScheduleExpression: !Ref ScheduleExpression
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt SealedMlRetrainerFunction.Arn
+          Id: SealedMlRetrainerLambda
+
+  AllowEventBridgeInvokeRetrainer:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref SealedMlRetrainerFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt SealedMlRetrainerSchedule.Arn
+
+Outputs:
+  RetrainerFunctionArn:
+    Value: !GetAtt SealedMlRetrainerFunction.Arn
+  RetrainerScheduleRuleArn:
+    Value: !GetAtt SealedMlRetrainerSchedule.Arn

@@ -1,0 +1,147 @@
+{
+  "generatedAt": "2026-04-20T18:35:55.939312+00:00",
+  "products": 25,
+  "rows": 916,
+  "rowsBySet": [
+    [
+      "fossil",
+      49
+    ],
+    [
+      "jungle",
+      49
+    ],
+    [
+      "shining-fates",
+      49
+    ],
+    [
+      "team-rocket",
+      49
+    ],
+    [
+      "base-set-unlimited",
+      48
+    ],
+    [
+      "cosmic-eclipse",
+      48
+    ],
+    [
+      "team-up",
+      48
+    ],
+    [
+      "xy-evolutions",
+      48
+    ],
+    [
+      "hidden-fates",
+      47
+    ],
+    [
+      "fusion-strike",
+      43
+    ],
+    [
+      "brilliant-stars",
+      40
+    ],
+    [
+      "base-set-2",
+      39
+    ],
+    [
+      "ex-firered-leafgreen",
+      39
+    ],
+    [
+      "evolving-skies",
+      39
+    ],
+    [
+      "celebrations",
+      38
+    ],
+    [
+      "champions-path",
+      38
+    ],
+    [
+      "neo-genesis",
+      38
+    ],
+    [
+      "lost-origin",
+      33
+    ],
+    [
+      "crown-zenith",
+      29
+    ],
+    [
+      "scarlet-violet-base",
+      26
+    ],
+    [
+      "paldea-evolved",
+      24
+    ],
+    [
+      "obsidian-flames",
+      22
+    ],
+    [
+      "pokemon-151",
+      21
+    ],
+    [
+      "surging-sparks",
+      7
+    ],
+    [
+      "prismatic-evolutions",
+      5
+    ]
+  ],
+  "horizons": {
+    "1yr": 916,
+    "3yr": 378,
+    "5yr": 21
+  },
+  "models": {
+    "1yr": {
+      "artifactPath": "src/lib/data/sealed-ml/model-1yr.json",
+      "trainingRows": 916,
+      "crossValidation": {
+        "folds": 5.0,
+        "rmse": 1026.1391,
+        "mae": 433.7753,
+        "mape": 13.447
+      },
+      "treeCount": 200
+    },
+    "3yr": {
+      "artifactPath": "src/lib/data/sealed-ml/model-3yr.json",
+      "trainingRows": 378,
+      "crossValidation": {
+        "folds": 5.0,
+        "rmse": 1116.4802,
+        "mae": 516.7155,
+        "mape": 11.0764
+      },
+      "treeCount": 200
+    },
+    "5yr": {
+      "artifactPath": "src/lib/data/sealed-ml/model-5yr.json",
+      "trainingRows": 21,
+      "crossValidation": {
+        "folds": 5.0,
+        "rmse": 8843.3821,
+        "mae": 4274.0063,
+        "mape": 65.4828
+      },
+      "treeCount": 200
+    }
+  }
+}

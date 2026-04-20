@@ -136,6 +136,56 @@ If you add Supabase, OpenAI, etc. later:
    - `OPENAI_API_KEY`
    - `RESEND_API_KEY`
 
+### Monthly Sealed ML Retraining
+The sealed forecast runtime now checks DynamoDB for published XGBoost model artifacts before
+falling back to the bundled JSON files in the repo. To keep those models fresh, deploy the
+monthly retraining Lambda in `infra/sealed-ml-retrainer/`.
+
+1. Create an ECR repository:
+   ```bash
+   aws ecr create-repository \
+     --repository-name pokealpha-sealed-ml-retrainer \
+     --region us-east-1
+   ```
+2. Authenticate Docker to ECR:
+   ```bash
+   aws ecr get-login-password --region us-east-1 | \
+     docker login --username AWS --password-stdin <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
+   ```
+3. Build and push the retrainer image:
+   ```bash
+   cd ~/Desktop/pokemon-investing
+   docker build -t pokealpha-sealed-ml-retrainer -f infra/sealed-ml-retrainer/Dockerfile .
+   docker tag pokealpha-sealed-ml-retrainer:latest \
+     <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/pokealpha-sealed-ml-retrainer:latest
+   docker push <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/pokealpha-sealed-ml-retrainer:latest
+   ```
+4. Deploy the EventBridge-scheduled Lambda stack:
+   ```bash
+   aws cloudformation deploy \
+     --template-file infra/sealed-ml-retrainer/template.yaml \
+     --stack-name pokealpha-sealed-ml-retrainer \
+     --capabilities CAPABILITY_NAMED_IAM \
+     --parameter-overrides \
+       RetrainerImageUri=<ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/pokealpha-sealed-ml-retrainer:latest \
+       DynamoDbTableName=<YOUR_DYNAMODB_TABLE> \
+       PokeDataApiKey=<YOUR_POKEDATA_API_KEY> \
+       ScheduleExpression='cron(0 5 1 * ? *)' \
+     --region us-east-1
+   ```
+5. Optional smoke test:
+   ```bash
+   aws lambda invoke \
+     --function-name pokealpha-sealed-ml-retrainer \
+     --payload '{}' \
+     /tmp/pokealpha-retrainer-response.json \
+     --region us-east-1
+   cat /tmp/pokealpha-retrainer-response.json
+   ```
+
+Each run captures any due 1-year / 3-year / 5-year outcomes from forecast lookups, retrains the
+models, and publishes chunked model artifacts back into DynamoDB for the app to consume.
+
 ---
 
 ## Cost Estimate

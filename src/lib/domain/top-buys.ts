@@ -1,5 +1,8 @@
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
-import { computeForecast } from "@/lib/domain/sealed-forecast";
+import {
+  computeForecastWithModels,
+  type ForecastModelBundle,
+} from "@/lib/domain/sealed-forecast-ml";
 import type { SealedSetData, Forecast, ProductType } from "@/lib/types/sealed";
 
 export interface BuyOpportunity {
@@ -19,12 +22,13 @@ export interface TopBuysFilters {
  * ranked from strongest to weakest composite score.
  */
 export function getTopBuyOpportunities(
+  models: ForecastModelBundle,
   limit = 100,
   filters?: TopBuysFilters,
   sourceSets: SealedSetData[] = SEALED_SETS
 ): BuyOpportunity[] {
   let results: BuyOpportunity[] = sourceSets
-    .map((set) => ({ set, forecast: computeForecast(set) }))
+    .map((set) => ({ set, forecast: computeForecastWithModels(set, models) }))
     .filter(({ forecast }) => forecast.signal === "Buy");
 
   // Apply filters

@@ -3,9 +3,9 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { BarChart3 } from "lucide-react";
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
-import { computeForecast } from "@/lib/domain/sealed-forecast";
 import { buildDynamicSetData, inferProductType } from "@/lib/domain/sealed-estimate";
 import type {
+  Forecast,
   SortField,
   FilterSignal,
   SealedSetData,
@@ -25,7 +25,7 @@ const TOP_BUYS_LIMIT = 100;
 
 interface SetWithForecast {
   set: SealedSetData;
-  forecast: ReturnType<typeof computeForecast>;
+  forecast: Forecast;
 }
 
 interface SearchUnavailableCardData {
@@ -39,7 +39,7 @@ interface SearchUnavailableCardData {
 
 interface TopBuyApiOpportunity {
   set: SealedSetData;
-  forecast: ReturnType<typeof computeForecast>;
+  forecast: Forecast;
 }
 
 interface TrendSnapshot {
@@ -71,26 +71,90 @@ function parseReleaseYear(releaseDate: string | null): number | null {
   return Number.isNaN(parsed) ? null : parsed;
 }
 
-function applyTrendToResult(
-  item: SetWithForecast,
+function applyTrendToSet(
+  set: SealedSetData,
   trend: TrendSnapshot
-): SetWithForecast {
+): SealedSetData {
   const newPopularity =
-    item.set.curated === false
+    set.curated === false
       ? trend.score
-      : Math.round(item.set.factors.popularity * 0.6 + trend.score * 0.4);
+      : Math.round(set.factors.popularity * 0.6 + trend.score * 0.4);
 
-  const updatedSet: SealedSetData = {
-    ...item.set,
-    factors: { ...item.set.factors, popularity: newPopularity },
+  return {
+    ...set,
+    factors: { ...set.factors, popularity: newPopularity },
     trendData: {
       current: trend.current,
       average: trend.average,
       direction: trend.direction,
     },
   };
+}
 
-  return { set: updatedSet, forecast: computeForecast(updatedSet) };
+async function requestForecasts(
+  sets: SealedSetData[],
+  signal?: AbortSignal,
+  lookupSource?: "search"
+): Promise<SetWithForecast[]> {
+  if (sets.length === 0) {
+    return [];
+  }
+
+  const res = await fetch("/api/sealed/forecast", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sets, lookupSource }),
+    signal,
+  });
+
+  if (!res.ok) {
+    throw new Error(`Forecast request failed with HTTP ${res.status}`);
+  }
+
+  const data = (await res.json()) as { results?: SetWithForecast[] };
+  return Array.isArray(data.results) ? data.results : [];
+}
+
+async function fetchTrendSnapshots(
+  sets: SealedSetData[],
+  signal?: AbortSignal
+): Promise<Map<string, TrendSnapshot>> {
+  const uniqueSets = [...new Map(sets.map((set) => [set.id, set])).values()];
+  const settled = await Promise.allSettled(
+    uniqueSets.map(async (set) => {
+      const res = await fetch(
+        `/api/trends?keyword=${encodeURIComponent(buildTrendKeyword(set.name))}`,
+        { signal }
+      );
+      if (!res.ok) {
+        return null;
+      }
+
+      const { trend } = await res.json();
+      if (!trend || typeof trend.popularityScore !== "number") {
+        return null;
+      }
+
+      return {
+        id: set.id,
+        trend: {
+          score: trend.popularityScore,
+          current: trend.current,
+          average: trend.average,
+          direction: trend.trendDirection as TrendSnapshot["direction"],
+        },
+      };
+    })
+  );
+
+  const trendMap = new Map<string, TrendSnapshot>();
+  for (const result of settled) {
+    if (result.status === "fulfilled" && result.value) {
+      trendMap.set(result.value.id, result.value.trend);
+    }
+  }
+
+  return trendMap;
 }
 
 async function preloadImage(url: string): Promise<ImagePreloadStatus> {
@@ -247,6 +311,8 @@ export function ForecastDashboard() {
   const [isLoadingTopBuys, setIsLoadingTopBuys] = useState(false);
   const [topBuysLoaded, setTopBuysLoaded] = useState(false);
   const [topBuysError, setTopBuysError] = useState<string | null>(null);
+  const [curatedForecasts, setCuratedForecasts] = useState<SetWithForecast[]>([]);
+  const [isLoadingCuratedForecasts, setIsLoadingCuratedForecasts] = useState(true);
 
   // Search: accumulates results, only rendered once complete
   const [searchComplete, setSearchComplete] = useState(false);
@@ -258,16 +324,6 @@ export function ForecastDashboard() {
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const abortRef = useRef<AbortController>(undefined);
   const searchInputRef = useRef<HTMLInputElement>(null);
-
-  // Google Trends scores
-  const [trendScores, setTrendScores] = useState<Map<string, TrendSnapshot>>(new Map());
-  const trendFetchedRef = useRef<Set<string>>(new Set());
-
-  const curatedForecasts = useMemo(
-    () =>
-      SEALED_SETS.map((set) => ({ set, forecast: computeForecast(set) })),
-    []
-  );
 
   const resetVisibleCards = useCallback(() => {
     setVisibleCount(SCROLL_BATCH);
@@ -411,10 +467,10 @@ export function ForecastDashboard() {
             throw new DOMException("Search aborted", "AbortError");
           }
 
-          const liveResults: SetWithForecast[] = [];
+          const liveSets: SealedSetData[] = [];
           const unavailableCards: SearchUnavailableCardData[] = [];
           const seenPokedataIds = new Set<string>();
-          const liveResultIds = new Set<string>();
+          const liveSetIds = new Set<string>();
           const usedCuratedIds = new Set<string>();
 
           for (const [index, settled] of pricingSettled.entries()) {
@@ -448,95 +504,61 @@ export function ForecastDashboard() {
                 )
               : undefined;
 
-            const nextResult = curatedMatch
+            const nextSet = curatedMatch
               ? (() => {
                   usedCuratedIds.add(curatedMatch.id);
-                  const updatedSet: SealedSetData = {
+                  return {
                     ...curatedMatch,
                     currentPrice: pricing.bestPrice ?? curatedMatch.currentPrice,
                     pokedataId: pricing.pokedataId,
                     imageUrl: pricing.imageUrl ?? curatedMatch.imageUrl,
                   };
-                  return { set: updatedSet, forecast: computeForecast(updatedSet) };
                 })()
-              : (() => {
-                  const dynamicSet = buildDynamicSetData(pricing);
-                  return { set: dynamicSet, forecast: computeForecast(dynamicSet) };
-                })();
+              : buildDynamicSetData(pricing);
 
-            liveResults.push(nextResult);
-            liveResultIds.add(nextResult.set.id);
+            liveSets.push(nextSet);
+            liveSetIds.add(nextSet.id);
           }
 
-          const curatedResults = curatedForecasts.filter(
-            (result) =>
-              !liveResultIds.has(result.set.id) &&
+          const curatedResults = SEALED_SETS.filter(
+            (set) =>
+              !liveSetIds.has(set.id) &&
               (
-                result.set.name.toLowerCase().includes(trimmedQuery.toLowerCase()) ||
-                result.set.chaseCards.some((card) => card.toLowerCase().includes(trimmedQuery.toLowerCase())) ||
-                result.set.productType.toLowerCase().includes(trimmedQuery.toLowerCase())
+                set.name.toLowerCase().includes(trimmedQuery.toLowerCase()) ||
+                set.chaseCards.some((card) => card.toLowerCase().includes(trimmedQuery.toLowerCase())) ||
+                set.productType.toLowerCase().includes(trimmedQuery.toLowerCase())
               )
           );
 
-          const combinedResults = [...liveResults, ...curatedResults];
-
-          const trendSettled = await Promise.allSettled(
-            combinedResults.map(async (result) => {
-              const res = await fetch(
-                `/api/trends?keyword=${encodeURIComponent(buildTrendKeyword(result.set.name))}`,
-                { signal: controller.signal }
-              );
-              if (!res.ok) return null;
-
-              const { trend } = await res.json();
-              if (!trend || typeof trend.popularityScore !== "number") {
-                return null;
-              }
-
-              return {
-                id: result.set.id,
-                trend: {
-                  score: trend.popularityScore,
-                  current: trend.current,
-                  average: trend.average,
-                  direction: trend.trendDirection as TrendSnapshot["direction"],
-                },
-              };
-            })
-          );
+          const combinedSets = [...liveSets, ...curatedResults];
+          const trendMap = await fetchTrendSnapshots(combinedSets, controller.signal);
 
           if (controller.signal.aborted) {
             throw new DOMException("Search aborted", "AbortError");
           }
 
-          const trendMap = new Map<string, TrendSnapshot>();
-          for (const settled of trendSettled) {
-            if (settled.status === "fulfilled" && settled.value) {
-              trendMap.set(settled.value.id, settled.value.trend);
-            }
-          }
-
-          const trendedResults = combinedResults.map((result) => {
-            const trend = trendMap.get(result.set.id);
-            return trend ? applyTrendToResult(result, trend) : result;
+          const trendedSets = combinedSets.map((set) => {
+            const trend = trendMap.get(set.id);
+            return trend ? applyTrendToSet(set, trend) : set;
           });
 
           const imageStatuses = await preloadImages([
-            ...trendedResults.map((result) => result.set.imageUrl ?? ""),
+            ...trendedSets.map((set) => set.imageUrl ?? ""),
             ...unavailableCards.map((card) => card.imageUrl ?? ""),
           ]);
 
-          const withReadyImages = trendedResults.map((result) => ({
-            ...result,
-            set: {
-              ...result.set,
-              imageUrl:
-                result.set.imageUrl &&
-                imageStatuses.get(result.set.imageUrl) !== "error"
-                  ? result.set.imageUrl
-                  : undefined,
-            },
+          const withReadyImages = trendedSets.map((set) => ({
+            ...set,
+            imageUrl:
+              set.imageUrl && imageStatuses.get(set.imageUrl) !== "error"
+                ? set.imageUrl
+                : undefined,
           }));
+          const forecastedResults = await requestForecasts(
+            withReadyImages,
+            controller.signal,
+            "search"
+          );
 
           const withFallbackImages = unavailableCards.map((card) => ({
             ...card,
@@ -546,11 +568,11 @@ export function ForecastDashboard() {
                 : null,
           }));
 
-          const liveIds = new Set(liveResults.map((result) => result.set.id));
+          const liveIds = new Set(liveSets.map((set) => set.id));
 
           return {
-            liveResults: withReadyImages.filter((result) => liveIds.has(result.set.id)),
-            curatedResults: withReadyImages.filter((result) => !liveIds.has(result.set.id)),
+            liveResults: forecastedResults.filter((result) => liveIds.has(result.set.id)),
+            curatedResults: forecastedResults.filter((result) => !liveIds.has(result.set.id)),
             unavailableCards: withFallbackImages,
           };
         })(),
@@ -600,46 +622,43 @@ export function ForecastDashboard() {
         clearTimeout(timeoutId);
       }
     }
-  }, [curatedForecasts]);
+  }, []);
 
-  // Fetch Google Trends
-  const fetchTrends = useCallback(async (sets: SetWithForecast[]) => {
-    const toFetch = sets.filter((s) => !trendFetchedRef.current.has(s.set.id));
-    if (toFetch.length === 0) return;
+  useEffect(() => {
+    const controller = new AbortController();
 
-    for (const { set } of toFetch) {
-      if (trendFetchedRef.current.has(set.id)) continue;
-      trendFetchedRef.current.add(set.id);
+    async function loadCuratedForecasts() {
+      setIsLoadingCuratedForecasts(true);
 
-      const keyword = buildTrendKeyword(set.name);
       try {
-        const res = await fetch(
-          `/api/trends?keyword=${encodeURIComponent(keyword)}`
-        );
-        if (!res.ok) {
-          trendFetchedRef.current.delete(set.id);
-          continue;
-        }
-        const { trend } = await res.json();
-        if (trend && typeof trend.popularityScore === "number") {
-          setTrendScores((prev) => {
-            const next = new Map(prev);
-            next.set(set.id, {
-              score: trend.popularityScore,
-              current: trend.current,
-              average: trend.average,
-              direction: trend.trendDirection as TrendSnapshot["direction"],
-            });
-            return next;
-          });
-        } else {
-          trendFetchedRef.current.delete(set.id);
+        const trendMap = await fetchTrendSnapshots(SEALED_SETS, controller.signal);
+        if (controller.signal.aborted) return;
+
+        const trendedSets = SEALED_SETS.map((set) => {
+          const trend = trendMap.get(set.id);
+          return trend ? applyTrendToSet(set, trend) : set;
+        });
+
+        const results = await requestForecasts(trendedSets, controller.signal);
+        if (!controller.signal.aborted) {
+          setCuratedForecasts(results);
         }
       } catch {
-        trendFetchedRef.current.delete(set.id);
+        if (!controller.signal.aborted) {
+          setCuratedForecasts([]);
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsLoadingCuratedForecasts(false);
+        }
       }
-      await new Promise((r) => setTimeout(r, 300));
     }
+
+    void loadCuratedForecasts();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   // Debounced search trigger
@@ -685,24 +704,6 @@ export function ForecastDashboard() {
     };
   }, []);
 
-  // Fetch Google Trends for curated sets on initial load
-  useEffect(() => {
-    fetchTrends(curatedForecasts);
-  }, [curatedForecasts, fetchTrends]);
-
-  // Apply trend scores to sets and recompute forecasts
-  const applyTrends = useCallback(
-    (items: SetWithForecast[]): SetWithForecast[] => {
-      if (trendScores.size === 0) return items;
-
-      return items.map((item) => {
-        const trend = trendScores.get(item.set.id);
-        return trend ? applyTrendToResult(item, trend) : item;
-      });
-    },
-    [trendScores]
-  );
-
   // Combine curated + API results
   const allSets = useMemo(() => {
     if (showingTopBuys) {
@@ -731,8 +732,8 @@ export function ForecastDashboard() {
       return [...merged.values()];
     }
 
-    return applyTrends(curatedForecasts);
-  }, [curatedForecasts, apiResults, apiQuery, showCurated, searchCuratedResults, applyTrends, hasInteracted, showingTopBuys, topBuyResults]);
+    return curatedForecasts;
+  }, [curatedForecasts, apiResults, apiQuery, showCurated, searchCuratedResults, hasInteracted, showingTopBuys, topBuyResults]);
 
   const filtered = useMemo(() => {
     let result = allSets;
@@ -845,6 +846,11 @@ export function ForecastDashboard() {
     : SEALED_SETS.length;
 
   const renderedResultCount = isSearchMode ? searchDisplayCards.length : visibleFiltered.length;
+  const isLoadingCuratedMode =
+    hasInteracted &&
+    !showingTopBuys &&
+    !isSearchMode &&
+    isLoadingCuratedForecasts;
 
   return (
     <div className="space-y-6">
@@ -918,7 +924,7 @@ export function ForecastDashboard() {
             ["price", "Current Price"],
             ["signal", "Recommendation"],
             ["age", "Set Age"],
-            ["score", "Composite Score"],
+            ["score", "Model Score"],
           ] as [SortField, string][]
         ).map(([field, label]) => (
           <button
@@ -973,7 +979,7 @@ export function ForecastDashboard() {
       </div>
 
       {/* Results count */}
-      {hasInteracted && !isSearching && !(showingTopBuys && isLoadingTopBuys) && (
+      {hasInteracted && !isSearching && !isLoadingCuratedMode && !(showingTopBuys && isLoadingTopBuys) && (
         <div className="flex items-center gap-3">
           <p className="text-xs text-[hsl(var(--muted-foreground))]">
             Showing {renderedResultCount}{isCuratedMode && filtered.length > visibleFiltered.length ? ` of ${filtered.length}` : ""} {showingTopBuys ? "top buy opportunities" : apiQuery.length >= 2 ? "results" : `of ${totalSets} sets`}
@@ -1059,7 +1065,7 @@ export function ForecastDashboard() {
             </div>
 
             <p className="text-[11px] text-[hsl(var(--muted-foreground))]/60 mt-6">
-              Powered by live PokeData pricing &amp; 8-factor composite scoring
+              Powered by live PokeData pricing &amp; XGBoost forecasting
             </p>
           </div>
         </div>
@@ -1073,6 +1079,21 @@ export function ForecastDashboard() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 items-stretch">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <SkeletonForecastCard key={i} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {isLoadingCuratedMode && (
+        <div className="space-y-4">
+          <div className="text-center">
+            <p className="text-sm text-[hsl(var(--muted-foreground))] animate-pulse">
+              Building ML forecasts…
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-5 items-stretch md:grid-cols-2 xl:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
               <SkeletonForecastCard key={i} />
             ))}
@@ -1167,6 +1188,7 @@ export function ForecastDashboard() {
         !isSearching &&
         !topBuysError &&
         !(showingTopBuys && isLoadingTopBuys) &&
+        !isLoadingCuratedMode &&
         filtered.length === 0 &&
         !isSearchMode && (
         <div className="text-center py-12 text-[hsl(var(--muted-foreground))]">
@@ -1239,31 +1261,30 @@ export function ForecastDashboard() {
             Methodology
           </h4>
           <p>
-            <strong className="text-[hsl(var(--foreground))]">★ Curated sets</strong> are
-            scored across 8 hand-tuned weighted factors (market value, chase cards,
-            supply scarcity, set age, price trajectory, popularity, market cycle, and
-            collector demand ratio). All prices are live from PokeData.io.
+            <strong className="text-[hsl(var(--foreground))]">XGBoost models</strong> forecast
+            1-year, 3-year, and 5-year sealed prices from live price, chase-card
+            strength, print run, set age, trajectories, collector demand, product type,
+            era, and market-cycle inputs. All prices are live from PokeData.io.
           </p>
           <p>
-            <strong className="text-[hsl(var(--foreground))]">📈 Google Trends</strong> data
-            is fetched live for all sets to power the Popularity factor. For curated sets,
-            trends are blended with hand-tuned scores. For dynamic products, Google Trends
-            replaces the neutral default — giving real demand signal.
+            <strong className="text-[hsl(var(--foreground))]">Live Google Trends</strong> data
+            is fetched for curated sets and search results, then blended into the
+            popularity inputs before the model runs. The Factor Breakdown panel now shows
+            model influence by feature instead of hand-tuned weights.
           </p>
           <p>
-            <strong className="text-[hsl(var(--foreground))]">Search results</strong> from
-            PokeData use live pricing with auto-estimated factors (set age, price
-            trajectory, market value, popularity via Google Trends). Chase card index, print
-            run, market cycle, and demand ratio default to neutral (50) — these forecasts
-            are screening estimates, not full analyses. Look for the
+            <strong className="text-[hsl(var(--foreground))]">Dynamic search results</strong> use
+            the same ML models, but some inputs are estimated when a product is missing
+            curated chase-card or history data. Look for the
             <span className="inline-block mx-1 rounded-full bg-orange-500/20 text-orange-400 px-1.5 py-0.5 text-[9px] font-semibold">
               Estimated
             </span>
-            badge.
+            badge on those cards.
           </p>
           <p>
-            S&amp;P 500 comparison uses a historical average annualized return of 10.5%.
-            All projections are estimates — not financial advice.
+            Buy / Hold / Sell is derived from projected 5-year ROI versus an S&amp;P 500
+            benchmark of 10.5% annualized. Confidence comes from prediction spread across
+            the tree ensemble. All projections are estimates — not financial advice.
           </p>
         </div>
       </div>

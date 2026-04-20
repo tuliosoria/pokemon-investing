@@ -1,0 +1,202 @@
+{
+  "base-set-unlimited": {
+    "name": "Base Set Unlimited",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 36228.57,
+    "priceTrajectory6mo": 60.101,
+    "priceTrajectory24mo": 200.183,
+    "historyPoints": 59
+  },
+  "jungle": {
+    "name": "Jungle",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 13601.5,
+    "priceTrajectory6mo": 62.64,
+    "priceTrajectory24mo": 88.021,
+    "historyPoints": 60
+  },
+  "fossil": {
+    "name": "Fossil",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 12135.97,
+    "priceTrajectory6mo": 57.534,
+    "priceTrajectory24mo": 45.832,
+    "historyPoints": 60
+  },
+  "team-rocket": {
+    "name": "Team Rocket",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 9134.44,
+    "priceTrajectory6mo": -2.534,
+    "priceTrajectory24mo": -3.633,
+    "historyPoints": 60
+  },
+  "base-set-2": {
+    "name": "Base Set 2",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 13935.87,
+    "priceTrajectory6mo": 19.81,
+    "priceTrajectory24mo": 66.066,
+    "historyPoints": 50
+  },
+  "neo-genesis": {
+    "name": "Neo Genesis",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 7600.0,
+    "priceTrajectory6mo": -50.644,
+    "priceTrajectory24mo": -13.239,
+    "historyPoints": 49
+  },
+  "ex-firered-leafgreen": {
+    "name": "EX FireRed & LeafGreen",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 1647.52,
+    "priceTrajectory6mo": 22.039,
+    "priceTrajectory24mo": 21.825,
+    "historyPoints": 50
+  },
+  "xy-evolutions": {
+    "name": "XY Evolutions",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 2310.79,
+    "priceTrajectory6mo": 35.348,
+    "priceTrajectory24mo": 206.162,
+    "historyPoints": 59
+  },
+  "hidden-fates": {
+    "name": "Hidden Fates",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 469.98,
+    "priceTrajectory6mo": 19.771,
+    "priceTrajectory24mo": 240.467,
+    "historyPoints": 58
+  },
+  "champions-path": {
+    "name": "Champion's Path",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 158.95,
+    "priceTrajectory6mo": 27.548,
+    "priceTrajectory24mo": 117.74,
+    "historyPoints": 49
+  },
+  "celebrations": {
+    "name": "Celebrations",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 311.51,
+    "priceTrajectory6mo": 42.255,
+    "priceTrajectory24mo": 349.834,
+    "historyPoints": 49
+  },
+  "evolving-skies": {
+    "name": "Evolving Skies",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 2656.92,
+    "priceTrajectory6mo": 11.835,
+    "priceTrajectory24mo": 303.481,
+    "historyPoints": 50
+  },
+  "brilliant-stars": {
+    "name": "Brilliant Stars",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 589.0,
+    "priceTrajectory6mo": 19.475,
+    "priceTrajectory24mo": 280.0,
+    "historyPoints": 51
+  },
+  "shining-fates": {
+    "name": "Shining Fates",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 118.48,
+    "priceTrajectory6mo": 39.388,
+    "priceTrajectory24mo": 220.997,
+    "historyPoints": 60
+  },
+  "crown-zenith": {
+    "name": "Crown Zenith",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 303.0,
+    "priceTrajectory6mo": 44.803,
+    "priceTrajectory24mo": 588.793,
+    "historyPoints": 40
+  },
+  "pokemon-151": {
+    "name": "Pok\u00e9mon 151",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 591.39,
+    "priceTrajectory6mo": 55.629,
+    "priceTrajectory24mo": 1168.261,
+    "historyPoints": 32
+  },
+  "fusion-strike": {
+    "name": "Fusion Strike",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 999.48,
+    "priceTrajectory6mo": 7.987,
+    "priceTrajectory24mo": 322.667,
+    "historyPoints": 54
+  },
+  "lost-origin": {
+    "name": "Lost Origin",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 675.0,
+    "priceTrajectory6mo": -9.335,
+    "priceTrajectory24mo": 187.994,
+    "historyPoints": 44
+  },
+  "obsidian-flames": {
+    "name": "Obsidian Flames",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 346.01,
+    "priceTrajectory6mo": 6.793,
+    "priceTrajectory24mo": 251.279,
+    "historyPoints": 33
+  },
+  "paldea-evolved": {
+    "name": "Paldea Evolved",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 460.0,
+    "priceTrajectory6mo": 14.476,
+    "priceTrajectory24mo": 377.872,
+    "historyPoints": 35
+  },
+  "surging-sparks": {
+    "name": "Surging Sparks",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 255.0,
+    "priceTrajectory6mo": 1.392,
+    "priceTrajectory24mo": null,
+    "historyPoints": 18
+  },
+  "prismatic-evolutions": {
+    "name": "Prismatic Evolutions",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 70.0,
+    "priceTrajectory6mo": 16.048,
+    "priceTrajectory24mo": null,
+    "historyPoints": 16
+  },
+  "scarlet-violet-base": {
+    "name": "Scarlet & Violet Base",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 248.85,
+    "priceTrajectory6mo": 4.779,
+    "priceTrajectory24mo": 181.186,
+    "historyPoints": 37
+  },
+  "team-up": {
+    "name": "Team Up",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 10155.75,
+    "priceTrajectory6mo": 25.833,
+    "priceTrajectory24mo": 419.957,
+    "historyPoints": 59
+  },
+  "cosmic-eclipse": {
+    "name": "Cosmic Eclipse",
+    "latestPriceDate": "2026-04-01",
+    "latestHistoricalPrice": 3689.77,
+    "priceTrajectory6mo": -12.121,
+    "priceTrajectory24mo": 334.321,
+    "historyPoints": 59
+  }
+}
