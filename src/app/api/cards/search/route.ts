@@ -7,7 +7,9 @@ import {
 } from "@/lib/db/card-cache";
 
 const TCG_API_BASE = "https://api.tcgapi.dev/v1/search";
+const POKEMON_TCG_API_BASE = "https://api.pokemontcg.io/v2/cards";
 const CACHE_TTL = 5 * 60; // 5 minutes — for search query→results mapping
+const TCG_API_RATE_LIMIT = "TCG_API_RATE_LIMIT";
 
 // --- Query parsing ---
 
@@ -16,6 +18,33 @@ interface ParsedQuery {
   number: string | null;   // Card number like "225/217" or "225"
   extraTerms: string[];    // Additional words for set/name matching
   isNumberOnly: boolean;   // True if query was just a card number
+}
+
+interface PokemonTcgPrice {
+  low?: number | null;
+  mid?: number | null;
+  high?: number | null;
+  market?: number | null;
+  directLow?: number | null;
+}
+
+interface PokemonTcgApiCard {
+  id?: string;
+  name?: string;
+  number?: string;
+  rarity?: string | null;
+  images?: {
+    small?: string;
+    large?: string;
+  };
+  set?: {
+    id?: string;
+    name?: string;
+  };
+  tcgplayer?: {
+    url?: string | null;
+    prices?: Record<string, PokemonTcgPrice>;
+  };
 }
 
 function parseSearchQuery(raw: string): ParsedQuery {
@@ -90,10 +119,99 @@ async function fetchCards(
     headers: { "X-API-Key": apiKey },
   });
 
+  if (res.status === 429) {
+    throw new Error(TCG_API_RATE_LIMIT);
+  }
+
   if (!res.ok) return [];
 
   const body = await res.json();
   return groupResults(body.data ?? []);
+}
+
+function formatPokemonTcgVariantName(variant: string): string {
+  switch (variant) {
+    case "normal":
+      return "Normal";
+    case "holofoil":
+      return "Holofoil";
+    case "reverseHolofoil":
+      return "Reverse Holofoil";
+    default:
+      return variant
+        .replace(/([A-Z])/g, " $1")
+        .replace(/^./, (value) => value.toUpperCase())
+        .trim();
+  }
+}
+
+function buildPokemonTcgQuery(parsed: ParsedQuery): string {
+  const tokens = parsed.extraTerms.length > 0
+    ? parsed.extraTerms
+    : parsed.apiSearch.split(/\s+/).filter(Boolean);
+
+  const clauses: string[] = [];
+  const nameToken = tokens[0];
+
+  if (nameToken) {
+    clauses.push(`name:*${nameToken.replace(/"/g, '\\"')}*`);
+  }
+
+  if (parsed.number) {
+    clauses.push(`number:${parsed.number.split("/")[0]}*`);
+  }
+
+  return clauses.join(" ");
+}
+
+async function fetchCardsFromPokemonTcg(
+  parsed: ParsedQuery
+): Promise<CardSearchResult[]> {
+  const query = buildPokemonTcgQuery(parsed);
+  if (!query) return [];
+
+  const url = new URL(POKEMON_TCG_API_BASE);
+  url.searchParams.set("q", query);
+  url.searchParams.set("pageSize", "50");
+
+  const res = await fetch(url.toString(), {
+    headers: { Accept: "application/json" },
+  });
+
+  if (!res.ok) return [];
+
+  const body = await res.json();
+  const data = Array.isArray(body.data) ? (body.data as PokemonTcgApiCard[]) : [];
+
+  return data.map((card) => {
+    const prices = Object.entries(card.tcgplayer?.prices ?? {}).reduce<CardPrices>(
+      (acc, [variant, priceData]) => {
+        if (!priceData) return acc;
+        acc[formatPokemonTcgVariantName(variant)] = {
+          low: priceData.low ?? null,
+          mid: priceData.mid ?? null,
+          high: priceData.high ?? null,
+          market: priceData.market ?? null,
+          directLow: priceData.directLow ?? null,
+        };
+        return acc;
+      },
+      {}
+    );
+
+    return {
+      id: String(card.id ?? ""),
+      name: card.name ?? "",
+      set: card.set?.name ?? "Unknown",
+      setId: String(card.set?.id ?? ""),
+      number: card.number ?? "",
+      rarity: card.rarity ?? null,
+      imageSmall: card.images?.small ?? "",
+      imageLarge: card.images?.large ?? card.images?.small ?? "",
+      prices,
+      tcgplayerUrl: card.tcgplayer?.url ?? null,
+    };
+  });
 }
 
 // tcgapi.dev returns separate rows per printing — group into one CardSearchResult per card
@@ -173,19 +291,31 @@ export async function GET(request: NextRequest) {
     const parsed = parseSearchQuery(q);
 
     // Primary search
-    let cards = await fetchCards(parsed.apiSearch, apiKey);
+    let cards: CardSearchResult[] = [];
 
-    // Fallback: if few results and multi-word text, retry with just the first word
-    // Handles "Scorbunny Ascended Heroes" → search "Scorbunny", score by set match
-    if (cards.length < 3 && parsed.extraTerms.length > 1) {
-      const fallbackCards = await fetchCards(parsed.extraTerms[0], apiKey);
-      const seen = new Set(cards.map((c) => c.id));
-      for (const c of fallbackCards) {
-        if (!seen.has(c.id)) {
-          cards.push(c);
-          seen.add(c.id);
+    try {
+      cards = await fetchCards(parsed.apiSearch, apiKey);
+
+      // Fallback: if few results and multi-word text, retry with just the first word
+      // Handles "Scorbunny Ascended Heroes" → search "Scorbunny", score by set match
+      if (cards.length < 3 && parsed.extraTerms.length > 1) {
+        const fallbackCards = await fetchCards(parsed.extraTerms[0], apiKey);
+        const seen = new Set(cards.map((c) => c.id));
+        for (const c of fallbackCards) {
+          if (!seen.has(c.id)) {
+            cards.push(c);
+            seen.add(c.id);
+          }
         }
       }
+    } catch (err) {
+      if (!(err instanceof Error) || err.message !== TCG_API_RATE_LIMIT) {
+        throw err;
+      }
+    }
+
+    if (cards.length === 0) {
+      cards = await fetchCardsFromPokemonTcg(parsed);
     }
 
     // Score and sort when query has number or multiple terms
