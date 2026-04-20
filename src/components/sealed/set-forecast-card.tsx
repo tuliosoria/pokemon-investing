@@ -21,31 +21,39 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
   const outperforms = forecast.roiPercent > forecast.spRoi;
   const isEstimated = forecast.estimatedFactors > 0;
 
-  // Trend score: only show numeric value if > 0
   const trendScore = set.trendData?.current ?? 0;
   const hasTrendScore = trendScore > 0;
 
   return (
-    <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] overflow-hidden hover-lift flex flex-col">
-      {/* Header — unified dark gradient, image contained */}
-      <div className="relative h-28 overflow-hidden flex-shrink-0">
+    <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] overflow-hidden hover-lift flex flex-col h-full">
+      {/* Header — taller to hero the product image */}
+      <div className="relative h-36 overflow-hidden flex-shrink-0">
         <div className="absolute inset-0" style={{ background: CARD_HEADER_GRADIENT }} />
 
-        {/* Product image — fixed-size container, dark bg, fully contained */}
+        {/* Product image — large hero, light backdrop so image is visible */}
         {set.imageUrl && (
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 h-[100px] w-[100px] rounded-lg bg-[#1a1a2e] overflow-hidden flex items-center justify-center p-1.5">
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 h-[140px] w-[160px] rounded-lg bg-[#2a3a4e] overflow-hidden flex items-center justify-center p-2">
             <img
               src={set.imageUrl}
               alt={set.name}
               className="max-h-full max-w-full object-contain drop-shadow-lg"
-              style={{ mixBlendMode: "multiply" }}
             />
           </div>
         )}
 
-        {/* Text overlay */}
-        <div className="relative z-10 h-full flex flex-col justify-end p-4">
-          <div className={set.imageUrl ? "pr-[116px]" : ""}>
+        {/* Badges — top-left so they don't overlap image */}
+        <div className="absolute top-3 left-4 flex items-center gap-1.5 z-10">
+          {isEstimated && (
+            <span className="rounded-full bg-orange-500/30 border border-orange-500/50 text-orange-300 px-2 py-0.5 text-[9px] font-semibold">
+              Est.
+            </span>
+          )}
+          <SignalBadge signal={forecast.signal} />
+        </div>
+
+        {/* Title — bottom-left, stays clear of image */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 p-4 bg-gradient-to-t from-black/60 to-transparent">
+          <div className={set.imageUrl ? "pr-[170px]" : ""}>
             <h3 className="text-white font-bold text-sm leading-tight drop-shadow line-clamp-2">
               {set.name}
             </h3>
@@ -56,19 +64,12 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
               )}
             </p>
           </div>
-          <div className="absolute top-3 left-4 flex items-center gap-1.5">
-            {isEstimated && (
-              <span className="rounded-full bg-orange-500/30 border border-orange-500/50 text-orange-300 px-2 py-0.5 text-[9px] font-semibold">
-                Est.
-              </span>
-            )}
-            <SignalBadge signal={forecast.signal} />
-          </div>
         </div>
       </div>
 
-      {/* Body — flex column, chart button pinned to bottom via mt-auto */}
-      <div className="p-4 flex-1 flex flex-col">
+      {/* Body — flex column; content block + pinned bottom section */}
+      <div className="p-4 flex-1 flex flex-col min-h-0">
+        {/* Scrollable content area */}
         <div className="space-y-3">
           {/* Price row */}
           <div className="flex items-baseline justify-between">
@@ -128,7 +129,7 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
             {Math.abs(forecast.roiPercent - forecast.spRoi)}% over 5 years
           </p>
 
-          {/* Google Trends indicator — hide 0 scores */}
+          {/* Google Trends indicator */}
           {set.trendData && (
             <div className="flex items-center gap-2 text-[11px]">
               <span
@@ -152,18 +153,18 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
                 </span>
               ) : (
                 <span
-                  className="text-[hsl(var(--muted-foreground))]/50"
+                  className="text-gray-400"
                   title="Trend data unavailable for this set"
                 >
-                  Google Trends: N/A
+                  Google Trends: <span className="italic">N/A</span>
                 </span>
               )}
             </div>
           )}
 
-          {/* Chase cards */}
+          {/* Chase cards — max 2 lines to prevent height variance */}
           {set.chaseCards.length > 0 && (
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-1 max-h-[46px] overflow-hidden">
               {set.chaseCards.map((card) => (
                 <span
                   key={card}
@@ -194,26 +195,28 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
           </div>
         </div>
 
-        {/* Chart toggle — pinned to bottom with mt-auto */}
-        <button
-          type="button"
-          onClick={() => setShowChart(!showChart)}
-          className="w-full text-center text-xs font-medium text-[hsl(var(--poke-yellow))] hover:underline py-1 mt-auto"
-        >
-          {showChart ? "Hide" : "Show"} $1,000 Investment Chart
-        </button>
+        {/* Pinned to bottom via mt-auto */}
+        <div className="mt-auto pt-3">
+          <button
+            type="button"
+            onClick={() => setShowChart(!showChart)}
+            className="w-full text-center text-xs font-medium text-[hsl(var(--poke-yellow))] hover:underline py-1"
+          >
+            {showChart ? "Hide" : "Show"} $1,000 Investment Chart
+          </button>
 
-        {showChart && (
-          <div className="animate-fade-in">
-            <RoiChart data={projectionData} setName={set.name} />
-            <p className="text-[10px] text-[hsl(var(--muted-foreground))] text-center mt-1">
-              Projected growth of $1,000 invested today over 5 years
-            </p>
-          </div>
-        )}
+          {showChart && (
+            <div className="animate-fade-in mt-2">
+              <RoiChart data={projectionData} setName={set.name} />
+              <p className="text-[10px] text-[hsl(var(--muted-foreground))] text-center mt-1">
+                Projected growth of $1,000 invested today over 5 years
+              </p>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Factor breakdown */}
+      {/* Factor breakdown — always at the very bottom */}
       <FactorBreakdown
         contributions={forecast.factorContributions}
         compositeScore={forecast.compositeScore}
