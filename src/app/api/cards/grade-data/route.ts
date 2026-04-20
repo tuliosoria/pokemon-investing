@@ -52,6 +52,7 @@ export async function GET(request: NextRequest) {
   const set = request.nextUrl.searchParams.get("set")?.trim();
   const number = request.nextUrl.searchParams.get("number")?.trim();
   const tcgId = request.nextUrl.searchParams.get("tcgId")?.trim();
+  const pokedataIdParam = request.nextUrl.searchParams.get("pokedataId")?.trim();
 
   if (!name) {
     return NextResponse.json(
@@ -110,7 +111,10 @@ export async function GET(request: NextRequest) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let bestMatch: any = null;
 
-    if (pokedataId) {
+    if (pokedataIdParam) {
+      // Caller already knows the PokeData ID — skip search entirely
+      bestMatch = { id: pokedataIdParam, name, set_name: set };
+    } else if (pokedataId) {
       // We already know the PokeData ID — skip search entirely!
       bestMatch = { id: pokedataId, name, set_name: set };
     } else {
