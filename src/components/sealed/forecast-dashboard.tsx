@@ -236,6 +236,19 @@ export function ForecastDashboard() {
     setVisibleCount(SCROLL_BATCH);
   }, []);
 
+  const exitSearchMode = useCallback(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    abortRef.current?.abort();
+    setApiQuery("");
+    setApiResults([]);
+    setSearchCuratedResults([]);
+    setSearchUnavailableCards([]);
+    setSearchError(null);
+    setSearchComplete(false);
+    setIsSearching(false);
+    setHasInteracted(showingTopBuys || filter !== "All");
+  }, [filter, showingTopBuys]);
+
   // Live search — pricing, trends, and image preload all complete before a single render
   const searchApi = useCallback(async (query: string) => {
     const trimmedQuery = query.trim();
@@ -561,36 +574,37 @@ export function ForecastDashboard() {
   // Debounced search trigger
   const handleSearchChange = useCallback(
     (value: string) => {
+      const trimmed = value.trim();
       setSearch(value);
-      if (value.trim().length > 0) {
+      if (trimmed.length > 0) {
         setHasInteracted(true);
         setShowingTopBuys(false);
       }
 
       if (debounceRef.current) clearTimeout(debounceRef.current);
 
-      if (value.trim().length >= 2) {
+      if (trimmed.length >= 2) {
         debounceRef.current = setTimeout(() => {
-          setApiQuery(value.trim());
-          searchApi(value.trim());
+          setApiQuery(trimmed);
+          searchApi(trimmed);
         }, 500);
       } else {
         abortRef.current?.abort();
         setSearchError(null);
         setIsSearching(false);
+        if (trimmed.length === 0) {
+          exitSearchMode();
+        }
       }
     },
-    [searchApi]
+    [exitSearchMode, searchApi]
   );
 
   const clearSearchInput = useCallback(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    abortRef.current?.abort();
     setSearch("");
-    setSearchError(null);
-    setIsSearching(false);
+    exitSearchMode();
     searchInputRef.current?.focus();
-  }, []);
+  }, [exitSearchMode]);
 
   // Cleanup on unmount
   useEffect(() => {
