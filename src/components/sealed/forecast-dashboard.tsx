@@ -13,6 +13,10 @@ import type {
   SealedPricing,
 } from "@/lib/types/sealed";
 import { SetForecastCard } from "./set-forecast-card";
+import { SkeletonForecastCard } from "./skeleton-forecast-card";
+
+const SCROLL_BATCH = 6;
+const MIN_LOADING_MS = 300;
 
 interface SetWithForecast {
   set: SealedSetData;
@@ -21,11 +25,9 @@ interface SetWithForecast {
 
 /** Build a Google Trends search keyword from a product name */
 function buildTrendKeyword(name: string): string {
-  // Strip common suffixes that dilute the search
   const cleaned = name
     .replace(/\b(Pokemon Center|Pokémon Center)\b/gi, "")
     .trim();
-  // Prepend "Pokemon" if not already present
   if (!/pokemon|pokémon/i.test(cleaned)) {
     return `Pokemon ${cleaned}`;
   }
@@ -44,11 +46,22 @@ export function ForecastDashboard() {
   const [showCurated, setShowCurated] = useState(true);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [showingTopBuys, setShowingTopBuys] = useState(false);
+
+  // Search: accumulates results, only rendered once complete
+  const [searchComplete, setSearchComplete] = useState(false);
+
+  // Progressive scroll: how many cards to show for curated/top-buys
+  const [visibleCount, setVisibleCount] = useState(SCROLL_BATCH);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  // Staggered reveal: controls fade-in animation
+  const [revealedIds, setRevealedIds] = useState<Set<string>>(new Set());
+
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const abortRef = useRef<AbortController>(undefined);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Google Trends scores: maps set ID → popularity score
+  // Google Trends scores
   const [trendScores, setTrendScores] = useState<
     Map<string, { score: number; current: number; average: number; direction: string }>
   >(new Map());
@@ -60,17 +73,23 @@ export function ForecastDashboard() {
     []
   );
 
-  // Top buy opportunities (pre-computed, no API call needed)
   const topBuys = useMemo(
     () => getTopBuyOpportunities(15),
     []
   );
 
-  // Live search against PokeData API
+  // Reset visible count when mode changes
+  useEffect(() => {
+    setVisibleCount(SCROLL_BATCH);
+    setRevealedIds(new Set());
+  }, [showingTopBuys, hasInteracted, filter, sortBy, sortDir]);
+
+  // Live search — accumulate ALL results, then mark complete
   const searchApi = useCallback(async (query: string) => {
     if (query.length < 2) {
       setApiResults([]);
       setSearchError(null);
+      setSearchComplete(false);
       return;
     }
 
@@ -80,6 +99,10 @@ export function ForecastDashboard() {
 
     setIsSearching(true);
     setSearchError(null);
+    setSearchComplete(false);
+    setApiResults([]);
+
+    const startTime = Date.now();
 
     try {
       const searchRes = await fetch(
@@ -92,23 +115,26 @@ export function ForecastDashboard() {
       };
 
       if (!products || products.length === 0) {
+        // Respect minimum loading time
+        const elapsed = Date.now() - startTime;
+        if (elapsed < MIN_LOADING_MS) {
+          await new Promise((r) => setTimeout(r, MIN_LOADING_MS - elapsed));
+        }
         setApiResults([]);
         setIsSearching(false);
+        setSearchComplete(true);
         return;
       }
 
-      // Fetch pricing for ALL results in batches, updating UI progressively
       const BATCH_SIZE = 8;
       const results: SetWithForecast[] = [];
       const seenPokedataIds = new Set<string>();
       const usedCuratedIds = new Set<string>();
 
-      // Normalize for comparison: strip diacritics, punctuation, lowercase
       const norm = (s: string) =>
         s.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
           .replace(/[''`]/g, "").replace(/&/g, "and").toLowerCase().trim();
 
-      // Variant keywords that prevent curated matching (Costco bundles, cases, etc.)
       const VARIANT_WORDS = ["costco", "walmart", "target", "pokemon center", "display"];
 
       const processPricing = (pricing: SealedPricing | null) => {
@@ -144,7 +170,7 @@ export function ForecastDashboard() {
         }
       };
 
-      // Process in batches to avoid overwhelming the API while showing results fast
+      // Fetch ALL batches before rendering (no progressive UI updates)
       for (let i = 0; i < products.length; i += BATCH_SIZE) {
         if (controller.signal.aborted) break;
 
@@ -157,7 +183,6 @@ export function ForecastDashboard() {
                 { signal: controller.signal }
               );
               if (!res.ok) {
-                // Pricing unavailable — build a stub from search result metadata
                 return {
                   pokedataId: p.pokedataId,
                   name: p.name,
@@ -180,21 +205,48 @@ export function ForecastDashboard() {
         for (const pricing of batchPricings) {
           processPricing(pricing);
         }
-
-        // Update UI after each batch so results appear progressively
-        setApiResults([...results]);
       }
+
+      // Ensure minimum loading display time
+      const elapsed = Date.now() - startTime;
+      if (elapsed < MIN_LOADING_MS) {
+        await new Promise((r) => setTimeout(r, MIN_LOADING_MS - elapsed));
+      }
+
+      // All done — render everything at once
+      setApiResults([...results]);
+      setSearchComplete(true);
     } catch (err) {
       if ((err as Error).name !== "AbortError") {
         setSearchError("Search failed. Try again.");
         setApiResults([]);
+        setSearchComplete(true);
       }
     } finally {
       setIsSearching(false);
     }
   }, []);
 
-  // Fetch Google Trends data for a batch of sets (sequential with delay to avoid rate limits)
+  // Staggered reveal animation for search results
+  useEffect(() => {
+    if (!searchComplete || apiResults.length === 0) return;
+
+    // Reveal cards one by one with 60ms stagger
+    const ids = apiResults.map((r) => r.set.id);
+    let i = 0;
+    const timer = setInterval(() => {
+      if (i >= ids.length) {
+        clearInterval(timer);
+        return;
+      }
+      setRevealedIds((prev) => new Set([...prev, ids[i]]));
+      i++;
+    }, 60);
+
+    return () => clearInterval(timer);
+  }, [searchComplete, apiResults]);
+
+  // Fetch Google Trends
   const fetchTrends = useCallback(async (sets: SetWithForecast[]) => {
     const toFetch = sets.filter((s) => !trendFetchedRef.current.has(s.set.id));
     if (toFetch.length === 0) return;
@@ -225,7 +277,6 @@ export function ForecastDashboard() {
       } catch {
         // Trend fetch is best-effort
       }
-      // Small delay between requests to avoid Google rate limiting
       await new Promise((r) => setTimeout(r, 300));
     }
   }, []);
@@ -239,19 +290,19 @@ export function ForecastDashboard() {
         setShowingTopBuys(false);
       }
 
-      // For local filtering, apply immediately
-      // For API search, debounce
       if (debounceRef.current) clearTimeout(debounceRef.current);
 
       if (value.trim().length >= 2) {
         debounceRef.current = setTimeout(() => {
           setApiQuery(value.trim());
+          setRevealedIds(new Set());
           searchApi(value.trim());
         }, 500);
       } else {
         setApiQuery("");
         setApiResults([]);
         setSearchError(null);
+        setSearchComplete(false);
       }
     },
     [searchApi]
@@ -286,8 +337,6 @@ export function ForecastDashboard() {
         const trend = trendScores.get(item.set.id);
         if (!trend) return item;
 
-        // For dynamic products: replace neutral popularity with trend score
-        // For curated products: blend hand-tuned (60%) with trend (40%)
         const newPopularity =
           item.set.curated === false
             ? trend.score
@@ -309,25 +358,21 @@ export function ForecastDashboard() {
     [trendScores]
   );
 
-   // Combine curated + API results
+  // Combine curated + API results
   const allSets = useMemo(() => {
-    // Top Buys mode: show pre-computed top buy opportunities
     if (showingTopBuys) {
       return applyTrends(topBuys);
     }
 
-    // Not yet interacted: return empty so the empty state shows
     if (!hasInteracted) {
       return [];
     }
 
     const hasApiSearch = apiQuery.length >= 2;
 
-    // If searching, show API results + matching curated
     if (hasApiSearch) {
       const q = search.toLowerCase();
 
-      // Matching curated sets (local filter)
       const matchingCurated = showCurated
         ? curatedForecasts.filter(
             (r) =>
@@ -337,7 +382,6 @@ export function ForecastDashboard() {
           )
         : [];
 
-      // Deduplicate: API results override matching curated
       const curatedIds = new Set(matchingCurated.map((r) => r.set.id));
       const apiDeduped = apiResults.filter(
         (r) => !curatedIds.has(r.set.id) && !r.set.id.startsWith("dynamic-") || r.set.id.startsWith("dynamic-")
@@ -346,19 +390,16 @@ export function ForecastDashboard() {
       return applyTrends([...matchingCurated, ...apiDeduped]);
     }
 
-    // No search: show all curated
     return applyTrends(curatedForecasts);
   }, [curatedForecasts, apiResults, apiQuery, search, showCurated, applyTrends, hasInteracted, showingTopBuys, topBuys]);
 
   const filtered = useMemo(() => {
     let result = allSets;
 
-    // Signal filter
     if (filter !== "All") {
       result = result.filter((r) => r.forecast.signal === filter);
     }
 
-    // Sort
     result = [...result].sort((a, b) => {
       let cmp = 0;
       switch (sortBy) {
@@ -385,6 +426,38 @@ export function ForecastDashboard() {
 
     return result;
   }, [allSets, filter, sortBy, sortDir]);
+
+  // Determine mode: is this a search result view or a curated/list view?
+  const isSearchMode = apiQuery.length >= 2;
+  const isCuratedMode = !isSearchMode && (showingTopBuys || hasInteracted);
+
+  // For curated mode: the items to display (paginated by scroll)
+  const visibleFiltered = useMemo(() => {
+    if (isSearchMode) return filtered; // search shows all at once
+    return filtered.slice(0, visibleCount);
+  }, [filtered, visibleCount, isSearchMode]);
+
+  const hasMoreToLoad = isCuratedMode && visibleCount < filtered.length;
+
+  // Intersection Observer for progressive scroll loading
+  useEffect(() => {
+    if (!isCuratedMode || !sentinelRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMoreToLoad) {
+          // Simulate a brief load delay for smooth UX
+          setTimeout(() => {
+            setVisibleCount((prev) => prev + SCROLL_BATCH);
+          }, 200);
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    observer.observe(sentinelRef.current);
+    return () => observer.disconnect();
+  }, [isCuratedMode, hasMoreToLoad]);
 
   const toggleSort = (field: SortField) => {
     if (sortBy === field) {
@@ -480,7 +553,6 @@ export function ForecastDashboard() {
           </button>
         ))}
 
-        {/* Toggle curated when searching */}
         {apiQuery.length >= 2 && (
           <button
             type="button"
@@ -497,10 +569,10 @@ export function ForecastDashboard() {
       </div>
 
       {/* Results count */}
-      {hasInteracted && (
+      {hasInteracted && !isSearching && (
         <div className="flex items-center gap-3">
           <p className="text-xs text-[hsl(var(--muted-foreground))]">
-            Showing {filtered.length} {showingTopBuys ? "top buy opportunities" : apiQuery.length >= 2 ? "results" : `of ${totalSets} sets`}
+            Showing {visibleFiltered.length}{isCuratedMode && filtered.length > visibleFiltered.length ? ` of ${filtered.length}` : ""} {showingTopBuys ? "top buy opportunities" : apiQuery.length >= 2 ? "results" : `of ${totalSets} sets`}
             {apiQuery.length >= 2 && apiResults.length > 0 && (
               <span className="ml-1">
                 ({apiResults.filter((r) => !r.set.curated).length} from PokeData)
@@ -520,11 +592,6 @@ export function ForecastDashboard() {
               ← Back
             </button>
           )}
-          {isSearching && apiResults.length > 0 && (
-            <p className="text-xs text-[hsl(var(--poke-yellow))] animate-pulse">
-              Loading more products…
-            </p>
-          )}
           {searchError && (
             <p className="text-xs text-red-400">{searchError}</p>
           )}
@@ -538,14 +605,12 @@ export function ForecastDashboard() {
             {/* Pokéball + magnifying glass icon */}
             <div className="relative mx-auto mb-6 w-24 h-24">
               <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-lg" aria-hidden="true">
-                {/* Pokéball body */}
                 <circle cx="50" cy="50" r="46" fill="none" stroke="hsl(var(--poke-yellow))" strokeWidth="3" opacity="0.3" />
                 <path d="M 4 50 A 46 46 0 0 1 96 50" fill="hsl(var(--poke-red))" opacity="0.15" />
                 <path d="M 4 50 A 46 46 0 0 0 96 50" fill="hsl(var(--border))" opacity="0.1" />
                 <line x1="4" y1="50" x2="96" y2="50" stroke="hsl(var(--poke-yellow))" strokeWidth="2.5" opacity="0.25" />
                 <circle cx="50" cy="50" r="12" fill="none" stroke="hsl(var(--poke-yellow))" strokeWidth="2.5" opacity="0.4" />
                 <circle cx="50" cy="50" r="6" fill="hsl(var(--poke-yellow))" opacity="0.3" />
-                {/* Magnifying glass */}
                 <circle cx="62" cy="38" r="14" fill="none" stroke="hsl(var(--poke-yellow))" strokeWidth="3" opacity="0.7" />
                 <line x1="72" y1="48" x2="84" y2="60" stroke="hsl(var(--poke-yellow))" strokeWidth="3.5" strokeLinecap="round" opacity="0.7" />
               </svg>
@@ -598,36 +663,115 @@ export function ForecastDashboard() {
         </div>
       )}
 
-      {/* Cards grid */}
-      {(hasInteracted || showingTopBuys) && filtered.length > 0 && (
+      {/* Skeleton loading state — search in progress, no results yet */}
+      {isSearching && !searchComplete && (
+        <div className="space-y-4">
+          <div className="text-center">
+            <p className="text-sm text-[hsl(var(--muted-foreground))] animate-pulse">
+              Fetching pricing data for &quot;{apiQuery}&quot;…
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <SkeletonForecastCard key={i} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Search results — all at once with staggered fade-in */}
+      {isSearchMode && searchComplete && filtered.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
           {filtered.map(({ set, forecast }) => (
-            <SetForecastCard key={set.id} set={set} forecast={forecast} />
+            <div
+              key={set.id}
+              className={`transition-all duration-300 ${
+                revealedIds.has(set.id)
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-4"
+              }`}
+            >
+              <SetForecastCard set={set} forecast={forecast} />
+            </div>
           ))}
         </div>
       )}
 
-      {hasInteracted && filtered.length === 0 && !isSearching && (
+      {/* Curated / Top Buys — progressive scroll loading */}
+      {isCuratedMode && !isSearchMode && visibleFiltered.length > 0 && (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            {visibleFiltered.map(({ set, forecast }, index) => (
+              <div
+                key={set.id}
+                className="animate-fade-in-up"
+                style={{ animationDelay: `${(index % SCROLL_BATCH) * 60}ms` }}
+              >
+                <SetForecastCard set={set} forecast={forecast} />
+              </div>
+            ))}
+          </div>
+
+          {/* Scroll sentinel + loading indicator */}
+          {hasMoreToLoad && (
+            <div ref={sentinelRef} className="flex justify-center py-6">
+              <div className="flex items-center gap-2 text-sm text-[hsl(var(--muted-foreground))]">
+                <div className="flex gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--poke-yellow))] animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--poke-yellow))] animate-pulse" style={{ animationDelay: "0.2s" }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--poke-yellow))] animate-pulse" style={{ animationDelay: "0.4s" }} />
+                </div>
+                Loading more…
+              </div>
+            </div>
+          )}
+
+          {/* End of list */}
+          {!hasMoreToLoad && filtered.length > SCROLL_BATCH && (
+            <p className="text-center text-xs text-[hsl(var(--muted-foreground))]/50 py-4">
+              You&apos;ve reached the end · {filtered.length} products shown
+            </p>
+          )}
+        </>
+      )}
+
+      {/* No results (search complete, nothing found) */}
+      {hasInteracted && !isSearching && filtered.length === 0 && searchComplete && isSearchMode && (
         <div className="text-center py-12 text-[hsl(var(--muted-foreground))]">
-          <p className="text-lg font-semibold mb-1">
-            {apiQuery.length >= 2
-              ? "No sealed products found"
-              : "No sets match your filters"}
-          </p>
+          <p className="text-lg font-semibold mb-1">No sealed products found</p>
           <p className="text-sm">
-            {apiQuery.length >= 2
-              ? "Try a different search term — e.g. \"Celebrations\", \"Shining Fates\", \"Booster Box\""
-              : "Try adjusting your search or filter criteria."}
+            Try a different search term — e.g. &quot;Celebrations&quot;, &quot;Shining Fates&quot;, &quot;Booster Box&quot;
           </p>
         </div>
       )}
 
-      {isSearching && filtered.length === 0 && (
+      {/* No results (curated mode, filters active) */}
+      {hasInteracted && !isSearching && filtered.length === 0 && !isSearchMode && (
+        <div className="text-center py-12 text-[hsl(var(--muted-foreground))]">
+          <p className="text-lg font-semibold mb-1">No sets match your filters</p>
+          <p className="text-sm">Try adjusting your search or filter criteria.</p>
+        </div>
+      )}
+
+      {/* Search error state */}
+      {searchError && !isSearching && (
         <div className="text-center py-12">
-          <div className="inline-block h-8 w-8 rounded-full border-3 border-[hsl(var(--poke-yellow))] border-t-transparent animate-spin mb-3" />
-          <p className="text-sm text-[hsl(var(--muted-foreground))]">
-            Searching PokeData for &quot;{apiQuery}&quot;…
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-500/10 mb-3">
+            <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path d="M12 9v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <p className="text-sm text-red-400 font-medium mb-1">Search failed</p>
+          <p className="text-xs text-[hsl(var(--muted-foreground))]">
+            Check your connection and try again.
           </p>
+          <button
+            type="button"
+            onClick={() => searchApi(apiQuery)}
+            className="mt-3 text-xs text-[hsl(var(--poke-yellow))] hover:underline"
+          >
+            Retry search
+          </button>
         </div>
       )}
 
