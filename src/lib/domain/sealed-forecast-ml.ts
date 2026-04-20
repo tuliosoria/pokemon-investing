@@ -117,6 +117,13 @@ interface ModelPrediction {
   spreadPercent: number;
 }
 
+interface GuardrailedPredictions {
+  oneYearPrice: number;
+  threeYearPrice: number;
+  fiveYearPrice: number;
+  spreadPercent: number;
+}
+
 const FEATURE_LABELS: Record<FeatureKey, string> = {
   current_price: "Current Price",
   most_expensive_card_price: "Top Chase Card Value",
@@ -253,6 +260,10 @@ function formatYears(value: number): string {
   return `${round(value, 1)}yr`;
 }
 
+function blendTowardNeutral(value: number, weight: number, neutral = 50): number {
+  return round(neutral + (value - neutral) * weight, 2);
+}
+
 function formatRatio(value: number): string {
   return `${Math.round(value * 100)}%`;
 }
@@ -316,6 +327,26 @@ function inferSetAgeYears(set: SealedSetData, manifestProduct?: ManifestProduct)
   const now = new Date();
   const ageMs = Math.max(now.getTime() - releaseDate.getTime(), 0);
   return round(ageMs / (365.25 * 24 * 60 * 60 * 1000), 4);
+}
+
+function launchSignalWeight(ageYears: number): number {
+  if (ageYears < 0.08) {
+    return 0.15;
+  }
+  if (ageYears < 0.25) {
+    return 0.35;
+  }
+  if (ageYears < 0.5) {
+    return 0.55;
+  }
+  if (ageYears < 1) {
+    return 0.75;
+  }
+  return 1;
+}
+
+function isBroadPrintRun(printRunTypeEncoded: number): boolean {
+  return printRunTypeEncoded <= PRINT_RUN_ENCODING.Standard;
 }
 
 function marketCycleForYear(year: number): number {
@@ -425,10 +456,21 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
   let estimatedFactors = 0;
 
   const setAgeYears = inferSetAgeYears(set, manifestProduct);
-  const popularityScore = clamp(
+  const printRunType =
+    manifestProduct?.printRunType ??
+    set.printRunLabel;
+  const demandSignalWeight = isBroadPrintRun(PRINT_RUN_ENCODING[printRunType])
+    ? launchSignalWeight(setAgeYears)
+    : 1;
+  const rawPopularityScore = clamp(
     set.factors.popularity ||
       manifestProduct?.popularityScore ||
       (set.trendData?.current ? set.trendData.current : 50),
+    0,
+    100
+  );
+  const popularityScore = clamp(
+    blendTowardNeutral(rawPopularityScore, demandSignalWeight),
     0,
     100
   );
@@ -452,11 +494,16 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     estimatedFactors += 1;
   }
 
-  const googleTrendsScore =
+  const rawGoogleTrendsScore =
     set.trendData?.current ??
     manifestProduct?.googleTrendsScore ??
     set.factors.popularity ??
     50;
+  const googleTrendsScore = clamp(
+    blendTowardNeutral(rawGoogleTrendsScore, demandSignalWeight),
+    0,
+    100
+  );
   if (!set.trendData && !manifestProduct && !isCurated) {
     estimatedFactors += 1;
   }
@@ -485,10 +532,6 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
   const era =
     manifestProduct?.era ??
     resolveEraFromYear(set.releaseYear);
-
-  const printRunType =
-    manifestProduct?.printRunType ??
-    set.printRunLabel;
 
   const marketCycleScore = clamp(
     set.factors.marketCycle || manifestProduct?.marketCycleScore || marketCycleForYear(new Date().getUTCFullYear()),
@@ -632,6 +675,83 @@ function resolveConfidence(spreadPercent: number): Confidence {
   return "Low";
 }
 
+function lacksHistoricalTrajectory(input: FeatureInput): boolean {
+  return (
+    Math.abs(input.values.price_trajectory_6mo) < 0.001 &&
+    Math.abs(input.values.price_trajectory_24mo) < 0.001
+  );
+}
+
+function capPredictionByAnnualRate(
+  currentPrice: number,
+  years: number,
+  annualRate: number
+): number {
+  return round(currentPrice * Math.pow(1 + annualRate, years), 2);
+}
+
+function applySparseLaunchGuardrails(
+  input: FeatureInput,
+  rawPredictions: GuardrailedPredictions
+): GuardrailedPredictions {
+  const currentPrice = input.values.current_price;
+  const setAgeYears = input.values.set_age_years;
+  const printRunTypeEncoded = input.values.print_run_type_encoded;
+
+  const isSparseLaunch =
+    currentPrice > 0 &&
+    setAgeYears < 1 &&
+    isBroadPrintRun(printRunTypeEncoded) &&
+    lacksHistoricalTrajectory(input);
+
+  if (!isSparseLaunch) {
+    return rawPredictions;
+  }
+
+  let annualCap =
+    setAgeYears < 0.08
+      ? 0.05
+      : setAgeYears < 0.25
+        ? 0.08
+        : setAgeYears < 0.5
+          ? 0.1
+          : 0.14;
+
+  if (printRunTypeEncoded < PRINT_RUN_ENCODING.Standard) {
+    annualCap -= 0.02;
+  }
+  if (input.estimatedFactors >= 4) {
+    annualCap -= 0.02;
+  }
+  if (input.estimatedFactors <= 2) {
+    annualCap += 0.01;
+  }
+  if (rawPredictions.spreadPercent <= 20) {
+    annualCap += 0.01;
+  }
+  if (rawPredictions.spreadPercent > 35) {
+    annualCap -= 0.01;
+  }
+
+  annualCap = clamp(annualCap, 0.04, 0.16);
+
+  return {
+    oneYearPrice: Math.min(
+      rawPredictions.oneYearPrice,
+      capPredictionByAnnualRate(currentPrice, 1, annualCap)
+    ),
+    threeYearPrice: Math.min(
+      rawPredictions.threeYearPrice,
+      capPredictionByAnnualRate(currentPrice, 3, annualCap)
+    ),
+    fiveYearPrice: Math.min(
+      rawPredictions.fiveYearPrice,
+      capPredictionByAnnualRate(currentPrice, 5, annualCap)
+    ),
+    spreadPercent: Math.max(rawPredictions.spreadPercent, 45),
+  };
+}
+
 function normalizeFeatureContributions(
   input: FeatureInput,
   localImpacts: Map<FeatureKey, number>,
@@ -671,9 +791,15 @@ function buildForecast(
   const prediction1yr = runModel(models.oneYear, input.values);
   const prediction3yr = runModel(models.threeYear, input.values);
   const prediction5yr = runModel(models.fiveYear, input.values);
+  const adjustedPredictions = applySparseLaunchGuardrails(input, {
+    oneYearPrice: Math.max(prediction1yr.predictedPrice, 0),
+    threeYearPrice: Math.max(prediction3yr.predictedPrice, 0),
+    fiveYearPrice: Math.max(prediction5yr.predictedPrice, 0),
+    spreadPercent: prediction5yr.spreadPercent,
+  });
 
   const currentPrice = Math.max(set.currentPrice, 0);
-  const predictedFiveYearPrice = Math.max(prediction5yr.predictedPrice, 0);
+  const predictedFiveYearPrice = adjustedPredictions.fiveYearPrice;
   const projectedValue = Math.round(predictedFiveYearPrice);
   const dollarGain = round(predictedFiveYearPrice - currentPrice, 2);
   const roiPercent =
@@ -685,7 +811,7 @@ function buildForecast(
 
   const signal: Signal =
     benchmarkDelta >= 10 ? "Buy" : benchmarkDelta >= 0 ? "Hold" : "Sell";
-  const confidence = resolveConfidence(prediction5yr.spreadPercent);
+  const confidence = resolveConfidence(adjustedPredictions.spreadPercent);
   const confidenceBonus =
     confidence === "High" ? 5 : confidence === "Medium" ? 2 : 0;
   const rawScore = clamp(Math.round(50 + benchmarkDelta * 0.55 + confidenceBonus), 1, 99);
@@ -716,10 +842,10 @@ function buildForecast(
       models.fiveYear.globalImportance
     ),
     estimatedFactors: input.estimatedFactors,
-    predictionSpreadPercent: prediction5yr.spreadPercent,
+    predictionSpreadPercent: adjustedPredictions.spreadPercent,
     horizonPredictions: {
-      oneYear: Math.max(Math.round(prediction1yr.predictedPrice), 0),
-      threeYear: Math.max(Math.round(prediction3yr.predictedPrice), 0),
+      oneYear: Math.max(Math.round(adjustedPredictions.oneYearPrice), 0),
+      threeYear: Math.max(Math.round(adjustedPredictions.threeYearPrice), 0),
       fiveYear: projectedValue,
     },
   };

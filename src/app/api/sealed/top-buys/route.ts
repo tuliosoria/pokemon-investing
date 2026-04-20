@@ -2,12 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { cacheGet, cachePut } from "@/lib/db/cache";
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
 import { getSealedForecastModels } from "@/lib/db/sealed-forecast-models";
-import { buildDynamicSetData } from "@/lib/domain/sealed-estimate";
+import { buildDynamicSetData, inferProductType } from "@/lib/domain/sealed-estimate";
 import { getTopBuyOpportunities } from "@/lib/domain/top-buys";
 import type { ProductType, SealedSetData, SealedPricing } from "@/lib/types/sealed";
 
 const POKEDATA_PRODUCTS_URL = "https://www.pokedata.io/api/products";
 const CACHE_TTL = 30 * 60;
+const VARIANT_WORDS = ["costco", "walmart", "target", "pokemon center", "display"];
 
 interface PokeDataCatalogProduct {
   id: number | string;
@@ -26,6 +27,44 @@ function normalizeTopBuyKey({ name, productType }: Pick<SealedSetData, "name" | 
     .toLowerCase();
 }
 
+function normalizeCatalogName(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[''`]/g, "")
+    .replace(/&/g, "and")
+    .toLowerCase()
+    .trim();
+}
+
+function buildCatalogSet(pricing: SealedPricing): SealedSetData {
+  const dynamicSet = buildDynamicSetData(pricing);
+  const productType = inferProductType(pricing.name);
+  const pricingNorm = normalizeCatalogName(pricing.name);
+  const isVariant = VARIANT_WORDS.some((variant) => pricingNorm.includes(variant));
+
+  if (isVariant) {
+    return dynamicSet;
+  }
+
+  const curatedMatch = SEALED_SETS.find(
+    (set) =>
+      set.productType === productType &&
+      pricingNorm.includes(normalizeCatalogName(set.name))
+  );
+
+  if (!curatedMatch) {
+    return dynamicSet;
+  }
+
+  return {
+    ...curatedMatch,
+    currentPrice: pricing.bestPrice ?? curatedMatch.currentPrice,
+    pokedataId: pricing.pokedataId,
+    imageUrl: pricing.imageUrl ?? curatedMatch.imageUrl,
+  };
+}
+
 function mergeTopBuySets(dynamicSets: SealedSetData[]): SealedSetData[] {
   const merged = new Map<string, SealedSetData>();
 
@@ -34,7 +73,26 @@ function mergeTopBuySets(dynamicSets: SealedSetData[]): SealedSetData[] {
   }
 
   for (const set of SEALED_SETS) {
-    merged.set(normalizeTopBuyKey(set), set);
+    const key = normalizeTopBuyKey(set);
+    const existing = merged.get(key);
+
+    if (!existing) {
+      merged.set(key, set);
+      continue;
+    }
+
+    if (existing.curated) {
+      continue;
+    }
+
+    merged.set(key, {
+      ...set,
+      currentPrice: existing.currentPrice > 0 ? existing.currentPrice : set.currentPrice,
+      imageUrl: existing.imageUrl ?? set.imageUrl,
+      pokedataId: existing.pokedataId ?? set.pokedataId,
+      tcgplayerUrl: existing.tcgplayerUrl ?? set.tcgplayerUrl,
+      trendData: existing.trendData ?? set.trendData,
+    });
   }
 
   return [...merged.values()];
@@ -143,7 +201,7 @@ export async function GET(request: NextRequest) {
         !String(product.name ?? "").toLowerCase().includes("code card")
     )
     .map(toDynamicPricing)
-    .map(buildDynamicSetData);
+    .map(buildCatalogSet);
 
   const models = await getSealedForecastModels();
   const results = getTopBuyOpportunities(

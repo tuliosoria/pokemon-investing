@@ -359,13 +359,47 @@ export function ForecastDashboard() {
         ? (data.opportunities as TopBuyApiOpportunity[])
         : [];
 
-      setTopBuyResults(
-        opportunities.flatMap((opportunity) =>
-          opportunity.set && opportunity.forecast
-            ? [{ set: opportunity.set, forecast: opportunity.forecast }]
-            : []
-        )
+      const baseResults = opportunities.flatMap((opportunity) =>
+        opportunity.set && opportunity.forecast
+          ? [{ set: opportunity.set, forecast: opportunity.forecast }]
+          : []
       );
+
+      if (baseResults.length === 0) {
+        setTopBuyResults([]);
+        setTopBuysLoaded(true);
+        return;
+      }
+
+      const opportunitySets = baseResults.map((result) => result.set);
+
+      try {
+        const trendMap = await fetchTrendSnapshots(opportunitySets);
+        const trendedSets = opportunitySets.map((set) => {
+          const trend = trendMap.get(set.id);
+          return trend ? applyTrendToSet(set, trend) : set;
+        });
+
+        const refreshedResults = await requestForecasts(trendedSets);
+        const rerankedBuys = refreshedResults
+          .filter((result) => result.forecast.signal === "Buy")
+          .sort((a, b) => b.forecast.compositeScore - a.forecast.compositeScore)
+          .slice(0, opportunities.length);
+
+        if (rerankedBuys.length > 0) {
+          setTopBuyResults(rerankedBuys);
+        } else {
+          setTopBuyResults(
+            baseResults.map((result, index) => ({
+              ...result,
+              set: trendedSets[index] ?? result.set,
+            }))
+          );
+        }
+      } catch {
+        setTopBuyResults(baseResults);
+      }
+
       setTopBuysLoaded(true);
     } catch {
       setTopBuyResults([]);
@@ -1280,6 +1314,12 @@ export function ForecastDashboard() {
               Estimated
             </span>
             badge on those cards.
+          </p>
+          <p>
+            <strong className="text-[hsl(var(--foreground))]">Brand-new standard-print sets</strong>{" "}
+            with less than 12 months of history have their launch-week hype signals damped
+            and are forced to Low confidence so the model does not hallucinate 1000%+
+            upside from zero trajectory data.
           </p>
           <p>
             Buy / Hold / Sell is derived from projected 5-year ROI versus an S&amp;P 500

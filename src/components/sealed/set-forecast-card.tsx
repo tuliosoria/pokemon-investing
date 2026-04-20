@@ -165,50 +165,71 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
             {matchesBenchmark && " over 5 years"}
           </p>
 
-          {set.trendData && (
-            <div className="flex items-center gap-2 text-[11px]">
-              <span
-                className={`rounded-full px-2 py-0.5 font-semibold ${
-                  set.trendData.direction === "rising"
-                    ? "bg-green-500/20 text-green-400"
+          <div className="space-y-2 rounded-xl border border-white/10 bg-white/[0.03] p-3">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[hsl(var(--muted-foreground))]">
+              Google Trends
+            </p>
+            {set.trendData ? (
+              <div className="flex flex-wrap items-center gap-2 text-[11px]">
+                <span
+                  className={`rounded-full px-2 py-0.5 font-semibold ${
+                    set.trendData.direction === "rising"
+                      ? "bg-green-500/20 text-green-400"
+                      : set.trendData.direction === "declining"
+                        ? "bg-red-500/20 text-red-400"
+                        : "bg-gray-500/20 text-gray-400"
+                  }`}
+                >
+                  {set.trendData.direction === "rising"
+                    ? "📈 Trending Up"
                     : set.trendData.direction === "declining"
-                      ? "bg-red-500/20 text-red-400"
-                      : "bg-gray-500/20 text-gray-400"
-                }`}
+                      ? "📉 Trending Down"
+                      : "➡️ Stable Interest"}
+                </span>
+                {hasTrendScore ? (
+                  <span className="text-[hsl(var(--muted-foreground))]">
+                    {trendScore}/100 interest score
+                  </span>
+                ) : (
+                  <span
+                    className="text-gray-300"
+                    title="Trend data unavailable for this set"
+                  >
+                    <span className="italic">N/A</span>
+                  </span>
+                )}
+              </div>
+            ) : (
+              <p
+                className="text-[11px] text-[hsl(var(--muted-foreground))]"
+                title="Trend data unavailable for this set"
               >
-                {set.trendData.direction === "rising"
-                  ? "📈 Trending Up"
-                  : set.trendData.direction === "declining"
-                    ? "📉 Trending Down"
-                    : "➡️ Stable Interest"}
-              </span>
-              {hasTrendScore ? (
-                <span className="text-[hsl(var(--muted-foreground))]">
-                  Google Trends: {trendScore}/100
-                </span>
-              ) : (
-                <span
-                  className="text-gray-300"
-                  title="Trend data unavailable for this set"
-                >
-                  Google Trends: <span className="italic">N/A</span>
-                </span>
-              )}
-            </div>
-          )}
+                <span className="italic">N/A</span>
+              </p>
+            )}
+          </div>
 
-          {set.chaseCards.length > 0 && (
-            <div className="flex max-h-[64px] flex-wrap gap-2 overflow-hidden">
-              {set.chaseCards.map((card) => (
-                <span
-                  key={card}
-                  className="inline-flex items-center rounded-md border border-[#FFCB05]/20 border-l-[3px] border-l-[#FFCB05] bg-[rgba(255,203,5,0.1)] px-2.5 py-1 text-[10px] font-medium text-[#FFE58A]"
-                >
-                  {card}
-                </span>
-              ))}
-            </div>
-          )}
+          <div className="space-y-2">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[hsl(var(--muted-foreground))]">
+              Top cards in set
+            </p>
+            {set.chaseCards.length > 0 ? (
+              <div className="flex max-h-[64px] flex-wrap gap-2 overflow-hidden">
+                {set.chaseCards.map((card) => (
+                  <span
+                    key={card}
+                    className="inline-flex items-center rounded-md border border-[#FFCB05]/20 border-l-[3px] border-l-[#FFCB05] bg-[rgba(255,203,5,0.1)] px-2.5 py-1 text-[10px] font-medium text-[#FFE58A]"
+                  >
+                    {card}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p className="text-[11px] text-[hsl(var(--muted-foreground))]">
+                Top card data unavailable for this product.
+              </p>
+            )}
+          </div>
 
           <div className="flex items-center gap-2 text-[10px]">
             <span
