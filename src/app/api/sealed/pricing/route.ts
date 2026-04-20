@@ -85,7 +85,7 @@ export async function GET(request: NextRequest) {
       pokedataId: String(data.id ?? id),
       name: data.name ?? "",
       releaseDate: data.release_date ?? null,
-      imageUrl,
+      imageUrl: imageUrl ?? data.img_url ?? null,
       tcgplayerPrice: tcg,
       ebayPrice: ebay,
       pokedataPrice: poke,

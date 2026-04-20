@@ -195,6 +195,10 @@ export function ForecastDashboard() {
                 } as SealedPricing;
               }
               const { pricing } = (await res.json()) as { pricing: SealedPricing };
+              // Prefer search result image if pricing API didn't return one
+              if (pricing && !pricing.imageUrl && p.imageUrl) {
+                pricing.imageUrl = p.imageUrl;
+              }
               return pricing;
             } catch {
               return null;
