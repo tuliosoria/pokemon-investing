@@ -14,6 +14,7 @@ import type {
 } from "@/lib/types/sealed";
 import { SetForecastCard } from "./set-forecast-card";
 import { SkeletonForecastCard } from "./skeleton-forecast-card";
+import { useSealedTcgplayerUrl } from "./use-sealed-tcgplayer-url";
 
 const SCROLL_BATCH = 6;
 const MIN_LOADING_MS = 400;
@@ -33,6 +34,7 @@ interface SearchUnavailableCardData {
   productType: string;
   releaseYear: number | null;
   imageUrl: string | null;
+  tcgplayerUrl?: string | null;
 }
 
 interface TopBuyApiOpportunity {
@@ -143,6 +145,12 @@ function SearchUnavailableCard({
 }: {
   card: SearchUnavailableCardData;
 }) {
+  const { tcgplayerUrl, isLoading: isLoadingTcgplayerUrl } = useSealedTcgplayerUrl({
+    name: card.name,
+    productType: card.productType,
+    initialUrl: card.tcgplayerUrl,
+  });
+
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-900/80 shadow-[0_18px_50px_rgba(0,0,0,0.24)]">
       <div className="relative h-[200px] flex-shrink-0 overflow-hidden bg-[#101827]">
@@ -184,9 +192,27 @@ function SearchUnavailableCard({
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4 text-sm leading-relaxed text-slate-300">
-          Pricing or image data could not be loaded in time for this product.
-          Try the search again to retry the live lookup.
+        <div className="space-y-3">
+          <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4 text-sm leading-relaxed text-slate-300">
+            Pricing or image data could not be loaded in time for this product.
+            Try the search again to retry the live lookup.
+          </div>
+
+          {tcgplayerUrl ? (
+            <a
+              href={tcgplayerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[hsl(var(--poke-yellow))] px-4 py-2.5 text-sm font-semibold text-[hsl(var(--poke-blue))] transition hover:brightness-105"
+            >
+              Buy on TCGPlayer
+              <span aria-hidden="true">↗</span>
+            </a>
+          ) : isLoadingTcgplayerUrl ? (
+            <p className="text-center text-[11px] text-slate-400/80">
+              Finding TCGPlayer listing…
+            </p>
+          ) : null}
         </div>
 
         <div className="mt-auto pt-5 text-xs text-slate-400/80">

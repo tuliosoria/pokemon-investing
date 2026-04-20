@@ -7,9 +7,14 @@ import { getBestPrice } from "@/lib/types/card";
 interface CardSearchProps {
   onCardSelect: (card: CardSearchResult, rawPrice: number, variant: string) => void;
   onGradeDataLoaded: (gradeData: GradeData) => void;
+  onClearCard: () => void;
 }
 
-export function CardSearch({ onCardSelect, onGradeDataLoaded }: CardSearchProps) {
+export function CardSearch({
+  onCardSelect,
+  onGradeDataLoaded,
+  onClearCard,
+}: CardSearchProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<CardSearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +24,7 @@ export function CardSearch({ onCardSelect, onGradeDataLoaded }: CardSearchProps)
   const [selectedVariant, setSelectedVariant] = useState<string>("");
   const [gradeData, setGradeData] = useState<GradeData | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const gradeAbortRef = useRef<AbortController | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -71,6 +77,9 @@ export function CardSearch({ onCardSelect, onGradeDataLoaded }: CardSearchProps)
 
   async function handleSelect(card: CardSearchResult) {
     const best = getBestPrice(card.prices);
+    gradeAbortRef.current?.abort();
+    const gradeController = new AbortController();
+    gradeAbortRef.current = gradeController;
     setSelectedCard(card);
     setQuery("");
     setIsOpen(false);
@@ -91,7 +100,9 @@ export function CardSearch({ onCardSelect, onGradeDataLoaded }: CardSearchProps)
       const params = new URLSearchParams({ name: card.name, set: card.set });
       if (card.number) params.set("number", card.number);
       if (card.id) params.set("tcgId", card.id);
-      const res = await fetch(`/api/cards/grade-data?${params}`);
+      const res = await fetch(`/api/cards/grade-data?${params}`, {
+        signal: gradeController.signal,
+      });
       if (res.ok) {
         const body = await res.json();
         if (body.gradeData) {
@@ -99,10 +110,13 @@ export function CardSearch({ onCardSelect, onGradeDataLoaded }: CardSearchProps)
           onGradeDataLoaded(body.gradeData);
         }
       }
-    } catch {
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "AbortError") return;
       // Grade data is optional — fallback to estimates
     } finally {
-      setIsLoadingGrades(false);
+      if (!gradeController.signal.aborted) {
+        setIsLoadingGrades(false);
+      }
     }
   }
 
@@ -122,10 +136,17 @@ export function CardSearch({ onCardSelect, onGradeDataLoaded }: CardSearchProps)
   }
 
   function clearCard() {
+    abortRef.current?.abort();
+    gradeAbortRef.current?.abort();
     setSelectedCard(null);
     setSelectedVariant("");
     setGradeData(null);
     setQuery("");
+    setResults([]);
+    setIsOpen(false);
+    setIsLoading(false);
+    setIsLoadingGrades(false);
+    onClearCard();
   }
 
   const formatVariant = (v: string) => v;

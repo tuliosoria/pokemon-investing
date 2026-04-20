@@ -17,12 +17,16 @@ import {
   ArrowUpDown,
   Loader2,
   AlertTriangle,
+  Info,
   CheckCircle,
   XCircle,
   HelpCircle,
   ChevronDown,
   BarChart3,
 } from "lucide-react";
+
+const PSA_PROBABILITY_TOOLTIP =
+  "Historical PSA 10 gem rate for this exact card based on source population data. It reflects all previously graded copies, not the odds for a fresh raw copy today.";
 
 type SortField = "ev" | "roi" | "psa10Spread" | "rawPrice";
 type FilterVerdict = "all" | "grade" | "maybe" | "dont_grade";
@@ -452,6 +456,7 @@ function OpportunityCard({
             <MetricCard
               label="PSA 10 Chance"
               value={`${opp.psa10Probability}%`}
+              labelTitle={PSA_PROBABILITY_TOOLTIP}
             />
           </div>
 
@@ -552,11 +557,13 @@ function SummaryBadge({
 function MetricCard({
   label,
   value,
+  labelTitle,
   positive,
   highlight,
 }: {
   label: string;
   value: string;
+  labelTitle?: string;
   positive?: boolean;
   highlight?: boolean;
 }) {
@@ -568,8 +575,12 @@ function MetricCard({
           : "bg-[hsl(var(--muted))]"
       }`}
     >
-      <p className="text-[10px] uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
-        {label}
+      <p
+        className="flex items-center gap-1 text-[10px] uppercase tracking-wider text-[hsl(var(--muted-foreground))]"
+        title={labelTitle}
+      >
+        <span>{label}</span>
+        {labelTitle && <Info className="h-3 w-3 shrink-0" aria-hidden="true" />}
       </p>
       <p
         className={`text-sm font-bold mt-0.5 ${

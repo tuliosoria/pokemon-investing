@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, type DefaultValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { gradeEvSchema, type GradeEvFormValues } from "@/lib/schemas/grading";
 import {
@@ -16,12 +16,31 @@ import {
   XCircle,
   HelpCircle,
   ChevronDown,
+  Info,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CardSearch } from "./card-search";
 import { useState, useRef, useEffect } from "react";
 import type { CardSearchResult, GradeData } from "@/lib/types/card";
+
+const DEFAULT_FORM_VALUES: DefaultValues<GradeEvFormValues> = {
+  rawCardValue: undefined,
+  gradingCost: 20,
+  psa10Value: undefined,
+  psa9Value: undefined,
+  psa8Value: 0,
+  probabilityPsa10: 20,
+  probabilityPsa9: 50,
+  probabilityPsa8: 25,
+  marketplaceFeePct: 13.25,
+  shippingCost: 5,
+  insuranceCost: 0,
+  taxAdjustment: 0,
+};
+
+const PSA_PROBABILITY_TOOLTIP =
+  "Historical PSA 10 gem rate for this exact card based on source population data. It reflects all previously graded copies, not the odds for a fresh raw copy today.";
 
 export function GradingCalculator() {
   const [result, setResult] = useState<GradeEvResult | null>(null);
@@ -33,23 +52,11 @@ export function GradingCalculator() {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<GradeEvFormValues>({
     resolver: zodResolver(gradeEvSchema),
-    defaultValues: {
-      rawCardValue: undefined,
-      gradingCost: 20,
-      psa10Value: undefined,
-      psa9Value: undefined,
-      psa8Value: 0,
-      probabilityPsa10: 20,
-      probabilityPsa9: 50,
-      probabilityPsa8: 25,
-      marketplaceFeePct: 13.25,
-      shippingCost: 5,
-      insuranceCost: 0,
-      taxAdjustment: 0,
-    },
+    defaultValues: DEFAULT_FORM_VALUES,
   });
 
   const handleCardSelect = (_card: CardSearchResult, rawPrice: number) => {
@@ -86,6 +93,12 @@ export function GradingCalculator() {
     setResult(null);
   };
 
+  const handleCardClear = () => {
+    reset(DEFAULT_FORM_VALUES);
+    setIsEstimated(false);
+    setResult(null);
+  };
+
   const onSubmit = (data: GradeEvFormValues) => {
     const estimated = estimateGradedValues(data.rawCardValue);
     const res = calculateGradeExpectedValue({
@@ -105,7 +118,11 @@ export function GradingCalculator() {
   return (
     <div className="space-y-5">
       {/* Card search */}
-      <CardSearch onCardSelect={handleCardSelect} onGradeDataLoaded={handleGradeDataLoaded} />
+      <CardSearch
+        onCardSelect={handleCardSelect}
+        onGradeDataLoaded={handleGradeDataLoaded}
+        onClearCard={handleCardClear}
+      />
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Price inputs */}
@@ -157,9 +174,17 @@ export function GradingCalculator() {
 
         {/* Probabilities */}
         <div className="space-y-3">
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
-            Grade probability (%)
-          </h4>
+          <div className="flex items-center gap-1.5">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
+              Grade probability (%)
+            </h4>
+            <span
+              title={PSA_PROBABILITY_TOOLTIP}
+              className="cursor-help text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
+            >
+              <Info className="h-3.5 w-3.5" aria-hidden="true" />
+            </span>
+          </div>
           {errors.probabilityPsa10?.message ===
             "Total grade probabilities cannot exceed 100%" && (
             <p className="text-xs text-red-500 flex items-center gap-1">
@@ -172,6 +197,7 @@ export function GradingCalculator() {
               label="PSA 10 %"
               type="number"
               step="1"
+              title={PSA_PROBABILITY_TOOLTIP}
               error={
                 errors.probabilityPsa10?.message !==
                 "Total grade probabilities cannot exceed 100%"

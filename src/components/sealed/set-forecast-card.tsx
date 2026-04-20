@@ -6,6 +6,7 @@ import { getProjectionData } from "@/lib/domain/sealed-forecast";
 import { SignalBadge, ConfidenceBadge } from "./signal-badge";
 import { RoiChart } from "./roi-chart";
 import { FactorBreakdown } from "./factor-breakdown";
+import { useSealedTcgplayerUrl } from "./use-sealed-tcgplayer-url";
 
 const CARD_HEADER_OVERLAY =
   "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(10,15,30,0.92) 100%)";
@@ -38,6 +39,11 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
   const outperforms = forecast.roiPercent > forecast.spRoi;
   const matchesBenchmark = forecast.roiPercent === forecast.spRoi;
   const isEstimated = forecast.estimatedFactors > 0;
+  const { tcgplayerUrl, isLoading: isLoadingTcgplayerUrl } = useSealedTcgplayerUrl({
+    name: set.name,
+    productType: set.productType,
+    initialUrl: set.tcgplayerUrl,
+  });
 
   const trendScore = set.trendData?.current ?? 0;
   const hasTrendScore = trendScore > 0;
@@ -222,7 +228,23 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
           </div>
         </div>
 
-        <div className="mt-auto pt-5">
+        <div className="mt-auto space-y-3 pt-5">
+          {tcgplayerUrl ? (
+            <a
+              href={tcgplayerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[hsl(var(--poke-yellow))] px-4 py-2.5 text-sm font-semibold text-[hsl(var(--poke-blue))] transition hover:brightness-105"
+            >
+              Buy on TCGPlayer
+              <span aria-hidden="true">↗</span>
+            </a>
+          ) : isLoadingTcgplayerUrl ? (
+            <p className="text-center text-[11px] text-[hsl(var(--muted-foreground))]">
+              Finding TCGPlayer listing…
+            </p>
+          ) : null}
+
           <button
             type="button"
             onClick={() => setShowChart(!showChart)}

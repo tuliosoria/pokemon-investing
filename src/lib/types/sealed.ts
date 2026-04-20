@@ -7,6 +7,7 @@ export interface SealedSetData {
   releaseYear: number;
   currentPrice: number;
   gradient: string;
+  tcgplayerUrl?: string | null;
 
   factors: {
     marketValue: number;
@@ -60,6 +61,7 @@ export interface SealedSearchResult {
   name: string;
   releaseDate: string | null;
   imageUrl: string | null;
+  tcgplayerUrl?: string | null;
 }
 
 /** Pricing returned from PokeData sealed pricing */
@@ -68,6 +70,7 @@ export interface SealedPricing {
   name: string;
   releaseDate: string | null;
   imageUrl: string | null;
+  tcgplayerUrl?: string | null;
   tcgplayerPrice: number | null;
   ebayPrice: number | null;
   pokedataPrice: number | null;
