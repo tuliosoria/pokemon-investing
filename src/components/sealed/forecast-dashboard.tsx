@@ -20,6 +20,7 @@ const MIN_LOADING_MS = 400;
 const SEARCH_TIMEOUT_MS = 8000;
 const IMAGE_PRELOAD_TIMEOUT_MS = 2000;
 const SEARCH_ANIMATION_STAGGER_MS = 50;
+const TOP_BUYS_LIMIT = 100;
 
 interface SetWithForecast {
   set: SealedSetData;
@@ -32,6 +33,11 @@ interface SearchUnavailableCardData {
   productType: string;
   releaseYear: number | null;
   imageUrl: string | null;
+}
+
+interface TopBuyApiOpportunity {
+  set: SealedSetData;
+  forecast: ReturnType<typeof computeForecast>;
 }
 
 interface TrendSnapshot {
@@ -211,6 +217,10 @@ export function ForecastDashboard() {
   const [showCurated, setShowCurated] = useState(true);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [showingTopBuys, setShowingTopBuys] = useState(false);
+  const [topBuyResults, setTopBuyResults] = useState<SetWithForecast[]>([]);
+  const [isLoadingTopBuys, setIsLoadingTopBuys] = useState(false);
+  const [topBuysLoaded, setTopBuysLoaded] = useState(false);
+  const [topBuysError, setTopBuysError] = useState<string | null>(null);
 
   // Search: accumulates results, only rendered once complete
   const [searchComplete, setSearchComplete] = useState(false);
@@ -249,6 +259,40 @@ export function ForecastDashboard() {
     setIsSearching(false);
     setHasInteracted(showingTopBuys || filter !== "All");
   }, [filter, showingTopBuys]);
+
+  const loadTopBuys = useCallback(async () => {
+    if (isLoadingTopBuys) return;
+
+    setIsLoadingTopBuys(true);
+    setTopBuysError(null);
+
+    try {
+      const res = await fetch(`/api/sealed/top-buys?limit=${TOP_BUYS_LIMIT}`);
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+
+      const data = await res.json();
+      const opportunities = Array.isArray(data.opportunities)
+        ? (data.opportunities as TopBuyApiOpportunity[])
+        : [];
+
+      setTopBuyResults(
+        opportunities.flatMap((opportunity) =>
+          opportunity.set && opportunity.forecast
+            ? [{ set: opportunity.set, forecast: opportunity.forecast }]
+            : []
+        )
+      );
+      setTopBuysLoaded(true);
+    } catch {
+      setTopBuyResults([]);
+      setTopBuysError("Failed to load top buy opportunities.");
+      setTopBuysLoaded(true);
+    } finally {
+      setIsLoadingTopBuys(false);
+    }
+  }, [isLoadingTopBuys]);
 
   // Live search — pricing, trends, and image preload all complete before a single render
   const searchApi = useCallback(async (query: string) => {
@@ -633,16 +677,10 @@ export function ForecastDashboard() {
     [trendScores]
   );
 
-  const topBuys = useMemo(() => {
-    return applyTrends(curatedForecasts)
-      .filter(({ forecast }) => forecast.signal === "Buy")
-      .sort((a, b) => b.forecast.compositeScore - a.forecast.compositeScore);
-  }, [applyTrends, curatedForecasts]);
-
   // Combine curated + API results
   const allSets = useMemo(() => {
     if (showingTopBuys) {
-      return topBuys;
+      return topBuyResults;
     }
 
     if (!hasInteracted) {
@@ -668,7 +706,7 @@ export function ForecastDashboard() {
     }
 
     return applyTrends(curatedForecasts);
-  }, [curatedForecasts, apiResults, apiQuery, showCurated, searchCuratedResults, applyTrends, hasInteracted, showingTopBuys, topBuys]);
+  }, [curatedForecasts, apiResults, apiQuery, showCurated, searchCuratedResults, applyTrends, hasInteracted, showingTopBuys, topBuyResults]);
 
   const filtered = useMemo(() => {
     let result = allSets;
@@ -763,6 +801,18 @@ export function ForecastDashboard() {
       setSortDir("desc");
     }
   };
+
+  const handleShowTopBuys = useCallback(() => {
+    resetVisibleCards();
+    setShowingTopBuys(true);
+    setHasInteracted(true);
+    setSortBy("score");
+    setSortDir("desc");
+
+    if (!topBuysLoaded || topBuysError) {
+      void loadTopBuys();
+    }
+  }, [loadTopBuys, resetVisibleCards, topBuysError, topBuysLoaded]);
 
   const totalSets = apiQuery.length >= 2
     ? filtered.length
@@ -897,7 +947,7 @@ export function ForecastDashboard() {
       </div>
 
       {/* Results count */}
-      {hasInteracted && !isSearching && (
+      {hasInteracted && !isSearching && !(showingTopBuys && isLoadingTopBuys) && (
         <div className="flex items-center gap-3">
           <p className="text-xs text-[hsl(var(--muted-foreground))]">
             Showing {renderedResultCount}{isCuratedMode && filtered.length > visibleFiltered.length ? ` of ${filtered.length}` : ""} {showingTopBuys ? "top buy opportunities" : apiQuery.length >= 2 ? "results" : `of ${totalSets} sets`}
@@ -971,24 +1021,35 @@ export function ForecastDashboard() {
               <button
                 type="button"
                 onClick={() => {
-                  resetVisibleCards();
-                  setShowingTopBuys(true);
-                  setHasInteracted(true);
-                  setSortBy("score");
-                  setSortDir("desc");
+                  handleShowTopBuys();
                 }}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-green-500/15 text-green-400 text-sm font-medium hover:bg-green-500/25 border border-green-500/30 transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                Show Top Buys ({topBuys.length})
+                Show Top Buys ({TOP_BUYS_LIMIT})
               </button>
             </div>
 
             <p className="text-[11px] text-[hsl(var(--muted-foreground))]/60 mt-6">
               Powered by live PokeData pricing &amp; 8-factor composite scoring
             </p>
+          </div>
+        </div>
+      )}
+
+      {showingTopBuys && isLoadingTopBuys && !topBuysLoaded && (
+        <div className="space-y-4">
+          <div className="text-center">
+            <p className="text-sm text-[hsl(var(--muted-foreground))] animate-pulse">
+              Loading top buy opportunities…
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 items-stretch">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <SkeletonForecastCard key={i} />
+            ))}
           </div>
         </div>
       )}
@@ -1076,7 +1137,12 @@ export function ForecastDashboard() {
       )}
 
       {/* No results (curated mode, filters active) */}
-      {hasInteracted && !isSearching && filtered.length === 0 && !isSearchMode && (
+      {hasInteracted &&
+        !isSearching &&
+        !topBuysError &&
+        !(showingTopBuys && isLoadingTopBuys) &&
+        filtered.length === 0 &&
+        !isSearchMode && (
         <div className="text-center py-12 text-[hsl(var(--muted-foreground))]">
           <p className="text-lg font-semibold mb-1">
             {showingTopBuys
@@ -1088,6 +1154,29 @@ export function ForecastDashboard() {
               ? "Check back as prices update."
               : "Try adjusting your search or filter criteria."}
           </p>
+        </div>
+      )}
+
+      {showingTopBuys && topBuysError && !isLoadingTopBuys && (
+        <div className="text-center py-12">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-500/10 mb-3">
+            <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path d="M12 9v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <p className="text-sm text-red-400 font-medium mb-1">
+            {topBuysError}
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setTopBuysLoaded(false);
+              void loadTopBuys();
+            }}
+            className="mt-3 text-xs text-[hsl(var(--poke-yellow))] hover:underline"
+          >
+            Retry Top Buys
+          </button>
         </div>
       )}
 

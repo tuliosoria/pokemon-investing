@@ -19,13 +19,11 @@ export interface TopBuysFilters {
  * ranked from strongest to weakest composite score.
  */
 export function getTopBuyOpportunities(
-  limit = 50,
+  limit = 100,
   filters?: TopBuysFilters,
-  extraSets?: SealedSetData[]
+  sourceSets: SealedSetData[] = SEALED_SETS
 ): BuyOpportunity[] {
-  const allSets = extraSets ? [...SEALED_SETS, ...extraSets] : SEALED_SETS;
-
-  let results: BuyOpportunity[] = allSets
+  let results: BuyOpportunity[] = sourceSets
     .map((set) => ({ set, forecast: computeForecast(set) }))
     .filter(({ forecast }) => forecast.signal === "Buy");
 
