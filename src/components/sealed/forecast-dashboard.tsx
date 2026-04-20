@@ -74,7 +74,7 @@ export function ForecastDashboard() {
   );
 
   const topBuys = useMemo(
-    () => getTopBuyOpportunities(15),
+    () => getTopBuyOpportunities(50),
     []
   );
 
