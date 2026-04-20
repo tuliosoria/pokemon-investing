@@ -2,11 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import type { CardSearchResult, CardPrices } from "@/lib/types/card";
 import { cacheGet, cachePut } from "@/lib/db/cache";
 import {
-  getCardMeta,
   putCardMeta,
   putCardTcgPrices,
-  getCardTcgPrices,
-  shouldRefreshPrices,
 } from "@/lib/db/card-cache";
 
 const TCG_API_BASE = "https://api.tcgapi.dev/v1/search";

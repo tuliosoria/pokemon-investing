@@ -78,18 +78,18 @@ export function ForecastDashboard() {
     []
   );
 
-  // Reset visible count when mode changes
-  useEffect(() => {
+  const resetVisibleCards = useCallback(() => {
     setVisibleCount(SCROLL_BATCH);
-    setRevealedIds(new Set());
-  }, [showingTopBuys, hasInteracted, filter, sortBy, sortDir]);
+  }, []);
 
   // Live search — accumulate ALL results, then mark complete
   const searchApi = useCallback(async (query: string) => {
     if (query.length < 2) {
+      abortRef.current?.abort();
       setApiResults([]);
       setSearchError(null);
       setSearchComplete(false);
+      setIsSearching(false);
       return;
     }
 
@@ -120,6 +120,7 @@ export function ForecastDashboard() {
         if (elapsed < MIN_LOADING_MS) {
           await new Promise((r) => setTimeout(r, MIN_LOADING_MS - elapsed));
         }
+        if (controller.signal.aborted) return;
         setApiResults([]);
         setIsSearching(false);
         setSearchComplete(true);
@@ -216,18 +217,21 @@ export function ForecastDashboard() {
       if (elapsed < MIN_LOADING_MS) {
         await new Promise((r) => setTimeout(r, MIN_LOADING_MS - elapsed));
       }
+      if (controller.signal.aborted) return;
 
       // All done — render everything at once
       setApiResults([...results]);
       setSearchComplete(true);
     } catch (err) {
-      if ((err as Error).name !== "AbortError") {
+      if ((err as Error).name !== "AbortError" && !controller.signal.aborted) {
         setSearchError("Search failed. Try again.");
         setApiResults([]);
         setSearchComplete(true);
       }
     } finally {
-      setIsSearching(false);
+      if (!controller.signal.aborted) {
+        setIsSearching(false);
+      }
     }
   }, []);
 
@@ -264,7 +268,10 @@ export function ForecastDashboard() {
         const res = await fetch(
           `/api/trends?keyword=${encodeURIComponent(keyword)}`
         );
-        if (!res.ok) continue;
+        if (!res.ok) {
+          trendFetchedRef.current.delete(set.id);
+          continue;
+        }
         const { trend } = await res.json();
         if (trend && typeof trend.popularityScore === "number") {
           setTrendScores((prev) => {
@@ -277,9 +284,11 @@ export function ForecastDashboard() {
             });
             return next;
           });
+        } else {
+          trendFetchedRef.current.delete(set.id);
         }
       } catch {
-        // Trend fetch is best-effort
+        trendFetchedRef.current.delete(set.id);
       }
       await new Promise((r) => setTimeout(r, 300));
     }
@@ -303,13 +312,16 @@ export function ForecastDashboard() {
           searchApi(value.trim());
         }, 500);
       } else {
+        abortRef.current?.abort();
         setApiQuery("");
         setApiResults([]);
         setSearchError(null);
         setSearchComplete(false);
+        setIsSearching(false);
+        resetVisibleCards();
       }
     },
-    [searchApi]
+    [resetVisibleCards, searchApi]
   );
 
   // Cleanup on unmount
@@ -419,7 +431,9 @@ export function ForecastDashboard() {
           break;
         }
         case "age":
-          cmp = a.set.releaseYear - b.set.releaseYear;
+          cmp =
+            (new Date().getFullYear() - a.set.releaseYear) -
+            (new Date().getFullYear() - b.set.releaseYear);
           break;
         case "score":
           cmp = a.forecast.compositeScore - b.forecast.compositeScore;
@@ -464,6 +478,7 @@ export function ForecastDashboard() {
   }, [isCuratedMode, hasMoreToLoad]);
 
   const toggleSort = (field: SortField) => {
+    resetVisibleCards();
     if (sortBy === field) {
       setSortDir((d) => (d === "desc" ? "asc" : "desc"));
     } else {
@@ -504,6 +519,7 @@ export function ForecastDashboard() {
               key={s}
               type="button"
               onClick={() => {
+                resetVisibleCards();
                 setFilter(s);
                 if (!hasInteracted) {
                   setHasInteracted(true);
@@ -560,7 +576,10 @@ export function ForecastDashboard() {
         {apiQuery.length >= 2 && (
           <button
             type="button"
-            onClick={() => setShowCurated((v) => !v)}
+            onClick={() => {
+              resetVisibleCards();
+              setShowCurated((v) => !v);
+            }}
             className={`rounded-full px-3 py-1 font-medium transition-colors ml-auto ${
               showCurated
                 ? "bg-[hsl(var(--poke-yellow))]/20 text-[hsl(var(--poke-yellow))]"
@@ -587,6 +606,7 @@ export function ForecastDashboard() {
             <button
               type="button"
               onClick={() => {
+                resetVisibleCards();
                 setShowingTopBuys(false);
                 setHasInteracted(false);
                 setFilter("All");
@@ -646,6 +666,7 @@ export function ForecastDashboard() {
               <button
                 type="button"
                 onClick={() => {
+                  resetVisibleCards();
                   setShowingTopBuys(true);
                   setHasInteracted(true);
                   setSortBy("score");
@@ -740,7 +761,7 @@ export function ForecastDashboard() {
       )}
 
       {/* No results (search complete, nothing found) */}
-      {hasInteracted && !isSearching && filtered.length === 0 && searchComplete && isSearchMode && (
+      {hasInteracted && !isSearching && !searchError && filtered.length === 0 && searchComplete && isSearchMode && (
         <div className="text-center py-12 text-[hsl(var(--muted-foreground))]">
           <p className="text-lg font-semibold mb-1">No sealed products found</p>
           <p className="text-sm">

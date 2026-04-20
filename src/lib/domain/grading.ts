@@ -36,9 +36,20 @@ export interface GradeEvResult {
   }[];
 }
 
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
 export function calculateGradeExpectedValue(
   input: GradeEvInput
 ): GradeEvResult {
+  const probabilityPsa10 = clamp(input.probabilityPsa10, 0, 100);
+  const probabilityPsa9 = clamp(input.probabilityPsa9, 0, 100 - probabilityPsa10);
+  const probabilityPsa8 = clamp(
+    input.probabilityPsa8,
+    0,
+    100 - probabilityPsa10 - probabilityPsa9
+  );
   const feeMultiplier = 1 - input.marketplaceFeePct / 100;
   const totalCost =
     input.rawCardValue +
@@ -50,24 +61,24 @@ export function calculateGradeExpectedValue(
   // Probability of getting below PSA 8 (damaged/returned)
   const probabilityBelow =
     100 -
-    input.probabilityPsa10 -
-    input.probabilityPsa9 -
-    input.probabilityPsa8;
+    probabilityPsa10 -
+    probabilityPsa9 -
+    probabilityPsa8;
 
   const scenarios = [
     {
       grade: "PSA 10",
-      probability: input.probabilityPsa10 / 100,
+      probability: probabilityPsa10 / 100,
       grossValue: input.psa10Value,
     },
     {
       grade: "PSA 9",
-      probability: input.probabilityPsa9 / 100,
+      probability: probabilityPsa9 / 100,
       grossValue: input.psa9Value,
     },
     {
       grade: "PSA 8",
-      probability: input.probabilityPsa8 / 100,
+      probability: probabilityPsa8 / 100,
       grossValue: input.psa8Value,
     },
     {
@@ -100,8 +111,8 @@ export function calculateGradeExpectedValue(
   // Holding p9/p8 fixed, solve for p10:
   const net10 = input.psa10Value * feeMultiplier - totalCost;
   const netBelow = input.rawCardValue * 0.7 * feeMultiplier - totalCost;
-  const p9 = input.probabilityPsa9 / 100;
-  const p8 = input.probabilityPsa8 / 100;
+  const p9 = probabilityPsa9 / 100;
+  const p8 = probabilityPsa8 / 100;
   const net9 = input.psa9Value * feeMultiplier - totalCost;
   const net8 = input.psa8Value * feeMultiplier - totalCost;
   // Fixed contributions from PSA 9 and PSA 8

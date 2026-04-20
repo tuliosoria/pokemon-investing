@@ -55,11 +55,14 @@ export function computeForecast(set: SealedSetData): Forecast {
   // Score 100 → ~25%/yr, Score 50 → ~8%/yr, Score 0 → -5%/yr
   const annualRate = -0.05 + (compositeScore / 100) * 0.3;
 
-  const projectedValue = Math.round(
-    set.currentPrice * Math.pow(1 + annualRate, 5)
-  );
-  const dollarGain = projectedValue - set.currentPrice;
-  const roiPercent = Math.round(((projectedValue / set.currentPrice) - 1) * 100);
+  const currentPrice = set.currentPrice > 0 ? set.currentPrice : 0;
+  const projectedValue = currentPrice > 0
+    ? Math.round(currentPrice * Math.pow(1 + annualRate, 5))
+    : 0;
+  const dollarGain = Math.round((projectedValue - currentPrice) * 100) / 100;
+  const roiPercent = currentPrice > 0
+    ? Math.round(((projectedValue / currentPrice) - 1) * 100)
+    : 0;
   const spRoi = Math.round((Math.pow(1 + SP500_ANNUAL_RETURN, 5) - 1) * 100);
 
   // Estimated factor count: dynamic products have 5 defaults, minus 1 if trend data present

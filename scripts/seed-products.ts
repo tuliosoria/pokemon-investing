@@ -212,22 +212,7 @@ async function fetchAllProducts(): Promise<RawProduct[]> {
   return data;
 }
 
-async function fetchSetName(setId: number): Promise<string> {
-  if (setNameCache.has(setId)) return setNameCache.get(setId)!;
-  try {
-    const data = (await fetchWithRetry(
-      `${CONFIG.POKEDATA_BASE}/api/sets?set_id=${setId}`,
-      { label: `set(${setId})` }
-    )) as RawSetInfo[];
-    const name = data?.[0]?.name || `Set ${setId}`;
-    setNameCache.set(setId, name);
-    return name;
-  } catch {
-    return `Set ${setId}`;
-  }
-}
-
-async function prefetchSetNames(_products: RawProduct[]): Promise<void> {
+async function prefetchSetNames(): Promise<void> {
   log("INFO", "Fetching all set names...");
   try {
     const data = (await fetchWithRetry(
@@ -665,7 +650,7 @@ async function main() {
     log("INFO", `Catalog: ${allProducts.length} total → ${english.length} English → ${priceWorthy.length} price-worthy types`);
 
     // Prefetch set names (one-time bulk lookup)
-    await prefetchSetNames(english);
+    await prefetchSetNames();
 
     // Step 2: Check checkpoint for resume
     let startFromId = 0;

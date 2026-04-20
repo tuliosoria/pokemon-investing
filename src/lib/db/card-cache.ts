@@ -76,7 +76,9 @@ export function shouldRefreshPrices(
   maxAgeMs = PRICE_MAX_AGE_MS
 ): boolean {
   if (!lastFetched) return true;
-  const age = Date.now() - new Date(lastFetched).getTime();
+  const fetchedAt = new Date(lastFetched).getTime();
+  if (!Number.isFinite(fetchedAt)) return true;
+  const age = Date.now() - fetchedAt;
   return age > maxAgeMs;
 }
 

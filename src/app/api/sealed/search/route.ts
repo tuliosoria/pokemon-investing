@@ -92,7 +92,12 @@ export async function GET(request: NextRequest) {
   try {
     const cacheKey = normalize(q);
 
-    const cached = await cacheGet<{ pokedataId: string; name: string; releaseDate: string | null }[]>(
+    const cached = await cacheGet<{
+      pokedataId: string;
+      name: string;
+      releaseDate: string | null;
+      imageUrl: string | null;
+    }[]>(
       "sealed-search", cacheKey
     );
     if (cached) {
