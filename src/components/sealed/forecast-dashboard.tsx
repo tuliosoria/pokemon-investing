@@ -671,7 +671,7 @@ export function ForecastDashboard() {
               Fetching pricing data for &quot;{apiQuery}&quot;…
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 items-stretch">
             {Array.from({ length: 6 }).map((_, i) => (
               <SkeletonForecastCard key={i} />
             ))}
@@ -681,7 +681,7 @@ export function ForecastDashboard() {
 
       {/* Search results — all at once with staggered fade-in */}
       {isSearchMode && searchComplete && filtered.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 items-stretch">
           {filtered.map(({ set, forecast }) => (
             <div
               key={set.id}
@@ -700,7 +700,7 @@ export function ForecastDashboard() {
       {/* Curated / Top Buys — progressive scroll loading */}
       {isCuratedMode && !isSearchMode && visibleFiltered.length > 0 && (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 items-stretch">
             {visibleFiltered.map(({ set, forecast }, index) => (
               <div
                 key={set.id}
@@ -775,8 +775,9 @@ export function ForecastDashboard() {
         </div>
       )}
 
-      {/* Methodology note */}
-      <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5 text-xs text-[hsl(var(--muted-foreground))] space-y-2">
+      {/* Methodology note — visually separated from card grid */}
+      <div className="mt-12 pt-8 border-t border-[hsl(var(--border))]">
+        <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/30 p-5 text-xs text-[hsl(var(--muted-foreground))] space-y-2">
         <h4 className="font-bold text-sm text-[hsl(var(--foreground))]">
           📊 Methodology
         </h4>
@@ -807,6 +808,7 @@ export function ForecastDashboard() {
           S&amp;P 500 comparison uses a historical average annualized return of 10.5%.
           All projections are estimates — not financial advice.
         </p>
+        </div>
       </div>
     </div>
   );
