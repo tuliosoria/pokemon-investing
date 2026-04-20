@@ -82,9 +82,10 @@ function computePriceTrajectory(
   // Adjust for age: recent products with big multiples = stronger signal
   // Old products are expected to be higher
   if (price <= 0 || msrp <= 0) return 30;
+  if (age <= 0) return 30;
 
   // Annual appreciation multiple
-  const annualMultiple = age > 0 ? Math.pow(multiple, 1 / age) : multiple;
+  const annualMultiple = Math.pow(multiple, 1 / age);
 
   // 1.0x/yr → 20 (flat), 1.15x/yr → 50 (ok), 1.3x/yr → 70 (strong), 1.5x+/yr → 85+
   const score = 20 + 50 * Math.log(annualMultiple) / Math.log(1.5);

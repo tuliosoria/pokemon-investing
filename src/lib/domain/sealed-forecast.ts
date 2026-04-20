@@ -52,7 +52,7 @@ export function computeForecast(set: SealedSetData): Forecast {
     compositeScore >= 68 ? "Buy" : compositeScore >= 45 ? "Hold" : "Sell";
 
   // Map composite to annual appreciation rate
-  // Score 100 → ~25%/yr, Score 50 → ~8%/yr, Score 0 → -5%/yr
+  // Score 100 → ~25%/yr, Score 50 → ~10%/yr, Score 0 → -5%/yr
   const annualRate = -0.05 + (compositeScore / 100) * 0.3;
 
   const currentPrice = set.currentPrice > 0 ? set.currentPrice : 0;
@@ -69,9 +69,11 @@ export function computeForecast(set: SealedSetData): Forecast {
   const hasTrends = !!set.trendData;
   const estimatedFactors = set.curated === false ? (hasTrends ? 4 : 5) : 0;
 
-  // Confidence: curated uses data quality; dynamic is always Low
+  // Confidence: curated sets are hand-tuned; dynamic sets depend on live-data coverage
   let confidence: Confidence;
-  if (estimatedFactors > 3) {
+  if (set.curated !== false) {
+    confidence = "High";
+  } else if (estimatedFactors > 3) {
     confidence = "Low";
   } else {
     const dataQuality = (set.factors.setAge + set.factors.priceTrajectory) / 2;

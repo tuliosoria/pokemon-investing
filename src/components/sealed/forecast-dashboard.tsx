@@ -395,15 +395,20 @@ export function ForecastDashboard() {
               r.set.name.toLowerCase().includes(q) ||
               r.set.chaseCards.some((c) => c.toLowerCase().includes(q)) ||
               r.set.productType.toLowerCase().includes(q)
-          )
+            )
         : [];
 
-      const curatedIds = new Set(matchingCurated.map((r) => r.set.id));
-      const apiDeduped = apiResults.filter(
-        (r) => !curatedIds.has(r.set.id) && !r.set.id.startsWith("dynamic-") || r.set.id.startsWith("dynamic-")
-      );
+      const merged = new Map<string, SetWithForecast>();
 
-      return applyTrends([...matchingCurated, ...apiDeduped]);
+      for (const result of matchingCurated) {
+        merged.set(result.set.id, result);
+      }
+
+      for (const result of apiResults) {
+        merged.set(result.set.id, result);
+      }
+
+      return applyTrends([...merged.values()]);
     }
 
     return applyTrends(curatedForecasts);

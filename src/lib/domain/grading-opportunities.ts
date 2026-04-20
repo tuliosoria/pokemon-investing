@@ -7,6 +7,7 @@ import {
   calculateGradeExpectedValue,
   type GradeEvResult,
 } from "@/lib/domain/grading";
+import { normalizeMarketplaceFees } from "@/lib/domain/fees";
 import type { GradeData } from "@/lib/types/card";
 
 export interface GradingOpportunity {
@@ -79,12 +80,18 @@ export function computeGradingOpportunity(
   if (bestRaw <= 0) return null;
 
   const gradingCost = getGradingCost(bestRaw);
-  const psa10Prob = gradeData.psa10Probability ?? 20;
-
-  // Compute probabilities from population if available, else use defaults
-  const remaining = 100 - psa10Prob;
-  const psa9Prob = Math.round(remaining * 0.5);
-  const psa8Prob = Math.round(remaining * 0.3);
+  const ebayFeePct = normalizeMarketplaceFees("ebay").marketplaceFeePct ?? 13.25;
+  const probabilityDefaults =
+    gradeData.psa10Probability === null
+      ? { psa10: 20, psa9: 50, psa8: 25 }
+      : (() => {
+          const remaining = 100 - gradeData.psa10Probability;
+          return {
+            psa10: gradeData.psa10Probability,
+            psa9: Math.round(remaining * 0.5),
+            psa8: Math.round(remaining * 0.3),
+          };
+        })();
 
   // Use the existing grading calculator for full EV computation
   const evResult = calculateGradeExpectedValue({
@@ -93,17 +100,17 @@ export function computeGradingOpportunity(
     psa10Value: psa10 > 0 ? psa10 : bestRaw * 3, // fallback multiplier
     psa9Value: psa9 > 0 ? psa9 : bestRaw * 1.5,
     psa8Value: psa8 > 0 ? psa8 : bestRaw * 1.1,
-    probabilityPsa10: psa10Prob,
-    probabilityPsa9: psa9Prob,
-    probabilityPsa8: psa8Prob,
-    marketplaceFeePct: 13.25, // eBay default
+    probabilityPsa10: probabilityDefaults.psa10,
+    probabilityPsa9: probabilityDefaults.psa9,
+    probabilityPsa8: probabilityDefaults.psa8,
+    marketplaceFeePct: ebayFeePct,
     shippingCost: 5,
     insuranceCost: bestRaw > 200 ? 10 : 0, // insurance for high-value
     taxAdjustment: 0,
   });
 
   // PSA 10 spread (best-case upside, not probability-weighted)
-  const feeMultiplier = 1 - 13.25 / 100;
+  const feeMultiplier = 1 - ebayFeePct / 100;
   const totalCostForSpread = bestRaw + gradingCost + 5 + (bestRaw > 200 ? 10 : 0);
   const psa10Spread =
     (psa10 > 0 ? psa10 : bestRaw * 3) * feeMultiplier - totalCostForSpread;
@@ -129,7 +136,7 @@ export function computeGradingOpportunity(
     roi: Math.round(evResult.roiPct * 10) / 10,
     totalCost: Math.round(evResult.totalCost * 100) / 100,
     recommendation: evResult.recommendation,
-    psa10Probability: psa10Prob,
+    psa10Probability: probabilityDefaults.psa10,
     populationTotal,
     confidence: getConfidence(populationTotal, gradeData.psa10Probability),
     scenarioBreakdown: evResult.scenarioBreakdown,

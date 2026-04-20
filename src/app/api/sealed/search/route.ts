@@ -119,8 +119,13 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const rawProducts: any[] = await res.json();
+    const rawProducts = await res.json();
+    if (!Array.isArray(rawProducts)) {
+      return NextResponse.json(
+        { error: "Unexpected PokeData search response" },
+        { status: 502 }
+      );
+    }
 
     // Filter to English products only
     const english = rawProducts.filter(

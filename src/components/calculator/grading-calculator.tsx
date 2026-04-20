@@ -87,7 +87,11 @@ export function GradingCalculator() {
   };
 
   const onSubmit = (data: GradeEvFormValues) => {
-    const res = calculateGradeExpectedValue(data);
+    const estimated = estimateGradedValues(data.rawCardValue);
+    const res = calculateGradeExpectedValue({
+      ...data,
+      psa8Value: data.psa8Value > 0 ? data.psa8Value : estimated.psa8,
+    });
     setResult(res);
   };
 
