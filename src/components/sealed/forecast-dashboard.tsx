@@ -84,11 +84,9 @@ export function ForecastDashboard() {
 
   // Live search — accumulate ALL results, then mark complete
   const searchApi = useCallback(async (query: string) => {
-    if (query.length < 2) {
+    if (query.trim().length < 2) {
       abortRef.current?.abort();
-      setApiResults([]);
       setSearchError(null);
-      setSearchComplete(false);
       setIsSearching(false);
       return;
     }
@@ -313,16 +311,21 @@ export function ForecastDashboard() {
         }, 500);
       } else {
         abortRef.current?.abort();
-        setApiQuery("");
-        setApiResults([]);
         setSearchError(null);
-        setSearchComplete(false);
         setIsSearching(false);
-        resetVisibleCards();
       }
     },
-    [resetVisibleCards, searchApi]
+    [searchApi]
   );
+
+  const clearSearchInput = useCallback(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    abortRef.current?.abort();
+    setSearch("");
+    setSearchError(null);
+    setIsSearching(false);
+    searchInputRef.current?.focus();
+  }, []);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -387,7 +390,7 @@ export function ForecastDashboard() {
     const hasApiSearch = apiQuery.length >= 2;
 
     if (hasApiSearch) {
-      const q = search.toLowerCase();
+      const q = apiQuery.toLowerCase();
 
       const matchingCurated = showCurated
         ? curatedForecasts.filter(
@@ -412,7 +415,7 @@ export function ForecastDashboard() {
     }
 
     return applyTrends(curatedForecasts);
-  }, [curatedForecasts, apiResults, apiQuery, search, showCurated, applyTrends, hasInteracted, showingTopBuys, topBuys]);
+  }, [curatedForecasts, apiResults, apiQuery, showCurated, applyTrends, hasInteracted, showingTopBuys, topBuys]);
 
   const filtered = useMemo(() => {
     let result = allSets;
@@ -508,10 +511,20 @@ export function ForecastDashboard() {
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Search any sealed product… (e.g. Evolving Skies, ETB, Celebrations)"
-            className="w-full h-10 rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-3 text-sm placeholder:text-[hsl(var(--muted-foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
+            className="w-full h-10 rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-3 pr-20 text-sm placeholder:text-[hsl(var(--muted-foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
           />
+          {search.trim().length > 0 && (
+            <button
+              type="button"
+              onClick={clearSearchInput}
+              aria-label="Clear search"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
+            >
+              ✕
+            </button>
+          )}
           {isSearching && (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+            <div className="absolute right-10 top-1/2 -translate-y-1/2">
               <div className="h-4 w-4 rounded-full border-2 border-[hsl(var(--poke-yellow))] border-t-transparent animate-spin" />
             </div>
           )}
@@ -731,11 +744,10 @@ export function ForecastDashboard() {
       {isCuratedMode && !isSearchMode && visibleFiltered.length > 0 && (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 items-stretch">
-            {visibleFiltered.map(({ set, forecast }, index) => (
+            {visibleFiltered.map(({ set, forecast }) => (
               <div
                 key={set.id}
                 className="animate-fade-in-up"
-                style={{ animationDelay: `${(index % SCROLL_BATCH) * 60}ms` }}
               >
                 <SetForecastCard set={set} forecast={forecast} />
               </div>
