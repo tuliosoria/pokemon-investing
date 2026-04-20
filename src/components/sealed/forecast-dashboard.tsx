@@ -1318,8 +1318,9 @@ export function ForecastDashboard() {
           <p>
             <strong className="text-[hsl(var(--foreground))]">Brand-new standard-print sets</strong>{" "}
             with less than 12 months of history have their launch-week hype signals damped
-            and are forced to Low confidence so the model does not hallucinate 1000%+
-            upside from zero trajectory data.
+            and are forced to Low confidence. Their 6mo / 24mo trajectory inputs stay
+            neutral until real history exists, so the model does not hallucinate 1000%+
+            upside from synthetic launch data.
           </p>
           <p>
             Buy / Hold / Sell is derived from projected 5-year ROI versus an S&amp;P 500

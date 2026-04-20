@@ -508,16 +508,21 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     estimatedFactors += 1;
   }
 
+  const useNeutralLaunchTrajectories = !setHistory && setAgeYears < 1;
   const trajectory6mo =
     setHistory?.priceTrajectory6mo ??
-    estimateTrajectoryPercent(currentPrice, set.productType, setAgeYears, 6);
+    (useNeutralLaunchTrajectories
+      ? 0
+      : estimateTrajectoryPercent(currentPrice, set.productType, setAgeYears, 6));
   if (!setHistory) {
     estimatedFactors += 1;
   }
 
   const trajectory24mo =
     setHistory?.priceTrajectory24mo ??
-    estimateTrajectoryPercent(currentPrice, set.productType, setAgeYears, 24);
+    (useNeutralLaunchTrajectories
+      ? 0
+      : estimateTrajectoryPercent(currentPrice, set.productType, setAgeYears, 24));
   if (!setHistory) {
     estimatedFactors += 1;
   }
