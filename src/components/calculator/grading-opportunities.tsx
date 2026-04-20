@@ -33,13 +33,8 @@ interface LoadingState {
   errors: string[];
 }
 
-function getTcgplayerSearchUrl(opportunity: Pick<GradingOpportunity, "name" | "set" | "number">): string {
-  const params = new URLSearchParams({
-    productLineName: "pokemon",
-    q: `${opportunity.name} ${opportunity.set} ${opportunity.number}`,
-    view: "grid",
-  });
-  return `https://www.tcgplayer.com/search/pokemon/product?${params.toString()}`;
+function buildTcgplayerProductUrl(tcgplayerId: string): string {
+  return `https://www.tcgplayer.com/product/${tcgplayerId}`;
 }
 
 export function GradingOpportunities() {
@@ -62,6 +57,7 @@ export function GradingOpportunities() {
       number: card.number,
       pokedataId: card.pokedataId,
     });
+    params.set("tcgId", card.tcgplayerId);
 
     const res = await fetch(`/api/cards/grade-data?${params}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -98,6 +94,7 @@ export function GradingOpportunities() {
           return computeGradingOpportunity(gradeData, rawPrice, {
             number: card.number,
             rarity: card.rarity,
+            tcgplayerUrl: buildTcgplayerProductUrl(card.tcgplayerId),
           });
         })
       );
@@ -466,14 +463,16 @@ function OpportunityCard({
                 ? `Based on ${opp.populationTotal.toLocaleString()} graded copies`
                 : "Limited grading data available"}
             </span>
-            <a
-              href={getTcgplayerSearchUrl(opp)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-blue-400 hover:underline"
-            >
-              View on TCGPlayer →
-            </a>
+            {opp.tcgplayerUrl && (
+              <a
+                href={opp.tcgplayerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-blue-400 hover:underline"
+              >
+                View raw card on TCGPlayer →
+              </a>
+            )}
           </div>
 
           {/* Scenario breakdown */}

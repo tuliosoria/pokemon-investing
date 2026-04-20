@@ -16,6 +16,7 @@ export interface GradingOpportunity {
   set: string;
   number: string;
   rarity: string;
+  tcgplayerUrl: string | null;
 
   // Prices
   rawPrice: number;
@@ -60,7 +61,7 @@ function getConfidence(
 export function computeGradingOpportunity(
   gradeData: GradeData,
   rawPrice: number,
-  meta: { number: string; rarity: string }
+  meta: { number: string; rarity: string; tcgplayerUrl: string | null }
 ): GradingOpportunity | null {
   const psa10 = gradeData.gradedPrices["PSA 10.0"] ?? 0;
   const psa9 = gradeData.gradedPrices["PSA 9.0"] ?? 0;
@@ -127,6 +128,7 @@ export function computeGradingOpportunity(
     set: gradeData.set,
     number: meta.number,
     rarity: meta.rarity,
+    tcgplayerUrl: meta.tcgplayerUrl,
     rawPrice: bestRaw,
     psa10Price: psa10,
     psa9Price: psa9,

@@ -6,6 +6,7 @@
 
 export interface GradingCandidate {
   pokedataId: string;
+  tcgplayerId: string;
   name: string;
   set: string;
   number: string;
@@ -16,6 +17,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   // === Evolving Skies Alt Arts (2021) — the gold standard ===
   {
     pokedataId: "8246",
+    tcgplayerId: "246723",
     name: "Umbreon VMAX",
     set: "Evolving Skies",
     number: "215",
@@ -23,6 +25,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "8249",
+    tcgplayerId: "246733",
     name: "Rayquaza VMAX",
     set: "Evolving Skies",
     number: "218",
@@ -30,6 +33,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "8243",
+    tcgplayerId: "246704",
     name: "Sylveon VMAX",
     set: "Evolving Skies",
     number: "212",
@@ -37,6 +41,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "8239",
+    tcgplayerId: "246755",
     name: "Glaceon VMAX",
     set: "Evolving Skies",
     number: "208",
@@ -44,6 +49,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "8236",
+    tcgplayerId: "246696",
     name: "Leafeon VMAX",
     set: "Evolving Skies",
     number: "205",
@@ -51,6 +57,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "8222",
+    tcgplayerId: "246758",
     name: "Dragonite V",
     set: "Evolving Skies",
     number: "192",
@@ -60,6 +67,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   // === Fusion Strike Alt Arts (2021) ===
   {
     pokedataId: "27946",
+    tcgplayerId: "253176",
     name: "Mew VMAX",
     set: "Fusion Strike",
     number: "268",
@@ -67,6 +75,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "27943",
+    tcgplayerId: "253266",
     name: "Gengar VMAX",
     set: "Fusion Strike",
     number: "271",
@@ -76,6 +85,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   // === Brilliant Stars (2022) ===
   {
     pokedataId: "41237",
+    tcgplayerId: "263893",
     name: "Charizard VSTAR",
     set: "Brilliant Stars",
     number: "174",
@@ -83,6 +93,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "41227",
+    tcgplayerId: "263896",
     name: "Arceus VSTAR",
     set: "Brilliant Stars",
     number: "176",
@@ -92,6 +103,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   // === Lost Origin / Silver Tempest Alt Arts (2022) ===
   {
     pokedataId: "43951",
+    tcgplayerId: "284137",
     name: "Giratina V",
     set: "Lost Origin",
     number: "186",
@@ -99,6 +111,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "57452",
+    tcgplayerId: "451834",
     name: "Lugia V",
     set: "Silver Tempest",
     number: "186",
@@ -108,6 +121,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   // === Vivid Voltage (2020) ===
   {
     pokedataId: "154",
+    tcgplayerId: "226432",
     name: "Pikachu VMAX",
     set: "Vivid Voltage",
     number: "044",
@@ -117,6 +131,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   // === Scarlet & Violet Era SARs (2023+) ===
   {
     pokedataId: "61622",
+    tcgplayerId: "509989",
     name: "Charizard ex",
     set: "Obsidian Flames",
     number: "228",
@@ -124,6 +139,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "62848",
+    tcgplayerId: "517045",
     name: "Charizard ex",
     set: "Pokemon Card 151",
     number: "199",
@@ -131,6 +147,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "62998",
+    tcgplayerId: "517051",
     name: "Mew ex",
     set: "Pokemon Card 151",
     number: "205",
@@ -138,6 +155,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "60000",
+    tcgplayerId: "497689",
     name: "Iono",
     set: "Paldea Evolved",
     number: "269",
@@ -145,6 +163,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "59073",
+    tcgplayerId: "490043",
     name: "Miraidon ex",
     set: "Scarlet & Violet",
     number: "253",
@@ -152,6 +171,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "3333",
+    tcgplayerId: "241673",
     name: "Blaziken VMAX",
     set: "Chilling Reign",
     number: "201",
@@ -159,6 +179,7 @@ export const GRADING_CANDIDATES: GradingCandidate[] = [
   },
   {
     pokedataId: "1110",
+    tcgplayerId: "234060",
     name: "Tyranitar V",
     set: "Battle Styles",
     number: "155",
