@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import { BarChart3 } from "lucide-react";
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
 import { computeForecast } from "@/lib/domain/sealed-forecast";
 import { buildDynamicSetData, inferProductType } from "@/lib/domain/sealed-estimate";
@@ -1115,36 +1116,40 @@ export function ForecastDashboard() {
       {/* Methodology note — visually separated from card grid */}
       <div className="mt-12 pt-8 border-t border-[hsl(var(--border))]">
         <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/30 p-5 text-xs text-[hsl(var(--muted-foreground))] space-y-2">
-        <h4 className="font-bold text-sm text-[hsl(var(--foreground))]">
-          📊 Methodology
-        </h4>
-        <p>
-          <strong className="text-[hsl(var(--foreground))]">★ Curated sets</strong> are
-          scored across 8 hand-tuned weighted factors (market value, chase cards,
-          supply scarcity, set age, price trajectory, popularity, market cycle, and
-          collector demand ratio). All prices are live from PokeData.io.
-        </p>
-        <p>
-          <strong className="text-[hsl(var(--foreground))]">📈 Google Trends</strong> data
-          is fetched live for all sets to power the Popularity factor. For curated sets,
-          trends are blended with hand-tuned scores. For dynamic products, Google Trends
-          replaces the neutral default — giving real demand signal.
-        </p>
-        <p>
-          <strong className="text-[hsl(var(--foreground))]">Search results</strong> from
-          PokeData use live pricing with auto-estimated factors (set age, price
-          trajectory, market value, popularity via Google Trends). Chase card index, print
-          run, market cycle, and demand ratio default to neutral (50) — these forecasts
-          are screening estimates, not full analyses. Look for the
-          <span className="inline-block mx-1 rounded-full bg-orange-500/20 text-orange-400 px-1.5 py-0.5 text-[9px] font-semibold">
-            Estimated
-          </span>
-          badge.
-        </p>
-        <p>
-          S&amp;P 500 comparison uses a historical average annualized return of 10.5%.
-          All projections are estimates — not financial advice.
-        </p>
+          <h4 className="flex items-center gap-2 font-bold text-sm text-[hsl(var(--foreground))]">
+            <BarChart3
+              className="h-4 w-4 text-[hsl(var(--poke-yellow))]"
+              aria-hidden="true"
+            />
+            Methodology
+          </h4>
+          <p>
+            <strong className="text-[hsl(var(--foreground))]">★ Curated sets</strong> are
+            scored across 8 hand-tuned weighted factors (market value, chase cards,
+            supply scarcity, set age, price trajectory, popularity, market cycle, and
+            collector demand ratio). All prices are live from PokeData.io.
+          </p>
+          <p>
+            <strong className="text-[hsl(var(--foreground))]">📈 Google Trends</strong> data
+            is fetched live for all sets to power the Popularity factor. For curated sets,
+            trends are blended with hand-tuned scores. For dynamic products, Google Trends
+            replaces the neutral default — giving real demand signal.
+          </p>
+          <p>
+            <strong className="text-[hsl(var(--foreground))]">Search results</strong> from
+            PokeData use live pricing with auto-estimated factors (set age, price
+            trajectory, market value, popularity via Google Trends). Chase card index, print
+            run, market cycle, and demand ratio default to neutral (50) — these forecasts
+            are screening estimates, not full analyses. Look for the
+            <span className="inline-block mx-1 rounded-full bg-orange-500/20 text-orange-400 px-1.5 py-0.5 text-[9px] font-semibold">
+              Estimated
+            </span>
+            badge.
+          </p>
+          <p>
+            S&amp;P 500 comparison uses a historical average annualized return of 10.5%.
+            All projections are estimates — not financial advice.
+          </p>
         </div>
       </div>
     </div>

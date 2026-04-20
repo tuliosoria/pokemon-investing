@@ -4,7 +4,8 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "PokéInvest — Should You Grade That Card?",
+  applicationName: "PokeAlpha",
+  title: "PokeAlpha — Should You Grade That Card?",
   description:
     "Calculate the expected value of grading any Pokémon card. Get a clear Grade or Don't Grade decision backed by real math.",
 };

@@ -15,8 +15,8 @@ export function Footer() {
                 <div className="w-2 h-2 rounded-full bg-white border border-[hsl(var(--poke-blue))]" />
               </div>
               <span className="font-bold">
-                <span className="text-[hsl(var(--poke-red))]">Poké</span>
-                <span className="text-[hsl(var(--poke-yellow))]">Invest</span>
+                <span className="text-[hsl(var(--poke-red))]">Poke</span>
+                <span className="text-[hsl(var(--poke-yellow))]">Alpha</span>
               </span>
             </div>
             <p className="text-xs text-[hsl(var(--muted-foreground))] leading-relaxed">
@@ -51,7 +51,7 @@ export function Footer() {
 
         <div className="mt-8 pt-6 border-t border-[hsl(var(--border))] flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-xs text-[hsl(var(--muted-foreground))]">
-            © {year} PokéInvest. All rights reserved.
+            © {year} PokeAlpha. All rights reserved.
           </p>
           <p className="text-xs text-[hsl(var(--muted-foreground))]">
             Pokémon is a trademark of Nintendo / Creatures Inc. / GAME FREAK inc.

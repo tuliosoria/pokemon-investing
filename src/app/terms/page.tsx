@@ -14,7 +14,7 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">1. Acceptance of Terms</h2>
             <p>
-              By accessing and using PokéInvest (&quot;the Service&quot;), you accept and agree to be bound
+              By accessing and using PokeAlpha (&quot;the Service&quot;), you accept and agree to be bound
               by these Terms and Conditions. If you do not agree, you may not use the Service.
             </p>
           </section>
@@ -22,7 +22,7 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">2. Description of Service</h2>
             <p>
-              PokéInvest provides a calculator tool for estimating the expected value of grading
+              PokeAlpha provides a calculator tool for estimating the expected value of grading
               Pokémon trading cards. The Service is provided &quot;as is&quot; for
               informational and educational purposes only.
             </p>
@@ -31,7 +31,7 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">3. Not Financial Advice</h2>
             <p>
-              The calculations, estimates, and recommendations provided by PokéInvest do not constitute
+              The calculations, estimates, and recommendations provided by PokeAlpha do not constitute
               financial, investment, or professional advice. All investment decisions are made at your
               own risk. Past performance of trading card values does not guarantee future results.
             </p>
@@ -51,7 +51,7 @@ export default function TermsPage() {
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">5. Intellectual Property</h2>
             <p>
               Pokémon is a trademark of Nintendo / Creatures Inc. / GAME FREAK inc.
-              PokéInvest is not affiliated with, endorsed by, or sponsored by The Pokémon Company,
+              PokeAlpha is not affiliated with, endorsed by, or sponsored by The Pokémon Company,
               Nintendo, or any related entities. Card images and data are provided by third-party APIs.
             </p>
           </section>
@@ -59,7 +59,7 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">6. Limitation of Liability</h2>
             <p>
-              In no event shall PokéInvest be liable for any indirect, incidental, special,
+              In no event shall PokeAlpha be liable for any indirect, incidental, special,
               consequential, or punitive damages arising out of your use of the Service, including
               but not limited to financial losses from investment decisions made using our calculators.
             </p>

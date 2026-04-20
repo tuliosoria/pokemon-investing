@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PokeAlpha favicon">
+  <rect width="64" height="64" rx="16" fill="#081221" />
+  <circle cx="32" cy="32" r="24" fill="#F8FAFC" />
+  <path d="M8 32a24 24 0 0 1 48 0" fill="#EF4444" />
+  <line x1="8" y1="32" x2="56" y2="32" stroke="#FFCB05" stroke-width="3" />
+  <circle cx="32" cy="32" r="24" fill="none" stroke="#FFCB05" stroke-width="3" />
+  <circle cx="32" cy="32" r="10" fill="#0F172A" stroke="#FFCB05" stroke-width="3" />
+  <text
+    x="32"
+    y="37"
+    fill="#FFCB05"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="14"
+    font-weight="900"
+    text-anchor="middle"
+  >
+    A
+  </text>
+</svg>

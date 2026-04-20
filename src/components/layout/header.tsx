@@ -28,8 +28,8 @@ export function Header() {
               <div className="w-3 h-3 rounded-full bg-white border-2 border-[hsl(var(--poke-blue))]" />
             </div>
             <span className="text-lg font-bold tracking-tight">
-              <span className="text-[hsl(var(--poke-red))]">Poké</span>
-              <span className="text-[hsl(var(--poke-yellow))]">Invest</span>
+              <span className="text-[hsl(var(--poke-red))]">Poke</span>
+              <span className="text-[hsl(var(--poke-yellow))]">Alpha</span>
             </span>
           </Link>
 

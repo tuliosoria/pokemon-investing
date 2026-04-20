@@ -14,7 +14,7 @@ export default function PrivacyPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">1. Information We Collect</h2>
             <p>
-              PokéInvest currently does not require user accounts or collect personal information.
+              PokeAlpha currently does not require user accounts or collect personal information.
               The calculator tools operate entirely in your browser and on our server without
               storing your inputs or results.
             </p>
@@ -23,7 +23,7 @@ export default function PrivacyPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">2. Automatically Collected Information</h2>
             <p>
-              When you visit PokéInvest, our hosting provider (AWS Amplify) may automatically
+              When you visit PokeAlpha, our hosting provider (AWS Amplify) may automatically
               collect standard web server logs, including your IP address, browser type,
               referring page, and timestamps. This data is used solely for maintaining the
               service and analyzing aggregate traffic patterns.
@@ -50,7 +50,7 @@ export default function PrivacyPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">4. Cookies</h2>
             <p>
-              PokéInvest does not currently use cookies or tracking technologies. If this changes
+              PokeAlpha does not currently use cookies or tracking technologies. If this changes
               in the future (e.g., for user accounts), this policy will be updated accordingly.
             </p>
           </section>
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">6. Children&apos;s Privacy</h2>
             <p>
-              PokéInvest is not directed at children under 13 years of age. We do not knowingly
+              PokeAlpha is not directed at children under 13 years of age. We do not knowingly
               collect personal information from children.
             </p>
           </section>
