@@ -46,14 +46,11 @@ export function computeForecast(set: SealedSetData): Forecast {
     return sum + set.factors[key as keyof SealedSetData["factors"]] * config.weight;
   }, 0);
 
-  const compositeScore = Math.round(weightedSum / totalWeight);
-
-  const signal: Signal =
-    compositeScore >= 68 ? "Buy" : compositeScore >= 45 ? "Hold" : "Sell";
+  const rawCompositeScore = Math.round(weightedSum / totalWeight);
 
   // Map composite to annual appreciation rate
   // Score 100 → ~25%/yr, Score 50 → ~10%/yr, Score 0 → -5%/yr
-  const annualRate = -0.05 + (compositeScore / 100) * 0.3;
+  const annualRate = -0.05 + (rawCompositeScore / 100) * 0.3;
 
   const currentPrice = set.currentPrice > 0 ? set.currentPrice : 0;
   const projectedValue = currentPrice > 0
@@ -64,6 +61,17 @@ export function computeForecast(set: SealedSetData): Forecast {
     ? Math.round(((projectedValue / currentPrice) - 1) * 100)
     : 0;
   const spRoi = Math.round((Math.pow(1 + SP500_ANNUAL_RETURN, 5) - 1) * 100);
+  const spOutperformance = roiPercent - spRoi;
+
+  const signal: Signal =
+    spOutperformance >= 10 ? "Buy" : spOutperformance >= 0 ? "Hold" : "Sell";
+
+  const compositeScore =
+    signal === "Buy"
+      ? Math.max(rawCompositeScore, 60)
+      : signal === "Hold"
+        ? Math.min(59, Math.max(rawCompositeScore, 40))
+        : Math.min(rawCompositeScore, 39);
 
   // Estimated factor count: dynamic products have 5 defaults, minus 1 if trend data present
   const hasTrends = !!set.trendData;

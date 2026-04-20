@@ -4,7 +4,6 @@ import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
 import { computeForecast } from "@/lib/domain/sealed-forecast";
 import { buildDynamicSetData, inferProductType } from "@/lib/domain/sealed-estimate";
-import { getTopBuyOpportunities } from "@/lib/domain/top-buys";
 import type {
   SortField,
   FilterSignal,
@@ -70,11 +69,6 @@ export function ForecastDashboard() {
   const curatedForecasts = useMemo(
     () =>
       SEALED_SETS.map((set) => ({ set, forecast: computeForecast(set) })),
-    []
-  );
-
-  const topBuys = useMemo(
-    () => getTopBuyOpportunities(50),
     []
   );
 
@@ -377,6 +371,12 @@ export function ForecastDashboard() {
     [trendScores]
   );
 
+  const topBuys = useMemo(() => {
+    return applyTrends(curatedForecasts)
+      .filter(({ forecast }) => forecast.signal === "Buy")
+      .sort((a, b) => b.forecast.compositeScore - a.forecast.compositeScore);
+  }, [applyTrends, curatedForecasts]);
+
   // Combine curated + API results
   const allSets = useMemo(() => {
     if (showingTopBuys) {
@@ -609,6 +609,22 @@ export function ForecastDashboard() {
         )}
       </div>
 
+      <div className="flex flex-wrap items-center gap-2 text-[11px] text-[hsl(var(--muted-foreground))]">
+        <span className="font-medium text-[hsl(var(--foreground))]">Signal legend:</span>
+        <span className="rounded-full bg-green-500/10 px-2 py-1 text-green-400">
+          BUY = S&amp;P +10% over 5yr
+        </span>
+        <span
+          className="rounded-full bg-yellow-500/10 px-2 py-1 text-yellow-400"
+          title="HOLD means it may grow, but not meaningfully better than just putting your money in the S&P 500."
+        >
+          HOLD = roughly S&amp;P, neutral
+        </span>
+        <span className="rounded-full bg-red-500/10 px-2 py-1 text-red-400">
+          SELL = below S&amp;P
+        </span>
+      </div>
+
       {/* Results count */}
       {hasInteracted && !isSearching && (
         <div className="flex items-center gap-3">
@@ -695,7 +711,7 @@ export function ForecastDashboard() {
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                Show Top Buys
+                Show Top Buys ({topBuys.length})
               </button>
             </div>
 
@@ -790,8 +806,16 @@ export function ForecastDashboard() {
       {/* No results (curated mode, filters active) */}
       {hasInteracted && !isSearching && filtered.length === 0 && !isSearchMode && (
         <div className="text-center py-12 text-[hsl(var(--muted-foreground))]">
-          <p className="text-lg font-semibold mb-1">No sets match your filters</p>
-          <p className="text-sm">Try adjusting your search or filter criteria.</p>
+          <p className="text-lg font-semibold mb-1">
+            {showingTopBuys
+              ? "No Buy opportunities found at this time"
+              : "No sets match your filters"}
+          </p>
+          <p className="text-sm">
+            {showingTopBuys
+              ? "Check back as prices update."
+              : "Try adjusting your search or filter criteria."}
+          </p>
         </div>
       )}
 

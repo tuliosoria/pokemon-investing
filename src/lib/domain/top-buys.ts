@@ -15,7 +15,7 @@ export interface TopBuysFilters {
 }
 
 /**
- * Returns products projected to outperform the S&P 500,
+ * Returns products rated Buy,
  * ranked from strongest to weakest composite score.
  */
 export function getTopBuyOpportunities(
@@ -27,7 +27,7 @@ export function getTopBuyOpportunities(
 
   let results: BuyOpportunity[] = allSets
     .map((set) => ({ set, forecast: computeForecast(set) }))
-    .filter(({ forecast }) => forecast.roiPercent > forecast.spRoi);
+    .filter(({ forecast }) => forecast.signal === "Buy");
 
   // Apply filters
   if (filters) {
