@@ -33,6 +33,15 @@ interface LoadingState {
   errors: string[];
 }
 
+function getTcgplayerSearchUrl(opportunity: Pick<GradingOpportunity, "name" | "set" | "number">): string {
+  const params = new URLSearchParams({
+    productLineName: "pokemon",
+    q: `${opportunity.name} ${opportunity.set} ${opportunity.number}`,
+    view: "grid",
+  });
+  return `https://www.tcgplayer.com/search/pokemon/product?${params.toString()}`;
+}
+
 export function GradingOpportunities() {
   const [opportunities, setOpportunities] = useState<GradingOpportunity[]>([]);
   const [loading, setLoading] = useState<LoadingState>({
@@ -95,7 +104,11 @@ export function GradingOpportunities() {
 
       for (let j = 0; j < batchResults.length; j++) {
         const result = batchResults[j];
-        if (result.status === "fulfilled" && result.value) {
+        if (
+          result.status === "fulfilled" &&
+          result.value &&
+          result.value.expectedProfit >= 0
+        ) {
           results.push(result.value);
         } else if (result.status === "rejected") {
           errors.push(`${batch[j].name}: ${result.reason}`);
@@ -453,6 +466,14 @@ function OpportunityCard({
                 ? `Based on ${opp.populationTotal.toLocaleString()} graded copies`
                 : "Limited grading data available"}
             </span>
+            <a
+              href={getTcgplayerSearchUrl(opp)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-blue-400 hover:underline"
+            >
+              View on TCGPlayer →
+            </a>
           </div>
 
           {/* Scenario breakdown */}
