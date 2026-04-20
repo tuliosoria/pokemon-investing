@@ -66,6 +66,10 @@ body {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+@keyframes search-card-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 @keyframes fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -77,6 +81,9 @@ body {
 
 .animate-fade-in-up {
   animation: fade-in-up 0.7s ease-out both;
+}
+.search-card-enter {
+  animation: search-card-enter 0.3s ease-out both;
 }
 .animate-fade-in {
   animation: fade-in 0.6s ease-out both;
@@ -122,11 +129,11 @@ body {
 .skeleton-shimmer {
   background: linear-gradient(
     90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.04) 40%,
-    rgba(255, 255, 255, 0.08) 50%,
-    rgba(255, 255, 255, 0.04) 60%,
-    transparent 100%
+    #1e2a3a 0%,
+    #1e2a3a 35%,
+    #2a3a4a 50%,
+    #1e2a3a 65%,
+    #1e2a3a 100%
   );
   background-size: 200% 100%;
   animation: shimmer 1.8s ease-in-out infinite;

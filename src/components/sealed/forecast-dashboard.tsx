@@ -15,11 +15,29 @@ import { SetForecastCard } from "./set-forecast-card";
 import { SkeletonForecastCard } from "./skeleton-forecast-card";
 
 const SCROLL_BATCH = 6;
-const MIN_LOADING_MS = 300;
+const MIN_LOADING_MS = 400;
+const SEARCH_TIMEOUT_MS = 8000;
+const IMAGE_PRELOAD_TIMEOUT_MS = 2000;
+const SEARCH_ANIMATION_STAGGER_MS = 50;
 
 interface SetWithForecast {
   set: SealedSetData;
   forecast: ReturnType<typeof computeForecast>;
+}
+
+interface SearchUnavailableCardData {
+  id: string;
+  name: string;
+  productType: string;
+  releaseYear: number | null;
+  imageUrl: string | null;
+}
+
+interface TrendSnapshot {
+  score: number;
+  current: number;
+  average: number;
+  direction: "rising" | "stable" | "declining";
 }
 
 /** Build a Google Trends search keyword from a product name */
@@ -33,6 +51,143 @@ function buildTrendKeyword(name: string): string {
   return cleaned;
 }
 
+function parseReleaseYear(releaseDate: string | null): number | null {
+  if (!releaseDate) return null;
+  const yearFromSlice = parseInt(releaseDate.substring(0, 4), 10);
+  if (!Number.isNaN(yearFromSlice)) return yearFromSlice;
+
+  const parsed = new Date(releaseDate).getFullYear();
+  return Number.isNaN(parsed) ? null : parsed;
+}
+
+function applyTrendToResult(
+  item: SetWithForecast,
+  trend: TrendSnapshot
+): SetWithForecast {
+  const newPopularity =
+    item.set.curated === false
+      ? trend.score
+      : Math.round(item.set.factors.popularity * 0.6 + trend.score * 0.4);
+
+  const updatedSet: SealedSetData = {
+    ...item.set,
+    factors: { ...item.set.factors, popularity: newPopularity },
+    trendData: {
+      current: trend.current,
+      average: trend.average,
+      direction: trend.direction,
+    },
+  };
+
+  return { set: updatedSet, forecast: computeForecast(updatedSet) };
+}
+
+async function preloadImage(url: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const image = new window.Image();
+    const timeout = window.setTimeout(() => {
+      cleanup();
+      resolve(false);
+    }, IMAGE_PRELOAD_TIMEOUT_MS);
+
+    const cleanup = () => {
+      window.clearTimeout(timeout);
+      image.onload = null;
+      image.onerror = null;
+    };
+
+    image.onload = () => {
+      cleanup();
+      resolve(true);
+    };
+
+    image.onerror = () => {
+      cleanup();
+      resolve(false);
+    };
+
+    image.src = url;
+  });
+}
+
+async function preloadImages(urls: string[]): Promise<Set<string>> {
+  const uniqueUrls = [...new Set(urls.filter(Boolean))];
+  const settled = await Promise.allSettled(
+    uniqueUrls.map(async (url) => ({
+      url,
+      loaded: await preloadImage(url),
+    }))
+  );
+
+  const loaded = new Set<string>();
+  for (const result of settled) {
+    if (result.status === "fulfilled" && result.value.loaded) {
+      loaded.add(result.value.url);
+    }
+  }
+
+  return loaded;
+}
+
+function SearchUnavailableCard({
+  card,
+}: {
+  card: SearchUnavailableCardData;
+}) {
+  return (
+    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-900/80 shadow-[0_18px_50px_rgba(0,0,0,0.24)]">
+      <div className="relative h-[200px] flex-shrink-0 overflow-hidden bg-[#101827]">
+        {card.imageUrl ? (
+          <>
+            <img
+              src={card.imageUrl}
+              alt={card.name}
+              className="absolute inset-0 h-full w-full object-cover grayscale opacity-30"
+            />
+            <div className="absolute inset-0 bg-slate-950/55" />
+          </>
+        ) : (
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#334155_0%,#0f172a_72%)]" />
+        )}
+
+        <div className="absolute left-4 top-4 rounded-full border border-slate-500/50 bg-slate-700/80 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-100">
+          Data unavailable
+        </div>
+
+        <div className="absolute inset-x-0 bottom-0 p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-300/75">
+            {card.productType}
+            {card.releaseYear && (
+              <>
+                <span className="mx-2 text-slate-400/40">|</span>
+                {card.releaseYear}
+              </>
+            )}
+          </p>
+          <h3 className="mt-2 line-clamp-2 text-lg font-bold leading-tight text-white">
+            {card.name}
+          </h3>
+        </div>
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4 text-sm leading-relaxed text-slate-300">
+          Pricing or image data could not be loaded in time for this product.
+          Try the search again to retry the live lookup.
+        </div>
+
+        <div className="mt-auto pt-5 text-xs text-slate-400/80">
+          Rendered as a fixed-height fallback card to keep the results grid stable.
+        </div>
+      </div>
+
+      <div className="border-t border-white/10 bg-white/[0.02] px-5 py-4 text-xs font-medium uppercase tracking-[0.14em] text-slate-300/70">
+        Search result fallback
+      </div>
+    </div>
+  );
+}
+
 export function ForecastDashboard() {
   const [sortBy, setSortBy] = useState<SortField>("roi");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
@@ -40,6 +195,10 @@ export function ForecastDashboard() {
   const [search, setSearch] = useState("");
   const [apiQuery, setApiQuery] = useState("");
   const [apiResults, setApiResults] = useState<SetWithForecast[]>([]);
+  const [searchCuratedResults, setSearchCuratedResults] = useState<SetWithForecast[]>([]);
+  const [searchUnavailableCards, setSearchUnavailableCards] = useState<
+    SearchUnavailableCardData[]
+  >([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [showCurated, setShowCurated] = useState(true);
@@ -53,17 +212,12 @@ export function ForecastDashboard() {
   const [visibleCount, setVisibleCount] = useState(SCROLL_BATCH);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
-  // Staggered reveal: controls fade-in animation
-  const [revealedIds, setRevealedIds] = useState<Set<string>>(new Set());
-
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const abortRef = useRef<AbortController>(undefined);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Google Trends scores
-  const [trendScores, setTrendScores] = useState<
-    Map<string, { score: number; current: number; average: number; direction: string }>
-  >(new Map());
+  const [trendScores, setTrendScores] = useState<Map<string, TrendSnapshot>>(new Map());
   const trendFetchedRef = useRef<Set<string>>(new Set());
 
   const curatedForecasts = useMemo(
@@ -76,9 +230,10 @@ export function ForecastDashboard() {
     setVisibleCount(SCROLL_BATCH);
   }, []);
 
-  // Live search — accumulate ALL results, then mark complete
+  // Live search — pricing, trends, and image preload all complete before a single render
   const searchApi = useCallback(async (query: string) => {
-    if (query.trim().length < 2) {
+    const trimmedQuery = query.trim();
+    if (trimmedQuery.length < 2) {
       abortRef.current?.abort();
       setSearchError(null);
       setIsSearching(false);
@@ -93,158 +248,265 @@ export function ForecastDashboard() {
     setSearchError(null);
     setSearchComplete(false);
     setApiResults([]);
+    setSearchCuratedResults([]);
+    setSearchUnavailableCards([]);
 
     const startTime = Date.now();
+    let didTimeout = false;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    const ensureMinLoading = async () => {
+      const elapsed = Date.now() - startTime;
+      if (elapsed < MIN_LOADING_MS) {
+        await new Promise((resolve) => setTimeout(resolve, MIN_LOADING_MS - elapsed));
+      }
+    };
+
+    const norm = (value: string) =>
+      value
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[''`]/g, "")
+        .replace(/&/g, "and")
+        .toLowerCase()
+        .trim();
+
+    const VARIANT_WORDS = ["costco", "walmart", "target", "pokemon center", "display"];
 
     try {
-      const searchRes = await fetch(
-        `/api/sealed/search?q=${encodeURIComponent(query)}`,
-        { signal: controller.signal }
-      );
-      if (!searchRes.ok) throw new Error("Search failed");
-      const { products } = (await searchRes.json()) as {
-        products: SealedSearchResult[];
-      };
+      const payload = await Promise.race([
+        (async () => {
+          const searchRes = await fetch(
+            `/api/sealed/search?q=${encodeURIComponent(trimmedQuery)}`,
+            { signal: controller.signal }
+          );
+          if (!searchRes.ok) throw new Error("Search failed");
 
-      if (!products || products.length === 0) {
-        // Respect minimum loading time
-        const elapsed = Date.now() - startTime;
-        if (elapsed < MIN_LOADING_MS) {
-          await new Promise((r) => setTimeout(r, MIN_LOADING_MS - elapsed));
-        }
-        if (controller.signal.aborted) return;
-        setApiResults([]);
-        setIsSearching(false);
-        setSearchComplete(true);
-        return;
-      }
-
-      const BATCH_SIZE = 8;
-      const results: SetWithForecast[] = [];
-      const seenPokedataIds = new Set<string>();
-      const usedCuratedIds = new Set<string>();
-
-      const norm = (s: string) =>
-        s.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-          .replace(/[''`]/g, "").replace(/&/g, "and").toLowerCase().trim();
-
-      const VARIANT_WORDS = ["costco", "walmart", "target", "pokemon center", "display"];
-
-      const processPricing = (pricing: SealedPricing | null) => {
-        if (!pricing) return;
-        if (seenPokedataIds.has(pricing.pokedataId)) return;
-        seenPokedataIds.add(pricing.pokedataId);
-
-        const pricingProductType = inferProductType(pricing.name);
-        const pricingNorm = norm(pricing.name);
-        const isVariant = VARIANT_WORDS.some((v) => pricingNorm.includes(v));
-
-        const curatedMatch = !isVariant
-          ? SEALED_SETS.find(
-              (s) =>
-                !usedCuratedIds.has(s.id) &&
-                s.productType === pricingProductType &&
-                pricingNorm.includes(norm(s.name))
-            )
-          : undefined;
-
-        if (curatedMatch) {
-          usedCuratedIds.add(curatedMatch.id);
-          const updated = {
-            ...curatedMatch,
-            currentPrice: pricing.bestPrice ?? curatedMatch.currentPrice,
-            pokedataId: pricing.pokedataId,
-            imageUrl: pricing.imageUrl ?? curatedMatch.imageUrl,
+          const { products } = (await searchRes.json()) as {
+            products: SealedSearchResult[];
           };
-          results.push({ set: updated, forecast: computeForecast(updated) });
-        } else {
-          const dynamicSet = buildDynamicSetData(pricing);
-          results.push({ set: dynamicSet, forecast: computeForecast(dynamicSet) });
-        }
-      };
 
-      // Fetch ALL batches before rendering (no progressive UI updates)
-      for (let i = 0; i < products.length; i += BATCH_SIZE) {
-        if (controller.signal.aborted) break;
+          if (!products || products.length === 0) {
+            return {
+              liveResults: [] as SetWithForecast[],
+              curatedResults: [] as SetWithForecast[],
+              unavailableCards: [] as SearchUnavailableCardData[],
+            };
+          }
 
-        const batch = products.slice(i, i + BATCH_SIZE);
-        const batchPricings = await Promise.all(
-          batch.map(async (p) => {
-            try {
+          const pricingSettled = await Promise.allSettled(
+            products.map(async (product) => {
               const res = await fetch(
-                `/api/sealed/pricing?id=${p.pokedataId}`,
+                `/api/sealed/pricing?id=${product.pokedataId}`,
                 { signal: controller.signal }
               );
               if (!res.ok) {
-                return {
-                  pokedataId: p.pokedataId,
-                  name: p.name,
-                  releaseDate: p.releaseDate,
-                  imageUrl: p.imageUrl ?? null,
-                  tcgplayerPrice: null,
-                  ebayPrice: null,
-                  pokedataPrice: null,
-                  bestPrice: null,
-                } as SealedPricing;
+                throw new Error(`Pricing failed for ${product.pokedataId}`);
               }
+
               const { pricing } = (await res.json()) as { pricing: SealedPricing };
-              // Prefer search result image if pricing API didn't return one
-              if (pricing && !pricing.imageUrl && p.imageUrl) {
-                pricing.imageUrl = p.imageUrl;
+              if (!pricing) {
+                throw new Error(`Missing pricing for ${product.pokedataId}`);
               }
-              return pricing;
-            } catch {
-              return null;
+
+              if (!pricing.imageUrl && product.imageUrl) {
+                pricing.imageUrl = product.imageUrl;
+              }
+
+              return { product, pricing };
+            })
+          );
+
+          if (controller.signal.aborted) {
+            throw new DOMException("Search aborted", "AbortError");
+          }
+
+          const liveResults: SetWithForecast[] = [];
+          const unavailableCards: SearchUnavailableCardData[] = [];
+          const seenPokedataIds = new Set<string>();
+          const liveResultIds = new Set<string>();
+          const usedCuratedIds = new Set<string>();
+
+          for (const [index, settled] of pricingSettled.entries()) {
+            const product = products[index];
+
+            if (settled.status !== "fulfilled") {
+              unavailableCards.push({
+                id: `unavailable-${product.pokedataId}`,
+                name: product.name,
+                productType: inferProductType(product.name),
+                releaseYear: parseReleaseYear(product.releaseDate),
+                imageUrl: product.imageUrl ?? null,
+              });
+              continue;
             }
-          })
-        );
 
-        for (const pricing of batchPricings) {
-          processPricing(pricing);
-        }
-      }
+            const { pricing } = settled.value;
+            if (seenPokedataIds.has(pricing.pokedataId)) continue;
+            seenPokedataIds.add(pricing.pokedataId);
 
-      // Ensure minimum loading display time
-      const elapsed = Date.now() - startTime;
-      if (elapsed < MIN_LOADING_MS) {
-        await new Promise((r) => setTimeout(r, MIN_LOADING_MS - elapsed));
-      }
-      if (controller.signal.aborted) return;
+            const pricingProductType = inferProductType(pricing.name);
+            const pricingNorm = norm(pricing.name);
+            const isVariant = VARIANT_WORDS.some((variant) => pricingNorm.includes(variant));
 
-      // All done — render everything at once
-      setApiResults([...results]);
+            const curatedMatch = !isVariant
+              ? SEALED_SETS.find(
+                  (set) =>
+                    !usedCuratedIds.has(set.id) &&
+                    set.productType === pricingProductType &&
+                    pricingNorm.includes(norm(set.name))
+                )
+              : undefined;
+
+            const nextResult = curatedMatch
+              ? (() => {
+                  usedCuratedIds.add(curatedMatch.id);
+                  const updatedSet: SealedSetData = {
+                    ...curatedMatch,
+                    currentPrice: pricing.bestPrice ?? curatedMatch.currentPrice,
+                    pokedataId: pricing.pokedataId,
+                    imageUrl: pricing.imageUrl ?? curatedMatch.imageUrl,
+                  };
+                  return { set: updatedSet, forecast: computeForecast(updatedSet) };
+                })()
+              : (() => {
+                  const dynamicSet = buildDynamicSetData(pricing);
+                  return { set: dynamicSet, forecast: computeForecast(dynamicSet) };
+                })();
+
+            liveResults.push(nextResult);
+            liveResultIds.add(nextResult.set.id);
+          }
+
+          const curatedResults = curatedForecasts.filter(
+            (result) =>
+              !liveResultIds.has(result.set.id) &&
+              (
+                result.set.name.toLowerCase().includes(trimmedQuery.toLowerCase()) ||
+                result.set.chaseCards.some((card) => card.toLowerCase().includes(trimmedQuery.toLowerCase())) ||
+                result.set.productType.toLowerCase().includes(trimmedQuery.toLowerCase())
+              )
+          );
+
+          const combinedResults = [...liveResults, ...curatedResults];
+
+          const trendSettled = await Promise.allSettled(
+            combinedResults.map(async (result) => {
+              const res = await fetch(
+                `/api/trends?keyword=${encodeURIComponent(buildTrendKeyword(result.set.name))}`,
+                { signal: controller.signal }
+              );
+              if (!res.ok) return null;
+
+              const { trend } = await res.json();
+              if (!trend || typeof trend.popularityScore !== "number") {
+                return null;
+              }
+
+              return {
+                id: result.set.id,
+                trend: {
+                  score: trend.popularityScore,
+                  current: trend.current,
+                  average: trend.average,
+                  direction: trend.trendDirection as TrendSnapshot["direction"],
+                },
+              };
+            })
+          );
+
+          if (controller.signal.aborted) {
+            throw new DOMException("Search aborted", "AbortError");
+          }
+
+          const trendMap = new Map<string, TrendSnapshot>();
+          for (const settled of trendSettled) {
+            if (settled.status === "fulfilled" && settled.value) {
+              trendMap.set(settled.value.id, settled.value.trend);
+            }
+          }
+
+          const trendedResults = combinedResults.map((result) => {
+            const trend = trendMap.get(result.set.id);
+            return trend ? applyTrendToResult(result, trend) : result;
+          });
+
+          const loadedImages = await preloadImages([
+            ...trendedResults.map((result) => result.set.imageUrl ?? ""),
+            ...unavailableCards.map((card) => card.imageUrl ?? ""),
+          ]);
+
+          const withReadyImages = trendedResults.map((result) => ({
+            ...result,
+            set: {
+              ...result.set,
+              imageUrl:
+                result.set.imageUrl && loadedImages.has(result.set.imageUrl)
+                  ? result.set.imageUrl
+                  : undefined,
+            },
+          }));
+
+          const withFallbackImages = unavailableCards.map((card) => ({
+            ...card,
+            imageUrl: card.imageUrl && loadedImages.has(card.imageUrl) ? card.imageUrl : null,
+          }));
+
+          const liveIds = new Set(liveResults.map((result) => result.set.id));
+
+          return {
+            liveResults: withReadyImages.filter((result) => liveIds.has(result.set.id)),
+            curatedResults: withReadyImages.filter((result) => !liveIds.has(result.set.id)),
+            unavailableCards: withFallbackImages,
+          };
+        })(),
+        new Promise<never>((_, reject) => {
+          timeoutId = setTimeout(() => {
+            didTimeout = true;
+            controller.abort();
+            reject(new Error("Search timed out"));
+          }, SEARCH_TIMEOUT_MS);
+        }),
+      ]);
+
+      await ensureMinLoading();
+      if (abortRef.current !== controller) return;
+
+      setApiResults(payload.liveResults);
+      setSearchCuratedResults(payload.curatedResults);
+      setSearchUnavailableCards(payload.unavailableCards);
       setSearchComplete(true);
+      setIsSearching(false);
     } catch (err) {
-      if ((err as Error).name !== "AbortError" && !controller.signal.aborted) {
-        setSearchError("Search failed. Try again.");
+      await ensureMinLoading();
+      if (abortRef.current !== controller) return;
+
+      if (didTimeout) {
+        setSearchError("Search timed out. Try again.");
         setApiResults([]);
+        setSearchCuratedResults([]);
+        setSearchUnavailableCards([]);
         setSearchComplete(true);
-      }
-    } finally {
-      if (!controller.signal.aborted) {
         setIsSearching(false);
-      }
-    }
-  }, []);
-
-  // Staggered reveal animation for search results
-  useEffect(() => {
-    if (!searchComplete || apiResults.length === 0) return;
-
-    // Reveal cards one by one with 60ms stagger
-    const ids = apiResults.map((r) => r.set.id);
-    let i = 0;
-    const timer = setInterval(() => {
-      if (i >= ids.length) {
-        clearInterval(timer);
         return;
       }
-      setRevealedIds((prev) => new Set([...prev, ids[i]]));
-      i++;
-    }, 60);
 
-    return () => clearInterval(timer);
-  }, [searchComplete, apiResults]);
+      if ((err as Error).name === "AbortError") {
+        return;
+      }
+
+      setSearchError("Search failed. Try again.");
+      setApiResults([]);
+      setSearchCuratedResults([]);
+      setSearchUnavailableCards([]);
+      setSearchComplete(true);
+      setIsSearching(false);
+    } finally {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    }
+  }, [curatedForecasts]);
 
   // Fetch Google Trends
   const fetchTrends = useCallback(async (sets: SetWithForecast[]) => {
@@ -272,7 +534,7 @@ export function ForecastDashboard() {
               score: trend.popularityScore,
               current: trend.current,
               average: trend.average,
-              direction: trend.trendDirection,
+              direction: trend.trendDirection as TrendSnapshot["direction"],
             });
             return next;
           });
@@ -300,7 +562,6 @@ export function ForecastDashboard() {
       if (value.trim().length >= 2) {
         debounceRef.current = setTimeout(() => {
           setApiQuery(value.trim());
-          setRevealedIds(new Set());
           searchApi(value.trim());
         }, 500);
       } else {
@@ -334,13 +595,6 @@ export function ForecastDashboard() {
     fetchTrends(curatedForecasts);
   }, [curatedForecasts, fetchTrends]);
 
-  // Fetch Google Trends for API results when they change
-  useEffect(() => {
-    if (apiResults.length > 0) {
-      fetchTrends(apiResults);
-    }
-  }, [apiResults, fetchTrends]);
-
   // Apply trend scores to sets and recompute forecasts
   const applyTrends = useCallback(
     (items: SetWithForecast[]): SetWithForecast[] => {
@@ -348,24 +602,7 @@ export function ForecastDashboard() {
 
       return items.map((item) => {
         const trend = trendScores.get(item.set.id);
-        if (!trend) return item;
-
-        const newPopularity =
-          item.set.curated === false
-            ? trend.score
-            : Math.round(item.set.factors.popularity * 0.6 + trend.score * 0.4);
-
-        const updatedSet: SealedSetData = {
-          ...item.set,
-          factors: { ...item.set.factors, popularity: newPopularity },
-          trendData: {
-            current: trend.current,
-            average: trend.average,
-            direction: trend.direction as "rising" | "stable" | "declining",
-          },
-        };
-
-        return { set: updatedSet, forecast: computeForecast(updatedSet) };
+        return trend ? applyTrendToResult(item, trend) : item;
       });
     },
     [trendScores]
@@ -380,7 +617,7 @@ export function ForecastDashboard() {
   // Combine curated + API results
   const allSets = useMemo(() => {
     if (showingTopBuys) {
-      return applyTrends(topBuys);
+      return topBuys;
     }
 
     if (!hasInteracted) {
@@ -390,32 +627,23 @@ export function ForecastDashboard() {
     const hasApiSearch = apiQuery.length >= 2;
 
     if (hasApiSearch) {
-      const q = apiQuery.toLowerCase();
-
-      const matchingCurated = showCurated
-        ? curatedForecasts.filter(
-            (r) =>
-              r.set.name.toLowerCase().includes(q) ||
-              r.set.chaseCards.some((c) => c.toLowerCase().includes(q)) ||
-              r.set.productType.toLowerCase().includes(q)
-            )
-        : [];
-
       const merged = new Map<string, SetWithForecast>();
 
-      for (const result of matchingCurated) {
-        merged.set(result.set.id, result);
+      if (showCurated) {
+        for (const result of searchCuratedResults) {
+          merged.set(result.set.id, result);
+        }
       }
 
       for (const result of apiResults) {
         merged.set(result.set.id, result);
       }
 
-      return applyTrends([...merged.values()]);
+      return [...merged.values()];
     }
 
     return applyTrends(curatedForecasts);
-  }, [curatedForecasts, apiResults, apiQuery, showCurated, applyTrends, hasInteracted, showingTopBuys, topBuys]);
+  }, [curatedForecasts, apiResults, apiQuery, showCurated, searchCuratedResults, applyTrends, hasInteracted, showingTopBuys, topBuys]);
 
   const filtered = useMemo(() => {
     let result = allSets;
@@ -463,6 +691,22 @@ export function ForecastDashboard() {
     return filtered.slice(0, visibleCount);
   }, [filtered, visibleCount, isSearchMode]);
 
+  const searchDisplayCards = useMemo(
+    () => [
+      ...filtered.map((result) => ({
+        kind: "ready" as const,
+        id: result.set.id,
+        result,
+      })),
+      ...searchUnavailableCards.map((card) => ({
+        kind: "unavailable" as const,
+        id: card.id,
+        card,
+      })),
+    ],
+    [filtered, searchUnavailableCards]
+  );
+
   const hasMoreToLoad = isCuratedMode && visibleCount < filtered.length;
 
   // Intersection Observer for progressive scroll loading
@@ -498,6 +742,8 @@ export function ForecastDashboard() {
   const totalSets = apiQuery.length >= 2
     ? filtered.length
     : SEALED_SETS.length;
+
+  const renderedResultCount = isSearchMode ? searchDisplayCards.length : visibleFiltered.length;
 
   return (
     <div className="space-y-6">
@@ -629,10 +875,10 @@ export function ForecastDashboard() {
       {hasInteracted && !isSearching && (
         <div className="flex items-center gap-3">
           <p className="text-xs text-[hsl(var(--muted-foreground))]">
-            Showing {visibleFiltered.length}{isCuratedMode && filtered.length > visibleFiltered.length ? ` of ${filtered.length}` : ""} {showingTopBuys ? "top buy opportunities" : apiQuery.length >= 2 ? "results" : `of ${totalSets} sets`}
+            Showing {renderedResultCount}{isCuratedMode && filtered.length > visibleFiltered.length ? ` of ${filtered.length}` : ""} {showingTopBuys ? "top buy opportunities" : apiQuery.length >= 2 ? "results" : `of ${totalSets} sets`}
             {apiQuery.length >= 2 && apiResults.length > 0 && (
               <span className="ml-1">
-                ({apiResults.filter((r) => !r.set.curated).length} from PokeData)
+                ({apiResults.length} from PokeData)
               </span>
             )}
           </p>
@@ -739,18 +985,19 @@ export function ForecastDashboard() {
       )}
 
       {/* Search results — all at once with staggered fade-in */}
-      {isSearchMode && searchComplete && filtered.length > 0 && (
+      {isSearchMode && searchComplete && searchDisplayCards.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 items-stretch">
-          {filtered.map(({ set, forecast }) => (
+          {searchDisplayCards.map((item, index) => (
             <div
-              key={set.id}
-              className={`transition-all duration-300 ${
-                revealedIds.has(set.id)
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-4"
-              }`}
+              key={item.id}
+              className="search-card-enter"
+              style={{ animationDelay: `${index * SEARCH_ANIMATION_STAGGER_MS}ms` }}
             >
-              <SetForecastCard set={set} forecast={forecast} />
+              {item.kind === "ready" ? (
+                <SetForecastCard set={item.result.set} forecast={item.result.forecast} />
+              ) : (
+                <SearchUnavailableCard card={item.card} />
+              )}
             </div>
           ))}
         </div>
@@ -794,7 +1041,7 @@ export function ForecastDashboard() {
       )}
 
       {/* No results (search complete, nothing found) */}
-      {hasInteracted && !isSearching && !searchError && filtered.length === 0 && searchComplete && isSearchMode && (
+      {hasInteracted && !isSearching && !searchError && searchDisplayCards.length === 0 && searchComplete && isSearchMode && (
         <div className="text-center py-12 text-[hsl(var(--muted-foreground))]">
           <p className="text-lg font-semibold mb-1">No sealed products found</p>
           <p className="text-sm">
