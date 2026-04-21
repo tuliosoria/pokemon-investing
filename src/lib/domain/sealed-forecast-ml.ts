@@ -187,6 +187,7 @@ const MAX_ESTIMATED_FACTORS_FOR_FORECAST = 3;
 const MIN_FORECAST_AGE_YEARS = 1;
 const LOW_CONFIDENCE_SCORE_CAP = 69;
 const MEDIUM_CONFIDENCE_SCORE_CAP = 89;
+const CORE_FORECAST_PRODUCT_TYPES = new Set<ProductType>(["ETB", "Booster Box"]);
 
 const MARKET_CYCLE_BY_YEAR: Record<number, number> = {
   2016: 44,
@@ -256,6 +257,10 @@ function formatSignedPercent(value: number): string {
 
 function formatYears(value: number): string {
   return `${round(value, 1)}yr`;
+}
+
+function isCoreForecastProduct(productType: ProductType): boolean {
+  return CORE_FORECAST_PRODUCT_TYPES.has(productType);
 }
 
 function blendTowardNeutral(value: number, weight: number, neutral = 50): number {
@@ -435,6 +440,10 @@ function getManifestProduct(set: SealedSetData): ManifestProduct | undefined {
 
   if (sameProductTypeMatch) {
     return sameProductTypeMatch;
+  }
+
+  if (!isCoreForecastProduct(set.productType)) {
+    return undefined;
   }
 
   return manifestProductsByNameSpecificity.find((product) => {
@@ -834,7 +843,12 @@ function buildForecast(
     return buildBlockedForecast(input, "too_new", "Too new to forecast");
   }
 
-  if (input.estimatedFactors > MAX_ESTIMATED_FACTORS_FOR_FORECAST) {
+  const allowSparseForecast = isCoreForecastProduct(set.productType);
+
+  if (
+    input.estimatedFactors > MAX_ESTIMATED_FACTORS_FOR_FORECAST &&
+    !allowSparseForecast
+  ) {
     return buildBlockedForecast(
       input,
       "insufficient_data",
@@ -882,9 +896,12 @@ function buildForecast(
 
   const signal: Signal =
     benchmarkDelta >= 10 ? "Buy" : benchmarkDelta >= 0 ? "Hold" : "Sell";
-  const confidence = wasRoiCapped
-    ? "Low"
-    : resolveConfidence(adjustedPredictions.spreadPercent);
+  const confidence =
+    wasRoiCapped ||
+    (allowSparseForecast &&
+      input.estimatedFactors > MAX_ESTIMATED_FACTORS_FOR_FORECAST)
+      ? "Low"
+      : resolveConfidence(adjustedPredictions.spreadPercent);
   const confidenceBonus =
     confidence === "High" ? 5 : confidence === "Medium" ? 2 : 0;
   const rawScore = clamp(Math.round(50 + benchmarkDelta * 0.55 + confidenceBonus), 1, 99);

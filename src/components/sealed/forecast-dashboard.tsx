@@ -92,6 +92,10 @@ function applyTrendToSet(
   };
 }
 
+function isVisibleForecastResult(result: SetWithForecast): boolean {
+  return result.forecast.status !== "insufficient_data";
+}
+
 async function requestForecasts(
   sets: SealedSetData[],
   signal?: AbortSignal,
@@ -594,6 +598,7 @@ export function ForecastDashboard() {
             controller.signal,
             "search"
           );
+          const visibleForecastedResults = forecastedResults.filter(isVisibleForecastResult);
 
           const withFallbackImages = unavailableCards.map((card) => ({
             ...card,
@@ -606,8 +611,8 @@ export function ForecastDashboard() {
           const liveIds = new Set(liveSets.map((set) => set.id));
 
           return {
-            liveResults: forecastedResults.filter((result) => liveIds.has(result.set.id)),
-            curatedResults: forecastedResults.filter((result) => !liveIds.has(result.set.id)),
+            liveResults: visibleForecastedResults.filter((result) => liveIds.has(result.set.id)),
+            curatedResults: visibleForecastedResults.filter((result) => !liveIds.has(result.set.id)),
             unavailableCards: withFallbackImages,
           };
         })(),
@@ -674,10 +679,10 @@ export function ForecastDashboard() {
           return trend ? applyTrendToSet(set, trend) : set;
         });
 
-        const results = await requestForecasts(trendedSets, controller.signal);
-        if (!controller.signal.aborted) {
-          setCuratedForecasts(results);
-        }
+          const results = await requestForecasts(trendedSets, controller.signal);
+          if (!controller.signal.aborted) {
+            setCuratedForecasts(results.filter(isVisibleForecastResult));
+          }
       } catch {
         if (!controller.signal.aborted) {
           setCuratedForecasts([]);
