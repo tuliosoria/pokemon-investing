@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { BarChart3 } from "lucide-react";
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
@@ -1286,57 +1287,33 @@ export function ForecastDashboard() {
 
       {/* Methodology note — visually separated from card grid */}
       <div className="mt-12 pt-8 border-t border-[hsl(var(--border))]">
-        <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/30 p-5 text-xs text-[hsl(var(--muted-foreground))] space-y-2">
+        <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/30 p-5 text-xs text-[hsl(var(--muted-foreground))] space-y-3">
           <h4 className="flex items-center gap-2 font-bold text-sm text-[hsl(var(--foreground))]">
             <BarChart3
               className="h-4 w-4 text-[hsl(var(--poke-yellow))]"
               aria-hidden="true"
             />
-            Methodology
+            Forecast methodology
           </h4>
           <p>
-            <strong className="text-[hsl(var(--foreground))]">XGBoost models</strong> forecast
-            1-year, 3-year, and 5-year sealed prices from live price, chase-card
-            strength, print run, set age, trajectories, collector demand, product type,
-            era, and market-cycle inputs. All prices are live from PokeData.io.
+            Learn how the sealed forecast is calculated, including the XGBoost model,
+            the variables it uses, the statistical concepts behind confidence and
+            signals, and the guardrails that suppress weak-data products.
           </p>
           <p>
-            <strong className="text-[hsl(var(--foreground))]">Live Google Trends</strong> data
-            is fetched for curated sets and search results, then blended into the
-            popularity inputs before the model runs. The Factor Breakdown panel now shows
-            model influence by feature instead of hand-tuned weights.
+            Quick summary: forecasts use live pricing, chase-card strength, print-run
+            context, set age, trajectories, demand proxies, product type, era, and
+            market-cycle inputs. Brand-new and sparse-data products are blocked instead
+            of forced into a projection.
           </p>
-          <p>
-            <strong className="text-[hsl(var(--foreground))]">Dynamic search results</strong> use
-            the same ML models, but some inputs are estimated when a product is missing
-            curated chase-card or history data. Look for the
-            <span className="inline-block mx-1 rounded-full bg-orange-500/20 text-orange-400 px-1.5 py-0.5 text-[9px] font-semibold">
-              Estimated
-            </span>
-            badge on those cards.
-          </p>
-          <p>
-            <strong className="text-[hsl(var(--foreground))]">Brand-new standard-print sets</strong>{" "}
-            with less than 12 months of history are not forecasted at all. They render as
-            <span className="mx-1 font-semibold text-[hsl(var(--foreground))]">
-              Too new to forecast
-            </span>
-            until real market history exists.
-          </p>
-          <p>
-            <strong className="text-[hsl(var(--foreground))]">Sparse products</strong> with
-            more than three estimated / missing inputs are suppressed as
-            <span className="mx-1 font-semibold text-[hsl(var(--foreground))]">
-              Insufficient data to forecast
-            </span>
-            instead of showing a misleading projection.
-          </p>
-          <p>
-            Buy / Hold / Sell is derived from projected 5-year ROI versus an S&amp;P 500
-            benchmark of 10.5% annualized. Predicted 5-year ROI is hard-capped at 300%, any
-            capped forecast is forced to Low confidence, and Low confidence forecasts cannot
-            appear as elite 90+ scores. All projections are estimates — not financial advice.
-          </p>
+          <div>
+            <Link
+              href="/sealed-forecast/methodology"
+              className="inline-flex items-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1.5 text-xs font-semibold text-[hsl(var(--foreground))] transition-colors hover:border-[hsl(var(--poke-yellow))]/60 hover:text-[hsl(var(--poke-yellow))]"
+            >
+              Learn how it is calculated
+            </Link>
+          </div>
         </div>
       </div>
     </div>
