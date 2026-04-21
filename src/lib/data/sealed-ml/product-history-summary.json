@@ -58,9 +58,9 @@
   "xy-evolutions": {
     "name": "XY Evolutions",
     "latestPriceDate": "2026-04-01",
-    "latestHistoricalPrice": 2310.79,
-    "priceTrajectory6mo": 35.348,
-    "priceTrajectory24mo": 206.162,
+    "latestHistoricalPrice": 2300.0,
+    "priceTrajectory6mo": 34.716,
+    "priceTrajectory24mo": 204.733,
     "historyPoints": 59
   },
   "hidden-fates": {
@@ -162,8 +162,8 @@
   "surging-sparks": {
     "name": "Surging Sparks",
     "latestPriceDate": "2026-04-01",
-    "latestHistoricalPrice": 255.0,
-    "priceTrajectory6mo": 1.392,
+    "latestHistoricalPrice": 254.7,
+    "priceTrajectory6mo": 1.272,
     "priceTrajectory24mo": null,
     "historyPoints": 18
   },

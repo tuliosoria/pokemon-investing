@@ -205,8 +205,8 @@ export const SEALED_SETS: SealedSetData[] = [
       demandRatio: 55,
     },
     chaseCards: ["Galarian Gallery Cards", "Mewtwo VSTAR"],
-    printRunLabel: "Limited",
-    notes: "Special set closing the SWSH era. Galarian Gallery has beautiful art. Strong appreciation from $50 retail.",
+    printRunLabel: "Overprinted",
+    notes: "Special set closing the SWSH era. Galarian Gallery has beautiful art, but repeated premium collection waves kept supply flowing long after launch.",
     curated: true,
   },
   {
@@ -228,8 +228,8 @@ export const SEALED_SETS: SealedSetData[] = [
       demandRatio: 72,
     },
     chaseCards: ["Charizard ex IR", "Mew ex SAR", "Mewtwo ex IR", "Alakazam ex IR"],
-    printRunLabel: "Standard",
-    notes: "Massive nostalgia play featuring all original 151. 14× retail appreciation — one of the best modern performers.",
+    printRunLabel: "Overprinted",
+    notes: "Massive nostalgia play featuring all original 151. Multiple reprints, restocks, and late product waves kept supply alive even as demand stayed elite.",
     curated: true,
   },
   {
@@ -321,7 +321,7 @@ export const SEALED_SETS: SealedSetData[] = [
     },
     chaseCards: ["Umbreon ex IR", "Sylveon ex IR", "Eevee ex IR", "Jolteon ex IR"],
     printRunLabel: "Standard",
-    notes: "Eevee evolution theme drives massive hype. Very new — near retail, long-term potential depends on print run ending.",
+    notes: "Eevee evolution theme drives massive hype. Early restocks and added product waves broadened supply, but demand is still too strong to treat it as fully overprinted.",
     curated: true,
   },
   {
