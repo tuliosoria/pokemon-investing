@@ -5,7 +5,6 @@ import type { SealedSetData, Forecast } from "@/lib/types/sealed";
 import { getProjectionData } from "@/lib/domain/sealed-forecast";
 import { SignalBadge, ConfidenceBadge } from "./signal-badge";
 import { RoiChart } from "./roi-chart";
-import { FactorBreakdown } from "./factor-breakdown";
 import { useSealedTcgplayerUrl } from "./use-sealed-tcgplayer-url";
 
 const CARD_HEADER_OVERLAY =
@@ -321,12 +320,6 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
         </div>
       </div>
 
-      {!isForecastBlocked && (
-        <FactorBreakdown
-          contributions={forecast.factorContributions}
-          compositeScore={forecast.compositeScore}
-        />
-      )}
     </div>
   );
 }

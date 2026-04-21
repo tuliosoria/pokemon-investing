@@ -8,7 +8,6 @@ import model5yrData from "@/lib/data/sealed-ml/model-5yr.json";
 import { SP500_ANNUAL_RETURN } from "@/lib/domain/sealed-forecast";
 import type {
   Confidence,
-  FactorContribution,
   Forecast,
   ForecastStatus,
   ProductType,
@@ -114,7 +113,6 @@ export interface ForecastFeatureSnapshot {
 interface ModelPrediction {
   predictedPrice: number;
   leafContributions: number[];
-  localImpacts: Map<FeatureKey, number>;
   spreadPercent: number;
 }
 
@@ -124,23 +122,6 @@ interface GuardrailedPredictions {
   fiveYearPrice: number;
   spreadPercent: number;
 }
-
-const FEATURE_LABELS: Record<FeatureKey, string> = {
-  current_price: "Current Price",
-  most_expensive_card_price: "Top Chase Card Value",
-  chase_card_count: "$50+ Chase Cards",
-  chase_card_index_score: "Chase Card Index",
-  set_age_years: "Set Age",
-  google_trends_score: "Google Trends",
-  print_run_type_encoded: "Print Run",
-  price_trajectory_6mo: "6-Month Trajectory",
-  price_trajectory_24mo: "24-Month Trajectory",
-  collector_demand_ratio: "Collector Demand Ratio",
-  market_cycle_score: "Market Cycle",
-  popularity_score: "Popularity Score",
-  product_type_encoded: "Product Type",
-  era_encoded: "Era",
-};
 
 const PRINT_RUN_ENCODING = {
   Limited: 2,
@@ -652,24 +633,11 @@ function runModel(
   features: Record<FeatureKey, number>
 ): ModelPrediction {
   const leafContributions: number[] = [];
-  const localImpacts = new Map<FeatureKey, number>();
 
   for (const tree of model.trees) {
     const path: Array<{ feature: FeatureKey; gain: number }> = [];
     const leafContribution = traverseTree(tree, features, path);
     leafContributions.push(leafContribution);
-
-    if (path.length === 0) {
-      continue;
-    }
-
-    const totalGain = path.reduce((sum, step) => sum + step.gain, 0);
-    const divisor = totalGain > 0 ? totalGain : path.length;
-    for (const step of path) {
-      const weight = totalGain > 0 ? step.gain / divisor : 1 / divisor;
-      const signedImpact = leafContribution * weight;
-      localImpacts.set(step.feature, (localImpacts.get(step.feature) ?? 0) + signedImpact);
-    }
   }
 
   const logPrediction =
@@ -678,7 +646,6 @@ function runModel(
   return {
     predictedPrice: Math.exp(logPrediction),
     leafContributions,
-    localImpacts,
     spreadPercent: computeSpreadPercent(model.baseScore, leafContributions),
   };
 }
@@ -802,7 +769,6 @@ function buildBlockedForecast(
     dollarGain: 0,
     roiPercent: 0,
     spRoi,
-    factorContributions: [],
     estimatedFactors: input.estimatedFactors,
     predictionSpreadPercent: 100,
     horizonPredictions: {
@@ -813,37 +779,6 @@ function buildBlockedForecast(
     status,
     statusMessage,
   };
-}
-
-function normalizeFeatureContributions(
-  input: FeatureInput,
-  localImpacts: Map<FeatureKey, number>,
-  globalImportance: ModelImportance[]
-): FactorContribution[] {
-  const positiveMass = [...localImpacts.values()].reduce(
-    (sum, value) => sum + Math.abs(value),
-    0
-  );
-
-  if (positiveMass <= 0) {
-    return globalImportance.map((item) => ({
-      key: item.key,
-      name: FEATURE_LABELS[item.key],
-      influence: round(item.influence, 1),
-      direction: "Neutral",
-      valueLabel: input.labels[item.key],
-    }));
-  }
-
-  return [...localImpacts.entries()]
-    .sort((left, right) => Math.abs(right[1]) - Math.abs(left[1]))
-    .map(([feature, impact]) => ({
-      key: feature,
-      name: FEATURE_LABELS[feature],
-      influence: round((Math.abs(impact) / positiveMass) * 100, 1),
-      direction: impact > 0.0001 ? "Positive" : impact < -0.0001 ? "Negative" : "Neutral",
-      valueLabel: input.labels[feature],
-    }));
 }
 
 function buildForecast(
@@ -939,11 +874,6 @@ function buildForecast(
     dollarGain,
     roiPercent,
     spRoi,
-    factorContributions: normalizeFeatureContributions(
-      input,
-      prediction5yr.localImpacts,
-      models.fiveYear.globalImportance
-    ),
     estimatedFactors: input.estimatedFactors,
     predictionSpreadPercent: adjustedPredictions.spreadPercent,
     horizonPredictions: {

@@ -51,7 +51,6 @@ export interface Forecast {
   dollarGain: number;
   roiPercent: number;
   spRoi: number;
-  factorContributions: FactorContribution[];
   /** Number of ML inputs estimated heuristically instead of resolved from data */
   estimatedFactors: number;
   predictionSpreadPercent: number;
@@ -84,14 +83,6 @@ export interface SealedPricing {
   ebayPrice: number | null;
   pokedataPrice: number | null;
   bestPrice: number | null;
-}
-
-export interface FactorContribution {
-  key: string;
-  name: string;
-  influence: number;
-  direction: "Positive" | "Negative" | "Neutral";
-  valueLabel: string;
 }
 
 export interface ProjectionPoint {
