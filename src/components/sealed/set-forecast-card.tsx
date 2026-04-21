@@ -38,7 +38,6 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
   const isForecastBlocked = forecast.status !== "ready";
   const outperforms = forecast.roiPercent > forecast.spRoi;
   const matchesBenchmark = forecast.roiPercent === forecast.spRoi;
-  const isEstimated = forecast.estimatedFactors > 0;
   const { tcgplayerUrl, isLoading: isLoadingTcgplayerUrl } = useSealedTcgplayerUrl({
     name: set.name,
     productType: set.productType,
@@ -91,12 +90,6 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
           )}
         </div>
 
-        {isEstimated && (
-          <span className="absolute right-4 top-4 z-10 rounded-full border border-orange-400/50 bg-orange-500/25 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-orange-200">
-            Estimated
-          </span>
-        )}
-
         <div className="absolute inset-x-0 bottom-0 z-10 p-5">
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/70">
             {set.productType}
@@ -128,7 +121,7 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
             </div>
             <div className="min-w-0 text-right">
               <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[hsl(var(--muted-foreground))]">
-                {isForecastBlocked ? "Forecast" : "Projected"}
+                {isForecastBlocked ? "Forecast" : "5-Year Value"}
               </p>
               {!isForecastBlocked && forecast.projectedValue > 0 ? (
                 <p className="mt-1 text-3xl font-black font-mono leading-none text-[hsl(var(--poke-yellow))]">
