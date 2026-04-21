@@ -23,6 +23,10 @@ const SEARCH_TIMEOUT_MS = 8000;
 const IMAGE_PRELOAD_TIMEOUT_MS = 2000;
 const SEARCH_ANIMATION_STAGGER_MS = 50;
 const TOP_BUYS_LIMIT = 100;
+const QUICK_SEARCHES = [
+  { label: "All Booster Boxes", query: "Booster Box" },
+  { label: "All ETBs", query: "ETB" },
+] as const;
 
 interface SetWithForecast {
   set: SealedSetData;
@@ -736,6 +740,25 @@ export function ForecastDashboard() {
     searchInputRef.current?.focus();
   }, [exitSearchMode]);
 
+  const applyQuickSearch = useCallback(
+    (query: string) => {
+      const trimmed = query.trim();
+      if (!trimmed) return;
+
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      abortRef.current?.abort();
+
+      resetVisibleCards();
+      setSearch(trimmed);
+      setHasInteracted(true);
+      setShowingTopBuys(false);
+      setApiQuery(trimmed);
+      searchApi(trimmed);
+      searchInputRef.current?.focus();
+    },
+    [resetVisibleCards, searchApi]
+  );
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -897,30 +920,53 @@ export function ForecastDashboard() {
       {/* Controls */}
       <div className="flex flex-col sm:flex-row gap-3">
         {/* Search */}
-        <div className="flex-1 relative">
-          <input
-            ref={searchInputRef}
-            type="text"
-            value={search}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder="Search any sealed product… (e.g. Evolving Skies, ETB, Celebrations)"
-            className="w-full h-10 rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-3 pr-20 text-sm placeholder:text-[hsl(var(--muted-foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
-          />
-          {search.trim().length > 0 && (
-            <button
-              type="button"
-              onClick={clearSearchInput}
-              aria-label="Clear search"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
-            >
-              ✕
-            </button>
-          )}
-          {isSearching && (
-            <div className="absolute right-10 top-1/2 -translate-y-1/2">
-              <div className="h-4 w-4 rounded-full border-2 border-[hsl(var(--poke-yellow))] border-t-transparent animate-spin" />
-            </div>
-          )}
+        <div className="flex-1 space-y-2">
+          <div className="relative">
+            <input
+              ref={searchInputRef}
+              type="text"
+              value={search}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              placeholder="Search any sealed product… (e.g. Evolving Skies, ETB, Celebrations)"
+              className="w-full h-10 rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-3 pr-20 text-sm placeholder:text-[hsl(var(--muted-foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
+            />
+            {search.trim().length > 0 && (
+              <button
+                type="button"
+                onClick={clearSearchInput}
+                aria-label="Clear search"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
+              >
+                ✕
+              </button>
+            )}
+            {isSearching && (
+              <div className="absolute right-10 top-1/2 -translate-y-1/2">
+                <div className="h-4 w-4 rounded-full border-2 border-[hsl(var(--poke-yellow))] border-t-transparent animate-spin" />
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {QUICK_SEARCHES.map(({ label, query }) => {
+              const isActive = search.trim().toLowerCase() === query.toLowerCase();
+
+              return (
+                <button
+                  key={query}
+                  type="button"
+                  onClick={() => applyQuickSearch(query)}
+                  className={`rounded-full px-3 py-1.5 text-[11px] font-medium transition-colors ${
+                    isActive
+                      ? "bg-[hsl(var(--poke-yellow))] text-[hsl(var(--poke-blue))]"
+                      : "bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Signal filter */}
