@@ -241,6 +241,10 @@ function buildManifestKey(name: string, productType: string): string {
   return `${normalizeText(name)}|${normalizeText(productType)}`;
 }
 
+const manifestProductsByNameSpecificity = [...manifestProducts].sort(
+  (left, right) => normalizeText(right.name).length - normalizeText(left.name).length
+);
+
 function formatCurrency(value: number): string {
   return `$${Math.round(value).toLocaleString()}`;
 }
@@ -417,11 +421,23 @@ function getManifestProduct(set: SealedSetData): ManifestProduct | undefined {
   }
 
   const normalizedSetName = normalizeText(set.name);
-  return manifestProducts.find((product) => {
+  const sameProductTypeMatch = manifestProductsByNameSpecificity.find((product) => {
     if (product.productType !== set.productType) {
       return false;
     }
 
+    const normalizedManifestName = normalizeText(product.name);
+    return (
+      normalizedSetName.includes(normalizedManifestName) ||
+      normalizedManifestName.includes(normalizedSetName)
+    );
+  });
+
+  if (sameProductTypeMatch) {
+    return sameProductTypeMatch;
+  }
+
+  return manifestProductsByNameSpecificity.find((product) => {
     const normalizedManifestName = normalizeText(product.name);
     return (
       normalizedSetName.includes(normalizedManifestName) ||
