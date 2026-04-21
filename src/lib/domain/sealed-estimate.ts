@@ -11,6 +11,7 @@ const PRODUCT_TYPE_PATTERNS: [RegExp, ProductType][] = [
   [/\bbooster\s*pack\b/i, "Booster Pack"],
   [/\bupc\b|ultra\s*premium/i, "UPC"],
   [/\btin\b/i, "Tin"],
+   [/\bex\s*box\b/i, "Collection Box"],
   [/\bcollection\b/i, "Collection Box"],
 ];
 

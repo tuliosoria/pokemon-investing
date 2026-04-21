@@ -188,6 +188,14 @@ const MIN_FORECAST_AGE_YEARS = 1;
 const LOW_CONFIDENCE_SCORE_CAP = 69;
 const MEDIUM_CONFIDENCE_SCORE_CAP = 89;
 const CORE_FORECAST_PRODUCT_TYPES = new Set<ProductType>(["ETB", "Booster Box"]);
+const SET_LEVEL_FALLBACK_PRODUCT_TYPES = new Set<ProductType>([
+  "ETB",
+  "Booster Box",
+  "Booster Bundle",
+  "UPC",
+  "Collection Box",
+  "Special Collection",
+]);
 
 const MARKET_CYCLE_BY_YEAR: Record<number, number> = {
   2016: 44,
@@ -261,6 +269,10 @@ function formatYears(value: number): string {
 
 function isCoreForecastProduct(productType: ProductType): boolean {
   return CORE_FORECAST_PRODUCT_TYPES.has(productType);
+}
+
+function supportsSetLevelFallback(productType: ProductType): boolean {
+  return SET_LEVEL_FALLBACK_PRODUCT_TYPES.has(productType);
 }
 
 function blendTowardNeutral(value: number, weight: number, neutral = 50): number {
@@ -442,7 +454,7 @@ function getManifestProduct(set: SealedSetData): ManifestProduct | undefined {
     return sameProductTypeMatch;
   }
 
-  if (!isCoreForecastProduct(set.productType)) {
+  if (!supportsSetLevelFallback(set.productType)) {
     return undefined;
   }
 
