@@ -17,6 +17,8 @@ try:
     from scripts.train_sealed_ml import (
         FEATURE_NAMES,
         TARGETS,
+        audit_training_frame,
+        build_dataset_summary,
         build_training_rows,
         load_cached_training_artifacts,
         load_manifest,
@@ -28,6 +30,8 @@ except ModuleNotFoundError:
     from train_sealed_ml import (
         FEATURE_NAMES,
         TARGETS,
+        audit_training_frame,
+        build_dataset_summary,
         build_training_rows,
         load_cached_training_artifacts,
         load_manifest,
@@ -308,25 +312,28 @@ def run_retraining() -> dict[str, Any]:
 
     lookup_rows = lookup_items_to_rows(lookup_items)
     merged_frame = merge_training_rows(base_frame, lookup_rows)
+    merged_frame, audit_summary = audit_training_frame(merged_frame)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     write_training_data_artifacts(merged_frame, history_summary, OUTPUT_DIR)
     model_summary = train_models(merged_frame, OUTPUT_DIR)
 
+    summary = build_dataset_summary(merged_frame, len(products))
     summary["generatedAt"] = now.isoformat()
-    summary["rows"] = int(merged_frame.shape[0])
-    summary["horizons"] = {
-        horizon: int(merged_frame[target].notna().sum())
-        for horizon, target in TARGETS.items()
-    }
     summary["lookupRows"] = len(lookup_rows)
     summary["capturedTargets"] = capture_counts
+    summary["audit"] = audit_summary
     summary["models"] = model_summary
+    summary["deploymentApproved"] = all(
+        bool(model.get("deploymentApproved")) for model in model_summary.values()
+    )
+    summary["publishedToDynamo"] = False
+
+    if lookup_table and summary["deploymentApproved"]:
+        publish_model_artifacts(lookup_table, OUTPUT_DIR, summary, now)
+        summary["publishedToDynamo"] = True
 
     write_training_summary(summary, OUTPUT_DIR)
-
-    if lookup_table:
-        publish_model_artifacts(lookup_table, OUTPUT_DIR, summary, now)
 
     return summary
 

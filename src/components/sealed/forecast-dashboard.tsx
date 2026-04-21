@@ -382,7 +382,7 @@ export function ForecastDashboard() {
 
         const refreshedResults = await requestForecasts(trendedSets);
         const rerankedBuys = refreshedResults
-          .filter((result) => result.forecast.signal === "Buy")
+          .filter((result) => result.forecast.status === "ready" && result.forecast.signal === "Buy")
           .sort((a, b) => b.forecast.compositeScore - a.forecast.compositeScore)
           .slice(0, opportunities.length);
 
@@ -1317,15 +1317,25 @@ export function ForecastDashboard() {
           </p>
           <p>
             <strong className="text-[hsl(var(--foreground))]">Brand-new standard-print sets</strong>{" "}
-            with less than 12 months of history have their launch-week hype signals damped
-            and are forced to Low confidence. Their 6mo / 24mo trajectory inputs stay
-            neutral until real history exists, so the model does not hallucinate 1000%+
-            upside from synthetic launch data.
+            with less than 12 months of history are not forecasted at all. They render as
+            <span className="mx-1 font-semibold text-[hsl(var(--foreground))]">
+              Too new to forecast
+            </span>
+            until real market history exists.
+          </p>
+          <p>
+            <strong className="text-[hsl(var(--foreground))]">Sparse products</strong> with
+            more than three estimated / missing inputs are suppressed as
+            <span className="mx-1 font-semibold text-[hsl(var(--foreground))]">
+              Insufficient data to forecast
+            </span>
+            instead of showing a misleading projection.
           </p>
           <p>
             Buy / Hold / Sell is derived from projected 5-year ROI versus an S&amp;P 500
-            benchmark of 10.5% annualized. Confidence comes from prediction spread across
-            the tree ensemble. All projections are estimates — not financial advice.
+            benchmark of 10.5% annualized. Predicted 5-year ROI is hard-capped at 300%, any
+            capped forecast is forced to Low confidence, and Low confidence forecasts cannot
+            appear as elite 90+ scores. All projections are estimates — not financial advice.
           </p>
         </div>
       </div>

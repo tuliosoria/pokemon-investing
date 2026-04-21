@@ -10,6 +10,7 @@ import type {
   Confidence,
   FactorContribution,
   Forecast,
+  ForecastStatus,
   ProductType,
   SealedSetData,
   Signal,
@@ -106,7 +107,7 @@ interface FeatureInput {
 }
 
 export interface ForecastFeatureSnapshot {
-  features: Record<FeatureKey, number>;
+  features: Record<FeatureKey, number | null>;
   estimatedFactors: number;
 }
 
@@ -152,19 +153,19 @@ const PRODUCT_TYPE_ENCODING: Record<ProductType, number> = {
   "Booster Box": 2,
   "Booster Bundle": 1,
   "Booster Pack": 1,
-  UPC: 1,
+  UPC: 2,
   "Collection Box": 1,
   "Special Collection": 1,
   Tin: 0,
-  Case: 0,
+  Case: 3,
   Unknown: 1,
 };
 
 const PRODUCT_TYPE_LABELS: Record<number, string> = {
-  0: "Tin / Case",
-  1: "Bundle / UPC / Collection",
-  2: "Booster Box",
-  3: "ETB",
+  0: "Tin",
+  1: "Bundle / Pack / Collection",
+  2: "Booster Box / UPC",
+  3: "ETB / Case",
 };
 
 const ERA_ENCODING = {
@@ -181,18 +182,11 @@ const ERA_LABELS: Record<number, string> = {
   3: "Base / Neo",
 };
 
-const MSRP_ESTIMATES: Record<ProductType, number> = {
-  "Booster Box": 144,
-  ETB: 50,
-  "Booster Bundle": 30,
-  "Booster Pack": 4,
-  UPC: 120,
-  Tin: 25,
-  "Collection Box": 30,
-  "Special Collection": 50,
-  Case: 700,
-  Unknown: 50,
-};
+const MAX_FORECAST_ROI_PERCENT = 300;
+const MAX_ESTIMATED_FACTORS_FOR_FORECAST = 3;
+const MIN_FORECAST_AGE_YEARS = 1;
+const LOW_CONFIDENCE_SCORE_CAP = 69;
+const MEDIUM_CONFIDENCE_SCORE_CAP = 89;
 
 const MARKET_CYCLE_BY_YEAR: Record<number, number> = {
   2016: 44,
@@ -291,6 +285,10 @@ function formatEncodedLabel(feature: FeatureKey, value: number): string {
 }
 
 function formatFeatureValue(feature: FeatureKey, value: number): string {
+  if (!Number.isFinite(value)) {
+    return "N/A";
+  }
+
   switch (feature) {
     case "current_price":
     case "most_expensive_card_price":
@@ -377,23 +375,6 @@ function marketCycleForYear(year: number): number {
   }
 
   return 55;
-}
-
-function estimateTrajectoryPercent(
-  currentPrice: number,
-  productType: ProductType,
-  ageYears: number,
-  months: number
-): number {
-  if (currentPrice <= 0 || ageYears <= 0.25) {
-    return 0;
-  }
-
-  const msrp = MSRP_ESTIMATES[productType] ?? 50;
-  const priceMultiple = clamp(currentPrice / Math.max(msrp, 1), 0.15, 300);
-  const annualGrowth = Math.pow(priceMultiple, 1 / Math.max(ageYears, 0.5)) - 1;
-  const periodGrowth = Math.pow(Math.max(0.05, 1 + annualGrowth), months / 12) - 1;
-  return round(clamp(periodGrowth * 100, -80, 600), 3);
 }
 
 function estimateMostExpensiveCardPrice(
@@ -508,21 +489,16 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     estimatedFactors += 1;
   }
 
-  const useNeutralLaunchTrajectories = !setHistory && setAgeYears < 1;
   const trajectory6mo =
     setHistory?.priceTrajectory6mo ??
-    (useNeutralLaunchTrajectories
-      ? 0
-      : estimateTrajectoryPercent(currentPrice, set.productType, setAgeYears, 6));
+    Number.NaN;
   if (!setHistory) {
     estimatedFactors += 1;
   }
 
   const trajectory24mo =
     setHistory?.priceTrajectory24mo ??
-    (useNeutralLaunchTrajectories
-      ? 0
-      : estimateTrajectoryPercent(currentPrice, set.productType, setAgeYears, 24));
+    Number.NaN;
   if (!setHistory) {
     estimatedFactors += 1;
   }
@@ -682,8 +658,10 @@ function resolveConfidence(spreadPercent: number): Confidence {
 
 function lacksHistoricalTrajectory(input: FeatureInput): boolean {
   return (
-    Math.abs(input.values.price_trajectory_6mo) < 0.001 &&
-    Math.abs(input.values.price_trajectory_24mo) < 0.001
+    (!Number.isFinite(input.values.price_trajectory_6mo) ||
+      Math.abs(input.values.price_trajectory_6mo) < 0.001) &&
+    (!Number.isFinite(input.values.price_trajectory_24mo) ||
+      Math.abs(input.values.price_trajectory_24mo) < 0.001)
   );
 }
 
@@ -705,7 +683,7 @@ function applySparseLaunchGuardrails(
 
   const isSparseLaunch =
     currentPrice > 0 &&
-    setAgeYears < 1 &&
+    setAgeYears < 1.5 &&
     isBroadPrintRun(printRunTypeEncoded) &&
     lacksHistoricalTrajectory(input);
 
@@ -720,7 +698,9 @@ function applySparseLaunchGuardrails(
         ? 0.08
         : setAgeYears < 0.5
           ? 0.1
-          : 0.14;
+          : setAgeYears < 1
+            ? 0.14
+            : 0.18;
 
   if (printRunTypeEncoded < PRINT_RUN_ENCODING.Standard) {
     annualCap -= 0.02;
@@ -754,6 +734,47 @@ function applySparseLaunchGuardrails(
       capPredictionByAnnualRate(currentPrice, 5, annualCap)
     ),
     spreadPercent: Math.max(rawPredictions.spreadPercent, 45),
+  };
+}
+
+function applyConfidenceScoreCap(score: number, confidence: Confidence): number {
+  if (confidence === "Low") {
+    return Math.min(score, LOW_CONFIDENCE_SCORE_CAP);
+  }
+
+  if (confidence === "Medium") {
+    return Math.min(score, MEDIUM_CONFIDENCE_SCORE_CAP);
+  }
+
+  return score;
+}
+
+function buildBlockedForecast(
+  input: FeatureInput,
+  status: ForecastStatus,
+  statusMessage: string
+): Forecast {
+  const spRoi = Math.round((Math.pow(1 + SP500_ANNUAL_RETURN, 5) - 1) * 100);
+
+  return {
+    compositeScore: 0,
+    signal: "Hold",
+    confidence: "Low",
+    annualRate: 0,
+    projectedValue: 0,
+    dollarGain: 0,
+    roiPercent: 0,
+    spRoi,
+    factorContributions: [],
+    estimatedFactors: input.estimatedFactors,
+    predictionSpreadPercent: 100,
+    horizonPredictions: {
+      oneYear: 0,
+      threeYear: 0,
+      fiveYear: 0,
+    },
+    status,
+    statusMessage,
   };
 }
 
@@ -793,10 +814,22 @@ function buildForecast(
   input: FeatureInput,
   models: ForecastModelBundle
 ): Forecast {
+  if (input.values.set_age_years < MIN_FORECAST_AGE_YEARS) {
+    return buildBlockedForecast(input, "too_new", "Too new to forecast");
+  }
+
+  if (input.estimatedFactors > MAX_ESTIMATED_FACTORS_FOR_FORECAST) {
+    return buildBlockedForecast(
+      input,
+      "insufficient_data",
+      "Insufficient data to forecast"
+    );
+  }
+
   const prediction1yr = runModel(models.oneYear, input.values);
   const prediction3yr = runModel(models.threeYear, input.values);
   const prediction5yr = runModel(models.fiveYear, input.values);
-  const adjustedPredictions = applySparseLaunchGuardrails(input, {
+  let adjustedPredictions = applySparseLaunchGuardrails(input, {
     oneYearPrice: Math.max(prediction1yr.predictedPrice, 0),
     threeYearPrice: Math.max(prediction3yr.predictedPrice, 0),
     fiveYearPrice: Math.max(prediction5yr.predictedPrice, 0),
@@ -804,6 +837,23 @@ function buildForecast(
   });
 
   const currentPrice = Math.max(set.currentPrice, 0);
+  const maxAllowedProjectedValue =
+    currentPrice > 0
+      ? round(currentPrice * (1 + MAX_FORECAST_ROI_PERCENT / 100), 2)
+      : adjustedPredictions.fiveYearPrice;
+  const wasRoiCapped =
+    currentPrice > 0 && adjustedPredictions.fiveYearPrice > maxAllowedProjectedValue;
+
+  if (wasRoiCapped) {
+    adjustedPredictions = {
+      ...adjustedPredictions,
+      oneYearPrice: Math.min(adjustedPredictions.oneYearPrice, maxAllowedProjectedValue),
+      threeYearPrice: Math.min(adjustedPredictions.threeYearPrice, maxAllowedProjectedValue),
+      fiveYearPrice: maxAllowedProjectedValue,
+      spreadPercent: Math.max(adjustedPredictions.spreadPercent, 45),
+    };
+  }
+
   const predictedFiveYearPrice = adjustedPredictions.fiveYearPrice;
   const projectedValue = Math.round(predictedFiveYearPrice);
   const dollarGain = round(predictedFiveYearPrice - currentPrice, 2);
@@ -816,16 +866,19 @@ function buildForecast(
 
   const signal: Signal =
     benchmarkDelta >= 10 ? "Buy" : benchmarkDelta >= 0 ? "Hold" : "Sell";
-  const confidence = resolveConfidence(adjustedPredictions.spreadPercent);
+  const confidence = wasRoiCapped
+    ? "Low"
+    : resolveConfidence(adjustedPredictions.spreadPercent);
   const confidenceBonus =
     confidence === "High" ? 5 : confidence === "Medium" ? 2 : 0;
   const rawScore = clamp(Math.round(50 + benchmarkDelta * 0.55 + confidenceBonus), 1, 99);
-  const compositeScore =
+  const uncappedCompositeScore =
     signal === "Buy"
       ? Math.max(rawScore, 60)
       : signal === "Hold"
         ? Math.min(59, Math.max(rawScore, 40))
         : Math.min(rawScore, 39);
+  const compositeScore = applyConfidenceScoreCap(uncappedCompositeScore, confidence);
 
   const annualRate =
     currentPrice > 0 && predictedFiveYearPrice > 0
@@ -853,6 +906,8 @@ function buildForecast(
       threeYear: Math.max(Math.round(adjustedPredictions.threeYearPrice), 0),
       fiveYear: projectedValue,
     },
+    status: "ready",
+    statusMessage: null,
   };
 }
 
@@ -870,8 +925,15 @@ export function computeForecast(set: SealedSetData): Forecast {
 
 export function buildFeatureSnapshot(set: SealedSetData): ForecastFeatureSnapshot {
   const input = buildFeatureInput(set);
+  const features = Object.fromEntries(
+    Object.entries(input.values).map(([feature, value]) => [
+      feature,
+      Number.isFinite(value) ? value : null,
+    ])
+  ) as Record<FeatureKey, number | null>;
+
   return {
-    features: input.values,
+    features,
     estimatedFactors: input.estimatedFactors,
   };
 }

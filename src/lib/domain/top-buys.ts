@@ -29,7 +29,7 @@ export function getTopBuyOpportunities(
 ): BuyOpportunity[] {
   let results: BuyOpportunity[] = sourceSets
     .map((set) => ({ set, forecast: computeForecastWithModels(set, models) }))
-    .filter(({ forecast }) => forecast.signal === "Buy");
+    .filter(({ forecast }) => forecast.status === "ready" && forecast.signal === "Buy");
 
   // Apply filters
   if (filters) {

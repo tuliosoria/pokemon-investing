@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import json
 import math
+import os
 from collections import Counter
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -22,6 +23,7 @@ MANIFEST_PATH = DATA_DIR / "products.json"
 DATASET_FILENAME = "training-dataset.csv"
 SUMMARY_FILENAME = "training-summary.json"
 LATEST_FEATURES_FILENAME = "product-history-summary.json"
+DEFAULT_OUTPUT_DIR = DATA_DIR
 
 FEATURE_NAMES = [
     "current_price",
@@ -63,6 +65,13 @@ MARKET_CYCLE_BY_YEAR = {
 PRICE_CHARTING_MARKER = "VGPC.chart_data = "
 REQUEST_HEADERS = {"User-Agent": "Mozilla/5.0", "Accept": "text/html,application/xhtml+xml"}
 SNAPSHOT_STEP_MONTHS = 1
+MAX_TARGET_MULTIPLE = 10.0
+MAX_MAE_SHARE_OF_MEAN_TARGET = 0.5
+MAX_SINGLE_FEATURE_INFLUENCE = 60.0
+TARGET_TRANSFORM = {
+    "train": "np.log",
+    "inference": "np.exp",
+}
 
 
 @dataclass
@@ -382,6 +391,48 @@ def build_dataset_summary(frame: pd.DataFrame, product_count: int) -> dict[str, 
     }
 
 
+def print_training_dataset(frame: pd.DataFrame) -> None:
+    print("=== TRAINING DATASET START ===")
+    print(frame.to_csv(index=False))
+    print("=== TRAINING DATASET END ===")
+
+
+def audit_training_frame(frame: pd.DataFrame) -> tuple[pd.DataFrame, dict[str, Any]]:
+    audited = frame.copy()
+    audited.sort_values(["snapshot_date", "name"], inplace=True)
+    print_training_dataset(audited)
+
+    current_prices = audited["current_price"].replace(0, np.nan).astype(float)
+    outlier_mask = pd.Series(False, index=audited.index)
+    max_target_multiple_by_horizon: dict[str, float] = {}
+
+    for horizon, target_column in TARGETS.items():
+        target_values = audited[target_column].astype(float)
+        ratios = target_values / current_prices
+        finite_ratios = ratios[np.isfinite(ratios)]
+        max_target_multiple_by_horizon[horizon] = round(
+            float(finite_ratios.max()) if not finite_ratios.empty else 0.0,
+            4,
+        )
+        outlier_mask = outlier_mask | (ratios >= MAX_TARGET_MULTIPLE).fillna(False)
+
+    outliers = audited.loc[outlier_mask].copy()
+    if not outliers.empty:
+        print("=== TRAINING OUTLIERS REMOVED START ===")
+        print(outliers.to_csv(index=False))
+        print("=== TRAINING OUTLIERS REMOVED END ===")
+
+    cleaned = audited.loc[~outlier_mask].copy()
+    cleaned.sort_values(["snapshot_date", "name"], inplace=True)
+
+    return cleaned, {
+        "loggedRows": int(audited.shape[0]),
+        "outlierRowsRemoved": int(outliers.shape[0]),
+        "maxTargetMultipleByHorizon": max_target_multiple_by_horizon,
+        "targetTransform": TARGET_TRANSFORM,
+    }
+
+
 def load_cached_training_artifacts(
     data_dir: Path = DATA_DIR,
 ) -> tuple[pd.DataFrame, dict[str, Any], dict[str, Any]]:
@@ -413,14 +464,15 @@ def write_training_data_artifacts(
 def make_model() -> XGBRegressor:
     return XGBRegressor(
         objective="reg:squarederror",
-        n_estimators=200,
-        max_depth=4,
+        n_estimators=100,
+        max_depth=2,
         learning_rate=0.05,
-        subsample=0.8,
-        colsample_bytree=0.8,
-        min_child_weight=2,
-        reg_alpha=0.1,
-        reg_lambda=1.0,
+        subsample=0.7,
+        colsample_bytree=0.7,
+        min_child_weight=5,
+        reg_alpha=1.0,
+        reg_lambda=5.0,
+        gamma=2.0,
         random_state=42,
         tree_method="hist",
         missing=np.nan,
@@ -499,6 +551,28 @@ def train_model(
         }
         for feature, gain in sorted(raw_importance.items(), key=lambda item: item[1], reverse=True)
     ]
+    mean_target_price = float(target.mean())
+    mae_share_of_mean_target = (
+        float(cv_metrics["mae"]) / mean_target_price if mean_target_price > 0 else 0.0
+    )
+    dominant_feature = global_importance[0] if global_importance else None
+    manual_review_reasons: list[str] = []
+
+    if mae_share_of_mean_target > MAX_MAE_SHARE_OF_MEAN_TARGET:
+        manual_review_reasons.append(
+            f"Cross-validation MAE is {round(mae_share_of_mean_target * 100, 2)}% of mean target price"
+        )
+
+    if dominant_feature and float(dominant_feature["influence"]) > MAX_SINGLE_FEATURE_INFLUENCE:
+        manual_review_reasons.append(
+            f"{dominant_feature['key']} accounts for {dominant_feature['influence']}% of feature importance"
+        )
+
+    print(f"=== {horizon.upper()} TARGET TRANSFORM ===")
+    print(json.dumps(TARGET_TRANSFORM, indent=2))
+    print(f"=== {horizon.upper()} FEATURE IMPORTANCE START ===")
+    print(json.dumps(global_importance, indent=2))
+    print(f"=== {horizon.upper()} FEATURE IMPORTANCE END ===")
 
     artifact = {
         "generatedAt": datetime.now(tz=UTC).isoformat(),
@@ -510,6 +584,11 @@ def train_model(
         "treeCount": len(trees),
         "trainingRows": int(usable.shape[0]),
         "crossValidation": cv_metrics,
+        "meanTargetPrice": round(mean_target_price, 4),
+        "maeShareOfMeanTarget": round(mae_share_of_mean_target, 4),
+        "targetTransform": TARGET_TRANSFORM,
+        "deploymentApproved": len(manual_review_reasons) == 0,
+        "manualReviewReasons": manual_review_reasons,
         "globalImportance": global_importance,
     }
 
@@ -523,6 +602,12 @@ def train_model(
         else str(artifact_path),
         "trainingRows": int(usable.shape[0]),
         "crossValidation": cv_metrics,
+        "meanTargetPrice": round(mean_target_price, 4),
+        "maeShareOfMeanTarget": round(mae_share_of_mean_target, 4),
+        "targetTransform": TARGET_TRANSFORM,
+        "dominantFeature": dominant_feature,
+        "deploymentApproved": len(manual_review_reasons) == 0,
+        "manualReviewReasons": manual_review_reasons,
         "treeCount": len(trees),
     }
 
@@ -540,18 +625,25 @@ def write_training_summary(summary: dict[str, Any], output_dir: Path = DATA_DIR)
 
 
 def main() -> None:
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    output_dir = Path(os.environ.get("SEALED_ML_OUTPUT_DIR", str(DEFAULT_OUTPUT_DIR)))
+    output_dir.mkdir(parents=True, exist_ok=True)
 
+    products = load_manifest()
     try:
-        products = load_manifest()
         frame, summary, history_summary = build_training_rows(products)
     except (requests.RequestException, ValueError):
         frame, summary, history_summary = load_cached_training_artifacts(DATA_DIR)
-    write_training_data_artifacts(frame, history_summary, DATA_DIR)
+    frame, audit_summary = audit_training_frame(frame)
+    summary = build_dataset_summary(frame, len(products))
+    summary["audit"] = audit_summary
+    write_training_data_artifacts(frame, history_summary, output_dir)
 
-    model_summary = train_models(frame, DATA_DIR)
+    model_summary = train_models(frame, output_dir)
     summary["models"] = model_summary
-    write_training_summary(summary, DATA_DIR)
+    summary["deploymentApproved"] = all(
+        bool(model.get("deploymentApproved")) for model in model_summary.values()
+    )
+    write_training_summary(summary, output_dir)
 
     print(json.dumps(summary, indent=2))
 

@@ -40,6 +40,7 @@ export interface SealedSetData {
 
 export type Signal = "Buy" | "Hold" | "Sell";
 export type Confidence = "Low" | "Medium" | "High";
+export type ForecastStatus = "ready" | "too_new" | "insufficient_data";
 
 export interface Forecast {
   compositeScore: number;
@@ -59,6 +60,8 @@ export interface Forecast {
     threeYear: number;
     fiveYear: number;
   };
+  status: ForecastStatus;
+  statusMessage: string | null;
 }
 
 /** Product returned from PokeData sealed search */

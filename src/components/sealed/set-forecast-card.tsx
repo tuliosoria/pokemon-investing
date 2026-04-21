@@ -36,6 +36,7 @@ interface SetForecastCardProps {
 export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
   const [showChart, setShowChart] = useState(false);
   const projectionData = getProjectionData(set, forecast);
+  const isForecastBlocked = forecast.status !== "ready";
   const outperforms = forecast.roiPercent > forecast.spRoi;
   const matchesBenchmark = forecast.roiPercent === forecast.spRoi;
   const isEstimated = forecast.estimatedFactors > 0;
@@ -48,6 +49,12 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
   const trendScore = set.trendData?.current ?? 0;
   const hasTrendScore = trendScore > 0;
   const spDelta = Math.abs(forecast.roiPercent - forecast.spRoi);
+  const blockedBadgeLabel =
+    forecast.status === "too_new"
+      ? "Too New"
+      : forecast.status === "insufficient_data"
+        ? "Insufficient Data"
+        : null;
 
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[hsl(var(--card))] hover-lift shadow-[0_18px_50px_rgba(0,0,0,0.24)]">
@@ -76,7 +83,13 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
         <div className="absolute inset-0" style={{ background: CARD_HEADER_OVERLAY }} />
 
         <div className="absolute left-4 top-4 z-10">
-          <SignalBadge signal={forecast.signal} />
+          {isForecastBlocked && blockedBadgeLabel ? (
+            <span className="inline-flex min-w-[5rem] items-center justify-center rounded-full border border-slate-400/40 bg-slate-900/80 px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em] text-slate-100 shadow-[0_8px_20px_rgba(0,0,0,0.2)]">
+              {blockedBadgeLabel}
+            </span>
+          ) : (
+            <SignalBadge signal={forecast.signal} />
+          )}
         </div>
 
         {isEstimated && (
@@ -116,54 +129,69 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
             </div>
             <div className="min-w-0 text-right">
               <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[hsl(var(--muted-foreground))]">
-                Projected
+                {isForecastBlocked ? "Forecast" : "Projected"}
               </p>
-              {forecast.projectedValue > 0 ? (
+              {!isForecastBlocked && forecast.projectedValue > 0 ? (
                 <p className="mt-1 text-3xl font-black font-mono leading-none text-[hsl(var(--poke-yellow))]">
                   ${forecast.projectedValue.toLocaleString()}
                 </p>
               ) : (
-                <p className="mt-1 text-sm font-medium text-[hsl(var(--muted-foreground))]">
-                  —
+                <p className="mt-1 text-right text-sm font-medium leading-snug text-[hsl(var(--muted-foreground))]">
+                  {forecast.statusMessage ?? "—"}
                 </p>
               )}
             </div>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-              <span
-                className={`text-base font-bold font-mono ${
-                  forecast.roiPercent >= 0 ? "text-green-400" : "text-red-400"
-                }`}
-              >
-                {forecast.roiPercent >= 0 ? "+" : ""}
-                {forecast.roiPercent}% ROI
-              </span>
-              <span className="text-xs font-medium text-[hsl(var(--muted-foreground))]">
-                ${forecast.dollarGain >= 0 ? "+" : ""}
-                {forecast.dollarGain.toLocaleString()}
-              </span>
+          {isForecastBlocked ? (
+            <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3">
+              <p className="text-sm font-semibold text-amber-200">
+                {forecast.statusMessage}
+              </p>
+              <p className="mt-1 text-[11px] leading-relaxed text-amber-100/80">
+                {forecast.status === "too_new"
+                  ? "This product is under 12 months old, so the model waits for real market history before projecting upside."
+                  : "More than three key inputs are missing or estimated, so the forecast is suppressed instead of showing a misleading projection."}
+              </p>
             </div>
-            <div>
-              <ConfidenceBadge confidence={forecast.confidence} />
+          ) : (
+            <div className="flex flex-col gap-1">
+              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                <span
+                  className={`text-base font-bold font-mono ${
+                    forecast.roiPercent >= 0 ? "text-green-400" : "text-red-400"
+                  }`}
+                >
+                  {forecast.roiPercent >= 0 ? "+" : ""}
+                  {forecast.roiPercent}% ROI
+                </span>
+                <span className="text-xs font-medium text-[hsl(var(--muted-foreground))]">
+                  ${forecast.dollarGain >= 0 ? "+" : ""}
+                  {forecast.dollarGain.toLocaleString()}
+                </span>
+              </div>
+              <div>
+                <ConfidenceBadge confidence={forecast.confidence} />
+              </div>
             </div>
-          </div>
+          )}
 
-          <p
-            className={`text-[11px] font-medium leading-relaxed ${
-              outperforms ? "text-green-400" : matchesBenchmark ? "text-yellow-400" : "text-red-400"
-            }`}
-          >
-            {outperforms ? "▲" : matchesBenchmark ? "~" : "▼"} Projected to{" "}
-            {outperforms ? "outperform" : matchesBenchmark ? "match" : "underperform"} S&P 500
-            {!matchesBenchmark && (
-              <>
-                {" "}by {spDelta}% over 5 years
-              </>
-            )}
-            {matchesBenchmark && " over 5 years"}
-          </p>
+          {!isForecastBlocked && (
+            <p
+              className={`text-[11px] font-medium leading-relaxed ${
+                outperforms ? "text-green-400" : matchesBenchmark ? "text-yellow-400" : "text-red-400"
+              }`}
+            >
+              {outperforms ? "▲" : matchesBenchmark ? "~" : "▼"} Projected to{" "}
+              {outperforms ? "outperform" : matchesBenchmark ? "match" : "underperform"} S&P 500
+              {!matchesBenchmark && (
+                <>
+                  {" "}by {spDelta}% over 5 years
+                </>
+              )}
+              {matchesBenchmark && " over 5 years"}
+            </p>
+          )}
 
           <div className="space-y-2 rounded-xl border border-white/10 bg-white/[0.03] p-3">
             <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[hsl(var(--muted-foreground))]">
@@ -266,33 +294,39 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
             </p>
           ) : null}
 
-          <button
-            type="button"
-            onClick={() => setShowChart(!showChart)}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[rgba(255,203,5,0.4)] bg-transparent px-4 py-2.5 text-sm font-semibold text-[hsl(var(--poke-yellow))] transition hover:border-[hsl(var(--poke-yellow))] hover:bg-[rgba(255,203,5,0.1)]"
-          >
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M4 16l5-5 4 4 7-7" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M20 8v5h-5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            {showChart ? "Hide" : "Show"} $1,000 Investment Chart
-          </button>
+          {!isForecastBlocked && (
+            <>
+              <button
+                type="button"
+                onClick={() => setShowChart(!showChart)}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[rgba(255,203,5,0.4)] bg-transparent px-4 py-2.5 text-sm font-semibold text-[hsl(var(--poke-yellow))] transition hover:border-[hsl(var(--poke-yellow))] hover:bg-[rgba(255,203,5,0.1)]"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M4 16l5-5 4 4 7-7" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M20 8v5h-5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                {showChart ? "Hide" : "Show"} $1,000 Investment Chart
+              </button>
 
-          {showChart && (
-            <div className="mt-3 animate-fade-in">
-              <RoiChart data={projectionData} setName={set.name} />
-              <p className="text-[10px] text-[hsl(var(--muted-foreground))] text-center mt-1">
-                Projected growth of $1,000 invested today over 5 years
-              </p>
-            </div>
+              {showChart && (
+                <div className="mt-3 animate-fade-in">
+                  <RoiChart data={projectionData} setName={set.name} />
+                  <p className="text-[10px] text-[hsl(var(--muted-foreground))] text-center mt-1">
+                    Projected growth of $1,000 invested today over 5 years
+                  </p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
 
-      <FactorBreakdown
-        contributions={forecast.factorContributions}
-        compositeScore={forecast.compositeScore}
-      />
+      {!isForecastBlocked && (
+        <FactorBreakdown
+          contributions={forecast.factorContributions}
+          compositeScore={forecast.compositeScore}
+        />
+      )}
     </div>
   );
 }
