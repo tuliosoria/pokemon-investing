@@ -164,7 +164,7 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
       demandRatio: 50,
     },
 
-    chaseCards: [],
+    chaseCards: relatedCuratedSet?.chaseCards ?? [],
     printRunLabel: relatedCuratedSet?.printRunLabel ?? "Standard",
     notes:
       relatedCuratedSet?.notes ??
