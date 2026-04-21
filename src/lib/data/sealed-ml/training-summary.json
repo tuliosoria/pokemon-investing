@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T03:35:53.484140+00:00",
+  "generatedAt": "2026-04-21T03:43:08.705651+00:00",
   "products": 25,
   "rows": 892,
   "rowsBySet": [
@@ -128,12 +128,12 @@
       "trainingRows": 892,
       "crossValidation": {
         "folds": 5.0,
-        "rmse": 2033.0594,
-        "mae": 778.0509,
-        "mape": 25.9089
+        "rmse": 2034.6273,
+        "mae": 779.8342,
+        "mape": 25.8898
       },
       "meanTargetPrice": 3644.584,
-      "maeShareOfMeanTarget": 0.2135,
+      "maeShareOfMeanTarget": 0.214,
       "targetTransform": {
         "train": "np.log",
         "inference": "np.exp"
@@ -141,8 +141,8 @@
       "dominantFeature": {
         "key": "set_age_years",
         "name": "set_age_years",
-        "gain": 181.783539,
-        "influence": 32.3967
+        "gain": 192.020294,
+        "influence": 33.0793
       },
       "deploymentApproved": true,
       "manualReviewReasons": [],

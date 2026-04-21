@@ -320,8 +320,8 @@ export const SEALED_SETS: SealedSetData[] = [
       demandRatio: 30,
     },
     chaseCards: ["Umbreon ex IR", "Sylveon ex IR", "Eevee ex IR", "Jolteon ex IR"],
-    printRunLabel: "Standard",
-    notes: "Eevee evolution theme drives massive hype. Early restocks and added product waves broadened supply, but demand is still too strong to treat it as fully overprinted.",
+    printRunLabel: "Overprinted",
+    notes: "Eevee evolution theme drives massive hype, but rapid restocks and repeated product waves already make this a broad-supply release.",
     curated: true,
   },
   {

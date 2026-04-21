@@ -1,3 +1,4 @@
+import { SEALED_SETS } from "@/lib/data/sealed-sets";
 import type { SealedSetData, ProductType, SealedPricing } from "@/lib/types/sealed";
 
 const PRODUCT_TYPE_PATTERNS: [RegExp, ProductType][] = [
@@ -48,6 +49,33 @@ export function inferProductType(name: string): ProductType {
     if (pattern.test(name)) return type;
   }
   return "Unknown";
+}
+
+function normalizeName(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
+function getRelatedCuratedSet(name: string): SealedSetData | undefined {
+  const normalizedName = normalizeName(name);
+
+  return SEALED_SETS.reduce<SealedSetData | undefined>((bestMatch, candidate) => {
+    const normalizedCandidate = normalizeName(candidate.name);
+    const isMatch =
+      normalizedName.includes(normalizedCandidate) ||
+      normalizedCandidate.includes(normalizedName);
+
+    if (!isMatch) {
+      return bestMatch;
+    }
+
+    if (!bestMatch) {
+      return candidate;
+    }
+
+    return normalizedCandidate.length > normalizeName(bestMatch.name).length
+      ? candidate
+      : bestMatch;
+  }, undefined);
 }
 
 function clamp(val: number, min: number, max: number): number {
@@ -112,6 +140,7 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
       new Date(pricing.releaseDate).getFullYear()
     : new Date().getFullYear();
   const price = pricing.bestPrice ?? 0;
+  const relatedCuratedSet = getRelatedCuratedSet(pricing.name);
 
   return {
     id: `dynamic-${pricing.pokedataId}`,
@@ -136,7 +165,9 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
     },
 
     chaseCards: [],
-    printRunLabel: "Standard",
-    notes: `Live data from PokeData.io. ${productType !== "Unknown" ? productType : "Product"} released ${releaseYear}.`,
+    printRunLabel: relatedCuratedSet?.printRunLabel ?? "Standard",
+    notes:
+      relatedCuratedSet?.notes ??
+      `Live data from PokeData.io. ${productType !== "Unknown" ? productType : "Product"} released ${releaseYear}.`,
   };
 }

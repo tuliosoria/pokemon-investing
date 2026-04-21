@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T03:35:53.964058+00:00",
+  "generatedAt": "2026-04-21T03:43:09.181725+00:00",
   "horizon": "1yr",
   "targetColumn": "price_1yr_later",
   "featureNames": [
@@ -4014,45 +4014,27 @@
       "children": [
         {
           "nodeid": 1,
-          "depth": 1,
-          "split": "print_run_type_encoded",
-          "split_condition": 1,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 2.23904133,
-          "cover": 113,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.000497187255,
-              "cover": 28
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.0140326712,
-              "cover": 85
-            }
-          ]
+          "leaf": -0.0101401117,
+          "cover": 113
         },
         {
           "nodeid": 2,
           "depth": 1,
           "split": "google_trends_score",
           "split_condition": 80,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
           "gain": 3.50277233,
           "cover": 519,
           "children": [
             {
-              "nodeid": 5,
+              "nodeid": 3,
               "leaf": 4.47483581e-05,
               "cover": 402
             },
             {
-              "nodeid": 6,
+              "nodeid": 4,
               "leaf": 0.00984834507,
               "cover": 117
             }
@@ -4068,7 +4050,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 7.37755871,
+      "gain": 7.39575481,
       "cover": 639,
       "children": [
         {
@@ -4079,17 +4061,17 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 4.07953739,
+          "gain": 4.08328724,
           "cover": 319,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.016954435,
+              "leaf": -0.016972186,
               "cover": 58
             },
             {
               "nodeid": 4,
-              "leaf": -0.00235031522,
+              "leaf": -0.00236055953,
               "cover": 261
             }
           ]
@@ -4102,17 +4084,17 @@
           "yes": 5,
           "no": 6,
           "missing": 5,
-          "gain": 5.94032383,
+          "gain": 5.948318,
           "cover": 320,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.00961304456,
+              "leaf": -0.0096221827,
               "cover": 49
             },
             {
               "nodeid": 6,
-              "leaf": 0.00828051474,
+              "leaf": 0.00828370359,
               "cover": 271
             }
           ]
@@ -4127,7 +4109,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 6.75653267,
+      "gain": 6.7639451,
       "cover": 638,
       "children": [
         {
@@ -4138,17 +4120,17 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 3.5265255,
+          "gain": 3.53635979,
           "cover": 306,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00865035038,
+              "leaf": -0.00866623782,
               "cover": 222
             },
             {
               "nodeid": 4,
-              "leaf": 0.00282771885,
+              "leaf": 0.00282821408,
               "cover": 84
             }
           ]
@@ -4161,17 +4143,17 @@
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 4.96729279,
+          "gain": 4.99019146,
           "cover": 332,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.016184561,
+              "leaf": -0.0162408557,
               "cover": 20
             },
             {
               "nodeid": 6,
-              "leaf": 0.00661697704,
+              "leaf": 0.00661507621,
               "cover": 312
             }
           ]
@@ -4186,7 +4168,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 6.07000589,
+      "gain": 6.1589818,
       "cover": 606,
       "children": [
         {
@@ -4197,17 +4179,17 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 5.17376041,
+          "gain": 5.24658108,
           "cover": 185,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00279348041,
+              "leaf": -0.00282075326,
               "cover": 149
             },
             {
               "nodeid": 4,
-              "leaf": -0.0235461053,
+              "leaf": -0.023715863,
               "cover": 36
             }
           ]
@@ -4220,17 +4202,17 @@
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 3.63045454,
+          "gain": 3.63945484,
           "cover": 421,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.00136063993,
+              "leaf": -0.00134674262,
               "cover": 208
             },
             {
               "nodeid": 6,
-              "leaf": 0.00768184243,
+              "leaf": 0.00770659884,
               "cover": 213
             }
           ]
@@ -4245,7 +4227,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 6.54939938,
+      "gain": 6.52579927,
       "cover": 616,
       "children": [
         {
@@ -4256,7 +4238,7 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.0478735,
+          "gain": 2.15012121,
           "cover": 74,
           "children": [
             {
@@ -4266,7 +4248,7 @@
             },
             {
               "nodeid": 4,
-              "leaf": -0.0192843005,
+              "leaf": -0.0193881541,
               "cover": 50
             }
           ]
@@ -4279,17 +4261,17 @@
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 3.61239386,
+          "gain": 3.61986494,
           "cover": 542,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.00269728876,
+              "leaf": -0.00271428446,
               "cover": 257
             },
             {
               "nodeid": 6,
-              "leaf": 0.00534079317,
+              "leaf": 0.00533270929,
               "cover": 285
             }
           ]
@@ -4304,35 +4286,35 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 5.00879097,
+      "gain": 5.02567863,
       "cover": 631,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "print_run_type_encoded",
-          "split_condition": 1,
+          "split": "market_cycle_score",
+          "split_condition": 67,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.40047455,
+          "gain": 2.00466728,
           "cover": 164,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.00371076283,
-              "cover": 29
+              "leaf": -0.0120546017,
+              "cover": 98
             },
             {
               "nodeid": 4,
-              "leaf": -0.010504243,
-              "cover": 135
+              "leaf": -7.76855086e-05,
+              "cover": 66
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00236224756,
+          "leaf": 0.00236297096,
           "cover": 467
         }
       ]
@@ -4345,7 +4327,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 4.74348021,
+      "gain": 4.76792908,
       "cover": 639,
       "children": [
         {
@@ -4356,24 +4338,24 @@
           "yes": 3,
           "no": 4,
           "missing": 3,
-          "gain": 2.90304422,
+          "gain": 2.91271591,
           "cover": 448,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00498340372,
+              "leaf": -0.00500840973,
               "cover": 384
             },
             {
               "nodeid": 4,
-              "leaf": 0.00593151012,
+              "leaf": 0.00592421554,
               "cover": 64
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00602858746,
+          "leaf": 0.00602942286,
           "cover": 191
         }
       ]
@@ -4386,7 +4368,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 4.82412338,
+      "gain": 4.93645763,
       "cover": 627,
       "children": [
         {
@@ -4397,24 +4379,24 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 4.34920502,
+          "gain": 4.3693099,
           "cover": 523,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.000603917928,
+              "leaf": 0.000579277694,
               "cover": 377
             },
             {
               "nodeid": 4,
-              "leaf": -0.00932985917,
+              "leaf": -0.00937672239,
               "cover": 146
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00941126421,
+          "leaf": 0.00951345172,
           "cover": 104
         }
       ]
@@ -4427,7 +4409,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 3.8854301,
+      "gain": 3.93254089,
       "cover": 614,
       "children": [
         {
@@ -4438,24 +4420,24 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 5.12966967,
+          "gain": 5.29915142,
           "cover": 215,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00136234344,
+              "leaf": -0.00135193358,
               "cover": 180
             },
             {
               "nodeid": 4,
-              "leaf": -0.0215989072,
+              "leaf": -0.0219096318,
               "cover": 35
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00295757293,
+          "leaf": 0.00296005863,
           "cover": 399
         }
       ]
@@ -4464,56 +4446,56 @@
       "nodeid": 0,
       "depth": 0,
       "split": "most_expensive_card_price",
-      "split_condition": 120,
+      "split_condition": 110,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 5.07430458,
+      "gain": 5.14742851,
       "cover": 618,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "price_trajectory_24mo",
-          "split_condition": -11.6829996,
+          "split": "most_expensive_card_price",
+          "split_condition": 100,
           "yes": 3,
           "no": 4,
-          "missing": 3,
-          "gain": 2.69027567,
-          "cover": 220,
+          "missing": 4,
+          "gain": 2.86498666,
+          "cover": 197,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00978304353,
-              "cover": 147
+              "leaf": -0.00306561892,
+              "cover": 162
             },
             {
               "nodeid": 4,
-              "leaf": 0.00127752253,
-              "cover": 73
+              "leaf": -0.0188023988,
+              "cover": 35
             }
           ]
         },
         {
           "nodeid": 2,
           "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 21.9575996,
+          "split": "price_trajectory_6mo",
+          "split_condition": 76.4329987,
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 2.8500824,
-          "cover": 398,
+          "gain": 3.04995584,
+          "cover": 421,
           "children": [
             {
               "nodeid": 5,
-              "leaf": 0.000558568514,
-              "cover": 287
+              "leaf": 0.00578519842,
+              "cover": 309
             },
             {
               "nodeid": 6,
-              "leaf": 0.0100732865,
-              "cover": 111
+              "leaf": -0.00350352051,
+              "cover": 112
             }
           ]
         }
@@ -4527,7 +4509,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 4.17348528,
+      "gain": 4.19941521,
       "cover": 630,
       "children": [
         {
@@ -4538,17 +4520,17 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 4.09435463,
+          "gain": 4.00842714,
           "cover": 467,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.000473840773,
+              "leaf": 0.000381025107,
               "cover": 298
             },
             {
               "nodeid": 4,
-              "leaf": -0.0090303449,
+              "leaf": -0.0090185022,
               "cover": 169
             }
           ]
@@ -4561,17 +4543,17 @@
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 2.84850025,
+          "gain": 2.82304978,
           "cover": 163,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.00187107455,
+              "leaf": -0.0018604385,
               "cover": 58
             },
             {
               "nodeid": 6,
-              "leaf": 0.0110521065,
+              "leaf": 0.0110021634,
               "cover": 105
             }
           ]
@@ -4586,12 +4568,12 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 4.81310844,
+      "gain": 4.70555592,
       "cover": 623,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.0119518815,
+          "leaf": -0.0118744969,
           "cover": 79
         },
         {
@@ -4602,17 +4584,17 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 3.24285126,
+          "gain": 3.2532053,
           "cover": 544,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00103859068,
+              "leaf": -0.00111193885,
               "cover": 431
             },
             {
               "nodeid": 4,
-              "leaf": 0.00825514365,
+              "leaf": 0.00820046104,
               "cover": 113
             }
           ]
@@ -4627,12 +4609,12 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 3.90794182,
+      "gain": 3.83592081,
       "cover": 626,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.00360036944,
+          "leaf": -0.00359867862,
           "cover": 303
         },
         {
@@ -4643,17 +4625,17 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.71164489,
+          "gain": 2.66890335,
           "cover": 323,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.00607427815,
+              "leaf": 0.00599152781,
               "cover": 282
             },
             {
               "nodeid": 4,
-              "leaf": -0.00667411694,
+              "leaf": -0.00665469468,
               "cover": 41
             }
           ]
@@ -4668,7 +4650,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 4.38373995,
+      "gain": 4.30179691,
       "cover": 625,
       "children": [
         {
@@ -4679,17 +4661,17 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 3.0147655,
+          "gain": 3.08240509,
           "cover": 304,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.0108305896,
+              "leaf": -0.0109160431,
               "cover": 97
             },
             {
               "nodeid": 4,
-              "leaf": -7.1351431e-05,
+              "leaf": -4.25295439e-05,
               "cover": 207
             }
           ]
@@ -4702,17 +4684,17 @@
           "yes": 5,
           "no": 6,
           "missing": 5,
-          "gain": 3.1936667,
+          "gain": 3.16159749,
           "cover": 321,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.00665906537,
+              "leaf": -0.00668683648,
               "cover": 46
             },
             {
               "nodeid": 6,
-              "leaf": 0.00664200028,
+              "leaf": 0.00654823799,
               "cover": 275
             }
           ]
@@ -4727,7 +4709,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 3.91530991,
+      "gain": 4.17761612,
       "cover": 637,
       "children": [
         {
@@ -4738,24 +4720,24 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.47195959,
+          "gain": 2.48064423,
           "cover": 444,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00502491137,
+              "leaf": -0.00516540697,
               "cover": 318
             },
             {
               "nodeid": 4,
-              "leaf": 0.002963698,
+              "leaf": 0.00283101015,
               "cover": 126
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00580050098,
+          "leaf": 0.00593670132,
           "cover": 193
         }
       ]
@@ -4768,12 +4750,12 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 4.41792822,
+      "gain": 4.28648281,
       "cover": 635,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.0113346316,
+          "leaf": -0.0112027805,
           "cover": 70
         },
         {
@@ -4784,17 +4766,17 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 3.10828614,
+          "gain": 3.09008789,
           "cover": 565,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00237607723,
+              "leaf": -0.00242501078,
               "cover": 254
             },
             {
               "nodeid": 4,
-              "leaf": 0.00494198967,
+              "leaf": 0.0048736115,
               "cover": 311
             }
           ]
@@ -4804,100 +4786,64 @@
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "product_type_encoded",
-      "split_condition": 3,
+      "split": "current_price",
+      "split_condition": 1921.95996,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.76250887,
+      "gain": 2.8642993,
       "cover": 606,
       "children": [
         {
           "nodeid": 1,
-          "depth": 1,
-          "split": "price_trajectory_6mo",
-          "split_condition": 74.0849991,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 2.65982008,
-          "cover": 452,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.00431732368,
-              "cover": 350
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.004541161,
-              "cover": 102
-            }
-          ]
+          "leaf": -0.00224293978,
+          "cover": 406
         },
         {
           "nodeid": 2,
-          "depth": 1,
-          "split": "print_run_type_encoded",
-          "split_condition": 1,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 3.17681503,
-          "cover": 154,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": 0.00696403999,
-              "cover": 32
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.00926001649,
-              "cover": 122
-            }
-          ]
+          "leaf": 0.00498644589,
+          "cover": 200
         }
       ]
     },
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 0.479099989,
+      "split": "popularity_score",
+      "split_condition": 95,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.79233885,
+      "gain": 2.75175929,
       "cover": 652,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.0111930957,
-          "cover": 47
-        },
-        {
-          "nodeid": 2,
           "depth": 1,
-          "split": "popularity_score",
-          "split_condition": 90,
+          "split": "product_type_encoded",
+          "split_condition": 3,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.70144176,
-          "cover": 605,
+          "gain": 3.68761587,
+          "cover": 572,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.000571344746,
-              "cover": 502
+              "leaf": 0.000872964156,
+              "cover": 431
             },
             {
               "nodeid": 4,
-              "leaf": 0.00808182172,
-              "cover": 103
+              "leaf": -0.00824385788,
+              "cover": 141
             }
           ]
+        },
+        {
+          "nodeid": 2,
+          "leaf": 0.00829198491,
+          "cover": 80
         }
       ]
     },
@@ -4909,51 +4855,33 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 3.33056903,
+      "gain": 3.33379149,
       "cover": 618,
       "children": [
         {
           "nodeid": 1,
-          "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 18.9185009,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 2.02663851,
-          "cover": 293,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.00667472137,
-              "cover": 195
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.00169279182,
-              "cover": 98
-            }
-          ]
+          "leaf": -0.00374763994,
+          "cover": 293
         },
         {
           "nodeid": 2,
           "depth": 1,
           "split": "google_trends_score",
           "split_condition": 80,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 2.73757982,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 2.81297088,
           "cover": 325,
           "children": [
             {
-              "nodeid": 5,
-              "leaf": 0.000390045898,
+              "nodeid": 3,
+              "leaf": 0.000335880992,
               "cover": 233
             },
             {
-              "nodeid": 6,
-              "leaf": 0.0106469048,
+              "nodeid": 4,
+              "leaf": 0.0107236719,
               "cover": 92
             }
           ]
@@ -4968,7 +4896,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.96284318,
+      "gain": 3.10877872,
       "cover": 628,
       "children": [
         {
@@ -4979,24 +4907,24 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 3.49109817,
+          "gain": 3.29617047,
           "cover": 199,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.000740198244,
+              "leaf": -0.000970116758,
               "cover": 159
             },
             {
               "nodeid": 4,
-              "leaf": -0.016938176,
+              "leaf": -0.0167548675,
               "cover": 40
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00271270028,
+          "leaf": 0.00274751429,
           "cover": 429
         }
       ]
@@ -5004,41 +4932,41 @@
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "collector_demand_ratio",
-      "split_condition": 0.680000007,
+      "split": "most_expensive_card_price",
+      "split_condition": 110,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.62836099,
+      "gain": 2.69685316,
       "cover": 629,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "collector_demand_ratio",
-          "split_condition": 0.620000005,
+          "split": "most_expensive_card_price",
+          "split_condition": 100,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.3636868,
-          "cover": 210,
+          "gain": 2.16068292,
+          "cover": 193,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.0013939715,
-              "cover": 178
+              "leaf": -0.00159436208,
+              "cover": 161
             },
             {
               "nodeid": 4,
-              "leaf": -0.0157983955,
+              "leaf": -0.0155911045,
               "cover": 32
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00263276743,
-          "cover": 419
+          "leaf": 0.0025062738,
+          "cover": 436
         }
       ]
     },
@@ -5050,12 +4978,12 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 3.47926712,
+      "gain": 3.51062131,
       "cover": 636,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.00331934029,
+          "leaf": -0.00335031119,
           "cover": 308
         },
         {
@@ -5066,17 +4994,17 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.13009071,
+          "gain": 2.21008587,
           "cover": 328,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.00111531152,
+              "leaf": 0.0010719233,
               "cover": 233
             },
             {
               "nodeid": 4,
-              "leaf": 0.0101844473,
+              "leaf": 0.0102965971,
               "cover": 95
             }
           ]
@@ -5091,7 +5019,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 3.22316837,
+      "gain": 3.24519849,
       "cover": 617,
       "children": [
         {
@@ -5102,24 +5030,24 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.30912352,
+          "gain": 2.19705367,
           "cover": 198,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00277899788,
+              "leaf": -0.00288527994,
               "cover": 161
             },
             {
               "nodeid": 4,
-              "leaf": -0.016724553,
+              "leaf": -0.0165360346,
               "cover": 37
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00164650741,
+          "leaf": 0.00162349548,
           "cover": 419
         }
       ]
@@ -5132,12 +5060,12 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.90083408,
+      "gain": 3.1059289,
       "cover": 627,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.00984463003,
+          "leaf": -0.0101994211,
           "cover": 70
         },
         {
@@ -5148,17 +5076,17 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.02868605,
+          "gain": 2.00442624,
           "cover": 557,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00253162649,
+              "leaf": -0.00250391918,
               "cover": 258
             },
             {
               "nodeid": 4,
-              "leaf": 0.00342984684,
+              "leaf": 0.00342091592,
               "cover": 299
             }
           ]
@@ -5173,7 +5101,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.94643188,
+      "gain": 3.17792273,
       "cover": 621,
       "children": [
         {
@@ -5184,24 +5112,24 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.09288192,
+          "gain": 2.12108445,
           "cover": 522,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.00293988362,
+              "leaf": 0.00297704688,
               "cover": 398
             },
             {
               "nodeid": 4,
-              "leaf": -0.00430171518,
+              "leaf": -0.00431260839,
               "cover": 124
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": -0.00808561873,
+          "leaf": -0.00841374602,
           "cover": 99
         }
       ]
@@ -5214,17 +5142,17 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.79854655,
+      "gain": 2.8152926,
       "cover": 629,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.00526888575,
+          "leaf": -0.00530991144,
           "cover": 199
         },
         {
           "nodeid": 2,
-          "leaf": 0.00180839933,
+          "leaf": 0.00178730057,
           "cover": 430
         }
       ]
@@ -5232,48 +5160,43 @@
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "market_cycle_score",
-      "split_condition": 63,
+      "split": "google_trends_score",
+      "split_condition": 84,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.70192289,
+      "gain": 2.80854845,
       "cover": 627,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.00354626752,
-          "cover": 291
-        },
-        {
-          "nodeid": 2,
           "depth": 1,
-          "split": "google_trends_score",
-          "split_condition": 80,
+          "split": "popularity_score",
+          "split_condition": 75,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.69466257,
-          "cover": 336,
+          "gain": 3.41389751,
+          "cover": 497,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0,
-              "cover": 244
+              "leaf": 0.00138383231,
+              "cover": 303
             },
             {
               "nodeid": 4,
-              "leaf": 0.010035485,
-              "cover": 92
+              "leaf": -0.00693575153,
+              "cover": 194
             }
           ]
+        },
+        {
+          "nodeid": 2,
+          "leaf": 0.00632073125,
+          "cover": 130
         }
       ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": -5.38589047e-05,
-      "cover": 660
     },
     {
       "nodeid": 0,
@@ -5283,18 +5206,77 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.33495045,
+      "gain": 2.14382195,
+      "cover": 660,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "google_trends_score",
+          "split_condition": 80,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 2.13999939,
+          "cover": 549,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": -0.000684421684,
+              "cover": 399
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.0061546918,
+              "cover": 150
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "leaf": -0.00633395417,
+          "cover": 111
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "set_age_years",
+      "split_condition": 21.6044006,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 2.39074969,
       "cover": 654,
       "children": [
         {
           "nodeid": 1,
-          "leaf": 0.00149706122,
-          "cover": 555
+          "depth": 1,
+          "split": "price_trajectory_24mo",
+          "split_condition": 99.0920029,
+          "yes": 3,
+          "no": 4,
+          "missing": 3,
+          "gain": 2.08280039,
+          "cover": 461,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": -0.00328412768,
+              "cover": 390
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.00561074447,
+              "cover": 71
+            }
+          ]
         },
         {
           "nodeid": 2,
-          "leaf": -0.00664814189,
-          "cover": 99
+          "leaf": 0.00478853937,
+          "cover": 193
         }
       ]
     },
@@ -5306,7 +5288,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.36277461,
+      "gain": 2.27880216,
       "cover": 614,
       "children": [
         {
@@ -5317,24 +5299,24 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.91335106,
+          "gain": 2.57647514,
           "cover": 514,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.00108754134,
+              "leaf": 0.000907892187,
               "cover": 302
             },
             {
               "nodeid": 4,
-              "leaf": -0.00638851244,
+              "leaf": -0.00611158181,
               "cover": 212
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00625773007,
+          "leaf": 0.00611808803,
           "cover": 100
         }
       ]
@@ -5347,12 +5329,12 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.35334873,
+      "gain": 2.26913762,
       "cover": 608,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.00172247028,
+          "leaf": -0.00169753097,
           "cover": 453
         },
         {
@@ -5363,17 +5345,17 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.47871351,
+          "gain": 2.71389222,
           "cover": 155,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.000506738375,
+              "leaf": -0.000902725384,
               "cover": 77
             },
             {
               "nodeid": 4,
-              "leaf": 0.0113543645,
+              "leaf": 0.0115492959,
               "cover": 78
             }
           ]
@@ -5385,12 +5367,12 @@
   "trainingRows": 892,
   "crossValidation": {
     "folds": 5.0,
-    "rmse": 2033.0594,
-    "mae": 778.0509,
-    "mape": 25.9089
+    "rmse": 2034.6273,
+    "mae": 779.8342,
+    "mape": 25.8898
   },
   "meanTargetPrice": 3644.584,
-  "maeShareOfMeanTarget": 0.2135,
+  "maeShareOfMeanTarget": 0.214,
   "targetTransform": {
     "train": "np.log",
     "inference": "np.exp"
@@ -5401,80 +5383,80 @@
     {
       "key": "set_age_years",
       "name": "set_age_years",
-      "gain": 181.783539,
-      "influence": 32.3967
+      "gain": 192.020294,
+      "influence": 33.0793
     },
     {
       "key": "current_price",
       "name": "current_price",
-      "gain": 134.23761,
-      "influence": 23.9232
+      "gain": 132.88591,
+      "influence": 22.8922
     },
     {
       "key": "era_encoded",
       "name": "era_encoded",
       "gain": 77.695961,
-      "influence": 13.8466
+      "influence": 13.3846
     },
     {
       "key": "collector_demand_ratio",
       "name": "collector_demand_ratio",
-      "gain": 55.607567,
-      "influence": 9.9101
+      "gain": 68.925308,
+      "influence": 11.8737
     },
     {
       "key": "product_type_encoded",
       "name": "product_type_encoded",
-      "gain": 27.013458,
-      "influence": 4.8142
+      "gain": 27.094576,
+      "influence": 4.6676
     },
     {
       "key": "most_expensive_card_price",
       "name": "most_expensive_card_price",
-      "gain": 25.408527,
-      "influence": 4.5282
+      "gain": 22.155062,
+      "influence": 3.8166
     },
     {
       "key": "chase_card_index_score",
       "name": "chase_card_index_score",
       "gain": 19.417215,
-      "influence": 3.4605
+      "influence": 3.345
     },
     {
       "key": "price_trajectory_24mo",
       "name": "price_trajectory_24mo",
-      "gain": 11.312766,
-      "influence": 2.0161
+      "gain": 11.262948,
+      "influence": 1.9403
     },
     {
       "key": "price_trajectory_6mo",
       "name": "price_trajectory_6mo",
-      "gain": 7.011835,
-      "influence": 1.2496
+      "gain": 7.037812,
+      "influence": 1.2124
     },
     {
       "key": "market_cycle_score",
       "name": "market_cycle_score",
-      "gain": 6.86056,
-      "influence": 1.2227
+      "gain": 6.835263,
+      "influence": 1.1775
     },
     {
       "key": "google_trends_score",
       "name": "google_trends_score",
-      "gain": 6.107425,
-      "influence": 1.0884
+      "gain": 5.928219,
+      "influence": 1.0213
     },
     {
       "key": "popularity_score",
       "name": "popularity_score",
-      "gain": 5.786213,
-      "influence": 1.0312
+      "gain": 5.541621,
+      "influence": 0.9547
     },
     {
       "key": "print_run_type_encoded",
       "name": "print_run_type_encoded",
-      "gain": 2.875436,
-      "influence": 0.5124
+      "gain": 3.685411,
+      "influence": 0.6349
     }
   ]
 }
