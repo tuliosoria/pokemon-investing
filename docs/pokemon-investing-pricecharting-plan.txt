@@ -1,0 +1,33 @@
+Problem:
+- Strengthen the `pokemon-investing` sealed forecasting model by using richer data: monthly price changes, a broader product catalog, and a larger evaluation dataset, while integrating the authenticated PriceCharting API the user now has access to.
+
+Current state:
+- `scripts/train_sealed_ml.py` already uses `src/lib/data/sealed-ml/products.json` plus `priceChartingUrl` HTML scraping to build monthly snapshot rows and train 1-year / 3-year / 5-year XGBoost models.
+- `scripts/retrain_sealed_ml.py` augments the base dataset with DynamoDB lookup outcomes captured later via `POKEDATA_API_KEY`, then publishes approved model artifacts back to DynamoDB.
+- Runtime forecasting in `src/app/api/sealed/forecast/route.ts` loads bundled or Dynamo-published models through `src/lib/db/sealed-forecast-models.ts`.
+- Sealed product catalog and live pricing are currently centered on PokeData + Dynamo (`scripts/seed-products.ts`, `src/app/api/sealed/pricing/route.ts`, `src/lib/db/*`).
+- The biggest current weakness is not “no ML”; it is limited and fragile data collection: manual/seeded product coverage, HTML scraping instead of an official provider, and sparse evaluation targets relative to the forecast ambitions.
+
+Approach:
+- Use the authenticated PriceCharting API as the primary official source for sealed product discovery/current prices and keep PokeData as a fallback for runtime gaps, images, and existing product metadata.
+- Keep the existing chart-extraction path only as a temporary historical backfill mechanism, then move ongoing monthly snapshot collection to the official PriceCharting API.
+- Persist normalized monthly price snapshots in DynamoDB (or the existing chosen store) with provider provenance, backfill support, and product/provider mapping.
+- Expand the product universe beyond the current manifest by syncing more sealed product types and keeping catalog metadata aligned across PokeData and PriceCharting identifiers.
+- Refactor training/retraining so each product contributes many monthly observations and additional derived features (momentum, volatility, drawdown, liquidity/coverage freshness), while preserving the current 1yr/3yr/5yr forecast outputs unless scope changes.
+- Add a larger, time-aware evaluation dataset and deployment gates so stronger models are measured with out-of-time validation instead of just aggregate fit.
+
+Todos:
+- pricecharting-provider-audit: Confirm the PriceCharting API capabilities, auth method, rate limits, identifiers, and official data limitations so the ingestion path does not depend on fragile assumptions.
+- historical-backfill-strategy: Decide how to obtain historical monthly training data, because PriceCharting's documented API exposes current price guide data but not historical prices or historical sales.
+- monthly-history-storage: Design normalized storage for monthly product prices, provider metadata, raw ingestion timestamps, and mapping between PriceCharting/PokeData/internal product IDs.
+- product-catalog-expansion: Expand and automate sealed product coverage, including broader product types and a repeatable sync/backfill workflow instead of depending on a small static manifest.
+- training-pipeline-refactor: Refactor `train_sealed_ml.py` / `retrain_sealed_ml.py` to train from the stored monthly history dataset, engineer stronger time-series features, and keep model publishing compatible with the existing Dynamo runtime.
+- evaluation-dataset-upgrade: Create larger training/validation/test datasets with time-based splits, per-horizon metrics, coverage reports, and deployment thresholds so model upgrades are measurable and reversible.
+- runtime-rollout-and-ops: Update env/config docs, ingestion jobs, and runtime APIs so PriceCharting credentials, backfills, monthly refreshes, and model publishing can run safely in AWS/Amplify.
+
+Notes:
+- The repo already has a strong start for sealed-only forecasting; the most leverage comes from improving data quality/coverage rather than replacing the model family immediately.
+- Safest rollout path: keep current runtime contract (1yr/3yr/5yr forecast outputs), improve the training base underneath it, and only add new user-facing monthly forecast views if that is explicitly desired.
+- Confirmed decisions: sealed-only scope, PriceCharting primary with PokeData fallback, and monthly snapshots for training only.
+- Confirmed provider constraints from public docs: PriceCharting API uses a token query parameter, is limited to roughly 1 request/second, and documents current price guide data only — not historical prices or historical sales.
+- Confirmed historical strategy: use temporary chart extraction only for historical backfill, then use official PriceCharting API snapshots going forward.
