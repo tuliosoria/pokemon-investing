@@ -5,6 +5,28 @@
 - GitHub repo: `tuliosoria/pokemon-investing`
 - AWS CLI is installed and configured with IAM user `amplify-deploy`
 
+## Standard verification flow before `main`
+
+This repo now uses one shared verification contract:
+
+```bash
+cd ~/Desktop/pokemon-investing
+npm ci
+npm run verify
+```
+
+What it covers today:
+- `npm run lint`
+- `npm run build`
+- syntax validation for the committed Node/Python operational scripts
+
+How that maps to automation:
+- Install the repo-managed pre-push hook once per clone with `npm run hooks:install`.
+- After hook install, git pushes will run `npm run verify` before leaving your machine.
+- Amplify should run `npm run verify:app` during its build so deploys use the same lint/build contract that developers see locally.
+
+If you change deployment, environment, hook, or infra files, update this runbook in the same change so the repo instructions and release path stay aligned.
+
 ---
 
 ## ⚠️ REQUIRED FIRST: Attach Permissions to IAM User
@@ -43,7 +65,7 @@ aws amplify create-app --name "pokemon-investing" --platform WEB_COMPUTE --regio
 ### Step 3: Build Settings
 Amplify will auto-detect the `amplify.yml` in the repo. Verify it shows:
 - Framework: **Next.js**
-- Build command: `npm run build`
+- Build command: `npm run verify:app`
 - Output directory: `.next`
 
 Click **Next**
@@ -126,6 +148,13 @@ aws amplify get-branch \
 
 ### Auto-Deploy on Push
 Amplify automatically redeploys when you push to `main` — no extra setup needed.
+
+Recommended release path:
+
+1. Run `npm ci && npm run hooks:install` once per clone.
+2. Run `npm run verify` locally for manual checks, or let the pre-push hook run it automatically on push.
+3. Push to `main`.
+4. Let Amplify rebuild from the merged branch using `npm run verify:app`.
 
 ### Environment Variables
 Amplify now writes the server-side env file from a small allowlist during each build.
