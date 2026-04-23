@@ -146,8 +146,14 @@ cd ~/Desktop/pokemon-investing
 PRICECHARTING_API_TOKEN=<YOUR_TOKEN> npm run sync:pricecharting
 ```
 
+If `POKEDATA_API_KEY` is also configured, the sync job will additionally write a
+dual-provider monthly snapshot artifact at
+`src/lib/data/sealed-ml/dual-provider-monthly-snapshots.json` so training can compare
+official PriceCharting pricing against current PokeData market prices.
+
 If `DYNAMODB_TABLE` and AWS credentials are also configured, the same sync command will
-best-effort persist provider-aware price snapshots and PriceCharting ID mappings into DynamoDB.
+best-effort persist provider-aware price snapshots, PriceCharting ID mappings, and
+normalized monthly training snapshots into DynamoDB.
 
 ### Monthly Sealed ML Retraining
 The sealed forecast runtime now checks DynamoDB for published XGBoost model artifacts before

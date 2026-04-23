@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -63,7 +63,7 @@ def parse_iso_timestamp(value: str | None) -> datetime | None:
     if not value:
         return None
     normalized = value.replace("Z", "+00:00")
-    return datetime.fromisoformat(normalized).astimezone(UTC)
+    return datetime.fromisoformat(normalized).astimezone(timezone.utc)
 
 
 def get_lookup_table():
@@ -293,7 +293,7 @@ def publish_model_artifacts(
 def run_retraining() -> dict[str, Any]:
     lookup_table = get_lookup_table()
     api_key = os.environ.get("POKEDATA_API_KEY")
-    now = datetime.now(tz=UTC)
+    now = datetime.now(tz=timezone.utc)
 
     if lookup_table and not api_key:
         raise RuntimeError("POKEDATA_API_KEY is required when DYNAMODB_TABLE is configured")
@@ -323,6 +323,8 @@ def run_retraining() -> dict[str, Any]:
     summary["lookupRows"] = len(lookup_rows)
     summary["capturedTargets"] = capture_counts
     summary["audit"] = audit_summary
+    summary["targetMode"] = "forward_log_return"
+    summary["validationStrategy"] = "time_series_split"
     summary["models"] = model_summary
     summary["deploymentApproved"] = all(
         bool(model.get("deploymentApproved")) for model in model_summary.values()

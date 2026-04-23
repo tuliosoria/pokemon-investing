@@ -21,11 +21,21 @@ const OUTPUT_PATH = path.join(
   "sealed-ml",
   "pricecharting-current-prices.json"
 );
+const TRAINING_SNAPSHOT_OUTPUT_PATH = path.join(
+  ROOT,
+  "src",
+  "lib",
+  "data",
+  "sealed-ml",
+  "dual-provider-monthly-snapshots.json"
+);
 const PRICECHARTING_BASE_URL = "https://www.pricecharting.com/api/";
+const POKEDATA_BASE_URL = "https://www.pokedata.io/v0";
 const MIN_REQUEST_INTERVAL_MS = 1100;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 const DYNAMODB_TABLE = process.env.DYNAMODB_TABLE || "";
 const TOKEN = (process.env.PRICECHARTING_API_TOKEN || "").trim();
+const POKEDATA_API_KEY = (process.env.POKEDATA_API_KEY || "").trim();
 
 let lastRequestStartedAt = 0;
 
@@ -66,6 +76,29 @@ function buildSearchQuery(product) {
   return `${product.name} ${normalizedType} pokemon`;
 }
 
+function pickPokeDataBestPrice(pricing) {
+  const tcg = pricing?.TCGPlayer?.value ?? null;
+  const ebay = pricing?.["eBay Sealed"]?.value ?? null;
+  const poke = pricing?.["Pokedata Sealed"]?.value ?? null;
+
+  for (const candidate of [tcg, poke, ebay]) {
+    const rounded = roundPrice(candidate);
+    if (rounded) {
+      return rounded;
+    }
+  }
+
+  return null;
+}
+
+function computeSpreadPct(priceChartingPrice, fallbackPrice) {
+  if (!priceChartingPrice || !fallbackPrice) {
+    return null;
+  }
+
+  return Math.round(((priceChartingPrice - fallbackPrice) / fallbackPrice) * 100000) / 1000;
+}
+
 async function throttle() {
   const elapsed = Date.now() - lastRequestStartedAt;
   if (elapsed < MIN_REQUEST_INTERVAL_MS) {
@@ -100,6 +133,38 @@ async function requestPriceCharting(query) {
   }
 
   return payload;
+}
+
+async function requestPokeDataPricing(pokedataId) {
+  if (!POKEDATA_API_KEY || !pokedataId) {
+    return null;
+  }
+
+  const url = new URL(`${POKEDATA_BASE_URL}/pricing`);
+  url.searchParams.set("id", pokedataId);
+  url.searchParams.set("asset_type", "PRODUCT");
+
+  const response = await fetch(url.toString(), {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${POKEDATA_API_KEY}`,
+      "User-Agent": "PokeAlpha/1.0 dual-provider sync",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`PokeData pricing request failed with HTTP ${response.status}`);
+  }
+
+  const payload = await response.json();
+  const pricing = payload.pricing || {};
+
+  return {
+    tcgplayerPrice: roundPrice(pricing.TCGPlayer?.value),
+    ebayPrice: roundPrice(pricing["eBay Sealed"]?.value),
+    pokedataPrice: roundPrice(pricing["Pokedata Sealed"]?.value),
+    bestPrice: pickPokeDataBestPrice(pricing),
+  };
 }
 
 function createDynamo() {
@@ -202,43 +267,99 @@ function findBestPokeDataMatch(product, candidates) {
 }
 
 async function persistSnapshot(ddb, syncedEntry, matchedPokeDataProduct) {
-  if (!ddb || !matchedPokeDataProduct) {
+  if (!ddb) {
     return;
   }
 
   const snapshotDate = syncedEntry.capturedAt.slice(0, 10);
   const updatedAt = new Date().toISOString();
 
+  if (matchedPokeDataProduct) {
+    await ddb.send(
+      new PutCommand({
+        TableName: DYNAMODB_TABLE,
+        Item: {
+          pk: `PRODUCT#${matchedPokeDataProduct.pokedataId}`,
+          sk: `PRICE#${snapshotDate}`,
+          priceChartingPrice: syncedEntry.newPrice,
+          bestPrice: syncedEntry.newPrice,
+          primaryProvider: "pricecharting",
+          snapshotDate,
+          updatedAt,
+        },
+      })
+    );
+
+    await ddb.send(
+      new UpdateCommand({
+        TableName: DYNAMODB_TABLE,
+        Key: { pk: `PRODUCT#${matchedPokeDataProduct.pokedataId}`, sk: "META" },
+        UpdateExpression:
+          "SET priceChartingId = :priceChartingId, priceChartingProductName = :productName, priceChartingConsoleName = :consoleName, priceChartingReleaseDate = :releaseDate, priceChartingLastSyncedAt = :updatedAt",
+        ExpressionAttributeValues: {
+          ":priceChartingId": syncedEntry.priceChartingId,
+          ":productName": syncedEntry.productName,
+          ":consoleName": syncedEntry.consoleName,
+          ":releaseDate": syncedEntry.releaseDate,
+          ":updatedAt": updatedAt,
+        },
+      })
+    );
+  }
+}
+
+async function persistTrainingSnapshot(ddb, snapshot) {
+  if (!ddb) {
+    return;
+  }
+
   await ddb.send(
     new PutCommand({
       TableName: DYNAMODB_TABLE,
       Item: {
-        pk: `PRODUCT#${matchedPokeDataProduct.pokedataId}`,
-        sk: `PRICE#${snapshotDate}`,
-        priceChartingPrice: syncedEntry.newPrice,
-        bestPrice: syncedEntry.newPrice,
-        primaryProvider: "pricecharting",
-        snapshotDate,
-        updatedAt,
+        pk: `SEALED_TRAINING#${snapshot.setId}`,
+        sk: `SNAPSHOT#${snapshot.snapshotMonth}`,
+        entityType: "SEALED_TRAINING_SNAPSHOT",
+        ...snapshot,
       },
     })
   );
+}
 
-  await ddb.send(
-    new UpdateCommand({
-      TableName: DYNAMODB_TABLE,
-      Key: { pk: `PRODUCT#${matchedPokeDataProduct.pokedataId}`, sk: "META" },
-      UpdateExpression:
-        "SET priceChartingId = :priceChartingId, priceChartingProductName = :productName, priceChartingConsoleName = :consoleName, priceChartingReleaseDate = :releaseDate, priceChartingLastSyncedAt = :updatedAt",
-      ExpressionAttributeValues: {
-        ":priceChartingId": syncedEntry.priceChartingId,
-        ":productName": syncedEntry.productName,
-        ":consoleName": syncedEntry.consoleName,
-        ":releaseDate": syncedEntry.releaseDate,
-        ":updatedAt": updatedAt,
-      },
-    })
-  );
+function buildTrainingSnapshot(product, syncedEntry, matchedPokeDataProduct, pokedataPricing) {
+  const snapshotMonth = syncedEntry.capturedAt.slice(0, 7);
+  const providerCount = [
+    syncedEntry.newPrice,
+    pokedataPricing?.bestPrice,
+    pokedataPricing?.tcgplayerPrice,
+    pokedataPricing?.ebayPrice,
+    pokedataPricing?.pokedataPrice,
+  ].filter((value) => typeof value === "number" && Number.isFinite(value) && value > 0).length;
+
+  return {
+    setId: product.setId,
+    name: product.name,
+    productType: product.productType,
+    releaseDate: syncedEntry.releaseDate || product.releaseDate,
+    snapshotMonth,
+    capturedAt: syncedEntry.capturedAt,
+    pokedataId: matchedPokeDataProduct?.pokedataId || null,
+    priceChartingId: syncedEntry.priceChartingId,
+    priceChartingPrice: syncedEntry.newPrice,
+    priceChartingManualOnlyPrice: syncedEntry.manualOnlyPrice,
+    priceChartingSalesVolume: syncedEntry.salesVolume,
+    tcgplayerPrice: pokedataPricing?.tcgplayerPrice ?? null,
+    ebayPrice: pokedataPricing?.ebayPrice ?? null,
+    pokedataPrice: pokedataPricing?.pokedataPrice ?? null,
+    pokedataBestPrice: pokedataPricing?.bestPrice ?? null,
+    providerSpreadPct: computeSpreadPct(
+      syncedEntry.newPrice,
+      pokedataPricing?.bestPrice ?? null
+    ),
+    availableProviderCount: providerCount,
+    primaryProvider: "pricecharting",
+    snapshotSource: "sync-pricecharting-prices",
+  };
 }
 
 async function main() {
@@ -251,6 +372,7 @@ async function main() {
   const pokeDataMeta = await loadPokeDataMetaIndex(dynamo);
   const capturedAt = new Date().toISOString();
   const syncedEntries = [];
+  const trainingSnapshots = [];
   const failures = [];
 
   for (const product of manifest) {
@@ -279,7 +401,18 @@ async function main() {
       syncedEntries.push(syncedEntry);
 
       const matchedPokeDataProduct = findBestPokeDataMatch(product, pokeDataMeta);
+      const pokedataPricing = await requestPokeDataPricing(
+        matchedPokeDataProduct?.pokedataId || ""
+      );
+      const trainingSnapshot = buildTrainingSnapshot(
+        product,
+        syncedEntry,
+        matchedPokeDataProduct,
+        pokedataPricing
+      );
+      trainingSnapshots.push(trainingSnapshot);
       await persistSnapshot(dynamo, syncedEntry, matchedPokeDataProduct);
+      await persistTrainingSnapshot(dynamo, trainingSnapshot);
 
       console.log(
         `synced ${product.name} -> PriceCharting ${syncedEntry.priceChartingId} ($${syncedEntry.newPrice})`
@@ -292,13 +425,19 @@ async function main() {
   }
 
   await writeFile(OUTPUT_PATH, `${JSON.stringify(syncedEntries, null, 2)}\n`);
+  await writeFile(
+    TRAINING_SNAPSHOT_OUTPUT_PATH,
+    `${JSON.stringify(trainingSnapshots, null, 2)}\n`
+  );
 
   console.log(
     JSON.stringify(
       {
         synced: syncedEntries.length,
+        trainingSnapshots: trainingSnapshots.length,
         failed: failures.length,
         outputPath: path.relative(ROOT, OUTPUT_PATH),
+        trainingSnapshotOutputPath: path.relative(ROOT, TRAINING_SNAPSHOT_OUTPUT_PATH),
         dynamoSnapshotsUpdated: Boolean(dynamo),
         failures,
       },

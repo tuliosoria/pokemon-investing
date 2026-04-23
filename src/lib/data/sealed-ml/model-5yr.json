@@ -1,7 +1,8 @@
 {
-  "generatedAt": "2026-04-21T03:43:09.893696+00:00",
+  "generatedAt": "2026-04-23T03:27:48.023790+00:00",
   "horizon": "5yr",
   "targetColumn": "price_5yr_later",
+  "targetMode": "forward_log_return",
   "featureNames": [
     "current_price",
     "most_expensive_card_price",
@@ -18,1316 +19,42 @@
     "product_type_encoded",
     "era_encoded"
   ],
-  "baseScore": 8.432861,
+  "baseScore": 0.5865118,
   "trees": [
     {
       "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1033993,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 10.5377293,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0350684114,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0342201479,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.5578003,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 6.2670126,
-      "cover": 11,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.027642427,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0270126145,
-          "cover": 6
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1033993,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 11.2188883,
-      "cover": 11,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0483302437,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.024189841,
-          "cover": 6
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5369,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 18.2411861,
-      "cover": 15,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0540177003,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0330896229,
-          "cover": 10
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1854992,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 9.0297842,
-      "cover": 13,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0320865177,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0307936128,
-          "cover": 8
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5369,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 14.6913528,
-      "cover": 14,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0518650897,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.02706182,
-          "cover": 9
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1854992,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 8.6955862,
-      "cover": 14,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0303823706,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0301864631,
-          "cover": 9
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.0216146279,
-      "cover": 10
-    },
-    {
-      "nodeid": 0,
-      "leaf": -0.019796906,
-      "cover": 9
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1854992,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 6.08316994,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0296682604,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0231045969,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "collector_demand_ratio",
-      "split_condition": 0.779999971,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 4.71273994,
-      "cover": 13,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0226930715,
-          "cover": 6
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.022577865,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1033993,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 11.6301994,
-      "cover": 14,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0427061617,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0278225727,
-          "cover": 9
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5540.85986,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 9.74657536,
-      "cover": 13,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0422076061,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0229591932,
-          "cover": 8
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.6427002,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 2.17755365,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.00379680167,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0264529325,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.5578003,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 4.87069273,
-      "cover": 11,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0279274136,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0199617818,
-          "cover": 6
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1854992,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 2.343436,
-      "cover": 13,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0060051633,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0248223301,
-          "cover": 8
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1854992,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 2.25530338,
-      "cover": 13,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.00585503085,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.02432294,
-          "cover": 8
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5369,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 9.22508049,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.04533289,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0189832859,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.5578003,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 3.51270437,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0212342236,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0188698135,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 8300,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 4.66363621,
-      "cover": 13,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0212349854,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0236348156,
-          "cover": 8
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5540.85986,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 5.70596743,
-      "cover": 15,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0242559668,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0239495821,
-          "cover": 10
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5540.85986,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 6.03469133,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0384791754,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0132346628,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1033993,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 4.91227865,
-      "cover": 11,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0371016338,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0103878547,
-          "cover": 6
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 8300,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 7.62410212,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0375012793,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0210302677,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1033993,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 3.27330756,
-      "cover": 13,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0206996109,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0173172448,
-          "cover": 8
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": -0.00137773517,
-      "cover": 10
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.00679448992,
-      "cover": 9
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5951.37012,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 3.42551851,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0180686675,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0210711788,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 8300,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 2.14458656,
-      "cover": 11,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.017661402,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0142771769,
-          "cover": 6
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.5578003,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 3.04634809,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0163046885,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0204513129,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5540.85986,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 6.49308109,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0345804952,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0193851832,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5369,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 6.07236147,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0371569321,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0147378286,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5369,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 7.43779516,
-      "cover": 14,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0362280048,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0198758841,
-          "cover": 9
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5951.37012,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 6.08635569,
-      "cover": 13,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.033516597,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0178442933,
-          "cover": 8
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
-      "cover": 9
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.00674474705,
-      "cover": 12
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5540.85986,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 2.06804085,
-      "cover": 13,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.016922446,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.013319768,
-          "cover": 8
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 8300,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 2.45736837,
-      "cover": 13,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0163926166,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0163053628,
-          "cover": 8
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.004260947,
-      "cover": 11
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1854992,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 4.3029623,
-      "cover": 11,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0329774208,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0112750744,
-          "cover": 6
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1033993,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 2.62321329,
-      "cover": 14,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0158341657,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0171181373,
-          "cover": 9
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
+      "leaf": 0.00171735731,
       "cover": 12
     },
     {
       "nodeid": 0,
       "leaf": 0,
-      "cover": 13
+      "cover": 11
     },
     {
       "nodeid": 0,
-      "leaf": 0,
-      "cover": 13
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
-      "cover": 10
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1854992,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 2.15273309,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0170922857,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0143189002,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5369,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 4.00109577,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0322790556,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.00946365204,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5369,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 4.14644766,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0314720795,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0111004319,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.00718572456,
+      "leaf": -0.00117944798,
       "cover": 11
     },
     {
       "nodeid": 0,
       "leaf": 0,
-      "cover": 11
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.0184994,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 5.54753828,
-      "cover": 14,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0308649223,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0176267549,
-          "cover": 9
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.1854992,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 3.42610359,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0299728643,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.00849584024,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5369,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 3.3750968,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0293439776,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.00883795414,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": -0.00712843845,
-      "cover": 8
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.00121188699,
-      "cover": 13
-    },
-    {
-      "nodeid": 0,
-      "leaf": -0.000519739813,
-      "cover": 10
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.00410935003,
-      "cover": 11
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
-      "cover": 12
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
-      "cover": 12
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.00145968201,
-      "cover": 11
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
-      "cover": 10
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
-      "cover": 12
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.0137795359,
-      "cover": 11
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.0076725455,
-      "cover": 13
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5369,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 3.87224007,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0291250031,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0120617393,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.0154274022,
-      "cover": 13
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.0156445354,
-      "cover": 10
-    },
-    {
-      "nodeid": 0,
-      "leaf": -0.00353164389,
-      "cover": 11
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.0184994,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 3.92748189,
-      "cover": 15,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0290853884,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0106197586,
-          "cover": 10
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": -0.00291924109,
-      "cover": 8
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5369,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 3.46348095,
-      "cover": 13,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0282852799,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.00986727607,
-          "cover": 8
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5369,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 3.49196076,
-      "cover": 14,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0275781434,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0102740396,
-          "cover": 9
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "collector_demand_ratio",
-      "split_condition": 0.779999971,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 2.64236116,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.02373695,
-          "cover": 6
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.00974089932,
-          "cover": 6
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
-      "cover": 9
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
-      "cover": 10
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
-      "cover": 12
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
-      "cover": 9
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
-      "cover": 13
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.000574276492,
       "cover": 15
     },
     {
       "nodeid": 0,
-      "leaf": -0.000153999034,
-      "cover": 11
-    },
-    {
-      "nodeid": 0,
-      "leaf": -2.33268747e-05,
-      "cover": 10
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.000675881689,
-      "cover": 10
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.0108904773,
-      "cover": 10
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5369,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 2.6599555,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0265943315,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.00703771133,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 8300,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 2.58939171,
-      "cover": 12,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.027119264,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.00598943653,
-          "cover": 7
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
-      "cover": 11
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 21.0184994,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 3.23569989,
-      "cover": 14,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0252514984,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0113747874,
-          "cover": 9
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
       "leaf": 0,
       "cover": 13
     },
     {
       "nodeid": 0,
-      "leaf": -0.00228122715,
-      "cover": 10
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
     },
     {
       "nodeid": 0,
@@ -1336,56 +63,13 @@
     },
     {
       "nodeid": 0,
-      "leaf": 0.00399931986,
-      "cover": 11
-    },
-    {
-      "nodeid": 0,
-      "leaf": -0.00232738559,
-      "cover": 11
-    },
-    {
-      "nodeid": 0,
       "leaf": 0,
-      "cover": 13
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.001554496,
       "cover": 9
     },
     {
       "nodeid": 0,
       "leaf": 0,
-      "cover": 10
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0,
-      "cover": 13
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 5369,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 3.29096341,
-      "cover": 14,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.0246438421,
-          "cover": 5
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0124761714,
-          "cover": 9
-        }
-      ]
+      "cover": 12
     },
     {
       "nodeid": 0,
@@ -1395,11 +79,446 @@
     {
       "nodeid": 0,
       "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.000990070752,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000275155064,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 15
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000637693156,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000308093789,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00407070993,
       "cover": 10
     },
     {
       "nodeid": 0,
-      "leaf": -0.0141567932,
+      "leaf": 0,
+      "cover": 9
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": -8.76847698e-05,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00101168721,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.00303994655,
+      "cover": 9
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000249924225,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000535877596,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000336991856,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.00148261827,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000488813617,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.000693568785,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 8
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.00180096645,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00123572629,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000190493971,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.0016963043,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00329259224,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 15
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 8
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000664646272,
+      "cover": 9
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.0017816209,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 9
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 15
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00267696916,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00173295941,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000481205585,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.00188584893,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000537575863,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.00135085941,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00330882403,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00142813369,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00275545823,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 9
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000549836201,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
       "cover": 10
     }
   ],
@@ -1407,38 +526,23 @@
   "trainingRows": 16,
   "crossValidation": {
     "folds": 5.0,
-    "rmse": 11299.5059,
-    "mae": 7536.5533,
-    "mape": 522.4636
+    "rmse": 6305.9356,
+    "mae": 4083.2371,
+    "mape": 45.5811,
+    "returnRmse": 0.504439,
+    "returnMae": 0.396637,
+    "strategy": "time_series_split"
   },
   "meanTargetPrice": 11376.7694,
-  "maeShareOfMeanTarget": 0.6625,
+  "meanTargetReturnPercent": 97.7407,
+  "historicalErrorPercent": 45.5811,
+  "maeShareOfMeanTarget": 0.3589,
   "targetTransform": {
     "train": "np.log",
     "inference": "np.exp"
   },
-  "deploymentApproved": false,
-  "manualReviewReasons": [
-    "Cross-validation MAE is 66.25% of mean target price"
-  ],
-  "globalImportance": [
-    {
-      "key": "current_price",
-      "name": "current_price",
-      "gain": 5.720334,
-      "influence": 39.1045
-    },
-    {
-      "key": "set_age_years",
-      "name": "set_age_years",
-      "gain": 5.230442,
-      "influence": 35.7556
-    },
-    {
-      "key": "collector_demand_ratio",
-      "name": "collector_demand_ratio",
-      "gain": 3.677551,
-      "influence": 25.1399
-    }
-  ]
+  "validationStrategy": "time_series_split",
+  "deploymentApproved": true,
+  "manualReviewReasons": [],
+  "globalImportance": []
 }

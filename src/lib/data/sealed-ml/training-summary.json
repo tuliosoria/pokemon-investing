@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T03:43:08.705651+00:00",
+  "generatedAt": "2026-04-23T03:27:47.384900+00:00",
   "products": 25,
   "rows": 892,
   "rowsBySet": [
@@ -110,39 +110,48 @@
     "5yr": 16
   },
   "audit": {
-    "loggedRows": 916,
-    "outlierRowsRemoved": 24,
+    "loggedRows": 892,
+    "outlierRowsRemoved": 0,
     "maxTargetMultipleByHorizon": {
-      "1yr": 54.3478,
-      "3yr": 102.8565,
-      "5yr": 401.062
+      "1yr": 5.4632,
+      "3yr": 9.9935,
+      "5yr": 3.8572
     },
     "targetTransform": {
       "train": "np.log",
       "inference": "np.exp"
     }
   },
+  "targetMode": "forward_log_return",
+  "validationStrategy": "time_series_split",
   "models": {
     "1yr": {
       "artifactPath": "src/lib/data/sealed-ml/model-1yr.json",
       "trainingRows": 892,
       "crossValidation": {
         "folds": 5.0,
-        "rmse": 2034.6273,
-        "mae": 779.8342,
-        "mape": 25.8898
+        "rmse": 2102.8103,
+        "mae": 909.1988,
+        "mape": 29.9515,
+        "returnRmse": 0.465118,
+        "returnMae": 0.351946,
+        "strategy": "time_series_split"
       },
       "meanTargetPrice": 3644.584,
-      "maeShareOfMeanTarget": 0.214,
+      "meanTargetReturnPercent": 57.4387,
+      "historicalErrorPercent": 29.9515,
+      "maeShareOfMeanTarget": 0.2495,
+      "targetMode": "forward_log_return",
       "targetTransform": {
         "train": "np.log",
         "inference": "np.exp"
       },
+      "validationStrategy": "time_series_split",
       "dominantFeature": {
-        "key": "set_age_years",
-        "name": "set_age_years",
-        "gain": 192.020294,
-        "influence": 33.0793
+        "key": "era_encoded",
+        "name": "era_encoded",
+        "gain": 14.422187,
+        "influence": 24.2071
       },
       "deploymentApproved": true,
       "manualReviewReasons": [],
@@ -153,21 +162,28 @@
       "trainingRows": 354,
       "crossValidation": {
         "folds": 5.0,
-        "rmse": 3038.371,
-        "mae": 1387.7911,
-        "mape": 32.5397
+        "rmse": 2643.2004,
+        "mae": 1504.9419,
+        "mape": 38.1296,
+        "returnRmse": 0.609162,
+        "returnMae": 0.465342,
+        "strategy": "time_series_split"
       },
       "meanTargetPrice": 5388.3431,
-      "maeShareOfMeanTarget": 0.2576,
+      "meanTargetReturnPercent": 192.2575,
+      "historicalErrorPercent": 38.1296,
+      "maeShareOfMeanTarget": 0.2793,
+      "targetMode": "forward_log_return",
       "targetTransform": {
         "train": "np.log",
         "inference": "np.exp"
       },
+      "validationStrategy": "time_series_split",
       "dominantFeature": {
-        "key": "current_price",
-        "name": "current_price",
-        "gain": 70.496056,
-        "influence": 23.2255
+        "key": "set_age_years",
+        "name": "set_age_years",
+        "gain": 17.646673,
+        "influence": 24.1856
       },
       "deploymentApproved": true,
       "manualReviewReasons": [],
@@ -178,28 +194,28 @@
       "trainingRows": 16,
       "crossValidation": {
         "folds": 5.0,
-        "rmse": 11299.5059,
-        "mae": 7536.5533,
-        "mape": 522.4636
+        "rmse": 6305.9356,
+        "mae": 4083.2371,
+        "mape": 45.5811,
+        "returnRmse": 0.504439,
+        "returnMae": 0.396637,
+        "strategy": "time_series_split"
       },
       "meanTargetPrice": 11376.7694,
-      "maeShareOfMeanTarget": 0.6625,
+      "meanTargetReturnPercent": 97.7407,
+      "historicalErrorPercent": 45.5811,
+      "maeShareOfMeanTarget": 0.3589,
+      "targetMode": "forward_log_return",
       "targetTransform": {
         "train": "np.log",
         "inference": "np.exp"
       },
-      "dominantFeature": {
-        "key": "current_price",
-        "name": "current_price",
-        "gain": 5.720334,
-        "influence": 39.1045
-      },
-      "deploymentApproved": false,
-      "manualReviewReasons": [
-        "Cross-validation MAE is 66.25% of mean target price"
-      ],
+      "validationStrategy": "time_series_split",
+      "dominantFeature": null,
+      "deploymentApproved": true,
+      "manualReviewReasons": [],
       "treeCount": 100
     }
   },
-  "deploymentApproved": false
+  "deploymentApproved": true
 }

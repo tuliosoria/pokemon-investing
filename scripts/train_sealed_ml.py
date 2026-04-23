@@ -6,14 +6,14 @@ import math
 import os
 from collections import Counter
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 import pandas as pd
 import requests
-from sklearn.model_selection import KFold
+from sklearn.model_selection import TimeSeriesSplit
 from xgboost import XGBRegressor
 
 
@@ -72,6 +72,8 @@ TARGET_TRANSFORM = {
     "train": "np.log",
     "inference": "np.exp",
 }
+MODEL_TARGET_MODE = "forward_log_return"
+VALIDATION_STRATEGY = "time_series_split"
 
 
 @dataclass
@@ -168,7 +170,7 @@ def market_cycle_for_date(date: datetime) -> float:
 
 
 def parse_release_date(value: str) -> datetime:
-    return datetime.fromisoformat(value).replace(tzinfo=UTC)
+    return datetime.fromisoformat(value).replace(tzinfo=timezone.utc)
 
 
 def extract_chart_data(html: str) -> dict[str, Any]:
@@ -254,7 +256,7 @@ def fetch_price_series(product: ProductManifest, session: requests.Session) -> l
         price = float(raw_value) / 100.0
         if price <= 0:
             continue
-        series.append((datetime.fromtimestamp(timestamp_ms / 1000, tz=UTC), price))
+        series.append((datetime.fromtimestamp(timestamp_ms / 1000, tz=timezone.utc), price))
 
     if len(series) < 8:
         raise ValueError(f"Insufficient price history for {product.name}")
@@ -381,7 +383,7 @@ def build_training_rows(
 
 def build_dataset_summary(frame: pd.DataFrame, product_count: int) -> dict[str, Any]:
     return {
-        "generatedAt": datetime.now(tz=UTC).isoformat(),
+        "generatedAt": datetime.now(tz=timezone.utc).isoformat(),
         "products": product_count,
         "rows": int(frame.shape[0]),
         "rowsBySet": Counter(frame["set_id"]).most_common(),
@@ -479,41 +481,81 @@ def make_model() -> XGBRegressor:
     )
 
 
-def evaluate_cross_validation(features: pd.DataFrame, target: pd.Series) -> dict[str, float]:
-    sample_count = len(features)
-    fold_count = min(5, sample_count)
-    if fold_count < 2:
-        return {"folds": float(fold_count), "rmse": 0.0, "mae": 0.0, "mape": 0.0}
+def build_forward_log_return_target(
+    current_prices: pd.Series, target_prices: pd.Series
+) -> pd.Series:
+    current = current_prices.astype(float)
+    future = target_prices.astype(float)
+    values = pd.Series(np.nan, index=target_prices.index, dtype=float)
+    valid_mask = (current > 0) & (future > 0)
+    values.loc[valid_mask] = np.log(
+        future.loc[valid_mask].to_numpy(dtype=float)
+        / current.loc[valid_mask].to_numpy(dtype=float)
+    )
+    return values
 
-    kfold = KFold(n_splits=fold_count, shuffle=True, random_state=42)
+
+def evaluate_cross_validation(
+    features: pd.DataFrame,
+    current_prices: pd.Series,
+    target_prices: pd.Series,
+    target_returns: pd.Series,
+) -> dict[str, float]:
+    sample_count = len(features)
+    fold_count = min(5, sample_count - 1)
+    if fold_count < 2:
+        return {
+            "folds": float(max(fold_count, 1)),
+            "rmse": 0.0,
+            "mae": 0.0,
+            "mape": 0.0,
+            "returnRmse": 0.0,
+            "returnMae": 0.0,
+            "strategy": VALIDATION_STRATEGY,
+        }
+
+    splitter = TimeSeriesSplit(n_splits=fold_count)
     predictions: list[float] = []
     actuals: list[float] = []
+    return_predictions: list[float] = []
+    return_actuals: list[float] = []
 
-    for train_idx, test_idx in kfold.split(features):
+    for train_idx, test_idx in splitter.split(features):
         model = make_model()
         x_train = features.iloc[train_idx]
         x_test = features.iloc[test_idx]
-        y_train = np.log(target.iloc[train_idx].to_numpy(dtype=float))
-        y_test = target.iloc[test_idx].to_numpy(dtype=float)
+        y_train = target_returns.iloc[train_idx].to_numpy(dtype=float)
+        y_test = target_returns.iloc[test_idx].to_numpy(dtype=float)
+        current_test = current_prices.iloc[test_idx].to_numpy(dtype=float)
+        actual_price = target_prices.iloc[test_idx].to_numpy(dtype=float)
 
         model.fit(x_train, y_train)
-        pred_log = model.predict(x_test)
-        pred = np.exp(pred_log)
+        pred_return = model.predict(x_test)
+        pred = current_test * np.exp(pred_return)
 
         predictions.extend(pred.tolist())
-        actuals.extend(y_test.tolist())
+        actuals.extend(actual_price.tolist())
+        return_predictions.extend(pred_return.tolist())
+        return_actuals.extend(y_test.tolist())
 
     pred_arr = np.array(predictions)
     actual_arr = np.array(actuals)
+    pred_return_arr = np.array(return_predictions)
+    actual_return_arr = np.array(return_actuals)
     rmse = float(np.sqrt(np.mean((pred_arr - actual_arr) ** 2)))
     mae = float(np.mean(np.abs(pred_arr - actual_arr)))
     mape = float(np.mean(np.abs((pred_arr - actual_arr) / np.maximum(actual_arr, 1e-6))) * 100.0)
+    return_rmse = float(np.sqrt(np.mean((pred_return_arr - actual_return_arr) ** 2)))
+    return_mae = float(np.mean(np.abs(pred_return_arr - actual_return_arr)))
 
     return {
         "folds": float(fold_count),
         "rmse": round(rmse, 4),
         "mae": round(mae, 4),
         "mape": round(mape, 4),
+        "returnRmse": round(return_rmse, 6),
+        "returnMae": round(return_mae, 6),
+        "strategy": VALIDATION_STRATEGY,
     }
 
 
@@ -523,16 +565,28 @@ def train_model(
     target_column: str,
     output_dir: Path = DATA_DIR,
 ) -> dict[str, Any]:
-    usable = frame[frame[target_column].notna()].copy()
+    usable = frame[
+        frame[target_column].notna() & (frame["current_price"].astype(float) > 0)
+    ].copy()
     if usable.empty:
         raise RuntimeError(f"No rows available for {horizon} model")
 
+    usable.sort_values(["snapshot_date", "name"], inplace=True)
     features = usable[FEATURE_NAMES].astype(float)
-    target = usable[target_column].astype(float)
-    cv_metrics = evaluate_cross_validation(features, target)
+    current_prices = usable["current_price"].astype(float)
+    target_prices = usable[target_column].astype(float)
+    target_returns = build_forward_log_return_target(current_prices, target_prices)
+    if target_returns.isna().all():
+        raise RuntimeError(f"No valid forward returns available for {horizon} model")
+    cv_metrics = evaluate_cross_validation(
+        features,
+        current_prices,
+        target_prices,
+        target_returns,
+    )
 
     model = make_model()
-    logged_target = np.log(target.to_numpy(dtype=float))
+    logged_target = target_returns.to_numpy(dtype=float)
     model.fit(features, logged_target)
 
     booster = model.get_booster()
@@ -551,7 +605,10 @@ def train_model(
         }
         for feature, gain in sorted(raw_importance.items(), key=lambda item: item[1], reverse=True)
     ]
-    mean_target_price = float(target.mean())
+    mean_target_price = float(target_prices.mean())
+    mean_target_return_percent = float(
+        (np.exp(target_returns.to_numpy(dtype=float)).mean() - 1) * 100.0
+    )
     mae_share_of_mean_target = (
         float(cv_metrics["mae"]) / mean_target_price if mean_target_price > 0 else 0.0
     )
@@ -575,9 +632,10 @@ def train_model(
     print(f"=== {horizon.upper()} FEATURE IMPORTANCE END ===")
 
     artifact = {
-        "generatedAt": datetime.now(tz=UTC).isoformat(),
+        "generatedAt": datetime.now(tz=timezone.utc).isoformat(),
         "horizon": horizon,
         "targetColumn": target_column,
+        "targetMode": MODEL_TARGET_MODE,
         "featureNames": FEATURE_NAMES,
         "baseScore": base_score,
         "trees": trees,
@@ -585,8 +643,11 @@ def train_model(
         "trainingRows": int(usable.shape[0]),
         "crossValidation": cv_metrics,
         "meanTargetPrice": round(mean_target_price, 4),
+        "meanTargetReturnPercent": round(mean_target_return_percent, 4),
+        "historicalErrorPercent": round(float(cv_metrics["mape"]), 4),
         "maeShareOfMeanTarget": round(mae_share_of_mean_target, 4),
         "targetTransform": TARGET_TRANSFORM,
+        "validationStrategy": VALIDATION_STRATEGY,
         "deploymentApproved": len(manual_review_reasons) == 0,
         "manualReviewReasons": manual_review_reasons,
         "globalImportance": global_importance,
@@ -603,8 +664,12 @@ def train_model(
         "trainingRows": int(usable.shape[0]),
         "crossValidation": cv_metrics,
         "meanTargetPrice": round(mean_target_price, 4),
+        "meanTargetReturnPercent": round(mean_target_return_percent, 4),
+        "historicalErrorPercent": round(float(cv_metrics["mape"]), 4),
         "maeShareOfMeanTarget": round(mae_share_of_mean_target, 4),
+        "targetMode": MODEL_TARGET_MODE,
         "targetTransform": TARGET_TRANSFORM,
+        "validationStrategy": VALIDATION_STRATEGY,
         "dominantFeature": dominant_feature,
         "deploymentApproved": len(manual_review_reasons) == 0,
         "manualReviewReasons": manual_review_reasons,
@@ -636,6 +701,8 @@ def main() -> None:
     frame, audit_summary = audit_training_frame(frame)
     summary = build_dataset_summary(frame, len(products))
     summary["audit"] = audit_summary
+    summary["targetMode"] = MODEL_TARGET_MODE
+    summary["validationStrategy"] = VALIDATION_STRATEGY
     write_training_data_artifacts(frame, history_summary, output_dir)
 
     model_summary = train_models(frame, output_dir)

@@ -73,14 +73,14 @@ const CONCEPTS = [
       "The forecast uses XGBoost regression models. Instead of one big formula, XGBoost builds many small decision trees. Each new tree focuses on the mistakes left by the previous trees, which makes it good at capturing non-linear market behavior.",
   },
   {
-    title: "Log-price targets",
+    title: "Forward log-return targets",
     description:
-      "Training happens on the natural log of future prices, then predictions are converted back into dollars. This keeps extreme prices from dominating the fit and makes multiplicative growth easier for the model to learn.",
+      "Training happens on the natural log of forward return relative to the current snapshot price, then predictions are converted back into dollars. This reduces scale bias between cheap modern products and ultra-expensive vintage boxes while still preserving multiplicative growth patterns.",
   },
   {
-    title: "Cross-validation",
+    title: "Time-aware validation",
     description:
-      "The training pipeline uses 5-fold cross-validation and tracks mean absolute error. If error is too large relative to the average target price, the retrainer flags the model for manual review instead of publishing it.",
+      "The training pipeline uses blocked time-series validation instead of shuffled folds, so older snapshots train the model and newer snapshots test it. If error is too large relative to the average target price, the retrainer flags the model for manual review instead of publishing it.",
   },
   {
     title: "Feature importance and factor breakdowns",

@@ -91,6 +91,9 @@ export interface ModelArtifact {
   trees: ModelNode[];
   treeCount: number;
   globalImportance: ModelImportance[];
+  historicalErrorPercent?: number;
+  targetMode?: "future_log_price" | "forward_log_return";
+  validationStrategy?: string;
 }
 
 export interface ForecastModelBundle {
@@ -606,7 +609,11 @@ function traverseTree(
   return traverseTree(getChildNode(node, nextNodeId), features, path);
 }
 
-function computeSpreadPercent(baseScore: number, leafContributions: number[]): number {
+function computeSpreadPercent(
+  model: ModelArtifact,
+  features: Record<FeatureKey, number>,
+  leafContributions: number[]
+): number {
   if (leafContributions.length === 0) {
     return 100;
   }
@@ -618,13 +625,16 @@ function computeSpreadPercent(baseScore: number, leafContributions: number[]): n
     leafContributions.length;
   const logStdDev = Math.sqrt(variance) * Math.sqrt(leafContributions.length);
   const totalContribution = leafContributions.reduce((sum, value) => sum + value, 0);
-  const center = Math.exp(baseScore + totalContribution);
+  const currentPrice = Math.max(features.current_price, 0);
+  const targetMode = model.targetMode ?? "future_log_price";
+  const multiplier = targetMode === "forward_log_return" ? currentPrice : 1;
+  const center = multiplier * Math.exp(model.baseScore + totalContribution);
   if (center <= 0) {
     return 100;
   }
 
-  const upper = Math.exp(baseScore + totalContribution + logStdDev);
-  const lower = Math.exp(baseScore + totalContribution - logStdDev);
+  const upper = multiplier * Math.exp(model.baseScore + totalContribution + logStdDev);
+  const lower = multiplier * Math.exp(model.baseScore + totalContribution - logStdDev);
   return round(((upper - lower) / center) * 100, 2);
 }
 
@@ -642,11 +652,19 @@ function runModel(
 
   const logPrediction =
     model.baseScore + leafContributions.reduce((sum, value) => sum + value, 0);
+  const targetMode = model.targetMode ?? "future_log_price";
+  const currentPrice = Math.max(features.current_price, 0);
+  const predictedPrice =
+    targetMode === "forward_log_return"
+      ? currentPrice > 0
+        ? currentPrice * Math.exp(logPrediction)
+        : 0
+      : Math.exp(logPrediction);
 
   return {
-    predictedPrice: Math.exp(logPrediction),
+    predictedPrice,
     leafContributions,
-    spreadPercent: computeSpreadPercent(model.baseScore, leafContributions),
+    spreadPercent: computeSpreadPercent(model, features, leafContributions),
   };
 }
 
@@ -843,12 +861,16 @@ function buildForecast(
 
   const signal: Signal =
     benchmarkDelta >= 10 ? "Buy" : benchmarkDelta >= 0 ? "Hold" : "Sell";
+  const calibratedSpreadPercent = Math.max(
+    adjustedPredictions.spreadPercent,
+    models.fiveYear.historicalErrorPercent ?? 0
+  );
   const confidence =
     wasRoiCapped ||
     (allowSparseForecast &&
       input.estimatedFactors > MAX_ESTIMATED_FACTORS_FOR_FORECAST)
       ? "Low"
-      : resolveConfidence(adjustedPredictions.spreadPercent);
+      : resolveConfidence(calibratedSpreadPercent);
   const confidenceBonus =
     confidence === "High" ? 5 : confidence === "Medium" ? 2 : 0;
   const rawScore = clamp(Math.round(50 + benchmarkDelta * 0.55 + confidenceBonus), 1, 99);
@@ -875,7 +897,7 @@ function buildForecast(
     roiPercent,
     spRoi,
     estimatedFactors: input.estimatedFactors,
-    predictionSpreadPercent: adjustedPredictions.spreadPercent,
+    predictionSpreadPercent: calibratedSpreadPercent,
     horizonPredictions: {
       oneYear: Math.max(Math.round(adjustedPredictions.oneYearPrice), 0),
       threeYear: Math.max(Math.round(adjustedPredictions.threeYearPrice), 0),
