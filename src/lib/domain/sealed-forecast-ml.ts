@@ -124,9 +124,13 @@ export interface ModelArtifact {
   trees: ModelNode[];
   treeCount: number;
   globalImportance: ModelImportance[];
+  trainingRows?: number;
+  minimumTrainingRowsForApproval?: number;
   historicalErrorPercent?: number;
   targetMode?: "future_log_price" | "forward_log_return";
   validationStrategy?: string;
+  deploymentApproved?: boolean;
+  manualReviewReasons?: string[];
 }
 
 export interface ForecastModelBundle {
@@ -783,6 +787,18 @@ function isLeafNode(node: ModelNode): node is ModelLeafNode {
   return "leaf" in node;
 }
 
+function modelHasSplits(model: ModelArtifact): boolean {
+  return model.trees.some((tree) => !isLeafNode(tree));
+}
+
+function canUseFiveYearModel(model: ModelArtifact): boolean {
+  if (model.deploymentApproved === false) {
+    return false;
+  }
+
+  return modelHasSplits(model);
+}
+
 function getChildNode(node: ModelSplitNode, nodeId: number): ModelNode {
   const child = node.children.find((candidate) => candidate.nodeid === nodeId);
   if (!child) {
@@ -873,6 +889,47 @@ function runModel(
     leafContributions,
     spreadPercent: computeSpreadPercent(model, features, leafContributions),
   };
+}
+
+function inferAnnualRateFromPrediction(
+  currentPrice: number,
+  predictedPrice: number,
+  years: number
+): number | null {
+  if (currentPrice <= 0 || predictedPrice <= 0 || years <= 0) {
+    return null;
+  }
+
+  return Math.pow(predictedPrice / currentPrice, 1 / years) - 1;
+}
+
+function deriveFiveYearFallbackPrice(
+  currentPrice: number,
+  prediction1yr: ModelPrediction,
+  prediction3yr: ModelPrediction
+): number {
+  if (currentPrice <= 0) {
+    return 0;
+  }
+
+  const annualRate1yr = inferAnnualRateFromPrediction(
+    currentPrice,
+    prediction1yr.predictedPrice,
+    1
+  );
+  const annualRate3yr = inferAnnualRateFromPrediction(
+    currentPrice,
+    prediction3yr.predictedPrice,
+    3
+  );
+
+  const blendedAnnualRate =
+    annualRate1yr !== null && annualRate3yr !== null
+      ? annualRate1yr * 0.35 + annualRate3yr * 0.65
+      : annualRate3yr ?? annualRate1yr ?? 0;
+
+  const boundedAnnualRate = clamp(blendedAnnualRate, -0.2, 0.32);
+  return round(currentPrice * Math.pow(1 + boundedAnnualRate, 5), 2);
 }
 
 function resolveConfidence(spreadPercent: number): Confidence {
@@ -1030,7 +1087,22 @@ function buildForecast(
 
   const prediction1yr = runModel(models.oneYear, input.values);
   const prediction3yr = runModel(models.threeYear, input.values);
-  const prediction5yr = runModel(models.fiveYear, input.values);
+  const useDirectFiveYearModel = canUseFiveYearModel(models.fiveYear);
+  const prediction5yr = useDirectFiveYearModel
+    ? runModel(models.fiveYear, input.values)
+    : {
+        predictedPrice: deriveFiveYearFallbackPrice(
+          input.values.current_price,
+          prediction1yr,
+          prediction3yr
+        ),
+        leafContributions: [],
+        spreadPercent: Math.max(
+          prediction1yr.spreadPercent,
+          prediction3yr.spreadPercent,
+          models.fiveYear.historicalErrorPercent ?? 0
+        ),
+      };
   let adjustedPredictions = applySparseLaunchGuardrails(input, {
     oneYearPrice: Math.max(prediction1yr.predictedPrice, 0),
     threeYearPrice: Math.max(prediction3yr.predictedPrice, 0),
@@ -1074,6 +1146,7 @@ function buildForecast(
   );
   const confidence =
     wasRoiCapped ||
+    !useDirectFiveYearModel ||
     (allowSparseForecast &&
       input.estimatedFactors > MAX_ESTIMATED_FACTORS_FOR_FORECAST)
       ? "Low"
