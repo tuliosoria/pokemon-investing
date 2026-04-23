@@ -58,14 +58,19 @@ export async function getStoredSealedProductMeta(
     return null;
   }
 
-  const response = await dynamo.send(
-    new GetCommand({
-      TableName: table,
-      Key: { pk: `PRODUCT#${pokedataId}`, sk: "META" },
-    })
-  );
+  try {
+    const response = await dynamo.send(
+      new GetCommand({
+        TableName: table,
+        Key: { pk: `PRODUCT#${pokedataId}`, sk: "META" },
+      })
+    );
 
-  return (response.Item as StoredSealedProductMeta | undefined) ?? null;
+    return (response.Item as StoredSealedProductMeta | undefined) ?? null;
+  } catch (error) {
+    console.warn("DynamoDB sealed product meta lookup failed:", error);
+    return null;
+  }
 }
 
 export async function getLatestStoredSealedPriceSnapshot(
@@ -77,21 +82,26 @@ export async function getLatestStoredSealedPriceSnapshot(
     return null;
   }
 
-  const response = await dynamo.send(
-    new QueryCommand({
-      TableName: table,
-      KeyConditionExpression: "pk = :pk AND begins_with(sk, :prefix)",
-      ExpressionAttributeValues: {
-        ":pk": `PRODUCT#${pokedataId}`,
-        ":prefix": "PRICE#",
-      },
-      ScanIndexForward: false,
-      Limit: 1,
-    })
-  );
+  try {
+    const response = await dynamo.send(
+      new QueryCommand({
+        TableName: table,
+        KeyConditionExpression: "pk = :pk AND begins_with(sk, :prefix)",
+        ExpressionAttributeValues: {
+          ":pk": `PRODUCT#${pokedataId}`,
+          ":prefix": "PRICE#",
+        },
+        ScanIndexForward: false,
+        Limit: 1,
+      })
+    );
 
-  const [item] = (response.Items as StoredSealedPriceSnapshot[] | undefined) ?? [];
-  return item ?? null;
+    const [item] = (response.Items as StoredSealedPriceSnapshot[] | undefined) ?? [];
+    return item ?? null;
+  } catch (error) {
+    console.warn("DynamoDB sealed price snapshot lookup failed:", error);
+    return null;
+  }
 }
 
 export async function storeSealedPriceSnapshot(
@@ -105,23 +115,27 @@ export async function storeSealedPriceSnapshot(
 
   const updatedAt = new Date().toISOString();
 
-  await dynamo.send(
-    new PutCommand({
-      TableName: table,
-      Item: {
-        pk: `PRODUCT#${input.pokedataId}`,
-        sk: `PRICE#${input.snapshotDate}`,
-        tcgplayerPrice: input.tcgplayerPrice ?? null,
-        ebayPrice: input.ebayPrice ?? null,
-        pokedataPrice: input.pokedataPrice ?? null,
-        priceChartingPrice: input.priceChartingPrice ?? null,
-        bestPrice: input.bestPrice ?? null,
-        primaryProvider: input.primaryProvider,
-        snapshotDate: input.snapshotDate,
-        updatedAt,
-      },
-    })
-  );
+  try {
+    await dynamo.send(
+      new PutCommand({
+        TableName: table,
+        Item: {
+          pk: `PRODUCT#${input.pokedataId}`,
+          sk: `PRICE#${input.snapshotDate}`,
+          tcgplayerPrice: input.tcgplayerPrice ?? null,
+          ebayPrice: input.ebayPrice ?? null,
+          pokedataPrice: input.pokedataPrice ?? null,
+          priceChartingPrice: input.priceChartingPrice ?? null,
+          bestPrice: input.bestPrice ?? null,
+          primaryProvider: input.primaryProvider,
+          snapshotDate: input.snapshotDate,
+          updatedAt,
+        },
+      })
+    );
+  } catch (error) {
+    console.warn("DynamoDB sealed price snapshot write failed:", error);
+  }
 
   const updateParts = [
     "#name = if_not_exists(#name, :name)",
@@ -152,15 +166,19 @@ export async function storeSealedPriceSnapshot(
     expressionValues[":updatedAt"] = updatedAt;
   }
 
-  await dynamo.send(
-    new UpdateCommand({
-      TableName: table,
-      Key: { pk: `PRODUCT#${input.pokedataId}`, sk: "META" },
-      UpdateExpression: `SET ${updateParts.join(", ")}`,
-      ExpressionAttributeNames: {
-        "#name": "name",
-      },
-      ExpressionAttributeValues: expressionValues,
-    })
-  );
+  try {
+    await dynamo.send(
+      new UpdateCommand({
+        TableName: table,
+        Key: { pk: `PRODUCT#${input.pokedataId}`, sk: "META" },
+        UpdateExpression: `SET ${updateParts.join(", ")}`,
+        ExpressionAttributeNames: {
+          "#name": "name",
+        },
+        ExpressionAttributeValues: expressionValues,
+      })
+    );
+  } catch (error) {
+    console.warn("DynamoDB sealed product meta update failed:", error);
+  }
 }
