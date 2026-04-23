@@ -128,13 +128,26 @@ aws amplify get-branch \
 Amplify automatically redeploys when you push to `main` — no extra setup needed.
 
 ### Environment Variables
-If you add Supabase, OpenAI, etc. later:
+If you add Supabase, OpenAI, PriceCharting sync, etc. later:
 1. Amplify Console → **Environment variables**
 2. Add variables like:
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `SUPABASE_ANON_KEY`
    - `OPENAI_API_KEY`
    - `RESEND_API_KEY`
+   - `PRICECHARTING_API_TOKEN`
+
+### Syncing official PriceCharting sealed prices
+The sealed pricing runtime can consume a synced PriceCharting snapshot artifact and
+prefer those official prices over fallback sources. Generate or refresh that artifact with:
+
+```bash
+cd ~/Desktop/pokemon-investing
+PRICECHARTING_API_TOKEN=<YOUR_TOKEN> npm run sync:pricecharting
+```
+
+If `DYNAMODB_TABLE` and AWS credentials are also configured, the same sync command will
+best-effort persist provider-aware price snapshots and PriceCharting ID mappings into DynamoDB.
 
 ### Monthly Sealed ML Retraining
 The sealed forecast runtime now checks DynamoDB for published XGBoost model artifacts before

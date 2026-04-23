@@ -57,6 +57,7 @@ export async function logSealedForecastLookups(
             releaseYear: set.releaseYear,
             currentPrice: set.currentPrice,
             pokedataId: set.pokedataId ?? null,
+            priceChartingId: set.priceChartingId ?? null,
             createdAt,
             readyForRetraining1yrAt: addYears(lookupTimestamp, 1),
             readyForRetraining3yrAt: addYears(lookupTimestamp, 3),

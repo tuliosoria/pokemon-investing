@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "sync:pricecharting": "node scripts/sync-pricecharting-prices.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1032.0",

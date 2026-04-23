@@ -8,6 +8,7 @@ export interface SealedSetData {
   currentPrice: number;
   gradient: string;
   tcgplayerUrl?: string | null;
+  priceChartingId?: string;
 
   factors: {
     marketValue: number;
@@ -70,19 +71,26 @@ export interface SealedSearchResult {
   releaseDate: string | null;
   imageUrl: string | null;
   tcgplayerUrl?: string | null;
+  priceChartingId?: string;
 }
 
-/** Pricing returned from PokeData sealed pricing */
+/** Pricing returned from synced PriceCharting data and/or PokeData fallback */
 export interface SealedPricing {
   pokedataId: string;
   name: string;
   releaseDate: string | null;
   imageUrl: string | null;
   tcgplayerUrl?: string | null;
+  priceChartingId?: string;
+  priceChartingProductName?: string | null;
+  priceChartingConsoleName?: string | null;
+  priceChartingPrice?: number | null;
   tcgplayerPrice: number | null;
   ebayPrice: number | null;
   pokedataPrice: number | null;
   bestPrice: number | null;
+  primaryProvider?: "pricecharting" | "pokedata";
+  snapshotDate?: string | null;
 }
 
 export interface ProjectionPoint {

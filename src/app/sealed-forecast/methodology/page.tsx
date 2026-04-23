@@ -5,7 +5,8 @@ import { BarChart3, ShieldAlert, Sigma, TrendingUp } from "lucide-react";
 const VARIABLES = [
   {
     name: "Current price",
-    source: "Best live sealed price from TCGPlayer, PokeData Sealed, or eBay Sealed.",
+    source:
+      "Synced official PriceCharting sealed price when available, with PokeData / TCGPlayer / eBay fallback for gaps.",
     purpose: "Anchors every projection and ROI calculation to the current market.",
   },
   {
@@ -154,9 +155,11 @@ export default function SealedForecastMethodologyPage() {
             </div>
             <h2 className="text-lg font-bold">Live inputs</h2>
             <p className="mt-2 text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">
-              Current pricing comes from live sealed-market sources. Google Trends is
-              blended into popularity when available, and search results can still be
-              scored with estimated metadata if enough signal exists.
+              Current pricing prefers synced official PriceCharting snapshots, then
+              falls back to live sealed-market sources where official coverage is
+              missing. Google Trends is blended into popularity when available, and
+              search results can still be scored with estimated metadata if enough
+              signal exists.
             </p>
           </div>
           <div className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
@@ -180,7 +183,8 @@ export default function SealedForecastMethodologyPage() {
                 1. Gather data
               </p>
               <p className="mt-2 text-sm text-[hsl(var(--muted-foreground))]">
-                Pull live price, release date, product type, search metadata, and trend data.
+                Pull synced official or fallback market price, release date, product
+                type, search metadata, and trend data.
               </p>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">

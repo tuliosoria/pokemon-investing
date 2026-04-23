@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cacheGet, cachePut } from "@/lib/db/cache";
 import { buildPokeDataProductImageUrl } from "@/lib/domain/sealed-image";
+import { findSyncedPriceChartingEntry } from "@/lib/domain/pricecharting-catalog";
+import type { SealedSearchResult } from "@/lib/types/sealed";
 
 const POKEDATA_BASE = "https://www.pokedata.io/v0";
 const CACHE_TTL = 10 * 60; // 10 minutes
@@ -93,14 +95,7 @@ export async function GET(request: NextRequest) {
   try {
     const cacheKey = normalize(q);
 
-    const cached = await cacheGet<{
-      pokedataId: string;
-      name: string;
-      releaseDate: string | null;
-      imageUrl: string | null;
-    }[]>(
-      "sealed-search", cacheKey
-    );
+    const cached = await cacheGet<SealedSearchResult[]>("sealed-search", cacheKey);
     if (cached) {
       return NextResponse.json({
         products: cached.map((product) => ({
@@ -157,14 +152,23 @@ export async function GET(request: NextRequest) {
       return true;
     });
 
-    const products = deduped.map((s) => ({
-      pokedataId: String(s.product.id),
-      name: s.product.name,
-      releaseDate: s.product.release_date ?? null,
-      imageUrl:
-        s.product.img_url ??
-        buildPokeDataProductImageUrl(s.product.name ?? null),
-    }));
+    const products: SealedSearchResult[] = deduped.map((s) => {
+      const releaseDate = s.product.release_date ?? null;
+      const syncedPriceChartingEntry = findSyncedPriceChartingEntry({
+        name: s.product.name ?? "",
+        releaseDate,
+      });
+
+      return {
+        pokedataId: String(s.product.id),
+        name: s.product.name,
+        releaseDate,
+        imageUrl:
+          s.product.img_url ??
+          buildPokeDataProductImageUrl(s.product.name ?? null),
+        priceChartingId: syncedPriceChartingEntry?.priceChartingId,
+      };
+    });
 
     await cachePut("sealed-search", cacheKey, products, CACHE_TTL);
 

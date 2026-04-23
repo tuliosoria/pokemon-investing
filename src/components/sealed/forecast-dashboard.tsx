@@ -485,8 +485,18 @@ export function ForecastDashboard() {
 
           const pricingSettled = await Promise.allSettled(
             products.map(async (product) => {
+              const pricingUrl = new URL("/api/sealed/pricing", window.location.origin);
+              pricingUrl.searchParams.set("id", product.pokedataId);
+              pricingUrl.searchParams.set("name", product.name);
+              if (product.releaseDate) {
+                pricingUrl.searchParams.set("releaseDate", product.releaseDate);
+              }
+              if (product.priceChartingId) {
+                pricingUrl.searchParams.set("priceChartingId", product.priceChartingId);
+              }
+
               const res = await fetch(
-                `/api/sealed/pricing?id=${product.pokedataId}`,
+                `${pricingUrl.pathname}${pricingUrl.search}`,
                 { signal: controller.signal }
               );
               if (!res.ok) {

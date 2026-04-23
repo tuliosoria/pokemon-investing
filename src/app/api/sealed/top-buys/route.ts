@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cacheGet, cachePut } from "@/lib/db/cache";
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
 import { getSealedForecastModels } from "@/lib/db/sealed-forecast-models";
+import { findSyncedPriceChartingEntry } from "@/lib/domain/pricecharting-catalog";
 import { buildDynamicSetData, inferProductType } from "@/lib/domain/sealed-estimate";
 import { getTopBuyOpportunities } from "@/lib/domain/top-buys";
 import type { ProductType, SealedSetData, SealedPricing } from "@/lib/types/sealed";
@@ -61,6 +62,7 @@ function buildCatalogSet(pricing: SealedPricing): SealedSetData {
     ...curatedMatch,
     currentPrice: pricing.bestPrice ?? curatedMatch.currentPrice,
     pokedataId: pricing.pokedataId,
+    priceChartingId: pricing.priceChartingId ?? curatedMatch.priceChartingId,
     imageUrl: pricing.imageUrl ?? curatedMatch.imageUrl,
   };
 }
@@ -90,6 +92,7 @@ function mergeTopBuySets(dynamicSets: SealedSetData[]): SealedSetData[] {
       currentPrice: existing.currentPrice > 0 ? existing.currentPrice : set.currentPrice,
       imageUrl: existing.imageUrl ?? set.imageUrl,
       pokedataId: existing.pokedataId ?? set.pokedataId,
+      priceChartingId: existing.priceChartingId ?? set.priceChartingId,
       tcgplayerUrl: existing.tcgplayerUrl ?? set.tcgplayerUrl,
       trendData: existing.trendData ?? set.trendData,
     });
@@ -100,16 +103,29 @@ function mergeTopBuySets(dynamicSets: SealedSetData[]): SealedSetData[] {
 
 function toDynamicPricing(product: PokeDataCatalogProduct): SealedPricing {
   const marketValue = product.market_value ?? null;
+  const syncedPriceChartingEntry = findSyncedPriceChartingEntry({
+    name: product.name ?? "",
+    productType: inferProductType(product.name ?? ""),
+    releaseDate: product.release_date ?? null,
+  });
+  const priceChartingPrice = syncedPriceChartingEntry?.newPrice ?? null;
+  const bestPrice = priceChartingPrice ?? marketValue;
 
   return {
     pokedataId: String(product.id),
     name: product.name ?? "",
     releaseDate: product.release_date ?? null,
     imageUrl: product.img_url ?? null,
+    priceChartingId: syncedPriceChartingEntry?.priceChartingId,
+    priceChartingProductName: syncedPriceChartingEntry?.productName ?? null,
+    priceChartingConsoleName: syncedPriceChartingEntry?.consoleName ?? null,
+    priceChartingPrice,
     tcgplayerPrice: marketValue,
     ebayPrice: null,
     pokedataPrice: marketValue,
-    bestPrice: marketValue,
+    bestPrice,
+    primaryProvider: priceChartingPrice ? "pricecharting" : "pokedata",
+    snapshotDate: syncedPriceChartingEntry?.capturedAt?.slice(0, 10) ?? null,
   };
 }
 
