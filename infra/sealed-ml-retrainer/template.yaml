@@ -11,7 +11,7 @@ Parameters:
   PokeDataApiKey:
     Type: String
     NoEcho: true
-    Description: API key used to fetch current sealed pricing from PokeData.
+    Description: Optional legacy API key for other sealed workflows; retraining outcome capture now uses stored snapshot history.
   ScheduleExpression:
     Type: String
     Default: cron(0 5 1 * ? *)

@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cacheGet, cachePut } from "@/lib/db/cache";
-import { buildPokeDataProductImageUrl } from "@/lib/domain/sealed-image";
+import { loadSealedSearchCatalog } from "@/lib/db/sealed-search";
+import { getStoredSealedProductMeta } from "@/lib/db/sealed-pricing";
+import { pickProductImageUrl } from "@/lib/domain/sealed-image";
 import { findSyncedPriceChartingEntry } from "@/lib/domain/pricecharting-catalog";
 import type { SealedSearchResult } from "@/lib/types/sealed";
 
-const POKEDATA_BASE = "https://www.pokedata.io/v0";
 const CACHE_TTL = 10 * 60; // 10 minutes
+const SEARCH_RESULT_LIMIT = 20;
 
 // Abbreviation → full-form expansions for product type aliases
 const TERM_ALIASES: Record<string, string[]> = {
@@ -52,8 +54,15 @@ function expandTerms(rawQuery: string): string[] {
  * Score how well a product name matches the search terms.
  * Higher = better match.
  */
-function scoreProduct(productName: string, expandedTerms: string[]): number {
+function scoreProduct(
+  productName: string,
+  expandedTerms: string[],
+  normalizedQuery: string
+): number {
   const norm = normalize(productName);
+  if (!norm) {
+    return Number.NEGATIVE_INFINITY;
+  }
 
   // Count how many expanded terms match (aliases count as 1 group)
   let matched = 0;
@@ -62,7 +71,19 @@ function scoreProduct(productName: string, expandedTerms: string[]): number {
     if (norm.includes(term)) matched++;
   }
 
+  if (matched === 0) {
+    return Number.NEGATIVE_INFINITY;
+  }
+
   let score = matched * 100;
+
+  if (norm === normalizedQuery) {
+    score += 220;
+  } else if (norm.startsWith(normalizedQuery)) {
+    score += 140;
+  } else if (norm.includes(normalizedQuery)) {
+    score += 80;
+  }
 
   // Bonus for shorter names (more specific products rank higher)
   score += Math.max(0, 50 - norm.length);
@@ -75,6 +96,20 @@ function scoreProduct(productName: string, expandedTerms: string[]): number {
   return score;
 }
 
+async function withStoredImageUrl(
+  product: SealedSearchResult
+): Promise<SealedSearchResult> {
+  if (product.imageUrl) {
+    return product;
+  }
+
+  const meta = await getStoredSealedProductMeta(product.pokedataId);
+  return {
+    ...product,
+    imageUrl: pickProductImageUrl(meta?.imgUrl),
+  };
+}
+
 export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams.get("q")?.trim();
   if (!q || q.length < 2) {
@@ -84,89 +119,57 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const apiKey = process.env.POKEDATA_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json(
-      { error: "API not configured" },
-      { status: 503 }
-    );
-  }
-
   try {
     const cacheKey = normalize(q);
+    const normalizedQuery = normalize(q);
 
     const cached = await cacheGet<SealedSearchResult[]>("sealed-search", cacheKey);
     if (cached) {
+      const products = await Promise.all(cached.map(withStoredImageUrl));
       return NextResponse.json({
-        products: cached.map((product) => ({
-          ...product,
-          imageUrl: product.imageUrl ?? buildPokeDataProductImageUrl(product.name),
-        })),
+        products,
       });
     }
 
-    const url = new URL(`${POKEDATA_BASE}/search`);
-    url.searchParams.set("query", q);
-    url.searchParams.set("asset_type", "PRODUCT");
+    const catalog = await loadSealedSearchCatalog();
 
-    const res = await fetch(url.toString(), {
-      headers: { Authorization: `Bearer ${apiKey}` },
-    });
-
-    if (!res.ok) {
-      return NextResponse.json(
-        { error: "PokeData search failed" },
-        { status: 502 }
-      );
-    }
-
-    const rawProducts = await res.json();
-    if (!Array.isArray(rawProducts)) {
-      return NextResponse.json(
-        { error: "Unexpected PokeData search response" },
-        { status: 502 }
-      );
-    }
-
-    // Filter to English products only
-    const english = rawProducts.filter(
-      (p) => !p.language || p.language === "ENGLISH"
-    );
-
-    // Expand aliases and score every product against the full English set
+    // Expand aliases and score every product against the local/stored catalog
     const expandedTerms = expandTerms(q);
-    const scored = english.map((p) => ({
-      product: p,
-      score: scoreProduct(p.name ?? "", expandedTerms),
-    }));
+    const scored = catalog
+      .map((product, index) => ({
+        product,
+        index,
+        score: scoreProduct(product.name ?? "", expandedTerms, normalizedQuery),
+      }))
+      .filter((entry) => Number.isFinite(entry.score));
 
     // Sort by score desc (stable sort preserves API order for ties)
-    scored.sort((a, b) => b.score - a.score);
+    scored.sort((a, b) => b.score - a.score || a.index - b.index);
 
     // Deduplicate by product ID
     const seen = new Set<string>();
     const deduped = scored.filter((s) => {
-      const id = String(s.product.id);
+      const id = String(s.product.pokedataId);
       if (seen.has(id)) return false;
       seen.add(id);
       return true;
-    });
+    }).slice(0, SEARCH_RESULT_LIMIT);
 
     const products: SealedSearchResult[] = deduped.map((s) => {
-      const releaseDate = s.product.release_date ?? null;
+      const pokedataId = s.product.pokedataId;
+      const releaseDate = s.product.releaseDate ?? null;
       const syncedPriceChartingEntry = findSyncedPriceChartingEntry({
         name: s.product.name ?? "",
         releaseDate,
       });
 
       return {
-        pokedataId: String(s.product.id),
+        pokedataId,
         name: s.product.name,
         releaseDate,
-        imageUrl:
-          s.product.img_url ??
-          buildPokeDataProductImageUrl(s.product.name ?? null),
-        priceChartingId: syncedPriceChartingEntry?.priceChartingId,
+        imageUrl: pickProductImageUrl(s.product.imageUrl),
+        priceChartingId:
+          s.product.priceChartingId ?? syncedPriceChartingEntry?.priceChartingId,
       };
     });
 

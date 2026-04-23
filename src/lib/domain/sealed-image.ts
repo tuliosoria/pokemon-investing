@@ -1,8 +1,12 @@
-export function buildPokeDataProductImageUrl(
-  name: string | null | undefined
+export function pickProductImageUrl(
+  ...candidates: Array<string | null | undefined>
 ): string | null {
-  const trimmed = name?.trim();
-  if (!trimmed) return null;
+  for (const candidate of candidates) {
+    const trimmed = candidate?.trim();
+    if (trimmed) {
+      return trimmed;
+    }
+  }
 
-  return `https://pokemonproductimages.pokedata.io/Products/${encodeURIComponent(trimmed).replace(/%20/g, "+")}.webp`;
+  return null;
 }

@@ -167,7 +167,7 @@ Recommended production values:
 | --- | --- | --- |
 | `AWS_REGION` | Amplify SSR + retrainer Lambda | Keep this aligned with DynamoDB and ECR. |
 | `DYNAMODB_TABLE` | Amplify SSR + sync/retraining jobs | Enables cached pricing, lookup capture, and published model reads. |
-| `POKEDATA_API_KEY` | Amplify SSR + sync/retraining jobs | Required for sealed pricing fallbacks and outcome capture. |
+| `POKEDATA_API_KEY` | Optional backfill/admin jobs | Only needed for one-time PokeData harvests or optional live population enrichment. |
 | `PRICECHARTING_API_TOKEN` | Sync job / optional runtime lookups | Required for monthly PriceCharting ingestion. |
 | `SEALED_ML_MODEL_SOURCE` | Amplify SSR | `auto` by default; set to `bundled` for rollback. |
 
@@ -193,8 +193,9 @@ normalized monthly training snapshots into DynamoDB.
 
 Recommended monthly ingestion checklist:
 
-1. Confirm `/api/health` reports `monthlyIngestion.priceChartingConfigured=true`,
-   `monthlyIngestion.pokedataConfigured=true`, and the expected Dynamo table/region.
+1. Confirm `/api/health` reports `monthlyIngestion.priceChartingConfigured=true`
+   and the expected Dynamo table/region. `monthlyIngestion.pokedataConfigured=true`
+   is only needed if you are still capturing optional dual-provider snapshots.
 2. Run `npm run sync:pricecharting`.
 3. Review the generated artifacts under `src/lib/data/sealed-ml/`.
 4. If DynamoDB is configured, spot-check a fresh `SEALED_TRAINING#... / SNAPSHOT#YYYY-MM`
@@ -233,7 +234,7 @@ monthly retraining Lambda in `infra/sealed-ml-retrainer/`.
       --parameter-overrides \
         RetrainerImageUri=<ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/pokealpha-sealed-ml-retrainer:latest \
         DynamoDbTableName=<YOUR_DYNAMODB_TABLE> \
-        PokeDataApiKey=<YOUR_POKEDATA_API_KEY> \
+        PokeDataApiKey=<YOUR_POKEDATA_API_KEY_OR_EMPTY_STRING> \
         PublishEnabled=true \
         LogRetentionInDays=30 \
         ScheduleExpression='cron(0 5 1 * ? *)' \
@@ -256,8 +257,10 @@ monthly retraining Lambda in `infra/sealed-ml-retrainer/`.
    - `capturedTargets`
    - `lookupRows`
 
-Each run captures any due 1-year / 3-year / 5-year outcomes from forecast lookups, retrains the
-models, and publishes chunked model artifacts back into DynamoDB for the app to consume.
+Each run captures any due 1-year / 3-year / 5-year outcomes from preserved
+`SEALED_TRAINING#... / SNAPSHOT#YYYY-MM` history (falling back to stored
+PriceCharting-backed product snapshots when available), retrains the models, and
+publishes chunked model artifacts back into DynamoDB for the app to consume.
 
 You can also run the same logic locally with:
 
@@ -267,8 +270,8 @@ python3 -m pip install -r requirements-ml.txt
 npm run retrain:sealed-ml
 ```
 
-Set `SEALED_ML_PUBLISH_ENABLED=false` to rehearse a monthly run, capture outcomes, and inspect
-the training summary without publishing new model chunks into DynamoDB.
+Set `SEALED_ML_PUBLISH_ENABLED=false` to rehearse a monthly run, capture any resolvable stored
+outcomes, and inspect the training summary without publishing new model chunks into DynamoDB.
 
 ### Observability
 

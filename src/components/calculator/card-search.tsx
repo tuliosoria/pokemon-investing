@@ -94,7 +94,7 @@ export function CardSearch({
       onCardSelect(card, 0, "");
     }
 
-    // Fetch real grade data from PokeData in background
+    // Fetch live grade data in the background
     setIsLoadingGrades(true);
     try {
       const params = new URLSearchParams({ name: card.name, set: card.set });

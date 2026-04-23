@@ -85,7 +85,7 @@ export interface SealedSearchResult {
   priceChartingId?: string;
 }
 
-/** Pricing returned from synced PriceCharting data and/or PokeData fallback */
+/** Pricing returned from stored snapshots and PriceCharting fallbacks */
 export interface SealedPricing {
   pokedataId: string;
   name: string;

@@ -155,10 +155,11 @@ export default function SealedForecastMethodologyPage() {
             </div>
             <h2 className="text-lg font-bold">Live inputs</h2>
             <p className="mt-2 text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">
-              Current pricing prefers synced official PriceCharting snapshots, then
-              falls back to live sealed-market sources where official coverage is
-              missing. Google Trends is blended into popularity when available, and
-              search results can still be scored with estimated metadata if enough
+              Current pricing prefers recent DynamoDB snapshots, then synced
+              official PriceCharting artifacts, with an optional live
+              PriceCharting refresh when official coverage is available. Google
+              Trends is blended into popularity when available, and search
+              results can still be scored with estimated metadata if enough
               signal exists.
             </p>
           </div>

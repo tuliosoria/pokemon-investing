@@ -1,15 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cacheGet, cachePut } from "@/lib/db/cache";
 import {
+  getLocalSealedCatalogEntry,
+  isLocalSealedProductId,
+} from "@/lib/db/sealed-search";
+import {
   getLatestStoredSealedPriceSnapshot,
   getStoredSealedProductMeta,
   storeSealedPriceSnapshot,
 } from "@/lib/db/sealed-pricing";
-import { buildPokeDataProductImageUrl } from "@/lib/domain/sealed-image";
 import {
   findSyncedPriceChartingEntry,
   getSyncedPriceChartingEntryById,
 } from "@/lib/domain/pricecharting-catalog";
+import { pickProductImageUrl } from "@/lib/domain/sealed-image";
 import type { SealedPricing } from "@/lib/types/sealed";
 import {
   fetchPriceChartingProductById,
@@ -20,7 +24,6 @@ import {
   searchPriceChartingProduct,
 } from "@/lib/server/pricecharting";
 
-const POKEDATA_BASE = "https://www.pokedata.io/v0";
 const CACHE_TTL = 30 * 60; // 30 minutes in seconds
 const RECENT_SNAPSHOT_MAX_AGE_HOURS = 36;
 
@@ -46,30 +49,47 @@ function roundPrice(value: number | null | undefined): number | null {
   return Math.round(value * 100) / 100;
 }
 
-function bestPokeDataPrice(pricing: Record<string, { value?: number }>): number | null {
-  const tcg = pricing["TCGPlayer"]?.value ?? null;
-  const ebay = pricing["eBay Sealed"]?.value ?? null;
-  const poke = pricing["Pokedata Sealed"]?.value ?? null;
+function resolveStoredSnapshotBestPrice(
+  snapshot: Awaited<ReturnType<typeof getLatestStoredSealedPriceSnapshot>>
+): number | null {
+  if (!snapshot) {
+    return null;
+  }
 
-  if (typeof tcg === "number" && tcg > 0) return roundPrice(tcg);
-  if (typeof poke === "number" && poke > 0) return roundPrice(poke);
-  if (typeof ebay === "number" && ebay > 0) return roundPrice(ebay);
-  return null;
+  return (
+    roundPrice(snapshot.bestPrice) ??
+    roundPrice(snapshot.priceChartingPrice) ??
+    roundPrice(snapshot.pokedataPrice) ??
+    roundPrice(snapshot.tcgplayerPrice) ??
+    roundPrice(snapshot.ebayPrice)
+  );
 }
 
 function buildStoredSnapshotPricing(
   id: string,
   requestedName: string | null,
   meta: Awaited<ReturnType<typeof getStoredSealedProductMeta>>,
-  snapshot: Awaited<ReturnType<typeof getLatestStoredSealedPriceSnapshot>>
+  snapshot: Awaited<ReturnType<typeof getLatestStoredSealedPriceSnapshot>>,
+  options?: {
+    requireRecent?: boolean;
+  }
 ): SealedPricing | null {
-  if (!snapshot || !isRecentSnapshot(snapshot.snapshotDate ?? snapshot.updatedAt)) {
+  if (!snapshot) {
     return null;
   }
 
-  const imageUrl =
-    meta?.imgUrl ??
-    buildPokeDataProductImageUrl(meta?.name ?? requestedName ?? null);
+  const requireRecent = options?.requireRecent ?? true;
+  const snapshotDate = snapshot.snapshotDate ?? snapshot.updatedAt ?? null;
+  if (requireRecent && !isRecentSnapshot(snapshotDate)) {
+    return null;
+  }
+
+  const bestPrice = resolveStoredSnapshotBestPrice(snapshot);
+  if (bestPrice === null) {
+    return null;
+  }
+
+  const imageUrl = pickProductImageUrl(meta?.imgUrl);
 
   return {
     pokedataId: id,
@@ -83,11 +103,11 @@ function buildStoredSnapshotPricing(
     tcgplayerPrice: roundPrice(snapshot.tcgplayerPrice),
     ebayPrice: roundPrice(snapshot.ebayPrice),
     pokedataPrice: roundPrice(snapshot.pokedataPrice),
-    bestPrice: roundPrice(snapshot.bestPrice),
+    bestPrice,
     primaryProvider:
       snapshot.primaryProvider ??
       (snapshot.priceChartingPrice ? "pricecharting" : "pokedata"),
-    snapshotDate: snapshot.snapshotDate ?? snapshot.updatedAt ?? null,
+    snapshotDate,
   };
 }
 
@@ -139,12 +159,52 @@ export async function GET(request: NextRequest) {
 
   const cached = await cacheGet<SealedPricing>("sealed-pricing", id);
   if (cached) {
+    const cachedMeta = cached.imageUrl ? null : await getStoredSealedProductMeta(id);
     return NextResponse.json({
       pricing: {
         ...cached,
-        imageUrl: cached.imageUrl ?? buildPokeDataProductImageUrl(cached.name),
+        imageUrl: pickProductImageUrl(
+          cached.imageUrl,
+          cachedMeta?.imgUrl
+        ),
       },
     });
+  }
+
+  const localCatalogEntry = isLocalSealedProductId(id)
+    ? getLocalSealedCatalogEntry(id)
+    : null;
+  if (localCatalogEntry) {
+    const syncedEntry =
+      getSyncedPriceChartingEntryById(requestedPriceChartingId) ??
+      findSyncedPriceChartingEntry({
+        name: localCatalogEntry.name,
+        releaseDate: localCatalogEntry.releaseDate,
+      });
+    const priceChartingPrice = roundPrice(syncedEntry?.newPrice ?? null);
+    const localPrice = roundPrice(localCatalogEntry.currentPrice);
+    const pricing: SealedPricing = {
+      pokedataId: localCatalogEntry.pokedataId,
+      name: requestedName ?? localCatalogEntry.name,
+      releaseDate: requestedReleaseDate ?? localCatalogEntry.releaseDate,
+      imageUrl: pickProductImageUrl(localCatalogEntry.imageUrl),
+      priceChartingId:
+        syncedEntry?.priceChartingId ?? localCatalogEntry.priceChartingId,
+      priceChartingProductName: syncedEntry?.productName ?? null,
+      priceChartingConsoleName: syncedEntry?.consoleName ?? null,
+      priceChartingPrice,
+      tcgplayerPrice: null,
+      ebayPrice: null,
+      pokedataPrice: localPrice,
+      bestPrice: priceChartingPrice ?? localPrice,
+      primaryProvider: priceChartingPrice ? "pricecharting" : "pokedata",
+      snapshotDate: null,
+      salesVolume: syncedEntry?.salesVolume ?? null,
+      manualOnlyPrice: syncedEntry?.manualOnlyPrice ?? null,
+    };
+
+    await cachePut("sealed-pricing", id, pricing, CACHE_TTL);
+    return NextResponse.json({ pricing });
   }
 
   const [meta, latestSnapshot] = await Promise.all([
@@ -158,14 +218,18 @@ export async function GET(request: NextRequest) {
     meta,
     latestSnapshot
   );
-  if (storedPricing?.primaryProvider === "pricecharting") {
+  const fallbackStoredPricing =
+    storedPricing ??
+    buildStoredSnapshotPricing(id, requestedName, meta, latestSnapshot, {
+      requireRecent: false,
+    });
+
+  if (storedPricing) {
     await cachePut("sealed-pricing", id, storedPricing, CACHE_TTL);
     return NextResponse.json({ pricing: storedPricing });
   }
 
-  const imageUrl =
-    meta?.imgUrl ??
-    buildPokeDataProductImageUrl(meta?.name ?? requestedName ?? null);
+  const imageUrl = pickProductImageUrl(meta?.imgUrl);
 
   const syncedEntry =
     getSyncedPriceChartingEntryById(requestedPriceChartingId) ??
@@ -279,96 +343,10 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  const apiKey = process.env.POKEDATA_API_KEY;
-  if (!apiKey) {
-    if (storedPricing) {
-      await cachePut("sealed-pricing", id, storedPricing, CACHE_TTL);
-      return NextResponse.json({ pricing: storedPricing });
-    }
-
-    return NextResponse.json({ error: "API not configured" }, { status: 503 });
+  if (fallbackStoredPricing) {
+    await cachePut("sealed-pricing", id, fallbackStoredPricing, CACHE_TTL);
+    return NextResponse.json({ pricing: fallbackStoredPricing });
   }
 
-  try {
-    const url = new URL(`${POKEDATA_BASE}/pricing`);
-    url.searchParams.set("id", id);
-    url.searchParams.set("asset_type", "PRODUCT");
-
-    const res = await fetch(url.toString(), {
-      headers: { Authorization: `Bearer ${apiKey}` },
-    });
-
-    if (!res.ok) {
-      return NextResponse.json(
-        { error: "PokeData pricing failed" },
-        { status: 502 }
-      );
-    }
-
-    const data = (await res.json()) as {
-      id?: string | number;
-      name?: string;
-      release_date?: string | null;
-      img_url?: string | null;
-      pricing?: Record<string, { value?: number }>;
-    };
-    const pricing: Record<string, { value?: number }> = data.pricing ?? {};
-    const tcg = roundPrice(pricing["TCGPlayer"]?.value ?? null);
-    const ebay = roundPrice(pricing["eBay Sealed"]?.value ?? null);
-    const poke = roundPrice(pricing["Pokedata Sealed"]?.value ?? null);
-    const bestPrice = bestPokeDataPrice(pricing);
-
-    const result: SealedPricing = {
-      pokedataId: String(data.id ?? id),
-      name: data.name ?? requestedName ?? meta?.name ?? "",
-      releaseDate: data.release_date ?? requestedReleaseDate ?? meta?.releaseDate ?? null,
-      imageUrl:
-        imageUrl ??
-        data.img_url ??
-        buildPokeDataProductImageUrl(data.name ?? requestedName ?? null),
-      priceChartingId: meta?.priceChartingId ?? requestedPriceChartingId ?? undefined,
-      priceChartingProductName: meta?.priceChartingProductName ?? null,
-      priceChartingConsoleName: meta?.priceChartingConsoleName ?? null,
-      priceChartingPrice: roundPrice(latestSnapshot?.priceChartingPrice),
-      tcgplayerPrice: tcg,
-      ebayPrice: ebay,
-      pokedataPrice: poke,
-      bestPrice,
-      primaryProvider: "pokedata",
-      snapshotDate: new Date().toISOString().slice(0, 10),
-    };
-
-    await storeSealedPriceSnapshot({
-      pokedataId: result.pokedataId,
-      name: result.name,
-      releaseDate: result.releaseDate,
-      imageUrl: result.imageUrl,
-      snapshotDate: result.snapshotDate ?? new Date().toISOString().slice(0, 10),
-      tcgplayerPrice: result.tcgplayerPrice,
-      ebayPrice: result.ebayPrice,
-      pokedataPrice: result.pokedataPrice,
-      priceChartingPrice: result.priceChartingPrice,
-      bestPrice: result.bestPrice,
-      primaryProvider: "pokedata",
-      priceChartingId: result.priceChartingId ?? null,
-      priceChartingProductName: result.priceChartingProductName ?? null,
-      priceChartingConsoleName: result.priceChartingConsoleName ?? null,
-      priceChartingReleaseDate: meta?.priceChartingReleaseDate ?? null,
-    });
-
-    await cachePut("sealed-pricing", id, result, CACHE_TTL);
-
-    return NextResponse.json({ pricing: result });
-  } catch (err) {
-    console.error("Sealed pricing error:", err);
-
-    if (storedPricing) {
-      return NextResponse.json({ pricing: storedPricing });
-    }
-
-    return NextResponse.json(
-      { error: "Failed to fetch pricing" },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json({ error: "Pricing unavailable" }, { status: 503 });
 }

@@ -12,9 +12,29 @@ export interface PriceChartingProductResponse {
   "product-name"?: string;
   "console-name"?: string;
   "release-date"?: string;
+  "loose-price"?: number | string;
+  "cib-price"?: number | string;
   "new-price"?: number | string;
+  "graded-price"?: number | string;
   "manual-only-price"?: number | string;
+  "box-only-price"?: number | string;
+  "bgs-10-price"?: number | string;
+  "condition-17-price"?: number | string;
+  "condition-18-price"?: number | string;
   "sales-volume"?: number | string;
+}
+
+export interface PriceChartingProductSummary {
+  id?: string;
+  "product-name"?: string;
+  "console-name"?: string;
+  "release-date"?: string;
+}
+
+interface PriceChartingProductsResponse {
+  status?: "success" | "error";
+  "error-message"?: string;
+  products?: PriceChartingProductSummary[];
 }
 
 function getToken(): string | null {
@@ -45,10 +65,12 @@ async function throttlePriceCharting(): Promise<void> {
   lastRequestStartedAt = Date.now();
 }
 
-async function requestPriceCharting(
+async function requestPriceCharting<
+  T extends { status?: "success" | "error"; "error-message"?: string },
+>(
   path: string,
   params: Record<string, string>
-): Promise<PriceChartingProductResponse | null> {
+): Promise<T | null> {
   const token = getToken();
   if (!token) {
     return null;
@@ -77,7 +99,7 @@ async function requestPriceCharting(
     throw new Error(`PriceCharting request failed with HTTP ${response.status}`);
   }
 
-  const payload = (await response.json()) as PriceChartingProductResponse;
+  const payload = (await response.json()) as T;
   if (payload.status === "error") {
     throw new Error(payload["error-message"] || "PriceCharting request failed");
   }
@@ -96,7 +118,9 @@ export async function fetchPriceChartingProductById(
     return null;
   }
 
-  return requestPriceCharting("/product", { id: priceChartingId });
+  return requestPriceCharting<PriceChartingProductResponse>("/product", {
+    id: priceChartingId,
+  });
 }
 
 export async function searchPriceChartingProduct(
@@ -107,13 +131,37 @@ export async function searchPriceChartingProduct(
     return null;
   }
 
-  return requestPriceCharting("/product", { q: trimmed });
+  return requestPriceCharting<PriceChartingProductResponse>("/product", {
+    q: trimmed,
+  });
+}
+
+export async function searchPriceChartingProducts(
+  query: string
+): Promise<PriceChartingProductSummary[]> {
+  const trimmed = query.trim();
+  if (!trimmed) {
+    return [];
+  }
+
+  const payload = await requestPriceCharting<PriceChartingProductsResponse>(
+    "/products",
+    { q: trimmed }
+  );
+
+  return Array.isArray(payload?.products) ? payload.products : [];
 }
 
 export function getPriceChartingSealedPrice(
   product: PriceChartingProductResponse | null | undefined
 ): number | null {
   return parsePennies(product?.["new-price"]);
+}
+
+export function getPriceChartingLoosePrice(
+  product: PriceChartingProductResponse | null | undefined
+): number | null {
+  return parsePennies(product?.["loose-price"]);
 }
 
 export function getPriceChartingSalesVolume(
@@ -132,4 +180,29 @@ export function getPriceChartingManualOnlyPrice(
   product: PriceChartingProductResponse | null | undefined
 ): number | null {
   return parsePennies(product?.["manual-only-price"]);
+}
+
+export function getPriceChartingCardGradedPrices(
+  product: PriceChartingProductResponse | null | undefined
+): Record<string, number> {
+  const gradedPrices: Record<string, number> = {};
+  const entries: Array<[string, number | string | undefined]> = [
+    ["PSA 10.0", product?.["manual-only-price"]],
+    ["PSA 9.0", product?.["graded-price"]],
+    ["PSA 8.0", product?.["new-price"]],
+    ["PSA 7.0", product?.["cib-price"]],
+    ["PSA 9.5", product?.["box-only-price"]],
+    ["BGS 10.0", product?.["bgs-10-price"]],
+    ["CGC 10.0", product?.["condition-17-price"]],
+    ["SGC 10.0", product?.["condition-18-price"]],
+  ];
+
+  for (const [grade, value] of entries) {
+    const parsed = parsePennies(value);
+    if (parsed !== null) {
+      gradedPrices[grade] = parsed;
+    }
+  }
+
+  return gradedPrices;
 }

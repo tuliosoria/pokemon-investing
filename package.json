@@ -10,8 +10,11 @@
     "lint": "eslint .",
     "hooks:install": "git config core.hooksPath .githooks",
     "verify:app": "npm run lint && npm run build",
-    "verify:scripts": "node --check scripts/sync-pricecharting-prices.mjs && python3 -m py_compile scripts/train_sealed_ml.py scripts/retrain_sealed_ml.py scripts/sync_sealed_catalog.py",
+    "verify:scripts": "node --check scripts/sync-pricecharting-prices.mjs && node --check scripts/backfill-pokedata-card-grades.mjs && python3 -m py_compile scripts/train_sealed_ml.py scripts/retrain_sealed_ml.py scripts/sync_sealed_catalog.py",
     "verify": "npm run verify:app && npm run verify:scripts",
+    "backfill:pokedata:sealed": "npx tsx scripts/seed-products.ts",
+    "backfill:pokedata:sealed-meta": "npx tsx scripts/seed-products.ts --meta-only",
+    "backfill:pokedata:grades": "node scripts/backfill-pokedata-card-grades.mjs",
     "sync:pricecharting": "node scripts/sync-pricecharting-prices.mjs",
     "train:sealed-ml": "python3 scripts/train_sealed_ml.py",
     "retrain:sealed-ml": "python3 scripts/retrain_sealed_ml.py"

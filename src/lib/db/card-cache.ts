@@ -7,7 +7,7 @@
  * DynamoDB key patterns:
  *   CARD#<id> / META         — static card fields (no TTL)
  *   CARD#<id> / TCG_PRICES   — latest TCG API prices + timestamp
- *   CARD#<id> / GRADE_DATA   — latest PokeData graded prices + population
+ *   CARD#<id> / GRADE_DATA   — latest graded prices + optional population
  */
 
 import { GetCommand, UpdateCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
