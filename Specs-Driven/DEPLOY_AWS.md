@@ -128,14 +128,21 @@ aws amplify get-branch \
 Amplify automatically redeploys when you push to `main` — no extra setup needed.
 
 ### Environment Variables
-If you add Supabase, OpenAI, PriceCharting sync, etc. later:
-1. Amplify Console → **Environment variables**
-2. Add variables like:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `SUPABASE_ANON_KEY`
-   - `OPENAI_API_KEY`
-   - `RESEND_API_KEY`
-   - `PRICECHARTING_API_TOKEN`
+Amplify now writes the server-side env file from a small allowlist during each build.
+Use `.env.example` as the source of truth, then configure the same values in the
+Amplify Console → **Environment variables**.
+
+Recommended production values:
+
+| Variable | Where used | Notes |
+| --- | --- | --- |
+| `AWS_REGION` | Amplify SSR + retrainer Lambda | Keep this aligned with DynamoDB and ECR. |
+| `DYNAMODB_TABLE` | Amplify SSR + sync/retraining jobs | Enables cached pricing, lookup capture, and published model reads. |
+| `POKEDATA_API_KEY` | Amplify SSR + sync/retraining jobs | Required for sealed pricing fallbacks and outcome capture. |
+| `PRICECHARTING_API_TOKEN` | Sync job / optional runtime lookups | Required for monthly PriceCharting ingestion. |
+| `SEALED_ML_MODEL_SOURCE` | Amplify SSR | `auto` by default; set to `bundled` for rollback. |
+
+For local ops, copy `.env.example` and fill in the same values before running scripts.
 
 ### Syncing official PriceCharting sealed prices
 The sealed pricing runtime can consume a synced PriceCharting snapshot artifact and
@@ -143,7 +150,7 @@ prefer those official prices over fallback sources. Generate or refresh that art
 
 ```bash
 cd ~/Desktop/pokemon-investing
-PRICECHARTING_API_TOKEN=<YOUR_TOKEN> npm run sync:pricecharting
+npm run sync:pricecharting
 ```
 
 If `POKEDATA_API_KEY` is also configured, the sync job will additionally write a
@@ -154,6 +161,15 @@ official PriceCharting pricing against current PokeData market prices.
 If `DYNAMODB_TABLE` and AWS credentials are also configured, the same sync command will
 best-effort persist provider-aware price snapshots, PriceCharting ID mappings, and
 normalized monthly training snapshots into DynamoDB.
+
+Recommended monthly ingestion checklist:
+
+1. Confirm `/api/health` reports `monthlyIngestion.priceChartingConfigured=true`,
+   `monthlyIngestion.pokedataConfigured=true`, and the expected Dynamo table/region.
+2. Run `npm run sync:pricecharting`.
+3. Review the generated artifacts under `src/lib/data/sealed-ml/`.
+4. If DynamoDB is configured, spot-check a fresh `SEALED_TRAINING#... / SNAPSHOT#YYYY-MM`
+   item before retraining.
 
 ### Monthly Sealed ML Retraining
 The sealed forecast runtime now checks DynamoDB for published XGBoost model artifacts before
@@ -185,25 +201,70 @@ monthly retraining Lambda in `infra/sealed-ml-retrainer/`.
      --template-file infra/sealed-ml-retrainer/template.yaml \
      --stack-name pokealpha-sealed-ml-retrainer \
      --capabilities CAPABILITY_NAMED_IAM \
-     --parameter-overrides \
-       RetrainerImageUri=<ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/pokealpha-sealed-ml-retrainer:latest \
-       DynamoDbTableName=<YOUR_DYNAMODB_TABLE> \
-       PokeDataApiKey=<YOUR_POKEDATA_API_KEY> \
-       ScheduleExpression='cron(0 5 1 * ? *)' \
-     --region us-east-1
-   ```
+      --parameter-overrides \
+        RetrainerImageUri=<ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/pokealpha-sealed-ml-retrainer:latest \
+        DynamoDbTableName=<YOUR_DYNAMODB_TABLE> \
+        PokeDataApiKey=<YOUR_POKEDATA_API_KEY> \
+        PublishEnabled=true \
+        LogRetentionInDays=30 \
+        ScheduleExpression='cron(0 5 1 * ? *)' \
+      --region us-east-1
+    ```
 5. Optional smoke test:
-   ```bash
-   aws lambda invoke \
-     --function-name pokealpha-sealed-ml-retrainer \
-     --payload '{}' \
-     /tmp/pokealpha-retrainer-response.json \
-     --region us-east-1
-   cat /tmp/pokealpha-retrainer-response.json
-   ```
+    ```bash
+    aws lambda invoke \
+      --function-name pokealpha-sealed-ml-retrainer \
+      --payload '{}' \
+      retrainer-response.json \
+      --region us-east-1
+    cat retrainer-response.json
+    ```
+6. Review the Lambda response for:
+   - `deploymentApproved`
+   - `publishEnabled`
+   - `publishedToDynamo`
+   - `publishSkippedReason`
+   - `capturedTargets`
+   - `lookupRows`
 
 Each run captures any due 1-year / 3-year / 5-year outcomes from forecast lookups, retrains the
 models, and publishes chunked model artifacts back into DynamoDB for the app to consume.
+
+You can also run the same logic locally with:
+
+```bash
+cd ~/Desktop/pokemon-investing
+python3 -m pip install -r requirements-ml.txt
+npm run retrain:sealed-ml
+```
+
+Set `SEALED_ML_PUBLISH_ENABLED=false` to rehearse a monthly run, capture outcomes, and inspect
+the training summary without publishing new model chunks into DynamoDB.
+
+### Observability
+
+- **Application health:** `GET /api/health`
+  - shows DynamoDB wiring, ingestion provider readiness, model source preference, active model
+    source, bundled fallback metadata, and published Dynamo model metadata when available
+- **Retrainer logs:** CloudWatch log group `/aws/lambda/pokealpha-sealed-ml-retrainer`
+- **Published model summary:** DynamoDB item
+  `pk=SEALED_MODEL#sealed-forecast, sk=MODEL#SUMMARY`
+- **Published model chunks:** DynamoDB items
+  `pk=SEALED_MODEL#sealed-forecast, sk=MODEL#<horizon>#CHUNK#....`
+
+### Rollback Runbook
+
+If a monthly publish regresses forecast quality or you need to freeze model changes:
+
+1. In Amplify Console, set `SEALED_ML_MODEL_SOURCE=bundled`.
+2. Trigger a redeploy and wait for `/api/health` to report:
+   - `sealedMl.preferredSource = "bundled"`
+   - `sealedMl.effectiveSource = "bundled"`
+3. In the retrainer CloudFormation stack, set `PublishEnabled=false` to stop the scheduled
+   Lambda from replacing DynamoDB model artifacts while the incident is investigated.
+4. Review the latest `MODEL#SUMMARY` payload and CloudWatch logs.
+5. After validation, switch Amplify back to `SEALED_ML_MODEL_SOURCE=auto`, restore
+   `PublishEnabled=true`, and rerun the smoke test.
 
 ---
 

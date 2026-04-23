@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-23T03:49:51+00:00",
+  "mode": "offline",
+  "approvedCatalogPath": "src/lib/data/sealed-ml/sealed-catalog.json",
+  "summary": {
+    "curatedApproved": 25,
+    "autoApproved": 0,
+    "reviewRequired": 0,
+    "rejected": 0,
+    "pokedataCandidatesProcessed": 0,
+    "approvedCatalogSize": 25
+  },
+  "autoApproved": [],
+  "reviewRequired": [],
+  "rejected": []
+}

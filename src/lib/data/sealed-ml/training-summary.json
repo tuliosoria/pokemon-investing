@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-23T03:27:47.384900+00:00",
+  "generatedAt": "2026-04-23T04:43:19.050941+00:00",
   "products": 25,
   "rows": 892,
   "rowsBySet": [
@@ -109,13 +109,62 @@
     "3yr": 354,
     "5yr": 16
   },
+  "panelRows": 1191,
+  "horizonCoverage": {
+    "1yr": {
+      "monthsForward": 12,
+      "toleranceMonths": 1,
+      "panelRows": 1191,
+      "dueRows": 916,
+      "capturedRows": 916,
+      "missingRows": 0,
+      "pendingRows": 275,
+      "capturedShareOfDuePct": 100.0,
+      "capturedShareOfPanelPct": 76.91,
+      "minimumTrainingRowsForApproval": 24,
+      "meetsMinimumTrainingRows": true
+    },
+    "3yr": {
+      "monthsForward": 36,
+      "toleranceMonths": 2,
+      "panelRows": 1191,
+      "dueRows": 378,
+      "capturedRows": 378,
+      "missingRows": 0,
+      "pendingRows": 813,
+      "capturedShareOfDuePct": 100.0,
+      "capturedShareOfPanelPct": 31.74,
+      "minimumTrainingRowsForApproval": 24,
+      "meetsMinimumTrainingRows": true
+    },
+    "5yr": {
+      "monthsForward": 60,
+      "toleranceMonths": 3,
+      "panelRows": 1191,
+      "dueRows": 21,
+      "capturedRows": 21,
+      "missingRows": 0,
+      "pendingRows": 1170,
+      "capturedShareOfDuePct": 100.0,
+      "capturedShareOfPanelPct": 1.76,
+      "minimumTrainingRowsForApproval": 24,
+      "meetsMinimumTrainingRows": false
+    }
+  },
+  "snapshotSources": {
+    "dualProviderArtifactRows": 0,
+    "priceChartingHtmlBackfillRows": 1191,
+    "artifactMonthsOverlayed": 0,
+    "artifactMonthsAdded": 0,
+    "productsWithArtifactSnapshots": 0
+  },
   "audit": {
-    "loggedRows": 892,
-    "outlierRowsRemoved": 0,
+    "loggedRows": 916,
+    "outlierRowsRemoved": 24,
     "maxTargetMultipleByHorizon": {
-      "1yr": 5.4632,
-      "3yr": 9.9935,
-      "5yr": 3.8572
+      "1yr": 54.3478,
+      "3yr": 102.8565,
+      "5yr": 400.1424
     },
     "targetTransform": {
       "train": "np.log",
@@ -130,28 +179,29 @@
       "trainingRows": 892,
       "crossValidation": {
         "folds": 5.0,
-        "rmse": 2102.8103,
-        "mae": 909.1988,
-        "mape": 29.9515,
-        "returnRmse": 0.465118,
-        "returnMae": 0.351946,
+        "rmse": 2103.9593,
+        "mae": 904.83,
+        "mape": 29.8492,
+        "returnRmse": 0.462683,
+        "returnMae": 0.34953,
         "strategy": "time_series_split"
       },
-      "meanTargetPrice": 3644.584,
-      "meanTargetReturnPercent": 57.4387,
-      "historicalErrorPercent": 29.9515,
-      "maeShareOfMeanTarget": 0.2495,
+      "meanTargetPrice": 3643.2646,
+      "meanTargetReturnPercent": 57.4771,
+      "historicalErrorPercent": 29.8492,
+      "maeShareOfMeanTarget": 0.2484,
       "targetMode": "forward_log_return",
       "targetTransform": {
         "train": "np.log",
         "inference": "np.exp"
       },
       "validationStrategy": "time_series_split",
+      "minimumTrainingRowsForApproval": 24,
       "dominantFeature": {
         "key": "era_encoded",
         "name": "era_encoded",
-        "gain": 14.422187,
-        "influence": 24.2071
+        "gain": 14.222314,
+        "influence": 15.6736
       },
       "deploymentApproved": true,
       "manualReviewReasons": [],
@@ -162,28 +212,29 @@
       "trainingRows": 354,
       "crossValidation": {
         "folds": 5.0,
-        "rmse": 2643.2004,
-        "mae": 1504.9419,
-        "mape": 38.1296,
-        "returnRmse": 0.609162,
-        "returnMae": 0.465342,
+        "rmse": 2491.6222,
+        "mae": 1428.5281,
+        "mape": 37.7032,
+        "returnRmse": 0.625077,
+        "returnMae": 0.468267,
         "strategy": "time_series_split"
       },
-      "meanTargetPrice": 5388.3431,
-      "meanTargetReturnPercent": 192.2575,
-      "historicalErrorPercent": 38.1296,
-      "maeShareOfMeanTarget": 0.2793,
+      "meanTargetPrice": 5383.2582,
+      "meanTargetReturnPercent": 192.2222,
+      "historicalErrorPercent": 37.7032,
+      "maeShareOfMeanTarget": 0.2654,
       "targetMode": "forward_log_return",
       "targetTransform": {
         "train": "np.log",
         "inference": "np.exp"
       },
       "validationStrategy": "time_series_split",
+      "minimumTrainingRowsForApproval": 24,
       "dominantFeature": {
         "key": "set_age_years",
         "name": "set_age_years",
-        "gain": 17.646673,
-        "influence": 24.1856
+        "gain": 19.199516,
+        "influence": 17.3548
       },
       "deploymentApproved": true,
       "manualReviewReasons": [],
@@ -194,28 +245,31 @@
       "trainingRows": 16,
       "crossValidation": {
         "folds": 5.0,
-        "rmse": 6305.9356,
-        "mae": 4083.2371,
-        "mape": 45.5811,
-        "returnRmse": 0.504439,
-        "returnMae": 0.396637,
+        "rmse": 6285.1419,
+        "mae": 4079.1782,
+        "mape": 45.7779,
+        "returnRmse": 0.504898,
+        "returnMae": 0.400151,
         "strategy": "time_series_split"
       },
-      "meanTargetPrice": 11376.7694,
-      "meanTargetReturnPercent": 97.7407,
-      "historicalErrorPercent": 45.5811,
-      "maeShareOfMeanTarget": 0.3589,
+      "meanTargetPrice": 11315.3125,
+      "meanTargetReturnPercent": 97.2172,
+      "historicalErrorPercent": 45.7779,
+      "maeShareOfMeanTarget": 0.3605,
       "targetMode": "forward_log_return",
       "targetTransform": {
         "train": "np.log",
         "inference": "np.exp"
       },
       "validationStrategy": "time_series_split",
+      "minimumTrainingRowsForApproval": 24,
       "dominantFeature": null,
-      "deploymentApproved": true,
-      "manualReviewReasons": [],
+      "deploymentApproved": false,
+      "manualReviewReasons": [
+        "Only 16 training rows available; minimum approval threshold is 24"
+      ],
       "treeCount": 100
     }
   },
-  "deploymentApproved": true
+  "deploymentApproved": false
 }

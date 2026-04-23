@@ -3,7 +3,11 @@ import { cacheGet, cachePut } from "@/lib/db/cache";
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
 import { getSealedForecastModels } from "@/lib/db/sealed-forecast-models";
 import { findSyncedPriceChartingEntry } from "@/lib/domain/pricecharting-catalog";
-import { buildDynamicSetData, inferProductType } from "@/lib/domain/sealed-estimate";
+import {
+  buildDynamicSetData,
+  buildPricingContext,
+  inferProductType,
+} from "@/lib/domain/sealed-estimate";
 import { getTopBuyOpportunities } from "@/lib/domain/top-buys";
 import type { ProductType, SealedSetData, SealedPricing } from "@/lib/types/sealed";
 
@@ -64,6 +68,7 @@ function buildCatalogSet(pricing: SealedPricing): SealedSetData {
     pokedataId: pricing.pokedataId,
     priceChartingId: pricing.priceChartingId ?? curatedMatch.priceChartingId,
     imageUrl: pricing.imageUrl ?? curatedMatch.imageUrl,
+    pricingContext: buildPricingContext(pricing),
   };
 }
 
@@ -95,6 +100,7 @@ function mergeTopBuySets(dynamicSets: SealedSetData[]): SealedSetData[] {
       priceChartingId: existing.priceChartingId ?? set.priceChartingId,
       tcgplayerUrl: existing.tcgplayerUrl ?? set.tcgplayerUrl,
       trendData: existing.trendData ?? set.trendData,
+      pricingContext: existing.pricingContext ?? set.pricingContext,
     });
   }
 
@@ -126,6 +132,8 @@ function toDynamicPricing(product: PokeDataCatalogProduct): SealedPricing {
     bestPrice,
     primaryProvider: priceChartingPrice ? "pricecharting" : "pokedata",
     snapshotDate: syncedPriceChartingEntry?.capturedAt?.slice(0, 10) ?? null,
+    salesVolume: syncedPriceChartingEntry?.salesVolume ?? null,
+    manualOnlyPrice: syncedPriceChartingEntry?.manualOnlyPrice ?? null,
   };
 }
 

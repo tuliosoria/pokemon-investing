@@ -4,7 +4,11 @@ import Link from "next/link";
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { BarChart3 } from "lucide-react";
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
-import { buildDynamicSetData, inferProductType } from "@/lib/domain/sealed-estimate";
+import {
+  buildDynamicSetData,
+  buildPricingContext,
+  inferProductType,
+} from "@/lib/domain/sealed-estimate";
 import type {
   Forecast,
   SortField,
@@ -564,7 +568,9 @@ export function ForecastDashboard() {
                     ...curatedMatch,
                     currentPrice: pricing.bestPrice ?? curatedMatch.currentPrice,
                     pokedataId: pricing.pokedataId,
+                    priceChartingId: pricing.priceChartingId ?? curatedMatch.priceChartingId,
                     imageUrl: pricing.imageUrl ?? curatedMatch.imageUrl,
+                    pricingContext: buildPricingContext(pricing),
                   };
                 })()
               : buildDynamicSetData(pricing);

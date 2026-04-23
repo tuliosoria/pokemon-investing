@@ -5,6 +5,11 @@ import historySummaryData from "@/lib/data/sealed-ml/product-history-summary.jso
 import model1yrData from "@/lib/data/sealed-ml/model-1yr.json";
 import model3yrData from "@/lib/data/sealed-ml/model-3yr.json";
 import model5yrData from "@/lib/data/sealed-ml/model-5yr.json";
+import {
+  findSyncedPriceChartingEntry,
+  getSyncedPriceChartingEntryById,
+  type SyncedPriceChartingCatalogEntry,
+} from "@/lib/domain/pricecharting-catalog";
 import { SP500_ANNUAL_RETURN } from "@/lib/domain/sealed-forecast";
 import type {
   Confidence,
@@ -29,7 +34,20 @@ export type FeatureKey =
   | "market_cycle_score"
   | "popularity_score"
   | "product_type_encoded"
-  | "era_encoded";
+  | "era_encoded"
+  | "price_momentum_1mo"
+  | "price_momentum_12mo"
+  | "price_volatility_6mo"
+  | "price_volatility_12mo"
+  | "drawdown_12mo"
+  | "history_density_12mo"
+  | "available_provider_count"
+  | "provider_spread_pct"
+  | "provider_agreement_score"
+  | "snapshot_freshness_days"
+  | "liquidity_proxy_score"
+  | "history_window_missing_flag"
+  | "provider_context_missing_flag";
 
 interface ManifestProduct {
   setId: string;
@@ -54,7 +72,22 @@ interface ProductHistorySummary {
   latestHistoricalPrice: number;
   priceTrajectory6mo: number | null;
   priceTrajectory24mo: number | null;
+  priceMomentum1mo?: number | null;
+  priceMomentum12mo?: number | null;
+  priceVolatility6mo?: number | null;
+  priceVolatility12mo?: number | null;
+  drawdown12mo?: number | null;
+  historyDensity12mo?: number | null;
+  latestSnapshotProviderSpreadPct?: number | null;
+  latestSnapshotFreshnessDays?: number | null;
+  providerAgreementScore?: number | null;
+  liquidityProxyScore?: number | null;
+  historyWindowMissingFlag?: number | null;
+  providerContextMissingFlag?: number | null;
+  latestPriceChartingSalesVolume?: number | null;
   historyPoints: number;
+  latestSnapshotSource?: string;
+  latestSnapshotProviderCount?: number;
 }
 
 interface ModelLeafNode {
@@ -306,7 +339,23 @@ function formatFeatureValue(feature: FeatureKey, value: number): string {
       return formatRatio(value);
     case "price_trajectory_6mo":
     case "price_trajectory_24mo":
+    case "price_momentum_1mo":
+    case "price_momentum_12mo":
+    case "price_volatility_6mo":
+    case "price_volatility_12mo":
+    case "drawdown_12mo":
+    case "provider_spread_pct":
       return formatSignedPercent(value);
+    case "history_density_12mo":
+    case "provider_agreement_score":
+    case "liquidity_proxy_score":
+      return `${Math.round(value)}%`;
+    case "available_provider_count":
+    case "history_window_missing_flag":
+    case "provider_context_missing_flag":
+      return formatCount(value);
+    case "snapshot_freshness_days":
+      return `${round(value, 1)}d`;
     case "print_run_type_encoded":
     case "product_type_encoded":
     case "era_encoded":
@@ -314,6 +363,88 @@ function formatFeatureValue(feature: FeatureKey, value: number): string {
     default:
       return `${Math.round(value)}/100`;
   }
+}
+
+function parseDateValue(value: string | null | undefined): Date | null {
+  if (!value) {
+    return null;
+  }
+
+  const normalized = value.includes("T") ? value : `${value}T00:00:00Z`;
+  const parsed = new Date(normalized);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function positivePrices(values: Array<number | null | undefined>): number[] {
+  return values.filter((value): value is number => typeof value === "number" && Number.isFinite(value) && value > 0);
+}
+
+function computeProviderSpreadPercent(values: number[]): number | null {
+  if (values.length < 2) {
+    return null;
+  }
+
+  const midpoint = values.reduce((sum, value) => sum + value, 0) / values.length;
+  if (midpoint <= 0) {
+    return null;
+  }
+
+  return round(((Math.max(...values) - Math.min(...values)) / midpoint) * 100, 3);
+}
+
+function computeProviderAgreementScore(
+  providerCount: number,
+  providerSpreadPercent: number | null
+): number | null {
+  if (providerCount < 2 || providerSpreadPercent == null || !Number.isFinite(providerSpreadPercent)) {
+    return null;
+  }
+
+  const spreadPenalty = clamp(providerSpreadPercent * 2, 0, 100);
+  const breadthBonus = clamp((providerCount - 2) * 5, 0, 10);
+  return round(clamp(100 - spreadPenalty + breadthBonus, 0, 100), 2);
+}
+
+function computeSnapshotFreshnessDays(snapshotDate: string | null | undefined): number | null {
+  const parsed = parseDateValue(snapshotDate);
+  if (!parsed) {
+    return null;
+  }
+
+  const ageMs = Math.max(Date.now() - parsed.getTime(), 0);
+  return round(ageMs / (24 * 60 * 60 * 1000), 2);
+}
+
+function computeLiquidityProxyScore(
+  providerCount: number,
+  historyDensity12mo: number | null,
+  salesVolume: number | null
+): number {
+  const providerComponent = (clamp(providerCount, 1, 4) / 4) * 35;
+  const densityComponent =
+    ((Number.isFinite(historyDensity12mo ?? Number.NaN) ? historyDensity12mo ?? 0 : 0) / 100) * 45;
+  const salesComponent =
+    typeof salesVolume === "number" && Number.isFinite(salesVolume) && salesVolume > 0
+      ? Math.min(Math.log1p(salesVolume) / Math.log1p(50), 1) * 20
+      : 0;
+
+  return round(clamp(providerComponent + densityComponent + salesComponent, 0, 100), 2);
+}
+
+function resolveSyncedCatalogEntry(
+  set: SealedSetData,
+  manifestProduct?: ManifestProduct
+): SyncedPriceChartingCatalogEntry | null {
+  const byId = getSyncedPriceChartingEntryById(set.priceChartingId);
+  if (byId) {
+    return byId;
+  }
+
+  return findSyncedPriceChartingEntry({
+    name: set.name,
+    productType: set.productType,
+    releaseDate: manifestProduct?.releaseDate ?? `${set.releaseYear}-01-01`,
+  });
 }
 
 function resolveEraFromYear(releaseYear: number): keyof typeof ERA_ENCODING {
@@ -454,6 +585,7 @@ function getManifestProduct(set: SealedSetData): ManifestProduct | undefined {
 function buildFeatureInput(set: SealedSetData): FeatureInput {
   const manifestProduct = getManifestProduct(set);
   const setHistory = manifestProduct ? historySummary[manifestProduct.setId] : undefined;
+  const syncedCatalogEntry = resolveSyncedCatalogEntry(set, manifestProduct);
   const isCurated = set.curated !== false;
   let estimatedFactors = 0;
 
@@ -540,6 +672,68 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     0,
     100
   );
+  const priceMomentum1mo = setHistory?.priceMomentum1mo ?? Number.NaN;
+  const priceMomentum12mo = setHistory?.priceMomentum12mo ?? Number.NaN;
+  const priceVolatility6mo = setHistory?.priceVolatility6mo ?? Number.NaN;
+  const priceVolatility12mo = setHistory?.priceVolatility12mo ?? Number.NaN;
+  const drawdown12mo = setHistory?.drawdown12mo ?? Number.NaN;
+  const historyDensity12mo = setHistory?.historyDensity12mo ?? Number.NaN;
+  const providerPrices = positivePrices([
+    set.pricingContext?.priceChartingPrice ?? syncedCatalogEntry?.newPrice ?? null,
+    set.pricingContext?.tcgplayerPrice ?? null,
+    set.pricingContext?.ebayPrice ?? null,
+    set.pricingContext?.pokedataPrice ?? null,
+  ]);
+  const availableProviderCount =
+    providerPrices.length > 0
+      ? providerPrices.length
+      : setHistory?.latestSnapshotProviderCount ?? 1;
+  const providerSpreadPercent =
+    computeProviderSpreadPercent(providerPrices) ??
+    setHistory?.latestSnapshotProviderSpreadPct ??
+    Number.NaN;
+  const providerAgreementScore =
+    computeProviderAgreementScore(
+      availableProviderCount,
+      Number.isFinite(providerSpreadPercent) ? providerSpreadPercent : null
+    ) ??
+    setHistory?.providerAgreementScore ??
+    Number.NaN;
+  const snapshotFreshnessDays =
+    computeSnapshotFreshnessDays(
+      set.pricingContext?.snapshotDate ??
+        syncedCatalogEntry?.capturedAt ??
+        setHistory?.latestPriceDate
+    ) ??
+    setHistory?.latestSnapshotFreshnessDays ??
+    0;
+  const priceChartingSalesVolume =
+    set.pricingContext?.salesVolume ??
+    syncedCatalogEntry?.salesVolume ??
+    setHistory?.latestPriceChartingSalesVolume ??
+    null;
+  const liquidityProxyScore =
+    Number.isFinite(historyDensity12mo)
+      ? computeLiquidityProxyScore(
+          availableProviderCount,
+          historyDensity12mo,
+          typeof priceChartingSalesVolume === "number" ? priceChartingSalesVolume : null
+        )
+      : (setHistory?.liquidityProxyScore ?? computeLiquidityProxyScore(
+          availableProviderCount,
+          0,
+          typeof priceChartingSalesVolume === "number" ? priceChartingSalesVolume : null
+        ));
+  const historyWindowMissingFlag =
+    Number.isFinite(priceMomentum12mo) &&
+    Number.isFinite(priceVolatility12mo) &&
+    Number.isFinite(drawdown12mo)
+      ? 0
+      : (setHistory?.historyWindowMissingFlag ?? 1);
+  const providerContextMissingFlag =
+    availableProviderCount >= 2 && Number.isFinite(providerSpreadPercent)
+      ? 0
+      : (setHistory?.providerContextMissingFlag ?? 1);
 
   const values: Record<FeatureKey, number> = {
     current_price: currentPrice,
@@ -556,6 +750,19 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     popularity_score: round(popularityScore, 2),
     product_type_encoded: PRODUCT_TYPE_ENCODING[set.productType],
     era_encoded: ERA_ENCODING[era],
+    price_momentum_1mo: priceMomentum1mo,
+    price_momentum_12mo: priceMomentum12mo,
+    price_volatility_6mo: priceVolatility6mo,
+    price_volatility_12mo: priceVolatility12mo,
+    drawdown_12mo: drawdown12mo,
+    history_density_12mo: historyDensity12mo,
+    available_provider_count: availableProviderCount,
+    provider_spread_pct: providerSpreadPercent,
+    provider_agreement_score: providerAgreementScore,
+    snapshot_freshness_days: snapshotFreshnessDays,
+    liquidity_proxy_score: liquidityProxyScore,
+    history_window_missing_flag: historyWindowMissingFlag,
+    provider_context_missing_flag: providerContextMissingFlag,
   };
 
   const labels = Object.fromEntries(

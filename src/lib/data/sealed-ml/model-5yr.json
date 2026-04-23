@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-23T03:27:48.023790+00:00",
+  "generatedAt": "2026-04-23T04:43:19.829344+00:00",
   "horizon": "5yr",
   "targetColumn": "price_5yr_later",
   "targetMode": "forward_log_return",
@@ -17,13 +17,26 @@
     "market_cycle_score",
     "popularity_score",
     "product_type_encoded",
-    "era_encoded"
+    "era_encoded",
+    "price_momentum_1mo",
+    "price_momentum_12mo",
+    "price_volatility_6mo",
+    "price_volatility_12mo",
+    "drawdown_12mo",
+    "history_density_12mo",
+    "available_provider_count",
+    "provider_spread_pct",
+    "provider_agreement_score",
+    "snapshot_freshness_days",
+    "liquidity_proxy_score",
+    "history_window_missing_flag",
+    "provider_context_missing_flag"
   ],
-  "baseScore": 0.5865118,
+  "baseScore": 0.58359545,
   "trees": [
     {
       "nodeid": 0,
-      "leaf": 0.00171735731,
+      "leaf": 0.00168467092,
       "cover": 12
     },
     {
@@ -33,7 +46,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.00117944798,
+      "leaf": -0.00109587226,
       "cover": 11
     },
     {
@@ -93,7 +106,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": 0.000990070752,
+      "leaf": 0.000944478088,
       "cover": 11
     },
     {
@@ -118,7 +131,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.000275155064,
+      "leaf": -0.000286899769,
       "cover": 13
     },
     {
@@ -133,12 +146,12 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.000637693156,
+      "leaf": -0.000601898879,
       "cover": 11
     },
     {
       "nodeid": 0,
-      "leaf": -0.000308093789,
+      "leaf": -0.000222951174,
       "cover": 12
     },
     {
@@ -148,7 +161,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.00407070993,
+      "leaf": -0.00411755685,
       "cover": 10
     },
     {
@@ -163,12 +176,12 @@
     },
     {
       "nodeid": 0,
-      "leaf": -8.76847698e-05,
+      "leaf": -8.69752839e-05,
       "cover": 11
     },
     {
       "nodeid": 0,
-      "leaf": -0.00101168721,
+      "leaf": -0.00104678876,
       "cover": 12
     },
     {
@@ -193,12 +206,12 @@
     },
     {
       "nodeid": 0,
-      "leaf": 0.00303994655,
+      "leaf": 0.00302151567,
       "cover": 9
     },
     {
       "nodeid": 0,
-      "leaf": -0.000249924225,
+      "leaf": -0.000346005225,
       "cover": 12
     },
     {
@@ -208,7 +221,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.000535877596,
+      "leaf": -0.000544499606,
       "cover": 13
     },
     {
@@ -228,7 +241,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.000336991856,
+      "leaf": -0.000310512085,
       "cover": 12
     },
     {
@@ -243,7 +256,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": 0.00148261827,
+      "leaf": 0.0014647874,
       "cover": 10
     },
     {
@@ -268,7 +281,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.000488813617,
+      "leaf": -0.000482988544,
       "cover": 11
     },
     {
@@ -283,7 +296,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": 0.000693568785,
+      "leaf": 0.000661914935,
       "cover": 12
     },
     {
@@ -293,7 +306,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": 0.00180096645,
+      "leaf": 0.00175160321,
       "cover": 13
     },
     {
@@ -303,7 +316,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.00123572629,
+      "leaf": -0.00129411498,
       "cover": 11
     },
     {
@@ -338,12 +351,12 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.000190493971,
+      "leaf": -0.000264886621,
       "cover": 13
     },
     {
       "nodeid": 0,
-      "leaf": 0.0016963043,
+      "leaf": 0.00170444266,
       "cover": 12
     },
     {
@@ -358,7 +371,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.00329259224,
+      "leaf": -0.00336104003,
       "cover": 11
     },
     {
@@ -388,12 +401,12 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.000664646272,
+      "leaf": -0.000747118378,
       "cover": 9
     },
     {
       "nodeid": 0,
-      "leaf": 0.0017816209,
+      "leaf": 0.00182607991,
       "cover": 10
     },
     {
@@ -423,32 +436,32 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.00267696916,
+      "leaf": -0.00262053357,
       "cover": 10
     },
     {
       "nodeid": 0,
-      "leaf": -0.00173295941,
+      "leaf": -0.00176311505,
       "cover": 10
     },
     {
       "nodeid": 0,
-      "leaf": -0.000481205585,
+      "leaf": -0.000595066405,
       "cover": 10
     },
     {
       "nodeid": 0,
-      "leaf": 0.00188584893,
+      "leaf": 0.00190054905,
       "cover": 12
     },
     {
       "nodeid": 0,
-      "leaf": -0.000537575863,
+      "leaf": -0.000467397476,
       "cover": 12
     },
     {
       "nodeid": 0,
-      "leaf": 0.00135085941,
+      "leaf": 0.0013204267,
       "cover": 11
     },
     {
@@ -468,17 +481,17 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.00330882403,
+      "leaf": -0.00337253767,
       "cover": 10
     },
     {
       "nodeid": 0,
-      "leaf": -0.00142813369,
+      "leaf": -0.00148786569,
       "cover": 11
     },
     {
       "nodeid": 0,
-      "leaf": -0.00275545823,
+      "leaf": -0.00276798359,
       "cover": 11
     },
     {
@@ -493,7 +506,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": -0.000549836201,
+      "leaf": -0.000622476568,
       "cover": 10
     },
     {
@@ -526,23 +539,26 @@
   "trainingRows": 16,
   "crossValidation": {
     "folds": 5.0,
-    "rmse": 6305.9356,
-    "mae": 4083.2371,
-    "mape": 45.5811,
-    "returnRmse": 0.504439,
-    "returnMae": 0.396637,
+    "rmse": 6285.1419,
+    "mae": 4079.1782,
+    "mape": 45.7779,
+    "returnRmse": 0.504898,
+    "returnMae": 0.400151,
     "strategy": "time_series_split"
   },
-  "meanTargetPrice": 11376.7694,
-  "meanTargetReturnPercent": 97.7407,
-  "historicalErrorPercent": 45.5811,
-  "maeShareOfMeanTarget": 0.3589,
+  "meanTargetPrice": 11315.3125,
+  "meanTargetReturnPercent": 97.2172,
+  "historicalErrorPercent": 45.7779,
+  "maeShareOfMeanTarget": 0.3605,
   "targetTransform": {
     "train": "np.log",
     "inference": "np.exp"
   },
   "validationStrategy": "time_series_split",
-  "deploymentApproved": true,
-  "manualReviewReasons": [],
+  "minimumTrainingRowsForApproval": 24,
+  "deploymentApproved": false,
+  "manualReviewReasons": [
+    "Only 16 training rows available; minimum approval threshold is 24"
+  ],
   "globalImportance": []
 }

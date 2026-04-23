@@ -118,6 +118,8 @@ function buildSyncedPriceChartingPricing(
     bestPrice: roundPrice(syncedEntry.newPrice),
     primaryProvider: "pricecharting",
     snapshotDate: syncedEntry.capturedAt.slice(0, 10),
+    salesVolume: syncedEntry.salesVolume,
+    manualOnlyPrice: syncedEntry.manualOnlyPrice,
   };
 }
 
@@ -241,6 +243,8 @@ export async function GET(request: NextRequest) {
           bestPrice: officialPrice,
           primaryProvider: "pricecharting",
           snapshotDate,
+          salesVolume: getPriceChartingSalesVolume(officialProduct),
+          manualOnlyPrice: getPriceChartingManualOnlyPrice(officialProduct),
         };
 
         await storeSealedPriceSnapshot({

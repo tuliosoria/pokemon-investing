@@ -82,6 +82,20 @@ function clamp(val: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, val));
 }
 
+export function buildPricingContext(pricing: SealedPricing): NonNullable<SealedSetData["pricingContext"]> {
+  return {
+    priceChartingPrice: pricing.priceChartingPrice ?? null,
+    tcgplayerPrice: pricing.tcgplayerPrice ?? null,
+    ebayPrice: pricing.ebayPrice ?? null,
+    pokedataPrice: pricing.pokedataPrice ?? null,
+    bestPrice: pricing.bestPrice ?? null,
+    primaryProvider: pricing.primaryProvider,
+    snapshotDate: pricing.snapshotDate ?? null,
+    salesVolume: pricing.salesVolume ?? null,
+    manualOnlyPrice: pricing.manualOnlyPrice ?? null,
+  };
+}
+
 function computeMarketValue(price: number): number {
   // Inversely proportional: cheaper = more accessible = higher score
   // $30 → 85, $100 → 75, $300 → 60, $1000 → 40, $5000 → 15, $50000 → 3
@@ -153,6 +167,7 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
     priceChartingId: pricing.priceChartingId,
     imageUrl: pricing.imageUrl ?? undefined,
     curated: false,
+    pricingContext: buildPricingContext(pricing),
 
     factors: {
       marketValue: computeMarketValue(price),

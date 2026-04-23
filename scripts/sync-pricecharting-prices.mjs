@@ -12,7 +12,14 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, "..");
-const MANIFEST_PATH = path.join(ROOT, "src", "lib", "data", "sealed-ml", "products.json");
+const CATALOG_PATH = path.join(
+  ROOT,
+  "src",
+  "lib",
+  "data",
+  "sealed-ml",
+  "sealed-catalog.json"
+);
 const OUTPUT_PATH = path.join(
   ROOT,
   "src",
@@ -68,6 +75,10 @@ function roundPrice(value) {
 }
 
 function buildSearchQuery(product) {
+  if (product.priceChartingQuery) {
+    return product.priceChartingQuery;
+  }
+
   const typeAliases = {
     ETB: "elite trainer box",
     UPC: "ultra premium collection",
@@ -113,6 +124,32 @@ async function requestPriceCharting(query) {
   const url = new URL("product", PRICECHARTING_BASE_URL);
   url.searchParams.set("t", TOKEN);
   url.searchParams.set("q", query);
+
+  await throttle();
+
+  const response = await fetch(url.toString(), {
+    headers: {
+      Accept: "application/json",
+      "User-Agent": "PokeAlpha/1.0 PriceCharting sync",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`PriceCharting request failed with HTTP ${response.status}`);
+  }
+
+  const payload = await response.json();
+  if (payload.status === "error") {
+    throw new Error(payload["error-message"] || "PriceCharting request failed");
+  }
+
+  return payload;
+}
+
+async function requestPriceChartingById(id) {
+  const url = new URL("product", PRICECHARTING_BASE_URL);
+  url.searchParams.set("t", TOKEN);
+  url.searchParams.set("id", id);
 
   await throttle();
 
@@ -343,7 +380,7 @@ function buildTrainingSnapshot(product, syncedEntry, matchedPokeDataProduct, pok
     releaseDate: syncedEntry.releaseDate || product.releaseDate,
     snapshotMonth,
     capturedAt: syncedEntry.capturedAt,
-    pokedataId: matchedPokeDataProduct?.pokedataId || null,
+    pokedataId: matchedPokeDataProduct?.pokedataId || product.pokedataId || null,
     priceChartingId: syncedEntry.priceChartingId,
     priceChartingPrice: syncedEntry.newPrice,
     priceChartingManualOnlyPrice: syncedEntry.manualOnlyPrice,
@@ -357,6 +394,8 @@ function buildTrainingSnapshot(product, syncedEntry, matchedPokeDataProduct, pok
       pokedataPricing?.bestPrice ?? null
     ),
     availableProviderCount: providerCount,
+    catalogSource: product.catalogSource || "curated-manifest",
+    mappingConfidence: product.mappingConfidence || "unknown",
     primaryProvider: "pricecharting",
     snapshotSource: "sync-pricecharting-prices",
   };
@@ -367,17 +406,22 @@ async function main() {
     throw new Error("PRICECHARTING_API_TOKEN is required");
   }
 
-  const manifest = JSON.parse(await readFile(MANIFEST_PATH, "utf8"));
+  const catalog = JSON.parse(await readFile(CATALOG_PATH, "utf8"));
   const dynamo = createDynamo();
   const pokeDataMeta = await loadPokeDataMetaIndex(dynamo);
+  const pokeDataMetaById = new Map(
+    pokeDataMeta.map((candidate) => [candidate.pokedataId, candidate])
+  );
   const capturedAt = new Date().toISOString();
   const syncedEntries = [];
   const trainingSnapshots = [];
   const failures = [];
 
-  for (const product of manifest) {
+  for (const product of catalog) {
     try {
-      const payload = await requestPriceCharting(buildSearchQuery(product));
+      const payload = product.priceChartingId
+        ? await requestPriceChartingById(product.priceChartingId)
+        : await requestPriceCharting(buildSearchQuery(product));
       const newPrice = roundPrice(payload["new-price"]);
       if (!payload.id || !newPrice) {
         throw new Error("Missing PriceCharting product id or sealed price");
@@ -395,14 +439,19 @@ async function main() {
         manualOnlyPrice: roundPrice(payload["manual-only-price"]),
         salesVolume:
           Number.parseInt(String(payload["sales-volume"] || ""), 10) || null,
+        catalogSource: product.catalogSource || "curated-manifest",
+        mappingConfidence: product.mappingConfidence || "unknown",
+        pokedataId: product.pokedataId || null,
         capturedAt,
       };
 
       syncedEntries.push(syncedEntry);
 
-      const matchedPokeDataProduct = findBestPokeDataMatch(product, pokeDataMeta);
+      const matchedPokeDataProduct =
+        (product.pokedataId ? pokeDataMetaById.get(product.pokedataId) : null) ||
+        findBestPokeDataMatch(product, pokeDataMeta);
       const pokedataPricing = await requestPokeDataPricing(
-        matchedPokeDataProduct?.pokedataId || ""
+        matchedPokeDataProduct?.pokedataId || product.pokedataId || ""
       );
       const trainingSnapshot = buildTrainingSnapshot(
         product,
@@ -436,6 +485,7 @@ async function main() {
         synced: syncedEntries.length,
         trainingSnapshots: trainingSnapshots.length,
         failed: failures.length,
+        catalogSize: catalog.length,
         outputPath: path.relative(ROOT, OUTPUT_PATH),
         trainingSnapshotOutputPath: path.relative(ROOT, TRAINING_SNAPSHOT_OUTPUT_PATH),
         dynamoSnapshotsUpdated: Boolean(dynamo),

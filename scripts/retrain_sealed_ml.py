@@ -15,11 +15,13 @@ from botocore.exceptions import BotoCoreError, ClientError
 
 try:
     from scripts.train_sealed_ml import (
+        DEFAULT_OUTPUT_DIR,
         FEATURE_NAMES,
         TARGETS,
         audit_training_frame,
         build_dataset_summary,
         build_training_rows,
+        extract_panel_summary,
         load_cached_training_artifacts,
         load_manifest,
         train_models,
@@ -28,11 +30,13 @@ try:
     )
 except ModuleNotFoundError:
     from train_sealed_ml import (
+        DEFAULT_OUTPUT_DIR,
         FEATURE_NAMES,
         TARGETS,
         audit_training_frame,
         build_dataset_summary,
         build_training_rows,
+        extract_panel_summary,
         load_cached_training_artifacts,
         load_manifest,
         train_models,
@@ -40,7 +44,7 @@ except ModuleNotFoundError:
         write_training_summary,
     )
 
-OUTPUT_DIR = Path(os.environ.get("SEALED_ML_OUTPUT_DIR", "/tmp/sealed-ml-artifacts"))
+OUTPUT_DIR = Path(os.environ.get("SEALED_ML_OUTPUT_DIR", str(DEFAULT_OUTPUT_DIR)))
 MODEL_PK = "SEALED_MODEL#sealed-forecast"
 LOOKUP_ENTITY_TYPE = "SEALED_FORECAST_LOOKUP"
 MODEL_CHUNK_SIZE = 240_000
@@ -57,6 +61,13 @@ CAPTURED_FIELDS = {
     "3yr": "capturedTarget3yr",
     "5yr": "capturedTarget5yr",
 }
+
+
+def env_flag(name: str, default: bool = False) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return value.strip().lower() not in {"0", "false", "no", "off"}
 
 
 def parse_iso_timestamp(value: str | None) -> datetime | None:
@@ -318,7 +329,11 @@ def run_retraining() -> dict[str, Any]:
     write_training_data_artifacts(merged_frame, history_summary, OUTPUT_DIR)
     model_summary = train_models(merged_frame, OUTPUT_DIR)
 
-    summary = build_dataset_summary(merged_frame, len(products))
+    summary = build_dataset_summary(
+        merged_frame,
+        len(products),
+        panel_summary=extract_panel_summary(summary),
+    )
     summary["generatedAt"] = now.isoformat()
     summary["lookupRows"] = len(lookup_rows)
     summary["capturedTargets"] = capture_counts
@@ -329,11 +344,21 @@ def run_retraining() -> dict[str, Any]:
     summary["deploymentApproved"] = all(
         bool(model.get("deploymentApproved")) for model in model_summary.values()
     )
+    summary["publishEnabled"] = env_flag("SEALED_ML_PUBLISH_ENABLED", True)
     summary["publishedToDynamo"] = False
+    summary["publishedAt"] = None
+    summary["publishSkippedReason"] = None
 
-    if lookup_table and summary["deploymentApproved"]:
-        publish_model_artifacts(lookup_table, OUTPUT_DIR, summary, now)
+    if not lookup_table:
+        summary["publishSkippedReason"] = "dynamodb_not_configured"
+    elif not summary["publishEnabled"]:
+        summary["publishSkippedReason"] = "disabled_by_env"
+    elif not summary["deploymentApproved"]:
+        summary["publishSkippedReason"] = "deployment_not_approved"
+    else:
         summary["publishedToDynamo"] = True
+        summary["publishedAt"] = now.isoformat()
+        publish_model_artifacts(lookup_table, OUTPUT_DIR, summary, now)
 
     write_training_summary(summary, OUTPUT_DIR)
 

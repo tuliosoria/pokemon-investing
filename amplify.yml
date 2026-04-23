@@ -4,9 +4,16 @@ frontend:
     preBuild:
       commands:
         - npm ci
+        - |
+          : > .env.production
+          for key in AWS_REGION DYNAMODB_TABLE POKEDATA_API_KEY PRICECHARTING_API_TOKEN SEALED_ML_MODEL_SOURCE; do
+            value="$(printenv "$key" || true)"
+            if [ -n "$value" ]; then
+              printf '%s=%s\n' "$key" "$value" >> .env.production
+            fi
+          done
     build:
       commands:
-        - env | grep -E '^TCG_|^POKEDATA_|^DYNAMODB_' >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next

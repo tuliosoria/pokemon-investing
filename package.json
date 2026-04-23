@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "sync:pricecharting": "node scripts/sync-pricecharting-prices.mjs"
+    "sync:pricecharting": "node scripts/sync-pricecharting-prices.mjs",
+    "train:sealed-ml": "python3 scripts/train_sealed_ml.py",
+    "retrain:sealed-ml": "python3 scripts/retrain_sealed_ml.py"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1032.0",

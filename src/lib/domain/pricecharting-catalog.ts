@@ -6,12 +6,15 @@ export interface SyncedPriceChartingCatalogEntry {
   name: string;
   productType: ProductType;
   releaseDate: string;
+  pokedataId?: string | null;
   priceChartingId: string;
   productName: string;
   consoleName: string | null;
   newPrice: number | null;
   manualOnlyPrice: number | null;
   salesVolume: number | null;
+  catalogSource?: string;
+  mappingConfidence?: string;
   capturedAt: string;
 }
 

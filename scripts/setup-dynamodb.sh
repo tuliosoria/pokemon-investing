@@ -45,8 +45,10 @@ echo ""
 echo "Next steps:"
 echo "  1. Add DYNAMODB_TABLE=$TABLE as an environment variable in Amplify Console"
 echo "     (App settings → Environment variables)"
+echo "  2. Add AWS_REGION=$REGION and SEALED_ML_MODEL_SOURCE=auto in Amplify Console"
+echo "     (set SEALED_ML_MODEL_SOURCE=bundled for a fast rollback to repo-bundled models)"
 echo ""
-echo "  2. Grant DynamoDB access to Amplify SSR compute role:"
+echo "  3. Grant DynamoDB access to Amplify SSR compute role:"
 echo "     - Go to IAM → Roles → search for 'amplify' and your app ID"
 echo "     - Attach this inline policy:"
 echo ""
@@ -56,13 +58,17 @@ cat <<POLICY
        "Statement": [{
          "Effect": "Allow",
          "Action": [
-           "dynamodb:GetItem",
-           "dynamodb:PutItem",
-           "dynamodb:DeleteItem",
-           "dynamodb:Query"
-         ],
-         "Resource": "arn:aws:dynamodb:$REGION:*:table/$TABLE"
-       }]
-     }
+            "dynamodb:GetItem",
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem",
+            "dynamodb:DeleteItem",
+            "dynamodb:Query"
+          ],
+          "Resource": "arn:aws:dynamodb:$REGION:*:table/$TABLE"
+        }]
+      }
 POLICY
+echo ""
+echo "  4. Verify runtime health after deployment:"
+echo "     curl https://<YOUR_APP_DOMAIN>/api/health"
 echo ""

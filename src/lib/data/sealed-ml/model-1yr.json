@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-23T03:27:47.628638+00:00",
+  "generatedAt": "2026-04-23T04:43:19.348609+00:00",
   "horizon": "1yr",
   "targetColumn": "price_1yr_later",
   "targetMode": "forward_log_return",
@@ -17,9 +17,22 @@
     "market_cycle_score",
     "popularity_score",
     "product_type_encoded",
-    "era_encoded"
+    "era_encoded",
+    "price_momentum_1mo",
+    "price_momentum_12mo",
+    "price_volatility_6mo",
+    "price_volatility_12mo",
+    "drawdown_12mo",
+    "history_density_12mo",
+    "available_provider_count",
+    "provider_spread_pct",
+    "provider_agreement_score",
+    "snapshot_freshness_days",
+    "liquidity_proxy_score",
+    "history_window_missing_flag",
+    "provider_context_missing_flag"
   ],
-  "baseScore": 0.33668202,
+  "baseScore": 0.33682704,
   "trees": [
     {
       "nodeid": 0,
@@ -29,52 +42,52 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 23.5726757,
+      "gain": 23.6071835,
       "cover": 626,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 63,
+          "split": "price_trajectory_24mo",
+          "split_condition": 5.69000006,
           "yes": 3,
           "no": 4,
-          "missing": 4,
-          "gain": 23.9291687,
+          "missing": 3,
+          "gain": 10.7810326,
           "cover": 398,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00616467232,
-              "cover": 184
+              "leaf": 0.000503680378,
+              "cover": 260
             },
             {
               "nodeid": 4,
-              "leaf": 0.0180275403,
-              "cover": 214
+              "leaf": 0.0178176016,
+              "cover": 138
             }
           ]
         },
         {
           "nodeid": 2,
           "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 22.0615997,
+          "split": "price_volatility_6mo",
+          "split_condition": 0.0878000036,
           "yes": 5,
           "no": 6,
-          "missing": 6,
-          "gain": 6.39839172,
+          "missing": 5,
+          "gain": 6.49424171,
           "cover": 228,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.0277343728,
-              "cover": 55
+              "leaf": -0.0297566149,
+              "cover": 45
             },
             {
               "nodeid": 6,
-              "leaf": -0.00763509423,
-              "cover": 173
+              "leaf": -0.0081889797,
+              "cover": 183
             }
           ]
         }
@@ -88,52 +101,52 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 22.9925117,
+      "gain": 23.0770073,
       "cover": 607,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 63,
+          "split": "price_volatility_12mo",
+          "split_condition": 16.9776993,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 23.2723312,
+          "gain": 7.97279644,
           "cover": 397,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00494922278,
-              "cover": 185
+              "leaf": 0.012429486,
+              "cover": 276
             },
             {
               "nodeid": 4,
-              "leaf": 0.0189179238,
-              "cover": 212
+              "leaf": -0.00252567721,
+              "cover": 121
             }
           ]
         },
         {
           "nodeid": 2,
           "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 22.0615997,
+          "split": "price_volatility_12mo",
+          "split_condition": 3.36420012,
           "yes": 5,
           "no": 6,
-          "missing": 6,
-          "gain": 3.62915325,
+          "missing": 5,
+          "gain": 4.51328373,
           "cover": 210,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.0238283761,
-              "cover": 53
+              "leaf": -0.0256103855,
+              "cover": 49
             },
             {
               "nodeid": 6,
-              "leaf": -0.00774626527,
-              "cover": 157
+              "leaf": -0.00757108023,
+              "cover": 161
             }
           ]
         }
@@ -142,34 +155,34 @@
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 8.49279976,
+      "split": "market_cycle_score",
+      "split_condition": 63,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 20.6248741,
+      "gain": 21.8657227,
       "cover": 616,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 63,
+          "split": "price_trajectory_6mo",
+          "split_condition": -45.2029991,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 22.270668,
-          "cover": 396,
+          "gain": 3.35912323,
+          "cover": 296,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00506520597,
-              "cover": 185
+              "leaf": 0.0117798634,
+              "cover": 12
             },
             {
               "nodeid": 4,
-              "leaf": 0.0183056723,
-              "cover": 211
+              "leaf": -0.0104039628,
+              "cover": 284
             }
           ]
         },
@@ -177,22 +190,22 @@
           "nodeid": 2,
           "depth": 1,
           "split": "set_age_years",
-          "split_condition": 22.0151005,
+          "split_condition": 8.49279976,
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 5.14842224,
-          "cover": 220,
+          "gain": 23.3684139,
+          "cover": 320,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.024686195,
-              "cover": 54
+              "leaf": 0.0191686507,
+              "cover": 211
             },
             {
               "nodeid": 6,
-              "leaf": -0.00641319528,
-              "cover": 166
+              "leaf": -0.00869254861,
+              "cover": 109
             }
           ]
         }
@@ -206,88 +219,29 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 16.4448528,
+      "gain": 16.9259453,
       "cover": 633,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 63,
+          "split": "price_volatility_12mo",
+          "split_condition": 16.9776993,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 20.153698,
+          "gain": 10.47925,
           "cover": 410,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00619859947,
-              "cover": 185
+              "leaf": 0.011377993,
+              "cover": 279
             },
             {
               "nodeid": 4,
-              "leaf": 0.0157169979,
-              "cover": 225
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "price_trajectory_6mo",
-          "split_condition": -4.02199984,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 5.07051754,
-          "cover": 223,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": 0,
-              "cover": 69
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.0158734769,
-              "cover": 154
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 8.49279976,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 16.2769279,
-      "cover": 635,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "popularity_score",
-          "split_condition": 90,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 7.80311728,
-          "cover": 402,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.00153165485,
-              "cover": 329
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.0193752311,
-              "cover": 73
+              "leaf": -0.005365449,
+              "cover": 131
             }
           ]
         },
@@ -299,17 +253,76 @@
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 5.10848427,
-          "cover": 233,
+          "gain": 5.09187412,
+          "cover": 223,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.023969017,
-              "cover": 58
+              "leaf": -0.0242511202,
+              "cover": 53
             },
             {
               "nodeid": 6,
-              "leaf": -0.00633988297,
+              "leaf": -0.00607143855,
+              "cover": 170
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "era_encoded",
+      "split_condition": 2,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 16.8808002,
+      "cover": 635,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "market_cycle_score",
+          "split_condition": 63,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 14.5290527,
+          "cover": 403,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": -0.00410875538,
+              "cover": 202
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.0145482318,
+              "cover": 201
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "set_age_years",
+          "split_condition": 22.0615997,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 5.82065964,
+          "cover": 232,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": -0.0251757409,
+              "cover": 57
+            },
+            {
+              "nodeid": 6,
+              "leaf": -0.00635177037,
               "cover": 175
             }
           ]
@@ -319,329 +332,34 @@
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "current_price",
-      "split_condition": 6000,
+      "split": "market_cycle_score",
+      "split_condition": 63,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 13.7107897,
+      "gain": 16.7042313,
       "cover": 642,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "price_trajectory_24mo",
-          "split_condition": 15.092,
-          "yes": 3,
-          "no": 4,
-          "missing": 3,
-          "gain": 11.0062256,
-          "cover": 452,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.000358344434,
-              "cover": 331
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.0168631766,
-              "cover": 121
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 22.8747005,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 6.15826702,
-          "cover": 190,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": -0.0260511991,
-              "cover": 50
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.00530665088,
-              "cover": 140
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "market_cycle_score",
-      "split_condition": 63,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 13.329174,
-      "cover": 630,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "chase_card_count",
-          "split_condition": 5,
+          "split": "drawdown_12mo",
+          "split_condition": -45.2029991,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 3.31456423,
-          "cover": 303,
+          "gain": 3.69647408,
+          "cover": 302,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00975788943,
-              "cover": 248
+              "leaf": 0.00726185134,
+              "cover": 25
             },
             {
               "nodeid": 4,
-              "leaf": 0.00294252438,
-              "cover": 55
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "price_trajectory_6mo",
-          "split_condition": -23.6450005,
-          "yes": 5,
-          "no": 6,
-          "missing": 5,
-          "gain": 13.5840569,
-          "cover": 327,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": -0.0146670016,
-              "cover": 53
-            },
-            {
-              "nodeid": 6,
-              "leaf": 0.0117461821,
-              "cover": 274
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 6.24779987,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 13.3389454,
-      "cover": 628,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "price_trajectory_24mo",
-          "split_condition": 544.450989,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 6.16231155,
-          "cover": 391,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.0145730302,
-              "cover": 125
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.00103165815,
-              "cover": 266
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "price_trajectory_24mo",
-          "split_condition": 55.6710014,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 2.52618694,
-          "cover": 237,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": -0.0024266704,
-              "cover": 100
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.0136746261,
-              "cover": 137
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "market_cycle_score",
-      "split_condition": 63,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 12.8223362,
-      "cover": 629,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "price_trajectory_6mo",
-          "split_condition": -41.519001,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 3.29782581,
-          "cover": 304,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.0103386072,
-              "cover": 18
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.00876602437,
-              "cover": 286
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 17.7521992,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 13.3226223,
-          "cover": 325,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": 0.0135875167,
-              "cover": 225
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.00776099414,
-              "cover": 100
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "era_encoded",
-      "split_condition": 2,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 10.4169369,
-      "cover": 633,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 63,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 9.08926773,
-          "cover": 404,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.0036462259,
-              "cover": 187
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.0111005986,
-              "cover": 217
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 22.0615997,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 5.90553761,
-          "cover": 229,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": -0.0223144703,
-              "cover": 58
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.00372321531,
-              "cover": 171
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "market_cycle_score",
-      "split_condition": 63,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 11.8180552,
-      "cover": 645,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "most_expensive_card_price",
-          "split_condition": 1000,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 3.18926001,
-          "cover": 320,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.00896781869,
-              "cover": 293
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.00715039764,
-              "cover": 27
+              "leaf": -0.0106983334,
+              "cover": 277
             }
           ]
         },
@@ -653,135 +371,17 @@
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 14.1655941,
-          "cover": 325,
+          "gain": 15.9986534,
+          "cover": 340,
           "children": [
             {
               "nodeid": 5,
-              "leaf": 0.0103948852,
-              "cover": 280
+              "leaf": 0.0115523627,
+              "cover": 293
             },
             {
               "nodeid": 6,
-              "leaf": -0.0182858855,
-              "cover": 45
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "era_encoded",
-      "split_condition": 2,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 10.9103165,
-      "cover": 620,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "price_trajectory_6mo",
-          "split_condition": 135.582993,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 5.35342407,
-          "cover": 396,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.00740409596,
-              "cover": 323
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.00697504357,
-              "cover": 73
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "price_trajectory_6mo",
-          "split_condition": -4.02199984,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 4.71365976,
-          "cover": 224,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": 0.00271253777,
-              "cover": 55
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.0131937582,
-              "cover": 169
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 6.24779987,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 9.61506367,
-      "cover": 638,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "most_expensive_card_price",
-          "split_condition": 110,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 5.73554134,
-          "cover": 397,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.00418954995,
-              "cover": 113
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.00872119796,
-              "cover": 284
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "current_price",
-          "split_condition": 10955.0801,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 2.03936481,
-          "cover": 241,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": -0.00475598546,
-              "cover": 194
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.016941661,
+              "leaf": -0.018331496,
               "cover": 47
             }
           ]
@@ -796,52 +396,52 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 9.16123676,
-      "cover": 619,
+      "gain": 14.2728109,
+      "cover": 630,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "popularity_score",
-          "split_condition": 95,
+          "split": "market_cycle_score",
+          "split_condition": 63,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 4.44796705,
-          "cover": 397,
+          "gain": 15.7879248,
+          "cover": 410,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.00194895675,
-              "cover": 358
+              "leaf": -0.00472854543,
+              "cover": 187
             },
             {
               "nodeid": 4,
-              "leaf": 0.0191305317,
-              "cover": 39
+              "leaf": 0.0146299778,
+              "cover": 223
             }
           ]
         },
         {
           "nodeid": 2,
           "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 22.0615997,
+          "split": "drawdown_12mo",
+          "split_condition": -0.0329999998,
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 4.605721,
-          "cover": 222,
+          "gain": 4.94042587,
+          "cover": 220,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.0212899074,
-              "cover": 51
+              "leaf": -0.00445569865,
+              "cover": 157
             },
             {
               "nodeid": 6,
-              "leaf": -0.00399862789,
-              "cover": 171
+              "leaf": -0.0214232337,
+              "cover": 63
             }
           ]
         }
@@ -850,116 +450,39 @@
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "market_cycle_score",
-      "split_condition": 63,
+      "split": "price_volatility_12mo",
+      "split_condition": 2.9691,
       "yes": 1,
       "no": 2,
-      "missing": 2,
-      "gain": 7.70639849,
-      "cover": 615,
+      "missing": 1,
+      "gain": 12.7703743,
+      "cover": 628,
       "children": [
         {
           "nodeid": 1,
-          "depth": 1,
-          "split": "chase_card_count",
-          "split_condition": 5,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 2.05557156,
-          "cover": 292,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.00792056881,
-              "cover": 230
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.0016026505,
-              "cover": 62
-            }
-          ]
+          "leaf": -0.0177320149,
+          "cover": 83
         },
         {
           "nodeid": 2,
           "depth": 1,
           "split": "market_cycle_score",
-          "split_condition": 92,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 8.50034332,
-          "cover": 323,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": 0.00857663807,
-              "cover": 283
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.014572531,
-              "cover": 40
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "set_age_years",
-      "split_condition": 6.24779987,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 6.88419294,
-      "cover": 619,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "most_expensive_card_price",
-          "split_condition": 110,
+          "split_condition": 63,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 4.6650281,
-          "cover": 385,
+          "gain": 10.3028917,
+          "cover": 545,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00434091268,
-              "cover": 101
+              "leaf": -0.00461500743,
+              "cover": 246
             },
             {
               "nodeid": 4,
-              "leaf": 0.00773839047,
-              "cover": 284
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "price_trajectory_6mo",
-          "split_condition": -4.8920002,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 2.54461288,
-          "cover": 234,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": 0.00221461453,
-              "cover": 55
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.0092307888,
-              "cover": 179
+              "leaf": 0.00900802854,
+              "cover": 299
             }
           ]
         }
@@ -973,651 +496,51 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 9.47943687,
-      "cover": 602,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "price_trajectory_24mo",
-          "split_condition": 408.578003,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 4.86614513,
-          "cover": 388,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.0122110061,
-              "cover": 136
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.000381645281,
-              "cover": 252
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 21.7905998,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 4.23203325,
-          "cover": 214,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": -0.0212986916,
-              "cover": 45
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.00394005841,
-              "cover": 169
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 6000,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 8.50997829,
-      "cover": 605,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "price_trajectory_6mo",
-          "split_condition": 571.60498,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 4.663661,
-          "cover": 454,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.00625689328,
-              "cover": 378
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.00676770974,
-              "cover": 76
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 22.6420002,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 3.92632246,
-          "cover": 151,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": -0.0232303571,
-              "cover": 36
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.00410804851,
-              "cover": 115
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "price_trajectory_6mo",
-      "split_condition": 3044.82788,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 6.53301287,
-      "cover": 625,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 6.07800007,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 7.19432068,
-          "cover": 524,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.00659084413,
-              "cover": 314
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.00518859318,
-              "cover": 210
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "current_price",
-          "split_condition": 43.4900017,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 3.69296598,
-          "cover": 101,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": 0.0150384111,
-              "cover": 6
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.0146728428,
-              "cover": 95
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "price_trajectory_6mo",
-      "split_condition": 571.60498,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 5.35712481,
-      "cover": 619,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 6.24779987,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 4.44161701,
-          "cover": 525,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.00528864376,
-              "cover": 308
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.00390205393,
-              "cover": 217
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "leaf": -0.0112506477,
-          "cover": 94
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "market_cycle_score",
-      "split_condition": 63,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 6.29769325,
-      "cover": 640,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": -0.00518773962,
-          "cover": 302
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 92,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 7.91449833,
-          "cover": 338,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.00784314703,
-              "cover": 292
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.0132830087,
-              "cover": 46
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "price_trajectory_6mo",
-      "split_condition": 571.60498,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 6.41066933,
-      "cover": 631,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 63,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 7.65214872,
-          "cover": 532,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.00448180689,
-              "cover": 244
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.00738600409,
-              "cover": 288
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "current_price",
-          "split_condition": 43.4900017,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 2.90239096,
-          "cover": 99,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": 0.0119087864,
-              "cover": 6
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.0142541304,
-              "cover": 93
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "google_trends_score",
-      "split_condition": 80,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 5.54287052,
-      "cover": 602,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "popularity_score",
-          "split_condition": 75,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 5.95682764,
-          "cover": 454,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.00147654733,
-              "cover": 280
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.0100633698,
-              "cover": 174
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.00808589812,
-          "cover": 148
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "google_trends_score",
-      "split_condition": 92,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 6.11117125,
-      "cover": 640,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "current_price",
-          "split_condition": 10955.0801,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 4.33626652,
-          "cover": 597,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.000340396276,
-              "cover": 541
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.014524105,
-              "cover": 56
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0166475344,
-          "cover": 43
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "google_trends_score",
-      "split_condition": 92,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 4.87938595,
-      "cover": 604,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "price_trajectory_24mo",
-          "split_condition": 262.466003,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 3.12599134,
-          "cover": 568,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.00355894421,
-              "cover": 213
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.00397721305,
-              "cover": 355
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0167909749,
-          "cover": 36
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 6000,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 4.82949543,
-      "cover": 634,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 67,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 5.17792797,
-          "cover": 454,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.00205476047,
-              "cover": 286
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.00879374146,
-              "cover": 168
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "price_trajectory_6mo",
-          "split_condition": 53.0900002,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 2.36001778,
-          "cover": 180,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": -0.00415544631,
-              "cover": 147
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.0192366131,
-              "cover": 33
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 6000,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 5.97604513,
-      "cover": 623,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 67,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 4.6559968,
-          "cover": 451,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.000613189943,
-              "cover": 280
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.00960812811,
-              "cover": 171
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 22.0151005,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 2.50874376,
-          "cover": 172,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": -0.0241745487,
-              "cover": 17
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.00477498118,
-              "cover": 155
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "google_trends_score",
-      "split_condition": 92,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 4.96627331,
-      "cover": 636,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "price_trajectory_6mo",
-          "split_condition": 97.2289963,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 4.33056116,
-          "cover": 595,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": 0.000772559026,
-              "cover": 472
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.00952372793,
-              "cover": 123
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.0157071259,
-          "cover": 41
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 6000,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 4.26748133,
+      "gain": 12.6312599,
       "cover": 629,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 67,
+          "split": "price_momentum_12mo",
+          "split_condition": 4828.91309,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 4.86316442,
-          "cover": 453,
+          "gain": 8.45480633,
+          "cover": 407,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00125389034,
-              "cover": 294
+              "leaf": 0.00979259517,
+              "cover": 290
             },
             {
               "nodeid": 4,
-              "leaf": 0.00936467014,
-              "cover": 159
+              "leaf": -0.00571325608,
+              "cover": 117
             }
           ]
         },
         {
           "nodeid": 2,
           "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 21.9575996,
+          "split": "price_momentum_12mo",
+          "split_condition": -3.52600002,
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 2.60524631,
-          "cover": 176,
+          "gain": 3.76522541,
+          "cover": 222,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.0229374915,
-              "cover": 18
+              "leaf": 2.62415833e-05,
+              "cover": 64
             },
             {
               "nodeid": 6,
-              "leaf": -0.00382835115,
+              "leaf": -0.013534084,
               "cover": 158
             }
           ]
@@ -1632,8 +555,8 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 5.27775288,
-      "cover": 637,
+      "gain": 12.0411329,
+      "cover": 633,
       "children": [
         {
           "nodeid": 1,
@@ -1643,41 +566,41 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 5.78524876,
-          "cover": 463,
+          "gain": 8.72931099,
+          "cover": 459,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00251672766,
+              "leaf": -0.00328037934,
               "cover": 224
             },
             {
               "nodeid": 4,
-              "leaf": 0.00844747853,
-              "cover": 239
+              "leaf": 0.0102731381,
+              "cover": 235
             }
           ]
         },
         {
           "nodeid": 2,
           "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 22.6420002,
+          "split": "price_momentum_12mo",
+          "split_condition": 33.1430016,
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 2.19246745,
+          "gain": 4.86829948,
           "cover": 174,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.0169147328,
-              "cover": 40
+              "leaf": -0.00471536675,
+              "cover": 115
             },
             {
               "nodeid": 6,
-              "leaf": -0.00320427003,
-              "cover": 134
+              "leaf": -0.0229993518,
+              "cover": 59
             }
           ]
         }
@@ -1686,39 +609,216 @@
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "market_cycle_score",
-      "split_condition": 63,
+      "split": "set_age_years",
+      "split_condition": 6.24779987,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 4.20397091,
-      "cover": 618,
+      "gain": 13.8707561,
+      "cover": 645,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.00460835313,
-          "cover": 302
+          "depth": 1,
+          "split": "price_momentum_12mo",
+          "split_condition": -17.1450005,
+          "yes": 3,
+          "no": 4,
+          "missing": 3,
+          "gain": 7.27475882,
+          "cover": 404,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": -0.00407986529,
+              "cover": 135
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.00978374016,
+              "cover": 269
+            }
+          ]
         },
         {
           "nodeid": 2,
           "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 92,
+          "split": "price_volatility_6mo",
+          "split_condition": 0.0878000036,
+          "yes": 5,
+          "no": 6,
+          "missing": 5,
+          "gain": 4.91611958,
+          "cover": 241,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": -0.0240563303,
+              "cover": 47
+            },
+            {
+              "nodeid": 6,
+              "leaf": -0.00579648232,
+              "cover": 194
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "current_price",
+      "split_condition": 6000,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 11.2956285,
+      "cover": 620,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "price_trajectory_24mo",
+          "split_condition": 5.99399996,
           "yes": 3,
           "no": 4,
-          "missing": 4,
-          "gain": 4.07646418,
-          "cover": 316,
+          "missing": 3,
+          "gain": 6.16618109,
+          "cover": 445,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.00583544141,
-              "cover": 277
+              "leaf": -0.000206680255,
+              "cover": 300
             },
             {
               "nodeid": 4,
-              "leaf": -0.0102885617,
-              "cover": 39
+              "leaf": 0.0120510049,
+              "cover": 145
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "price_momentum_12mo",
+          "split_condition": 33.1430016,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 3.91795349,
+          "cover": 175,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": -0.00475329114,
+              "cover": 116
+            },
+            {
+              "nodeid": 6,
+              "leaf": -0.0212915596,
+              "cover": 59
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "set_age_years",
+      "split_condition": 6.24779987,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 9.87742233,
+      "cover": 638,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "price_momentum_12mo",
+          "split_condition": -17.9909992,
+          "yes": 3,
+          "no": 4,
+          "missing": 3,
+          "gain": 7.2249918,
+          "cover": 397,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": -0.00429742923,
+              "cover": 131
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.009678795,
+              "cover": 266
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "drawdown_12mo",
+          "split_condition": -0.0659999996,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 2.88433647,
+          "cover": 241,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": -0.00360194151,
+              "cover": 169
+            },
+            {
+              "nodeid": 6,
+              "leaf": -0.0160404723,
+              "cover": 72
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "price_volatility_12mo",
+      "split_condition": 3.36420012,
+      "yes": 1,
+      "no": 2,
+      "missing": 1,
+      "gain": 11.0693026,
+      "cover": 619,
+      "children": [
+        {
+          "nodeid": 1,
+          "leaf": -0.0177985039,
+          "cover": 76
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "current_price",
+          "split_condition": 5850,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 5.89858627,
+          "cover": 543,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.00523228524,
+              "cover": 395
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.00623967266,
+              "cover": 148
             }
           ]
         }
@@ -1732,35 +832,930 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 5.17243052,
-      "cover": 626,
+      "gain": 7.77903795,
+      "cover": 615,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "current_price",
-          "split_condition": 10955.0801,
+          "split": "price_volatility_12mo",
+          "split_condition": 2.9691,
           "yes": 3,
           "no": 4,
-          "missing": 4,
-          "gain": 2.38471293,
-          "cover": 582,
+          "missing": 3,
+          "gain": 6.30434752,
+          "cover": 575,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.000582102977,
-              "cover": 536
+              "leaf": -0.0143327042,
+              "cover": 77
             },
             {
               "nodeid": 4,
-              "leaf": -0.0120570613,
-              "cover": 46
+              "leaf": 0.000552680751,
+              "cover": 498
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.0152189778,
+          "leaf": 0.020116305,
+          "cover": 40
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "market_cycle_score",
+      "split_condition": 63,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 8.28245163,
+      "cover": 619,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "drawdown_12mo",
+          "split_condition": -46,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 2.73508048,
+          "cover": 296,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.00676381169,
+              "cover": 31
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.00746149197,
+              "cover": 265
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "set_age_years",
+          "split_condition": 17.7521992,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 10.6223917,
+          "cover": 323,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": 0.0121328626,
+              "cover": 216
+            },
+            {
+              "nodeid": 6,
+              "leaf": -0.00662169373,
+              "cover": 107
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "price_volatility_12mo",
+      "split_condition": 3.36420012,
+      "yes": 1,
+      "no": 2,
+      "missing": 1,
+      "gain": 10.5153913,
+      "cover": 602,
+      "children": [
+        {
+          "nodeid": 1,
+          "leaf": -0.0168163609,
+          "cover": 75
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "market_cycle_score",
+          "split_condition": 63,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 8.35314941,
+          "cover": 527,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": -0.00425747037,
+              "cover": 233
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.00822634529,
+              "cover": 294
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "chase_card_count",
+      "split_condition": 5,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 9.14546585,
+      "cover": 605,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "price_momentum_12mo",
+          "split_condition": 112.132004,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 6.8660841,
+          "cover": 473,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.00131756265,
+              "cover": 322
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.0113430722,
+              "cover": 151
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "market_cycle_score",
+          "split_condition": 67,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 2.94455385,
+          "cover": 132,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": 0.00418947823,
+              "cover": 76
+            },
+            {
+              "nodeid": 6,
+              "leaf": 0.0204354059,
+              "cover": 56
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "price_volatility_6mo",
+      "split_condition": 0.0878000036,
+      "yes": 1,
+      "no": 2,
+      "missing": 1,
+      "gain": 9.93842888,
+      "cover": 625,
+      "children": [
+        {
+          "nodeid": 1,
+          "leaf": -0.0167751051,
+          "cover": 76
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "google_trends_score",
+          "split_condition": 89,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 5.97197437,
+          "cover": 549,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.000370906055,
+              "cover": 512
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.020112535,
+              "cover": 37
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "market_cycle_score",
+      "split_condition": 63,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 5.20272398,
+      "cover": 619,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "drawdown_12mo",
+          "split_condition": -45.2029991,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 3.63115311,
+          "cover": 297,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.0092671914,
+              "cover": 31
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.00726812473,
+              "cover": 266
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "market_cycle_score",
+          "split_condition": 92,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 8.36569881,
+          "cover": 322,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": 0.00708542904,
+              "cover": 281
+            },
+            {
+              "nodeid": 6,
+              "leaf": -0.0157157201,
+              "cover": 41
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "set_age_years",
+      "split_condition": 6.24779987,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 6.07315683,
+      "cover": 640,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "most_expensive_card_price",
+          "split_condition": 110,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 4.27586794,
+          "cover": 406,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": -0.00436033169,
+              "cover": 108
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.00687138131,
+              "cover": 298
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "price_trajectory_6mo",
+          "split_condition": -2.73600006,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 2.60104799,
+          "cover": 234,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": 0.00167091086,
+              "cover": 63
+            },
+            {
+              "nodeid": 6,
+              "leaf": -0.00945398677,
+              "cover": 171
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "google_trends_score",
+      "split_condition": 80,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 5.8193531,
+      "cover": 631,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "popularity_score",
+          "split_condition": 75,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 5.57044315,
+          "cover": 471,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.000715051719,
+              "cover": 308
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.0104633234,
+              "cover": 163
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "market_cycle_score",
+          "split_condition": 67,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 3.03964782,
+          "cover": 160,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": 0.00163973996,
+              "cover": 100
+            },
+            {
+              "nodeid": 6,
+              "leaf": 0.0163023602,
+              "cover": 60
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "price_volatility_6mo",
+      "split_condition": 0.934400022,
+      "yes": 1,
+      "no": 2,
+      "missing": 1,
+      "gain": 6.41456413,
+      "cover": 602,
+      "children": [
+        {
+          "nodeid": 1,
+          "leaf": -0.0130715957,
+          "cover": 77
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "google_trends_score",
+          "split_condition": 89,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 3.02408767,
+          "cover": 525,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.00078946969,
+              "cover": 492
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.0156237064,
+              "cover": 33
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "era_encoded",
+      "split_condition": 2,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 6.5063448,
+      "cover": 640,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "google_trends_score",
+          "split_condition": 92,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 3.58952284,
+          "cover": 411,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.00152780628,
+              "cover": 368
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.0163618065,
+              "cover": 43
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "drawdown_12mo",
+          "split_condition": -0.0329999998,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 2.55929375,
+          "cover": 229,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": -0.00267776079,
+              "cover": 152
+            },
+            {
+              "nodeid": 6,
+              "leaf": -0.0143338991,
+              "cover": 77
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "market_cycle_score",
+      "split_condition": 63,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 6.6437192,
+      "cover": 604,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "drawdown_12mo",
+          "split_condition": -46,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 2.65076041,
+          "cover": 303,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.00753093977,
+              "cover": 30
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.00664920965,
+              "cover": 273
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "set_age_years",
+          "split_condition": 17.7521992,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 7.83138371,
+          "cover": 301,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": 0.0110140871,
+              "cover": 203
+            },
+            {
+              "nodeid": 6,
+              "leaf": -0.00567282969,
+              "cover": 98
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "current_price",
+      "split_condition": 6000,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 4.5679245,
+      "cover": 634,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "price_momentum_12mo",
+          "split_condition": 27.2189999,
+          "yes": 3,
+          "no": 4,
+          "missing": 3,
+          "gain": 3.60023499,
+          "cover": 454,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": -0.00113212899,
+              "cover": 301
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.00807027798,
+              "cover": 153
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "set_age_years",
+          "split_condition": 25.1005993,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 2.37544537,
+          "cover": 180,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": -0.00984852761,
+              "cover": 153
+            },
+            {
+              "nodeid": 6,
+              "leaf": 0.0044919597,
+              "cover": 27
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "current_price",
+      "split_condition": 6000,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 5.77592087,
+      "cover": 623,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "popularity_score",
+          "split_condition": 90,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 3.55710435,
+          "cover": 451,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.000972551876,
+              "cover": 379
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.0129778227,
+              "cover": 72
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "set_age_years",
+          "split_condition": 22.0151005,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 2.64650536,
+          "cover": 172,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": -0.0244731326,
+              "cover": 17
+            },
+            {
+              "nodeid": 6,
+              "leaf": -0.0046389997,
+              "cover": 155
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "google_trends_score",
+      "split_condition": 92,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 4.76893425,
+      "cover": 636,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "price_trajectory_6mo",
+          "split_condition": 97.2289963,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 4.08297491,
+          "cover": 595,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.000718624447,
+              "cover": 482
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.00958792027,
+              "cover": 113
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "leaf": 0.0154854404,
+          "cover": 41
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "current_price",
+      "split_condition": 6000,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 4.35416937,
+      "cover": 629,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "market_cycle_score",
+          "split_condition": 67,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 5.71166372,
+          "cover": 453,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": -0.00152066711,
+              "cover": 294
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.0100008314,
+              "cover": 159
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "set_age_years",
+          "split_condition": 21.9575996,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 2.62274718,
+          "cover": 176,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": -0.0230325423,
+              "cover": 18
+            },
+            {
+              "nodeid": 6,
+              "leaf": -0.0038584657,
+              "cover": 158
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "market_cycle_score",
+      "split_condition": 63,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 5.67352676,
+      "cover": 637,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "drawdown_12mo",
+          "split_condition": -45.2029991,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 4.43521214,
+          "cover": 305,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.0116075827,
+              "cover": 31
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.00674001267,
+              "cover": 274
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "market_cycle_score",
+          "split_condition": 92,
+          "yes": 5,
+          "no": 6,
+          "missing": 6,
+          "gain": 7.17676783,
+          "cover": 332,
+          "children": [
+            {
+              "nodeid": 5,
+              "leaf": 0.00788345281,
+              "cover": 286
+            },
+            {
+              "nodeid": 6,
+              "leaf": -0.0122411251,
+              "cover": 46
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "market_cycle_score",
+      "split_condition": 63,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 4.38500595,
+      "cover": 618,
+      "children": [
+        {
+          "nodeid": 1,
+          "leaf": -0.00459639262,
+          "cover": 302
+        },
+        {
+          "nodeid": 2,
+          "depth": 1,
+          "split": "set_age_years",
+          "split_condition": 17.7521992,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 4.73296309,
+          "cover": 316,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.00788756367,
+              "cover": 218
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.00490189157,
+              "cover": 98
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "google_trends_score",
+      "split_condition": 92,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 5.03914452,
+      "cover": 626,
+      "children": [
+        {
+          "nodeid": 1,
+          "depth": 1,
+          "split": "price_momentum_12mo",
+          "split_condition": 208.391006,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 4.44404984,
+          "cover": 582,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.00113157171,
+              "cover": 410
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.00826657098,
+              "cover": 172
+            }
+          ]
+        },
+        {
+          "nodeid": 2,
+          "leaf": 0.0150640681,
           "cover": 44
         }
       ]
@@ -1773,7 +1768,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 4.37379932,
+      "gain": 4.46916246,
       "cover": 619,
       "children": [
         {
@@ -1784,24 +1779,24 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 6.14156342,
+          "gain": 7.09501123,
           "cover": 580,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.0023217306,
+              "leaf": -0.00247092289,
               "cover": 383
             },
             {
               "nodeid": 4,
-              "leaf": 0.00838627946,
+              "leaf": 0.00904092845,
               "cover": 197
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": -0.015069372,
+          "leaf": -0.0151111437,
           "cover": 39
         }
       ]
@@ -1809,41 +1804,41 @@
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "popularity_score",
-      "split_condition": 86,
+      "split": "google_trends_score",
+      "split_condition": 92,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 4.13136625,
+      "gain": 4.2827673,
       "cover": 625,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "popularity_score",
-          "split_condition": 75,
+          "split": "market_cycle_score",
+          "split_condition": 92,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 5.19724512,
-          "cover": 461,
+          "gain": 2.39765477,
+          "cover": 583,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.00191360619,
-              "cover": 293
+              "leaf": 0.000255878753,
+              "cover": 544
             },
             {
               "nodeid": 4,
-              "leaf": -0.00890528038,
-              "cover": 168
+              "leaf": -0.0118155638,
+              "cover": 39
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00713289902,
-          "cover": 164
+          "leaf": 0.0150847184,
+          "cover": 42
         }
       ]
     },
@@ -1855,51 +1850,51 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 3.78294635,
+      "gain": 3.99805617,
       "cover": 606,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "price_trajectory_6mo",
-          "split_condition": -41.519001,
+          "split": "drawdown_12mo",
+          "split_condition": -45.2029991,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.34812975,
+          "gain": 2.74220538,
           "cover": 279,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.0126657579,
-              "cover": 13
+              "leaf": 0.00870797783,
+              "cover": 29
             },
             {
               "nodeid": 4,
-              "leaf": -0.00544256624,
-              "cover": 266
+              "leaf": -0.00603514072,
+              "cover": 250
             }
           ]
         },
         {
           "nodeid": 2,
           "depth": 1,
-          "split": "price_trajectory_6mo",
-          "split_condition": 209.475006,
+          "split": "market_cycle_score",
+          "split_condition": 92,
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 5.63619041,
+          "gain": 5.97641945,
           "cover": 327,
           "children": [
             {
               "nodeid": 5,
-              "leaf": 0.00628323713,
+              "leaf": 0.00658612186,
               "cover": 286
             },
             {
               "nodeid": 6,
-              "leaf": -0.0123488568,
+              "leaf": -0.0126027344,
               "cover": 41
             }
           ]
@@ -1909,82 +1904,82 @@
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "google_trends_score",
-      "split_condition": 92,
+      "split": "market_cycle_score",
+      "split_condition": 63,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 3.15937948,
+      "gain": 3.26153755,
       "cover": 642,
       "children": [
         {
           "nodeid": 1,
-          "depth": 1,
-          "split": "price_trajectory_24mo",
-          "split_condition": 41.8959999,
-          "yes": 3,
-          "no": 4,
-          "missing": 3,
-          "gain": 2.01650262,
-          "cover": 601,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.00159706757,
-              "cover": 494
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.00581230968,
-              "cover": 107
-            }
-          ]
+          "leaf": -0.00291474117,
+          "cover": 293
         },
         {
           "nodeid": 2,
-          "leaf": 0.0133704273,
-          "cover": 41
+          "depth": 1,
+          "split": "price_trajectory_6mo",
+          "split_condition": -24.0809994,
+          "yes": 3,
+          "no": 4,
+          "missing": 3,
+          "gain": 4.28224421,
+          "cover": 349,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": -0.00883298088,
+              "cover": 47
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.00644126767,
+              "cover": 302
+            }
+          ]
         }
       ]
     },
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "google_trends_score",
-      "split_condition": 80,
+      "split": "price_volatility_12mo",
+      "split_condition": 2.9691,
       "yes": 1,
       "no": 2,
-      "missing": 2,
-      "gain": 3.59446383,
+      "missing": 1,
+      "gain": 4.96591806,
       "cover": 618,
       "children": [
         {
           "nodeid": 1,
-          "depth": 1,
-          "split": "current_price",
-          "split_condition": 11003.9902,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 2.35688686,
-          "cover": 462,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.00190308376,
-              "cover": 444
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.018750893,
-              "cover": 18
-            }
-          ]
+          "leaf": -0.0120099662,
+          "cover": 77
         },
         {
           "nodeid": 2,
-          "leaf": 0.00577474013,
-          "cover": 156
+          "depth": 1,
+          "split": "market_cycle_score",
+          "split_condition": 67,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 3.38651085,
+          "cover": 541,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": -0.00187534548,
+              "cover": 331
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.00610684743,
+              "cover": 210
+            }
+          ]
         }
       ]
     },
@@ -1996,7 +1991,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 3.63568664,
+      "gain": 3.75247788,
       "cover": 641,
       "children": [
         {
@@ -2007,17 +2002,17 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.12511873,
+          "gain": 2.49197531,
           "cover": 470,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.000953154813,
+              "leaf": 0.000876925536,
               "cover": 396
             },
             {
               "nodeid": 4,
-              "leaf": 0.0101632737,
+              "leaf": 0.0108170873,
               "cover": 74
             }
           ]
@@ -2026,65 +2021,24 @@
           "nodeid": 2,
           "depth": 1,
           "split": "set_age_years",
-          "split_condition": 22.0151005,
+          "split_condition": 21.6044006,
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 2.10375023,
+          "gain": 2.2186501,
           "cover": 171,
           "children": [
             {
               "nodeid": 5,
-              "leaf": -0.0197129007,
-              "cover": 20
+              "leaf": -0.0250359029,
+              "cover": 10
             },
             {
               "nodeid": 6,
-              "leaf": -0.00306331227,
-              "cover": 151
+              "leaf": -0.00368021778,
+              "cover": 161
             }
           ]
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "depth": 0,
-      "split": "market_cycle_score",
-      "split_condition": 92,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 3.43806171,
-      "cover": 638,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 63,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 5.00497437,
-          "cover": 597,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.00288131787,
-              "cover": 318
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.0061730044,
-              "cover": 279
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "leaf": -0.0128792394,
-          "cover": 41
         }
       ]
     },
@@ -2096,8 +2050,8 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.22710824,
-      "cover": 575,
+      "gain": 3.55934954,
+      "cover": 638,
       "children": [
         {
           "nodeid": 1,
@@ -2107,24 +2061,47 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 3.35376787,
-          "cover": 427,
+          "gain": 4.65060663,
+          "cover": 478,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.000957052805,
-              "cover": 274
+              "leaf": 0.00176037196,
+              "cover": 306
             },
             {
               "nodeid": 4,
-              "leaf": -0.00805039238,
-              "cover": 153
+              "leaf": -0.00831832085,
+              "cover": 172
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00478836289,
+          "leaf": 0.00667996332,
+          "cover": 160
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "google_trends_score",
+      "split_condition": 80,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 2.29522181,
+      "cover": 575,
+      "children": [
+        {
+          "nodeid": 1,
+          "leaf": -0.00223059556,
+          "cover": 427
+        },
+        {
+          "nodeid": 2,
+          "leaf": 0.00487562409,
           "cover": 148
         }
       ]
@@ -2137,35 +2114,17 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 3.24544287,
+      "gain": 3.33105326,
       "cover": 626,
       "children": [
         {
           "nodeid": 1,
-          "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 67,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 3.7501173,
-          "cover": 451,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.000448778883,
-              "cover": 286
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.00877330359,
-              "cover": 165
-            }
-          ]
+          "leaf": 0.00297245011,
+          "cover": 451
         },
         {
           "nodeid": 2,
-          "leaf": -0.00502569508,
+          "leaf": -0.00502907578,
           "cover": 175
         }
       ]
@@ -2178,17 +2137,35 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 3.29407597,
+      "gain": 3.20110273,
       "cover": 614,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.00117956311,
-          "cover": 570
+          "depth": 1,
+          "split": "history_window_missing_flag",
+          "split_condition": 1,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 3.05920076,
+          "cover": 570,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.000928280817,
+              "cover": 421
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.00723367278,
+              "cover": 149
+            }
+          ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.0123190014,
+          "leaf": 0.0121439965,
           "cover": 44
         }
       ]
@@ -2196,23 +2173,41 @@
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "price_trajectory_6mo",
-      "split_condition": 571.60498,
+      "split": "market_cycle_score",
+      "split_condition": 63,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.39532995,
+      "gain": 4.03441525,
       "cover": 616,
       "children": [
         {
           "nodeid": 1,
-          "leaf": 0.000772576954,
-          "cover": 517
+          "leaf": -0.00454667909,
+          "cover": 305
         },
         {
           "nodeid": 2,
-          "leaf": -0.00749906525,
-          "cover": 99
+          "depth": 1,
+          "split": "era_encoded",
+          "split_condition": 2,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 2.58079648,
+          "cover": 311,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.00659855828,
+              "cover": 212
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.00276362477,
+              "cover": 99
+            }
+          ]
         }
       ]
     },
@@ -2224,17 +2219,35 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 3.05482507,
+      "gain": 3.27472138,
       "cover": 609,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.00226474577,
-          "cover": 477
+          "depth": 1,
+          "split": "price_volatility_6mo",
+          "split_condition": 0.0878000036,
+          "yes": 3,
+          "no": 4,
+          "missing": 3,
+          "gain": 2.82525778,
+          "cover": 477,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": -0.01182744,
+              "cover": 63
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.000645024586,
+              "cover": 414
+            }
+          ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00617684657,
+          "leaf": 0.00640834216,
           "cover": 132
         }
       ]
@@ -2247,7 +2260,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.87044096,
+      "gain": 2.86954832,
       "cover": 589,
       "children": [
         {
@@ -2258,24 +2271,24 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.77217913,
+          "gain": 3.27047396,
           "cover": 440,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.00156631973,
+              "leaf": 0.00177133363,
               "cover": 287
             },
             {
               "nodeid": 4,
-              "leaf": -0.00658581872,
+              "leaf": -0.00709261233,
               "cover": 153
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00667975424,
+          "leaf": 0.00663542328,
           "cover": 149
         }
       ]
@@ -2288,7 +2301,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.81851625,
+      "gain": 2.83528495,
       "cover": 619,
       "children": [
         {
@@ -2299,24 +2312,24 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 3.28924441,
+          "gain": 3.529459,
           "cover": 444,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.000738909526,
+              "leaf": -0.000783381343,
               "cover": 272
             },
             {
               "nodeid": 4,
-              "leaf": 0.00786730368,
+              "leaf": 0.00813705008,
               "cover": 172
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": -0.00485147443,
+          "leaf": -0.0047909054,
           "cover": 175
         }
       ]
@@ -2325,140 +2338,104 @@
       "nodeid": 0,
       "depth": 0,
       "split": "price_trajectory_6mo",
-      "split_condition": 571.60498,
+      "split_condition": 185.710007,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.83539176,
+      "gain": 2.2344532,
       "cover": 640,
       "children": [
         {
           "nodeid": 1,
-          "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 63,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 3.04525518,
-          "cover": 540,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.00239245244,
-              "cover": 260
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.00498978188,
-              "cover": 280
-            }
-          ]
+          "leaf": 0.00113110873,
+          "cover": 547
         },
         {
           "nodeid": 2,
-          "leaf": -0.00761521002,
-          "cover": 100
+          "leaf": -0.00705688214,
+          "cover": 93
         }
       ]
     },
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "price_trajectory_6mo",
-      "split_condition": 571.60498,
+      "split": "market_cycle_score",
+      "split_condition": 92,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.78857732,
+      "gain": 2.79274893,
       "cover": 644,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "set_age_years",
-          "split_condition": 3.16219997,
+          "split": "market_cycle_score",
+          "split_condition": 67,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.24505973,
-          "cover": 542,
+          "gain": 4.01495838,
+          "cover": 607,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.00480060652,
-              "cover": 227
+              "leaf": -0.002416756,
+              "cover": 401
             },
             {
               "nodeid": 4,
-              "leaf": -0.00160200079,
-              "cover": 315
+              "leaf": 0.00606730627,
+              "cover": 206
             }
           ]
         },
         {
           "nodeid": 2,
-          "depth": 1,
-          "split": "current_price",
-          "split_condition": 51.3899994,
-          "yes": 5,
-          "no": 6,
-          "missing": 6,
-          "gain": 2.3002882,
-          "cover": 102,
-          "children": [
-            {
-              "nodeid": 5,
-              "leaf": 0.00955776498,
-              "cover": 10
-            },
-            {
-              "nodeid": 6,
-              "leaf": -0.0105908988,
-              "cover": 92
-            }
-          ]
+          "leaf": -0.0128830541,
+          "cover": 37
         }
       ]
     },
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "price_trajectory_6mo",
-      "split_condition": 571.60498,
+      "split": "google_trends_score",
+      "split_condition": 80,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.15148687,
+      "gain": 2.15190482,
       "cover": 613,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 63,
+          "split": "popularity_score",
+          "split_condition": 75,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.7214787,
-          "cover": 517,
+          "gain": 3.86564279,
+          "cover": 465,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00290787593,
-              "cover": 236
+              "leaf": 0.0012715616,
+              "cover": 298
             },
             {
               "nodeid": 4,
-              "leaf": 0.00425711554,
-              "cover": 281
+              "leaf": -0.00802374817,
+              "cover": 167
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": -0.00705232797,
-          "cover": 96
+          "leaf": 0.00479807472,
+          "cover": 148
         }
       ]
     },
@@ -2470,116 +2447,80 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.65044641,
+      "gain": 2.87355304,
       "cover": 640,
       "children": [
         {
           "nodeid": 1,
-          "leaf": 0.00185073947,
+          "leaf": 0.00203705649,
           "cover": 466
         },
         {
           "nodeid": 2,
-          "leaf": -0.00529247941,
+          "leaf": -0.00540505722,
           "cover": 174
         }
       ]
     },
     {
       "nodeid": 0,
-      "leaf": -0.000539678149,
+      "leaf": -0.000550060591,
       "cover": 634
     },
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "price_trajectory_6mo",
-      "split_condition": 97.2289963,
+      "split": "current_price",
+      "split_condition": 10955.0801,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.12421298,
+      "gain": 3.32616973,
       "cover": 626,
       "children": [
         {
           "nodeid": 1,
-          "depth": 1,
-          "split": "market_cycle_score",
-          "split_condition": 63,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 2.46589565,
-          "cover": 485,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.00264689373,
-              "cover": 225
-            },
-            {
-              "nodeid": 4,
-              "leaf": 0.00437077414,
-              "cover": 260
-            }
-          ]
+          "leaf": 0.000617439684,
+          "cover": 578
         },
         {
           "nodeid": 2,
-          "leaf": -0.00581930112,
+          "leaf": -0.0124319782,
+          "cover": 48
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "chase_card_count",
+      "split_condition": 5,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 2.42238092,
+      "cover": 631,
+      "children": [
+        {
+          "nodeid": 1,
+          "leaf": -0.00178918988,
+          "cover": 490
+        },
+        {
+          "nodeid": 2,
+          "leaf": 0.00553479185,
           "cover": 141
         }
       ]
     },
     {
       "nodeid": 0,
-      "depth": 0,
-      "split": "popularity_score",
-      "split_condition": 90,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 2.23999143,
-      "cover": 631,
-      "children": [
-        {
-          "nodeid": 1,
-          "depth": 1,
-          "split": "current_price",
-          "split_condition": 10000,
-          "yes": 3,
-          "no": 4,
-          "missing": 4,
-          "gain": 2.64872313,
-          "cover": 528,
-          "children": [
-            {
-              "nodeid": 3,
-              "leaf": -0.000727133767,
-              "cover": 510
-            },
-            {
-              "nodeid": 4,
-              "leaf": -0.0182842091,
-              "cover": 18
-            }
-          ]
-        },
-        {
-          "nodeid": 2,
-          "leaf": 0.00629602978,
-          "cover": 103
-        }
-      ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.000144981386,
+      "leaf": 0.000191600921,
       "cover": 627
     },
     {
       "nodeid": 0,
-      "leaf": 8.27327749e-05,
+      "leaf": 0.000172677581,
       "cover": 619
     },
     {
@@ -2590,30 +2531,66 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.94248772,
+      "gain": 3.24610019,
       "cover": 623,
       "children": [
         {
           "nodeid": 1,
-          "leaf": 0.00127524766,
-          "cover": 576
+          "depth": 1,
+          "split": "market_cycle_score",
+          "split_condition": 67,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 2.33703113,
+          "cover": 576,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": -0.000992155285,
+              "cover": 360
+            },
+            {
+              "nodeid": 4,
+              "leaf": 0.00544972997,
+              "cover": 216
+            }
+          ]
         },
         {
           "nodeid": 2,
-          "leaf": -0.0111213215,
+          "leaf": -0.011655679,
           "cover": 47
         }
       ]
     },
     {
       "nodeid": 0,
-      "leaf": 0.000132711837,
+      "leaf": 0.000106607855,
       "cover": 621
     },
     {
       "nodeid": 0,
-      "leaf": 0.000292750978,
-      "cover": 629
+      "depth": 0,
+      "split": "current_price",
+      "split_condition": 11901.75,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 2.0074501,
+      "cover": 629,
+      "children": [
+        {
+          "nodeid": 1,
+          "leaf": 0.0011944233,
+          "cover": 586
+        },
+        {
+          "nodeid": 2,
+          "leaf": -0.00940031279,
+          "cover": 43
+        }
+      ]
     },
     {
       "nodeid": 0,
@@ -2623,7 +2600,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.81971359,
+      "gain": 2.93104243,
       "cover": 595,
       "children": [
         {
@@ -2634,31 +2611,31 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 3.18126202,
+          "gain": 3.26573801,
           "cover": 446,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.000882531633,
+              "leaf": 0.000872919627,
               "cover": 279
             },
             {
               "nodeid": 4,
-              "leaf": -0.00762364594,
+              "leaf": -0.00774617726,
               "cover": 167
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00558378734,
+          "leaf": 0.00568367494,
           "cover": 149
         }
       ]
     },
     {
       "nodeid": 0,
-      "leaf": -0.000113528535,
+      "leaf": -5.46642186e-05,
       "cover": 634
     },
     {
@@ -2669,75 +2646,93 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.24719691,
+      "gain": 2.14996529,
       "cover": 648,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "collector_demand_ratio",
-          "split_condition": 0.620000005,
+          "split": "popularity_score",
+          "split_condition": 75,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.60065484,
+          "gain": 4.32886028,
           "cover": 475,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.0030768516,
-              "cover": 183
+              "leaf": 0.00203981646,
+              "cover": 305
             },
             {
               "nodeid": 4,
-              "leaf": -0.00436077779,
-              "cover": 292
+              "leaf": -0.00773535622,
+              "cover": 170
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00516865589,
+          "leaf": 0.00501745753,
           "cover": 173
         }
       ]
     },
     {
       "nodeid": 0,
-      "leaf": 0,
-      "cover": 617
-    },
-    {
-      "nodeid": 0,
       "depth": 0,
-      "split": "current_price",
-      "split_condition": 6000,
+      "split": "market_cycle_score",
+      "split_condition": 63,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.21154881,
-      "cover": 629,
+      "gain": 2.0915668,
+      "cover": 617,
       "children": [
         {
           "nodeid": 1,
-          "leaf": 0.00230899593,
-          "cover": 457
+          "leaf": -0.0030123943,
+          "cover": 302
         },
         {
           "nodeid": 2,
-          "leaf": -0.00423729373,
-          "cover": 172
+          "depth": 1,
+          "split": "market_cycle_score",
+          "split_condition": 92,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 2.67395926,
+          "cover": 315,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.00470510917,
+              "cover": 273
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.00795406941,
+              "cover": 42
+            }
+          ]
         }
       ]
     },
     {
       "nodeid": 0,
-      "leaf": -6.51586888e-05,
+      "leaf": 0.000294441677,
+      "cover": 629
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
       "cover": 597
     },
     {
       "nodeid": 0,
-      "leaf": -0.000201116534,
+      "leaf": -0.000163782432,
       "cover": 628
     },
     {
@@ -2748,17 +2743,17 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.10185814,
+      "gain": 2.05161738,
       "cover": 632,
       "children": [
         {
           "nodeid": 1,
-          "leaf": 0.000531742699,
+          "leaf": 0.0004341772,
           "cover": 579
         },
         {
           "nodeid": 2,
-          "leaf": -0.0094171809,
+          "leaf": -0.00938636065,
           "cover": 53
         }
       ]
@@ -2766,12 +2761,12 @@
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "popularity_score",
-      "split_condition": 86,
+      "split": "google_trends_score",
+      "split_condition": 80,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.49110746,
+      "gain": 2.51084042,
       "cover": 635,
       "children": [
         {
@@ -2782,31 +2777,31 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 3.01848173,
+          "gain": 2.68556452,
           "cover": 473,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.00156733487,
+              "leaf": 0.0014659852,
               "cover": 308
             },
             {
               "nodeid": 4,
-              "leaf": -0.00664322963,
+              "leaf": -0.00627415394,
               "cover": 165
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.00583089469,
+          "leaf": 0.00592012377,
           "cover": 162
         }
       ]
     },
     {
       "nodeid": 0,
-      "leaf": 0.000220386646,
+      "leaf": 0.000184264412,
       "cover": 636
     },
     {
@@ -2817,29 +2812,29 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.22289038,
+      "gain": 2.14635801,
       "cover": 625,
       "children": [
         {
           "nodeid": 1,
           "depth": 1,
-          "split": "price_trajectory_6mo",
-          "split_condition": -11.8990002,
+          "split": "drawdown_12mo",
+          "split_condition": -14.6829996,
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 2.64064097,
+          "gain": 2.34996581,
           "cover": 492,
           "children": [
             {
               "nodeid": 3,
-              "leaf": 0.00703185145,
-              "cover": 67
+              "leaf": 0.00342380628,
+              "cover": 150
             },
             {
               "nodeid": 4,
-              "leaf": -0.00319262897,
-              "cover": 425
+              "leaf": -0.00388839515,
+              "cover": 342
             }
           ]
         },
@@ -2851,17 +2846,17 @@
           "yes": 5,
           "no": 6,
           "missing": 6,
-          "gain": 2.37523842,
+          "gain": 2.27694726,
           "cover": 133,
           "children": [
             {
               "nodeid": 5,
-              "leaf": 0.0145427231,
+              "leaf": 0.0143359927,
               "cover": 43
             },
             {
               "nodeid": 6,
-              "leaf": 0.000154616064,
+              "leaf": 0.000222410541,
               "cover": 90
             }
           ]
@@ -2870,7 +2865,7 @@
     },
     {
       "nodeid": 0,
-      "leaf": 5.52182573e-05,
+      "leaf": 9.56965869e-06,
       "cover": 632
     },
     {
@@ -2881,7 +2876,7 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.30003643,
+      "gain": 2.19433546,
       "cover": 639,
       "children": [
         {
@@ -2892,37 +2887,123 @@
           "yes": 3,
           "no": 4,
           "missing": 4,
-          "gain": 3.49102354,
+          "gain": 3.45902681,
           "cover": 598,
           "children": [
             {
               "nodeid": 3,
-              "leaf": -0.00265064253,
+              "leaf": -0.00262363651,
               "cover": 319
             },
             {
               "nodeid": 4,
-              "leaf": 0.00490810117,
+              "leaf": 0.00489964196,
               "cover": 279
             }
           ]
         },
         {
           "nodeid": 2,
-          "leaf": -0.0107943742,
+          "leaf": -0.0105142957,
           "cover": 41
         }
       ]
     },
     {
       "nodeid": 0,
-      "leaf": 0.000561668247,
+      "leaf": 0.000538449211,
       "cover": 638
     },
     {
       "nodeid": 0,
-      "leaf": -4.60636729e-05,
+      "leaf": -0.000109491593,
       "cover": 606
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000169526247,
+      "cover": 616
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000135536509,
+      "cover": 631
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "current_price",
+      "split_condition": 10955.0801,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 2.01320577,
+      "cover": 639,
+      "children": [
+        {
+          "nodeid": 1,
+          "leaf": 0.000577157305,
+          "cover": 587
+        },
+        {
+          "nodeid": 2,
+          "leaf": -0.00923765916,
+          "cover": 52
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000314383273,
+      "cover": 627
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000130730841,
+      "cover": 614
+    },
+    {
+      "nodeid": 0,
+      "depth": 0,
+      "split": "chase_card_index_score",
+      "split_condition": 84,
+      "yes": 1,
+      "no": 2,
+      "missing": 2,
+      "gain": 2.02114916,
+      "cover": 618,
+      "children": [
+        {
+          "nodeid": 1,
+          "leaf": -0.00162405986,
+          "cover": 427
+        },
+        {
+          "nodeid": 2,
+          "leaf": 0.00448317453,
+          "cover": 191
+        }
+      ]
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000508189958,
+      "cover": 630
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000647669076,
+      "cover": 623
+    },
+    {
+      "nodeid": 0,
+      "leaf": 6.38383572e-05,
+      "cover": 626
+    },
+    {
+      "nodeid": 0,
+      "leaf": -8.26534888e-05,
+      "cover": 625
     },
     {
       "nodeid": 0,
@@ -2932,102 +3013,70 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.50775981,
-      "cover": 616,
+      "gain": 2.05984068,
+      "cover": 637,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.00341761089,
-          "cover": 305
+          "leaf": -0.00299861631,
+          "cover": 308
         },
         {
           "nodeid": 2,
-          "leaf": 0.00290257554,
-          "cover": 311
+          "leaf": 0.00264419219,
+          "cover": 329
         }
       ]
-    },
-    {
-      "nodeid": 0,
-      "leaf": -4.79688424e-05,
-      "cover": 631
-    },
-    {
-      "nodeid": 0,
-      "leaf": -0.000311216922,
-      "cover": 639
-    },
-    {
-      "nodeid": 0,
-      "leaf": -0.000291921722,
-      "cover": 627
-    },
-    {
-      "nodeid": 0,
-      "leaf": -0.000272274221,
-      "cover": 614
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.000200340219,
-      "cover": 618
     },
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "popularity_score",
-      "split_condition": 86,
+      "split": "current_price",
+      "split_condition": 52,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.0638206,
-      "cover": 630,
+      "gain": 2.3859086,
+      "cover": 635,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.00230540498,
-          "cover": 467
+          "leaf": 0.0105750142,
+          "cover": 43
         },
         {
           "nodeid": 2,
-          "leaf": 0.00411217473,
-          "cover": 163
+          "depth": 1,
+          "split": "price_trajectory_6mo",
+          "split_condition": 97.2289963,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 2.34321213,
+          "cover": 592,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.000474566215,
+              "cover": 476
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.00724378927,
+              "cover": 116
+            }
+          ]
         }
       ]
     },
     {
       "nodeid": 0,
-      "leaf": -0.000651062815,
-      "cover": 623
-    },
-    {
-      "nodeid": 0,
-      "leaf": 5.56806444e-05,
-      "cover": 626
-    },
-    {
-      "nodeid": 0,
-      "leaf": -0.000153446046,
-      "cover": 625
-    },
-    {
-      "nodeid": 0,
-      "leaf": -6.86163776e-06,
-      "cover": 637
-    },
-    {
-      "nodeid": 0,
-      "leaf": -6.58323333e-05,
-      "cover": 635
-    },
-    {
-      "nodeid": 0,
-      "leaf": 0.000112387817,
+      "leaf": 0.000147047118,
       "cover": 606
     },
     {
       "nodeid": 0,
-      "leaf": 0,
+      "leaf": 1.81504274e-05,
       "cover": 652
     },
     {
@@ -3037,55 +3086,55 @@
     },
     {
       "nodeid": 0,
-      "leaf": 0.000496283814,
+      "leaf": 0.000472554151,
       "cover": 628
     },
     {
       "nodeid": 0,
-      "leaf": 0.000255838851,
+      "leaf": 0.000148010382,
       "cover": 629
     },
     {
       "nodeid": 0,
-      "leaf": 0.00026269001,
+      "leaf": 0.000162627592,
       "cover": 636
     },
     {
       "nodeid": 0,
-      "leaf": -0.000404420978,
+      "leaf": -0.000428721134,
       "cover": 617
     },
     {
       "nodeid": 0,
-      "leaf": -0.000649987604,
+      "leaf": -0.000541364017,
       "cover": 627
     },
     {
       "nodeid": 0,
       "depth": 0,
-      "split": "price_trajectory_6mo",
-      "split_condition": 72.6230011,
+      "split": "price_momentum_1mo",
+      "split_condition": 16.8859997,
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.46311736,
+      "gain": 2.13316369,
       "cover": 621,
       "children": [
         {
           "nodeid": 1,
-          "leaf": 0.0016741798,
-          "cover": 466
+          "leaf": 0.00105888105,
+          "cover": 539
         },
         {
           "nodeid": 2,
-          "leaf": -0.00550022116,
-          "cover": 155
+          "leaf": -0.00736824563,
+          "cover": 82
         }
       ]
     },
     {
       "nodeid": 0,
-      "leaf": -0.000356906938,
+      "leaf": -0.000396703108,
       "cover": 629
     },
     {
@@ -3095,35 +3144,17 @@
     },
     {
       "nodeid": 0,
-      "depth": 0,
-      "split": "current_price",
-      "split_condition": 7999.89014,
-      "yes": 1,
-      "no": 2,
-      "missing": 2,
-      "gain": 2.07903004,
-      "cover": 660,
-      "children": [
-        {
-          "nodeid": 1,
-          "leaf": 0.00117054069,
-          "cover": 557
-        },
-        {
-          "nodeid": 2,
-          "leaf": -0.00640279381,
-          "cover": 103
-        }
-      ]
+      "leaf": 0,
+      "cover": 660
     },
     {
       "nodeid": 0,
-      "leaf": 1.91493509e-05,
+      "leaf": 5.39415632e-05,
       "cover": 654
     },
     {
       "nodeid": 0,
-      "leaf": -0.000347240013,
+      "leaf": -0.000349614129,
       "cover": 614
     },
     {
@@ -3134,17 +3165,35 @@
       "yes": 1,
       "no": 2,
       "missing": 2,
-      "gain": 2.38916445,
+      "gain": 2.36386061,
       "cover": 608,
       "children": [
         {
           "nodeid": 1,
-          "leaf": -0.00156511553,
-          "cover": 453
+          "depth": 1,
+          "split": "popularity_score",
+          "split_condition": 75,
+          "yes": 3,
+          "no": 4,
+          "missing": 4,
+          "gain": 2.51837301,
+          "cover": 453,
+          "children": [
+            {
+              "nodeid": 3,
+              "leaf": 0.00110900763,
+              "cover": 293
+            },
+            {
+              "nodeid": 4,
+              "leaf": -0.00650229258,
+              "cover": 160
+            }
+          ]
         },
         {
           "nodeid": 2,
-          "leaf": 0.0055187284,
+          "leaf": 0.00553179532,
           "cover": 155
         }
       ]
@@ -3154,90 +3203,127 @@
   "trainingRows": 892,
   "crossValidation": {
     "folds": 5.0,
-    "rmse": 2102.8103,
-    "mae": 909.1988,
-    "mape": 29.9515,
-    "returnRmse": 0.465118,
-    "returnMae": 0.351946,
+    "rmse": 2103.9593,
+    "mae": 904.83,
+    "mape": 29.8492,
+    "returnRmse": 0.462683,
+    "returnMae": 0.34953,
     "strategy": "time_series_split"
   },
-  "meanTargetPrice": 3644.584,
-  "meanTargetReturnPercent": 57.4387,
-  "historicalErrorPercent": 29.9515,
-  "maeShareOfMeanTarget": 0.2495,
+  "meanTargetPrice": 3643.2646,
+  "meanTargetReturnPercent": 57.4771,
+  "historicalErrorPercent": 29.8492,
+  "maeShareOfMeanTarget": 0.2484,
   "targetTransform": {
     "train": "np.log",
     "inference": "np.exp"
   },
   "validationStrategy": "time_series_split",
+  "minimumTrainingRowsForApproval": 24,
   "deploymentApproved": true,
   "manualReviewReasons": [],
   "globalImportance": [
     {
       "key": "era_encoded",
       "name": "era_encoded",
-      "gain": 14.422187,
-      "influence": 24.2071
+      "gain": 14.222314,
+      "influence": 15.6736
     },
     {
-      "key": "market_cycle_score",
-      "name": "market_cycle_score",
-      "gain": 7.999888,
-      "influence": 13.4275
-    },
-    {
-      "key": "set_age_years",
-      "name": "set_age_years",
-      "gain": 7.170044,
-      "influence": 12.0347
+      "key": "price_volatility_12mo",
+      "name": "price_volatility_12mo",
+      "gain": 8.573833,
+      "influence": 9.4487
     },
     {
       "key": "price_trajectory_24mo",
       "name": "price_trajectory_24mo",
-      "gain": 4.950561,
-      "influence": 8.3093
+      "gain": 8.473607,
+      "influence": 9.3383
     },
     {
-      "key": "price_trajectory_6mo",
-      "name": "price_trajectory_6mo",
-      "gain": 4.266772,
-      "influence": 7.1616
+      "key": "set_age_years",
+      "name": "set_age_years",
+      "gain": 8.148451,
+      "influence": 8.9799
     },
     {
-      "key": "most_expensive_card_price",
-      "name": "most_expensive_card_price",
-      "gain": 3.991267,
-      "influence": 6.6992
+      "key": "market_cycle_score",
+      "name": "market_cycle_score",
+      "gain": 6.556241,
+      "influence": 7.2253
+    },
+    {
+      "key": "price_volatility_6mo",
+      "name": "price_volatility_6mo",
+      "gain": 6.117723,
+      "influence": 6.742
+    },
+    {
+      "key": "price_momentum_12mo",
+      "name": "price_momentum_12mo",
+      "gain": 5.601823,
+      "influence": 6.1734
     },
     {
       "key": "current_price",
       "name": "current_price",
-      "gain": 3.950825,
-      "influence": 6.6313
-    },
-    {
-      "key": "google_trends_score",
-      "name": "google_trends_score",
-      "gain": 3.920547,
-      "influence": 6.5805
-    },
-    {
-      "key": "popularity_score",
-      "name": "popularity_score",
-      "gain": 3.643526,
-      "influence": 6.1155
+      "gain": 4.484762,
+      "influence": 4.9424
     },
     {
       "key": "chase_card_count",
       "name": "chase_card_count",
-      "gain": 2.661963,
-      "influence": 4.468
+      "gain": 4.247231,
+      "influence": 4.6806
     },
     {
-      "key": "collector_demand_ratio",
-      "name": "collector_demand_ratio",
-      "gain": 2.600655,
-      "influence": 4.3651
+      "key": "google_trends_score",
+      "name": "google_trends_score",
+      "gain": 3.79677,
+      "influence": 4.1842
+    },
+    {
+      "key": "popularity_score",
+      "name": "popularity_score",
+      "gain": 3.614921,
+      "influence": 3.9838
+    },
+    {
+      "key": "most_expensive_card_price",
+      "name": "most_expensive_card_price",
+      "gain": 3.276408,
+      "influence": 3.6107
+    },
+    {
+      "key": "drawdown_12mo",
+      "name": "drawdown_12mo",
+      "gain": 3.262491,
+      "influence": 3.5954
+    },
+    {
+      "key": "price_trajectory_6mo",
+      "name": "price_trajectory_6mo",
+      "gain": 3.150509,
+      "influence": 3.472
+    },
+    {
+      "key": "history_window_missing_flag",
+      "name": "history_window_missing_flag",
+      "gain": 3.059201,
+      "influence": 3.3714
+    },
+    {
+      "key": "price_momentum_1mo",
+      "name": "price_momentum_1mo",
+      "gain": 2.133164,
+      "influence": 2.3508
+    },
+    {
+      "key": "chase_card_index_score",
+      "name": "chase_card_index_score",
+      "gain": 2.021149,
+      "influence": 2.2274
     }
   ]
 }

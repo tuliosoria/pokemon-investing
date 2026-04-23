@@ -37,6 +37,17 @@ export interface SealedSetData {
     average: number;
     direction: "rising" | "stable" | "declining";
   };
+  pricingContext?: {
+    priceChartingPrice?: number | null;
+    tcgplayerPrice?: number | null;
+    ebayPrice?: number | null;
+    pokedataPrice?: number | null;
+    bestPrice?: number | null;
+    primaryProvider?: "pricecharting" | "pokedata";
+    snapshotDate?: string | null;
+    salesVolume?: number | null;
+    manualOnlyPrice?: number | null;
+  };
 }
 
 export type Signal = "Buy" | "Hold" | "Sell";
@@ -91,6 +102,8 @@ export interface SealedPricing {
   bestPrice: number | null;
   primaryProvider?: "pricecharting" | "pokedata";
   snapshotDate?: string | null;
+  salesVolume?: number | null;
+  manualOnlyPrice?: number | null;
 }
 
 export interface ProjectionPoint {

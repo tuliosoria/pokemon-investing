@@ -16,6 +16,17 @@ Parameters:
     Type: String
     Default: cron(0 5 1 * ? *)
     Description: EventBridge schedule for monthly retraining.
+  PublishEnabled:
+    Type: String
+    Default: "true"
+    AllowedValues:
+      - "true"
+      - "false"
+    Description: Whether approved retraining runs may publish model artifacts to DynamoDB.
+  LogRetentionInDays:
+    Type: Number
+    Default: 30
+    Description: CloudWatch log retention for the retraining Lambda.
 
 Resources:
   SealedMlRetrainerRole:
@@ -46,8 +57,16 @@ Resources:
                 Resource:
                   - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${DynamoDbTableName}
 
+  SealedMlRetrainerLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/pokealpha-sealed-ml-retrainer
+      RetentionInDays: !Ref LogRetentionInDays
+
   SealedMlRetrainerFunction:
     Type: AWS::Lambda::Function
+    DependsOn:
+      - SealedMlRetrainerLogGroup
     Properties:
       FunctionName: pokealpha-sealed-ml-retrainer
       PackageType: Image
@@ -62,6 +81,7 @@ Resources:
           DYNAMODB_TABLE: !Ref DynamoDbTableName
           POKEDATA_API_KEY: !Ref PokeDataApiKey
           SEALED_ML_OUTPUT_DIR: /tmp/sealed-ml-artifacts
+          SEALED_ML_PUBLISH_ENABLED: !Ref PublishEnabled
 
   SealedMlRetrainerSchedule:
     Type: AWS::Events::Rule
@@ -82,7 +102,13 @@ Resources:
       SourceArn: !GetAtt SealedMlRetrainerSchedule.Arn
 
 Outputs:
+  RetrainerFunctionName:
+    Value: !Ref SealedMlRetrainerFunction
   RetrainerFunctionArn:
     Value: !GetAtt SealedMlRetrainerFunction.Arn
   RetrainerScheduleRuleArn:
     Value: !GetAtt SealedMlRetrainerSchedule.Arn
+  RetrainerLogGroupName:
+    Value: !Ref SealedMlRetrainerLogGroup
+  PublishEnabled:
+    Value: !Ref PublishEnabled
