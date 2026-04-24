@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "hooks:install": "git config core.hooksPath .githooks",
     "verify:app": "npm run lint && npm run build",
-    "verify:scripts": "node --check scripts/sync-pricecharting-prices.mjs && node --check scripts/backfill-pokedata-card-grades.mjs && node --check scripts/backfill-card-catalog.mjs && node --check scripts/sync-trends.mjs && node --check scripts/build-sealed-expansion-catalog.mjs && node --check scripts/mirror-sealed-images.mjs && python3 -m py_compile scripts/train_sealed_ml.py scripts/retrain_sealed_ml.py scripts/sync_sealed_catalog.py scripts/import_pricecharting_csv.py",
+    "verify:scripts": "node --check scripts/sync-pricecharting-prices.mjs && node --check scripts/backfill-pokedata-card-grades.mjs && node --check scripts/backfill-card-catalog.mjs && node --check scripts/sync-trends.mjs && node --check scripts/build-sealed-expansion-catalog.mjs && node --check scripts/mirror-sealed-images.mjs && node --check scripts/fetch-top-chase-cards.mjs && python3 -m py_compile scripts/train_sealed_ml.py scripts/retrain_sealed_ml.py scripts/sync_sealed_catalog.py scripts/import_pricecharting_csv.py",
     "verify": "npm run verify:app && npm run verify:scripts",
     "backfill:pokedata:sealed": "npx tsx scripts/seed-products.ts",
     "backfill:pokedata:sealed-meta": "npx tsx scripts/seed-products.ts --meta-only",

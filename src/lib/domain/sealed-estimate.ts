@@ -1,5 +1,77 @@
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
+import topChaseCardsData from "@/lib/data/sealed-ml/top-chase-cards.json";
 import type { SealedSetData, ProductType, SealedPricing } from "@/lib/types/sealed";
+
+interface TopChaseEntry {
+  setId: string;
+  setName: string;
+  fetchedAt?: string;
+  cards?: Array<{ name: string; marketPrice?: number; rarity?: string | null }>;
+}
+
+const TOP_CHASE_BY_SET_ID: Record<string, TopChaseEntry> =
+  topChaseCardsData as Record<string, TopChaseEntry>;
+
+const TOP_CHASE_BY_NORMALIZED_NAME: Map<string, TopChaseEntry> = (() => {
+  const map = new Map<string, TopChaseEntry>();
+  for (const entry of Object.values(TOP_CHASE_BY_SET_ID)) {
+    if (!entry?.setName) continue;
+    const key = entry.setName
+      .toLowerCase()
+      .replace(/^pokemon\s+/i, "")
+      .replace(/[^a-z0-9]+/g, "");
+    if (key) map.set(key, entry);
+  }
+  return map;
+})();
+
+function lookupTopChaseCards(
+  pricing: SealedPricing
+): { names: string[]; chaseCardIndex: number | null } {
+  const candidates = [
+    pricing.priceChartingConsoleName,
+    pricing.name,
+  ].filter((value): value is string => Boolean(value));
+
+  for (const candidate of candidates) {
+    const normalized = candidate
+      .toLowerCase()
+      .replace(/^pokemon\s+/i, "")
+      .replace(/\b(booster\s*box|booster\s*bundle|booster\s*pack|elite\s*trainer\s*box|etb|upc|ultra\s*premium|tin|case|collection\s*box|collection|special\s*collection)\b/g, "")
+      .replace(/[^a-z0-9]+/g, "");
+    if (!normalized) continue;
+    const direct = TOP_CHASE_BY_NORMALIZED_NAME.get(normalized);
+    if (direct?.cards?.length) {
+      return scoreChaseEntry(direct);
+    }
+    // Fuzzy contains match for partial overlaps (e.g. "scarlet violet 151").
+    for (const [key, entry] of TOP_CHASE_BY_NORMALIZED_NAME) {
+      if (!entry.cards?.length) continue;
+      if (key === normalized) continue;
+      if (key.includes(normalized) || normalized.includes(key)) {
+        if (key.length >= 4) {
+          return scoreChaseEntry(entry);
+        }
+      }
+    }
+  }
+  return { names: [], chaseCardIndex: null };
+}
+
+function scoreChaseEntry(entry: TopChaseEntry): {
+  names: string[];
+  chaseCardIndex: number | null;
+} {
+  const cards = entry.cards ?? [];
+  const names = cards.slice(0, 4).map((c) => c.name).filter(Boolean);
+  if (!names.length) return { names: [], chaseCardIndex: null };
+  const topPrice = cards[0]?.marketPrice ?? 0;
+  // Map top chase price → 0..100 score on log scale.
+  // $5 → 30, $25 → 50, $100 → 70, $500 → 85, $1500+ → 95+
+  if (!topPrice || topPrice <= 0) return { names, chaseCardIndex: 50 };
+  const score = 22 + 22 * Math.log10(topPrice + 1);
+  return { names, chaseCardIndex: Math.max(10, Math.min(98, Math.round(score))) };
+}
 
 const PRODUCT_TYPE_PATTERNS: [RegExp, ProductType][] = [
   [/\bbooster\s*box\s*case\b/i, "Case"],
@@ -135,19 +207,72 @@ function computePriceTrajectory(
   return clamp(Math.round(score), 10, 95);
 }
 
-/** How many of the 8 factors are reliably estimated (vs defaulting to 50) */
-export function countEstimatedFactors(curated: boolean): number {
-  // Curated: all 8 are hand-tuned
-  // Dynamic: setAge, marketValue, priceTrajectory are computed; 5 default to 50
-  return curated ? 0 : 5;
+// Typical monthly sales volume by product type used to map sales-volume
+// to popularity / demand signals. Calibrated against PriceCharting's
+// reported sales-volume column (which is roughly trailing-30-day units).
+const TYPICAL_SALES_VOLUME: Record<ProductType, number> = {
+  "Booster Box": 50,
+  "ETB": 120,
+  "Booster Bundle": 80,
+  "Booster Pack": 200,
+  "UPC": 25,
+  "Tin": 60,
+  "Collection Box": 40,
+  "Special Collection": 30,
+  "Case": 5,
+  "Unknown": 50,
+};
+
+function computePopularity(salesVolume: number | null | undefined): number {
+  if (!salesVolume || salesVolume <= 0) return 50;
+  // Log-scaled: 10 sales → 35, 50 → 55, 100 → 65, 250 → 75, 500+ → 85+
+  const score = 25 + 22 * Math.log10(salesVolume + 1);
+  return clamp(Math.round(score), 10, 95);
+}
+
+function computeMarketCycle(releaseYear: number): number {
+  const age = new Date().getFullYear() - releaseYear;
+  // Cycle phase: early hype (1-2 yr) lower, mid (3-6 yr) peak, mature (7+) declining
+  if (age <= 0) return 35; // freshly released, supply still high
+  if (age <= 2) return 55; // distribution still flowing
+  if (age <= 5) return 78; // sweet spot — sealed drying up
+  if (age <= 10) return 70;
+  if (age <= 20) return 60;
+  return 50; // very old: highly variable
+}
+
+function computeDemandRatio(
+  salesVolume: number | null | undefined,
+  productType: ProductType
+): number {
+  if (!salesVolume || salesVolume <= 0) return 50;
+  const baseline = TYPICAL_SALES_VOLUME[productType] ?? 50;
+  const ratio = salesVolume / baseline;
+  // ratio 0.5 → 40, 1.0 → 55, 2.0 → 70, 4.0 → 80, 10x+ → 90+
+  const score = 40 + 22 * Math.log2(ratio + 0.25);
+  return clamp(Math.round(score), 15, 92);
+}
+
+/**
+ * How many of the 8 factors are reliably estimated (vs defaulting to 50).
+ * Curated entries hand-tune all 8.
+ * Dynamic entries always compute setAge, marketValue, priceTrajectory,
+ * marketCycle (4 factors). When PriceCharting sales-volume is available
+ * we additionally compute popularity and demandRatio, leaving only
+ * chaseCardIndex and printRun as defaults (2 estimated).
+ */
+export function countEstimatedFactors(
+  curated: boolean,
+  hasSalesVolume = false
+): number {
+  if (curated) return 0;
+  return hasSalesVolume ? 2 : 4;
 }
 
 /**
  * Build a SealedSetData from a runtime pricing payload.
  * PriceCharting is the primary source; PokeData metadata is only used
  * as fallback when PriceCharting cannot supply the field.
- * Only setAge, marketValue, and priceTrajectory are estimated from real data.
- * Other factors default to 50 (neutral).
  */
 export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
   const productType = inferProductType(pricing.name);
@@ -157,6 +282,15 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
     : new Date().getFullYear();
   const price = pricing.bestPrice ?? 0;
   const relatedCuratedSet = getRelatedCuratedSet(pricing.name);
+  const salesVolume = pricing.salesVolume ?? null;
+  const hasSalesVolume = typeof salesVolume === "number" && salesVolume > 0;
+  const topChase = lookupTopChaseCards(pricing);
+  const chaseCards =
+    topChase.names.length > 0
+      ? topChase.names
+      : relatedCuratedSet?.chaseCards ?? [];
+  const chaseCardIndex =
+    topChase.chaseCardIndex ?? relatedCuratedSet?.factors.chaseCardIndex ?? 50;
 
   return {
     id: `dynamic-${pricing.pokedataId}`,
@@ -174,16 +308,22 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
 
     factors: {
       marketValue: computeMarketValue(price),
-      chaseCardIndex: 50,
-      printRun: 50,
+      chaseCardIndex,
+      printRun: relatedCuratedSet?.factors.printRun ?? 50,
       setAge: computeSetAge(pricing.releaseDate, releaseYear),
       priceTrajectory: computePriceTrajectory(price, productType, releaseYear),
-      popularity: 50,
-      marketCycle: 50,
-      demandRatio: 50,
+      popularity: hasSalesVolume
+        ? computePopularity(salesVolume)
+        : relatedCuratedSet?.factors.popularity ?? 50,
+      marketCycle: computeMarketCycle(
+        isNaN(releaseYear) ? new Date().getFullYear() : releaseYear
+      ),
+      demandRatio: hasSalesVolume
+        ? computeDemandRatio(salesVolume, productType)
+        : relatedCuratedSet?.factors.demandRatio ?? 50,
     },
 
-    chaseCards: relatedCuratedSet?.chaseCards ?? [],
+    chaseCards,
     printRunLabel: relatedCuratedSet?.printRunLabel ?? "Standard",
     notes:
       relatedCuratedSet?.notes ??
