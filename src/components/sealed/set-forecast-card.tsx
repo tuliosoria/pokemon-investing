@@ -45,8 +45,32 @@ export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardP
     initialUrl: set.tcgplayerUrl,
   });
 
-  const trendScore = set.trendData?.current ?? 0;
-  const hasTrendScore = trendScore > 0;
+  const communityScore =
+    typeof set.factors?.communityScore === "number"
+      ? Math.round(set.factors.communityScore)
+      : null;
+  const redditScore =
+    typeof set.factors?.redditScore === "number"
+      ? Math.round(set.factors.redditScore)
+      : null;
+  const googleTrendsScore =
+    typeof set.factors?.googleTrendsScore === "number"
+      ? Math.round(set.factors.googleTrendsScore)
+      : null;
+  const forumScore =
+    typeof set.factors?.forumScore === "number"
+      ? Math.round(set.factors.forumScore)
+      : null;
+  const communityLabel =
+    communityScore == null
+      ? null
+      : communityScore >= 70
+        ? { text: "🔥 Strong Engagement", tone: "bg-green-500/20 text-green-400" }
+        : communityScore >= 50
+          ? { text: "📣 Healthy Interest", tone: "bg-emerald-500/20 text-emerald-300" }
+          : communityScore >= 30
+            ? { text: "💬 Moderate Interest", tone: "bg-amber-500/20 text-amber-300" }
+            : { text: "🤫 Quiet Signal", tone: "bg-gray-500/20 text-gray-300" };
   const spDelta = Math.abs(forecast.roiPercent - forecast.spRoi);
   const blockedBadgeLabel =
     forecast.status === "too_new"
@@ -187,43 +211,31 @@ export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardP
           )}
 
           <div className="space-y-2 rounded-xl border border-white/10 bg-white/[0.03] p-3">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[hsl(var(--muted-foreground))]">
-              Google Trends
-            </p>
-            {set.trendData ? (
+            <div className="flex items-center justify-between">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[hsl(var(--muted-foreground))]">
+                Community Score
+              </p>
+              {communityScore != null && (
+                <span className="text-[11px] font-semibold text-[hsl(var(--foreground))]">
+                  {communityScore}/100
+                </span>
+              )}
+            </div>
+            {communityLabel ? (
               <div className="flex flex-wrap items-center gap-2 text-[11px]">
                 <span
-                  className={`rounded-full px-2 py-0.5 font-semibold ${
-                    set.trendData.direction === "rising"
-                      ? "bg-green-500/20 text-green-400"
-                      : set.trendData.direction === "declining"
-                        ? "bg-red-500/20 text-red-400"
-                        : "bg-gray-500/20 text-gray-400"
-                  }`}
+                  className={`rounded-full px-2 py-0.5 font-semibold ${communityLabel.tone}`}
                 >
-                  {set.trendData.direction === "rising"
-                    ? "📈 Trending Up"
-                    : set.trendData.direction === "declining"
-                      ? "📉 Trending Down"
-                      : "➡️ Stable Interest"}
+                  {communityLabel.text}
                 </span>
-                {hasTrendScore ? (
-                  <span className="text-[hsl(var(--muted-foreground))]">
-                    {trendScore}/100 interest score
-                  </span>
-                ) : (
-                  <span
-                    className="text-gray-300"
-                    title="Trend data unavailable for this set"
-                  >
-                    <span className="italic">N/A</span>
-                  </span>
-                )}
+                <span className="text-[hsl(var(--muted-foreground))]">
+                  Reddit {redditScore ?? "—"} · Trends {googleTrendsScore ?? "—"} · Forums {forumScore ?? "—"}
+                </span>
               </div>
             ) : (
               <p
                 className="text-[11px] text-[hsl(var(--muted-foreground))]"
-                title="Trend data unavailable for this set"
+                title="Community signal unavailable for this set"
               >
                 <span className="italic">N/A</span>
               </p>

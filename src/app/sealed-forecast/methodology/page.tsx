@@ -30,9 +30,9 @@ const VARIABLES = [
     purpose: "Separates brand-new sets from mature products and gives context for price behavior.",
   },
   {
-    name: "Google Trends score",
-    source: "Live interest data blended into popularity for curated and search results when available.",
-    purpose: "Adds a real-time demand signal instead of relying only on static metadata.",
+    name: "Community Score",
+    source: "Composite signal blending Reddit discussions (45%), Google Trends (35%), and forum chatter (20%).",
+    purpose: "Replaces the standalone Google Trends slot with a richer real-time demand proxy.",
   },
   {
     name: "6-month and 24-month price trajectories",
@@ -51,7 +51,7 @@ const VARIABLES = [
   },
   {
     name: "Popularity score",
-    source: "Set-level popularity input, optionally updated with Google Trends.",
+    source: "Set-level popularity input, blended with the Community Score (Reddit + Trends + forums).",
     purpose: "Captures brand strength, nostalgia, and current attention.",
   },
   {
