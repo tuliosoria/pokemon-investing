@@ -83,8 +83,10 @@ def main() -> int:
         if not row:
             continue
 
+        loose_price = parse_currency(row.get("loose-price"))
         new_price = parse_currency(row.get("new-price"))
         manual_only_price = parse_currency(row.get("manual-only-price"))
+        sealed_price = loose_price or new_price or manual_only_price
 
         synced_entries.append(
             {
@@ -96,7 +98,8 @@ def main() -> int:
                 "priceChartingId": pricecharting_id,
                 "productName": row.get("product-name") or product.get("name"),
                 "consoleName": row.get("console-name") or product.get("priceChartingConsoleName"),
-                "newPrice": new_price,
+                "newPrice": sealed_price,
+                "loosePrice": loose_price,
                 "manualOnlyPrice": manual_only_price,
                 "salesVolume": parse_int(row.get("sales-volume")),
                 "catalogSource": product.get("catalogSource") or "curated-manifest",

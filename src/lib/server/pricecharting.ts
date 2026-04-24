@@ -156,6 +156,7 @@ export function getPriceChartingSealedPrice(
   product: PriceChartingProductResponse | null | undefined
 ): number | null {
   return (
+    parsePennies(product?.["loose-price"]) ??
     parsePennies(product?.["new-price"]) ??
     parsePennies(product?.["manual-only-price"])
   );

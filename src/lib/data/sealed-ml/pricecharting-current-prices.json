@@ -8,12 +8,13 @@
     "priceChartingId": "3880844",
     "productName": "Booster Box",
     "consoleName": "Pokemon Gym Heroes",
-    "newPrice": null,
+    "newPrice": 12927.5,
+    "loosePrice": 12927.5,
     "manualOnlyPrice": null,
     "salesVolume": 4,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "gym2-booster-box",
@@ -24,12 +25,13 @@
     "priceChartingId": "2418130",
     "productName": "Booster Box [1st Edition]",
     "consoleName": "Pokemon Gym Challenge",
-    "newPrice": null,
+    "newPrice": 25000.0,
+    "loosePrice": 25000.0,
     "manualOnlyPrice": null,
     "salesVolume": 5,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "neo2-booster-box",
@@ -40,12 +42,13 @@
     "priceChartingId": "2189377",
     "productName": "Booster Box [1st Edition]",
     "consoleName": "Pokemon Neo Discovery",
-    "newPrice": null,
+    "newPrice": 18949.43,
+    "loosePrice": 18949.43,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "neo3-booster-box",
@@ -56,12 +59,13 @@
     "priceChartingId": "2189384",
     "productName": "Booster Box",
     "consoleName": "Pokemon Neo Revelation",
-    "newPrice": null,
+    "newPrice": 12145.3,
+    "loosePrice": 12145.3,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "neo4-booster-box",
@@ -72,12 +76,13 @@
     "priceChartingId": "2189370",
     "productName": "Booster Box",
     "consoleName": "Pokemon Neo Destiny",
-    "newPrice": null,
+    "newPrice": 14012.5,
+    "loosePrice": 14012.5,
     "manualOnlyPrice": null,
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "base6-booster-box",
@@ -88,12 +93,13 @@
     "priceChartingId": "2245073",
     "productName": "Booster Box",
     "consoleName": "Pokemon Legendary Collection",
-    "newPrice": null,
+    "newPrice": 22215.55,
+    "loosePrice": 22215.55,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ecard2-booster-box",
@@ -104,12 +110,13 @@
     "priceChartingId": "2245069",
     "productName": "Booster Box",
     "consoleName": "Pokemon Aquapolis",
-    "newPrice": null,
+    "newPrice": 13766.7,
+    "loosePrice": 13766.7,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ecard3-booster-box",
@@ -120,12 +127,13 @@
     "priceChartingId": "2245067",
     "productName": "Booster Box",
     "consoleName": "Pokemon Skyridge",
-    "newPrice": null,
+    "newPrice": 199334.93,
+    "loosePrice": 199334.93,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ex1-booster-box",
@@ -136,12 +144,13 @@
     "priceChartingId": "7596590",
     "productName": "Booster Box",
     "consoleName": "Pokemon Ruby & Sapphire",
-    "newPrice": null,
+    "newPrice": 16245.7,
+    "loosePrice": 16245.7,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ex5-booster-box",
@@ -152,12 +161,13 @@
     "priceChartingId": "2245065",
     "productName": "Booster Box",
     "consoleName": "Pokemon Hidden Legends",
-    "newPrice": null,
+    "newPrice": 19100.0,
+    "loosePrice": 19100.0,
     "manualOnlyPrice": null,
     "salesVolume": 3,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ex7-booster-box",
@@ -168,12 +178,13 @@
     "priceChartingId": "2245061",
     "productName": "Booster Box",
     "consoleName": "Pokemon Team Rocket Returns",
-    "newPrice": null,
+    "newPrice": 67654.0,
+    "loosePrice": 67654.0,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ex8-booster-box",
@@ -184,12 +195,13 @@
     "priceChartingId": "2245059",
     "productName": "Booster Box",
     "consoleName": "Pokemon Deoxys",
-    "newPrice": null,
+    "newPrice": 110.7,
+    "loosePrice": 110.7,
     "manualOnlyPrice": null,
     "salesVolume": 0,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ex9-booster-box",
@@ -200,12 +212,13 @@
     "priceChartingId": "2245057",
     "productName": "Booster Box",
     "consoleName": "Pokemon Emerald",
-    "newPrice": null,
+    "newPrice": 14053.5,
+    "loosePrice": 14053.5,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ex10-booster-box",
@@ -216,12 +229,13 @@
     "priceChartingId": "2245055",
     "productName": "Booster Box",
     "consoleName": "Pokemon Unseen Forces",
-    "newPrice": null,
+    "newPrice": 121344.75,
+    "loosePrice": 121344.75,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ex11-booster-box",
@@ -232,12 +246,13 @@
     "priceChartingId": "2245053",
     "productName": "Booster Box",
     "consoleName": "Pokemon Delta Species",
-    "newPrice": null,
+    "newPrice": 25000.0,
+    "loosePrice": 25000.0,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ex12-booster-box",
@@ -248,12 +263,13 @@
     "priceChartingId": "2245051",
     "productName": "Booster Box",
     "consoleName": "Pokemon Legend Maker",
-    "newPrice": null,
+    "newPrice": 13472.0,
+    "loosePrice": 13472.0,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ex13-booster-box",
@@ -264,12 +280,13 @@
     "priceChartingId": "2245049",
     "productName": "Booster Box",
     "consoleName": "Pokemon Holon Phantoms",
-    "newPrice": null,
+    "newPrice": 20431.33,
+    "loosePrice": 20431.33,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ex14-booster-box",
@@ -280,12 +297,13 @@
     "priceChartingId": "2245047",
     "productName": "Booster Box",
     "consoleName": "Pokemon Crystal Guardians",
-    "newPrice": null,
+    "newPrice": 11469.46,
+    "loosePrice": 11469.46,
     "manualOnlyPrice": null,
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ex15-booster-box",
@@ -296,12 +314,13 @@
     "priceChartingId": "2245045",
     "productName": "Booster Box",
     "consoleName": "Pokemon Dragon Frontiers",
-    "newPrice": null,
+    "newPrice": 10344.1,
+    "loosePrice": 10344.1,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "ex16-booster-box",
@@ -312,12 +331,13 @@
     "priceChartingId": "2245043",
     "productName": "Booster Box",
     "consoleName": "Pokemon Power Keepers",
-    "newPrice": null,
+    "newPrice": 13526.0,
+    "loosePrice": 13526.0,
     "manualOnlyPrice": null,
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "dp1-booster-box",
@@ -328,12 +348,13 @@
     "priceChartingId": "5881532",
     "productName": "Booster Box",
     "consoleName": "Pokemon Diamond & Pearl",
-    "newPrice": null,
+    "newPrice": 2926.88,
+    "loosePrice": 2926.88,
     "manualOnlyPrice": null,
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "dp2-booster-box",
@@ -344,12 +365,13 @@
     "priceChartingId": "2245041",
     "productName": "Booster Box",
     "consoleName": "Pokemon Mysterious Treasures",
-    "newPrice": null,
+    "newPrice": 15900.0,
+    "loosePrice": 15900.0,
     "manualOnlyPrice": null,
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "dp3-booster-box",
@@ -360,12 +382,13 @@
     "priceChartingId": "2245037",
     "productName": "Booster Box",
     "consoleName": "Pokemon Secret Wonders",
-    "newPrice": null,
+    "newPrice": 12500.0,
+    "loosePrice": 12500.0,
     "manualOnlyPrice": null,
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "dp4-booster-box",
@@ -376,12 +399,13 @@
     "priceChartingId": "2245035",
     "productName": "Booster Box",
     "consoleName": "Pokemon Great Encounters",
-    "newPrice": null,
+    "newPrice": 4844.25,
+    "loosePrice": 4844.25,
     "manualOnlyPrice": null,
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "dp5-booster-box",
@@ -392,12 +416,13 @@
     "priceChartingId": "2245039",
     "productName": "Booster Box",
     "consoleName": "Pokemon Majestic Dawn",
-    "newPrice": null,
+    "newPrice": 5900.0,
+    "loosePrice": 5900.0,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "dp6-booster-box",
@@ -408,12 +433,13 @@
     "priceChartingId": "2245033",
     "productName": "Booster Box",
     "consoleName": "Pokemon Legends Awakened",
-    "newPrice": null,
+    "newPrice": 7338.88,
+    "loosePrice": 7338.88,
     "manualOnlyPrice": null,
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "dp7-booster-box",
@@ -424,12 +450,13 @@
     "priceChartingId": "2245031",
     "productName": "Booster Box",
     "consoleName": "Pokemon Stormfront",
-    "newPrice": null,
+    "newPrice": 12575.85,
+    "loosePrice": 12575.85,
     "manualOnlyPrice": null,
     "salesVolume": 3,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "pl1-booster-box",
@@ -440,12 +467,13 @@
     "priceChartingId": "2245029",
     "productName": "Booster Box",
     "consoleName": "Pokemon Platinum",
-    "newPrice": null,
+    "newPrice": 12093.64,
+    "loosePrice": 12093.64,
     "manualOnlyPrice": null,
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "pl2-booster-box",
@@ -456,12 +484,13 @@
     "priceChartingId": "2245027",
     "productName": "Booster Box",
     "consoleName": "Pokemon Rising Rivals",
-    "newPrice": null,
+    "newPrice": 8995.0,
+    "loosePrice": 8995.0,
     "manualOnlyPrice": null,
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "pl3-booster-box",
@@ -472,12 +501,13 @@
     "priceChartingId": "2245025",
     "productName": "Booster Box",
     "consoleName": "Pokemon Supreme Victors",
-    "newPrice": null,
+    "newPrice": 13999.97,
+    "loosePrice": 13999.97,
     "manualOnlyPrice": null,
     "salesVolume": 3,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "pl4-booster-box",
@@ -488,12 +518,13 @@
     "priceChartingId": "2245023",
     "productName": "Booster Box",
     "consoleName": "Pokemon Arceus",
-    "newPrice": null,
+    "newPrice": 4102.78,
+    "loosePrice": 4102.78,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "hgss1-booster-box",
@@ -504,12 +535,13 @@
     "priceChartingId": "2245021",
     "productName": "Booster Box",
     "consoleName": "Pokemon HeartGold & SoulSilver",
-    "newPrice": null,
+    "newPrice": 836.92,
+    "loosePrice": 836.92,
     "manualOnlyPrice": null,
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "bw1-booster-box",
@@ -520,12 +552,13 @@
     "priceChartingId": "2245013",
     "productName": "Booster Box",
     "consoleName": "Pokemon Black & White",
-    "newPrice": null,
+    "newPrice": 6405.5,
+    "loosePrice": 6405.5,
     "manualOnlyPrice": null,
     "salesVolume": 17,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "bw2-booster-box",
@@ -536,12 +569,13 @@
     "priceChartingId": "2245011",
     "productName": "Booster Box",
     "consoleName": "Pokemon Emerging Powers",
-    "newPrice": null,
+    "newPrice": 4300.0,
+    "loosePrice": 4300.0,
     "manualOnlyPrice": null,
     "salesVolume": 5,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "bw3-booster-box",
@@ -552,12 +586,13 @@
     "priceChartingId": "2245009",
     "productName": "Booster Box",
     "consoleName": "Pokemon Noble Victories",
-    "newPrice": null,
+    "newPrice": 3999.95,
+    "loosePrice": 3999.95,
     "manualOnlyPrice": null,
     "salesVolume": 5,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "bw4-booster-box",
@@ -568,12 +603,13 @@
     "priceChartingId": "2245007",
     "productName": "Booster Box",
     "consoleName": "Pokemon Next Destinies",
-    "newPrice": null,
+    "newPrice": 8040.65,
+    "loosePrice": 8040.65,
     "manualOnlyPrice": null,
     "salesVolume": 4,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "bw5-booster-box",
@@ -584,12 +620,13 @@
     "priceChartingId": "2245005",
     "productName": "Booster Box",
     "consoleName": "Pokemon Dark Explorers",
-    "newPrice": null,
+    "newPrice": 6372.73,
+    "loosePrice": 6372.73,
     "manualOnlyPrice": null,
     "salesVolume": 7,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "bw6-booster-box",
@@ -600,12 +637,13 @@
     "priceChartingId": "5438828",
     "productName": "Booster Box",
     "consoleName": "Pokemon Dragons Exalted",
-    "newPrice": null,
+    "newPrice": 11999.99,
+    "loosePrice": 11999.99,
     "manualOnlyPrice": null,
     "salesVolume": 8,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "bw7-booster-box",
@@ -616,12 +654,13 @@
     "priceChartingId": "2245003",
     "productName": "Booster Box",
     "consoleName": "Pokemon Boundaries Crossed",
-    "newPrice": null,
+    "newPrice": 5896.26,
+    "loosePrice": 5896.26,
     "manualOnlyPrice": null,
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "bw8-booster-box",
@@ -632,12 +671,13 @@
     "priceChartingId": "2245001",
     "productName": "Booster Box",
     "consoleName": "Pokemon Plasma Storm",
-    "newPrice": null,
+    "newPrice": 9600.0,
+    "loosePrice": 9600.0,
     "manualOnlyPrice": null,
     "salesVolume": 5,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "bw9-booster-box",
@@ -648,12 +688,13 @@
     "priceChartingId": "2244999",
     "productName": "Booster Box",
     "consoleName": "Pokemon Plasma Freeze",
-    "newPrice": null,
+    "newPrice": 4800.0,
+    "loosePrice": 4800.0,
     "manualOnlyPrice": null,
     "salesVolume": 3,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "bw10-booster-box",
@@ -664,12 +705,13 @@
     "priceChartingId": "2244997",
     "productName": "Booster Box",
     "consoleName": "Pokemon Plasma Blast",
-    "newPrice": null,
+    "newPrice": 4424.99,
+    "loosePrice": 4424.99,
     "manualOnlyPrice": null,
     "salesVolume": 3,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "bw11-booster-box",
@@ -680,12 +722,13 @@
     "priceChartingId": "2244995",
     "productName": "Booster Box",
     "consoleName": "Pokemon Legendary Treasures",
-    "newPrice": null,
+    "newPrice": 11890.62,
+    "loosePrice": 11890.62,
     "manualOnlyPrice": null,
     "salesVolume": 6,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy1-booster-box",
@@ -696,12 +739,13 @@
     "priceChartingId": "2244993",
     "productName": "Booster Box",
     "consoleName": "Pokemon XY",
-    "newPrice": null,
+    "newPrice": 3152.12,
+    "loosePrice": 3152.12,
     "manualOnlyPrice": null,
     "salesVolume": 18,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy1-etb",
@@ -712,12 +756,13 @@
     "priceChartingId": "6345890",
     "productName": "Elite Trainer Box [Yveltal]",
     "consoleName": "Pokemon XY",
-    "newPrice": null,
+    "newPrice": 7575.26,
+    "loosePrice": 7575.26,
     "manualOnlyPrice": null,
     "salesVolume": 6,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy2-booster-box",
@@ -728,12 +773,13 @@
     "priceChartingId": "2244989",
     "productName": "Booster Box",
     "consoleName": "Pokemon Flashfire",
-    "newPrice": null,
+    "newPrice": 8100.0,
+    "loosePrice": 8100.0,
     "manualOnlyPrice": null,
     "salesVolume": 29,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy3-booster-box",
@@ -744,12 +790,13 @@
     "priceChartingId": "2244987",
     "productName": "Booster Box",
     "consoleName": "Pokemon Furious Fists",
-    "newPrice": null,
+    "newPrice": 4905.94,
+    "loosePrice": 4905.94,
     "manualOnlyPrice": null,
     "salesVolume": 24,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy3-etb",
@@ -760,12 +807,13 @@
     "priceChartingId": "6345770",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Furious Fists",
-    "newPrice": null,
+    "newPrice": 3531.13,
+    "loosePrice": 3531.13,
     "manualOnlyPrice": null,
     "salesVolume": 10,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy4-booster-box",
@@ -776,12 +824,13 @@
     "priceChartingId": "2244985",
     "productName": "Booster Box",
     "consoleName": "Pokemon Phantom Forces",
-    "newPrice": null,
+    "newPrice": 12528.9,
+    "loosePrice": 12528.9,
     "manualOnlyPrice": null,
     "salesVolume": 20,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy4-etb",
@@ -792,12 +841,13 @@
     "priceChartingId": "4780183",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Phantom Forces",
-    "newPrice": null,
+    "newPrice": 5750.0,
+    "loosePrice": 5750.0,
     "manualOnlyPrice": null,
     "salesVolume": 7,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy5-booster-box",
@@ -808,12 +858,13 @@
     "priceChartingId": "2244983",
     "productName": "Booster Box",
     "consoleName": "Pokemon Primal Clash",
-    "newPrice": null,
+    "newPrice": 2945.01,
+    "loosePrice": 2945.01,
     "manualOnlyPrice": null,
     "salesVolume": 73,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy5-etb",
@@ -824,12 +875,13 @@
     "priceChartingId": "6346183",
     "productName": "Elite Trainer Box [Groudon]",
     "consoleName": "Pokemon Primal Clash",
-    "newPrice": null,
+    "newPrice": 5087.51,
+    "loosePrice": 5087.51,
     "manualOnlyPrice": null,
     "salesVolume": 8,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy6-booster-box",
@@ -840,12 +892,13 @@
     "priceChartingId": "2244981",
     "productName": "Booster Box",
     "consoleName": "Pokemon Roaring Skies",
-    "newPrice": null,
+    "newPrice": 3799.09,
+    "loosePrice": 3799.09,
     "manualOnlyPrice": null,
     "salesVolume": 161,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy6-etb",
@@ -856,12 +909,13 @@
     "priceChartingId": "6241385",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Roaring Skies",
-    "newPrice": null,
+    "newPrice": 4100.0,
+    "loosePrice": 4100.0,
     "manualOnlyPrice": null,
     "salesVolume": 12,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy7-booster-box",
@@ -872,12 +926,13 @@
     "priceChartingId": "2244979",
     "productName": "Booster Box",
     "consoleName": "Pokemon Ancient Origins",
-    "newPrice": null,
+    "newPrice": 5944.63,
+    "loosePrice": 5944.63,
     "manualOnlyPrice": null,
     "salesVolume": 74,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy7-etb",
@@ -888,12 +943,13 @@
     "priceChartingId": "6345977",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Ancient Origins",
-    "newPrice": null,
+    "newPrice": 2522.7,
+    "loosePrice": 2522.7,
     "manualOnlyPrice": null,
     "salesVolume": 16,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy8-booster-box",
@@ -904,12 +960,13 @@
     "priceChartingId": "2244977",
     "productName": "Booster Box",
     "consoleName": "Pokemon BREAKthrough",
-    "newPrice": null,
+    "newPrice": 3148.19,
+    "loosePrice": 3148.19,
     "manualOnlyPrice": null,
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy8-etb",
@@ -920,12 +977,13 @@
     "priceChartingId": "6346356",
     "productName": "Elite Trainer Box: Mewtwo Y",
     "consoleName": "Pokemon BREAKthrough",
-    "newPrice": null,
+    "newPrice": 650.0,
+    "loosePrice": 650.0,
     "manualOnlyPrice": null,
     "salesVolume": 5,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy9-etb",
@@ -936,12 +994,13 @@
     "priceChartingId": "4780182",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon BREAKpoint",
-    "newPrice": null,
+    "newPrice": 736.95,
+    "loosePrice": 736.95,
     "manualOnlyPrice": null,
     "salesVolume": 18,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "g1-etb",
@@ -952,12 +1011,13 @@
     "priceChartingId": "3765632",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Generations",
-    "newPrice": 4200.0,
+    "newPrice": 2494.61,
+    "loosePrice": 2494.61,
     "manualOnlyPrice": null,
     "salesVolume": 100,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy9-booster-box",
@@ -968,12 +1028,13 @@
     "priceChartingId": "2244975",
     "productName": "Booster Box",
     "consoleName": "Pokemon BREAKpoint",
-    "newPrice": null,
+    "newPrice": 2503.03,
+    "loosePrice": 2503.03,
     "manualOnlyPrice": null,
     "salesVolume": 3,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy10-booster-box",
@@ -984,12 +1045,13 @@
     "priceChartingId": "2244971",
     "productName": "Booster Box",
     "consoleName": "Pokemon Fates Collide",
-    "newPrice": null,
+    "newPrice": 2146.17,
+    "loosePrice": 2146.17,
     "manualOnlyPrice": null,
     "salesVolume": 42,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy10-etb",
@@ -1000,12 +1062,13 @@
     "priceChartingId": "4780176",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Fates Collide",
-    "newPrice": null,
+    "newPrice": 729.27,
+    "loosePrice": 729.27,
     "manualOnlyPrice": null,
     "salesVolume": 84,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy11-booster-box",
@@ -1016,12 +1079,13 @@
     "priceChartingId": "2244969",
     "productName": "Booster Box",
     "consoleName": "Pokemon Steam Siege",
-    "newPrice": null,
+    "newPrice": 1051.08,
+    "loosePrice": 1051.08,
     "manualOnlyPrice": null,
     "salesVolume": 49,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "xy11-etb",
@@ -1032,12 +1096,13 @@
     "priceChartingId": "4780174",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Steam Siege",
-    "newPrice": null,
+    "newPrice": 1528.5,
+    "loosePrice": 1528.5,
     "manualOnlyPrice": null,
     "salesVolume": 32,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm2-booster-box",
@@ -1048,12 +1113,13 @@
     "priceChartingId": "2244965",
     "productName": "Booster Box",
     "consoleName": "Pokemon Guardians Rising",
-    "newPrice": null,
+    "newPrice": 1176.62,
+    "loosePrice": 1176.62,
     "manualOnlyPrice": null,
     "salesVolume": 40,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm2-etb",
@@ -1064,12 +1130,13 @@
     "priceChartingId": "4780177",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Guardians Rising",
-    "newPrice": null,
+    "newPrice": 313.0,
+    "loosePrice": 313.0,
     "manualOnlyPrice": null,
     "salesVolume": 165,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm3-booster-box",
@@ -1080,12 +1147,13 @@
     "priceChartingId": "2244963",
     "productName": "Booster Box",
     "consoleName": "Pokemon Burning Shadows",
-    "newPrice": null,
+    "newPrice": 1037.26,
+    "loosePrice": 1037.26,
     "manualOnlyPrice": null,
-    "salesVolume": 258,
+    "salesVolume": 246,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm3-etb",
@@ -1096,12 +1164,13 @@
     "priceChartingId": "3839387",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Burning Shadows",
-    "newPrice": null,
+    "newPrice": 290.68,
+    "loosePrice": 290.68,
     "manualOnlyPrice": null,
     "salesVolume": 185,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm4-booster-box",
@@ -1112,12 +1181,13 @@
     "priceChartingId": "2244961",
     "productName": "Booster Box",
     "consoleName": "Pokemon Crimson Invasion",
-    "newPrice": null,
+    "newPrice": 578.98,
+    "loosePrice": 578.98,
     "manualOnlyPrice": null,
     "salesVolume": 144,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm35-etb",
@@ -1128,12 +1198,13 @@
     "priceChartingId": "4780180",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Shining Legends",
-    "newPrice": null,
+    "newPrice": 915.12,
+    "loosePrice": 915.12,
     "manualOnlyPrice": null,
     "salesVolume": 98,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm4-etb",
@@ -1144,12 +1215,13 @@
     "priceChartingId": "4780179",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Crimson Invasion",
-    "newPrice": null,
+    "newPrice": 176.75,
+    "loosePrice": 176.75,
     "manualOnlyPrice": null,
     "salesVolume": 387,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm5-etb",
@@ -1160,12 +1232,13 @@
     "priceChartingId": "6346976",
     "productName": "Elite Trainer Box [Dawn Wings Necrozma]",
     "consoleName": "Pokemon Ultra Prism",
-    "newPrice": null,
+    "newPrice": 797.56,
+    "loosePrice": 797.56,
     "manualOnlyPrice": null,
     "salesVolume": 21,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm5-booster-box",
@@ -1176,12 +1249,13 @@
     "priceChartingId": "2244959",
     "productName": "Booster Box",
     "consoleName": "Pokemon Ultra Prism",
-    "newPrice": null,
+    "newPrice": 1565.94,
+    "loosePrice": 1565.94,
     "manualOnlyPrice": null,
     "salesVolume": 65,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm6-booster-box",
@@ -1192,12 +1266,13 @@
     "priceChartingId": "2244957",
     "productName": "Booster Box",
     "consoleName": "Pokemon Forbidden Light",
-    "newPrice": null,
+    "newPrice": 1339.09,
+    "loosePrice": 1339.09,
     "manualOnlyPrice": null,
     "salesVolume": 54,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm6-etb",
@@ -1208,12 +1283,13 @@
     "priceChartingId": "5529515",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Forbidden Light",
-    "newPrice": null,
+    "newPrice": 581.01,
+    "loosePrice": 581.01,
     "manualOnlyPrice": null,
     "salesVolume": 49,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm7-booster-box",
@@ -1224,12 +1300,13 @@
     "priceChartingId": "2244955",
     "productName": "Booster Box",
     "consoleName": "Pokemon Celestial Storm",
-    "newPrice": null,
+    "newPrice": 2201.49,
+    "loosePrice": 2201.49,
     "manualOnlyPrice": null,
     "salesVolume": 63,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm7-etb",
@@ -1240,12 +1317,13 @@
     "priceChartingId": "4780178",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Celestial Storm",
-    "newPrice": null,
+    "newPrice": 1858.24,
+    "loosePrice": 1858.24,
     "manualOnlyPrice": null,
     "salesVolume": 102,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm75-etb",
@@ -1256,12 +1334,13 @@
     "priceChartingId": "4766912",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Dragon Majesty",
-    "newPrice": null,
+    "newPrice": 889.99,
+    "loosePrice": 889.99,
     "manualOnlyPrice": null,
     "salesVolume": 66,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm8-booster-box",
@@ -1272,12 +1351,13 @@
     "priceChartingId": "2244953",
     "productName": "Booster Box",
     "consoleName": "Pokemon Lost Thunder",
-    "newPrice": null,
+    "newPrice": 1494.8,
+    "loosePrice": 1494.8,
     "manualOnlyPrice": null,
     "salesVolume": 49,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm8-etb",
@@ -1288,12 +1368,13 @@
     "priceChartingId": "6347152",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Lost Thunder",
-    "newPrice": null,
+    "newPrice": 654.52,
+    "loosePrice": 654.52,
     "manualOnlyPrice": null,
     "salesVolume": 52,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm9-etb",
@@ -1304,12 +1385,13 @@
     "priceChartingId": "4780191",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Team Up",
-    "newPrice": null,
+    "newPrice": 3350.0,
+    "loosePrice": 3350.0,
     "manualOnlyPrice": null,
     "salesVolume": 91,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm10-booster-box",
@@ -1320,12 +1402,13 @@
     "priceChartingId": "2244949",
     "productName": "Booster Box",
     "consoleName": "Pokemon Unbroken Bonds",
-    "newPrice": null,
+    "newPrice": 2491.18,
+    "loosePrice": 2491.18,
     "manualOnlyPrice": null,
     "salesVolume": 119,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm10-etb",
@@ -1336,12 +1419,13 @@
     "priceChartingId": "5837163",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Unbroken Bonds",
-    "newPrice": null,
+    "newPrice": 1564.58,
+    "loosePrice": 1564.58,
     "manualOnlyPrice": null,
     "salesVolume": 105,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm11-booster-box",
@@ -1352,12 +1436,13 @@
     "priceChartingId": "2244947",
     "productName": "Booster Box",
     "consoleName": "Pokemon Unified Minds",
-    "newPrice": null,
+    "newPrice": 2645.0,
+    "loosePrice": 2645.0,
     "manualOnlyPrice": null,
     "salesVolume": 107,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm11-etb",
@@ -1368,12 +1453,13 @@
     "priceChartingId": "4780181",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Unified Minds",
-    "newPrice": null,
+    "newPrice": 1467.5,
+    "loosePrice": 1467.5,
     "manualOnlyPrice": null,
     "salesVolume": 102,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sm12-etb",
@@ -1384,12 +1470,13 @@
     "priceChartingId": "6347243",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Cosmic Eclipse",
-    "newPrice": null,
+    "newPrice": 1531.45,
+    "loosePrice": 1531.45,
     "manualOnlyPrice": null,
     "salesVolume": 89,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh1-booster-box",
@@ -1400,12 +1487,13 @@
     "priceChartingId": "5134202",
     "productName": "Booster Box [Base Set]",
     "consoleName": "Pokemon Sword & Shield",
-    "newPrice": null,
+    "newPrice": 559.23,
+    "loosePrice": 559.23,
     "manualOnlyPrice": null,
     "salesVolume": 131,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh1-etb",
@@ -1416,12 +1504,13 @@
     "priceChartingId": "3808302",
     "productName": "Elite Trainer Box [Zamazenta]",
     "consoleName": "Pokemon Sword & Shield",
-    "newPrice": null,
+    "newPrice": 125.99,
+    "loosePrice": 125.99,
     "manualOnlyPrice": null,
     "salesVolume": 129,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh2-booster-box",
@@ -1432,12 +1521,13 @@
     "priceChartingId": "2244941",
     "productName": "Booster Box",
     "consoleName": "Pokemon Rebel Clash",
-    "newPrice": null,
+    "newPrice": 442.89,
+    "loosePrice": 442.89,
     "manualOnlyPrice": null,
     "salesVolume": 22,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh2-etb",
@@ -1448,12 +1538,13 @@
     "priceChartingId": "4780172",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Rebel Clash",
-    "newPrice": null,
+    "newPrice": 248.67,
+    "loosePrice": 248.67,
     "manualOnlyPrice": null,
     "salesVolume": 39,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh3-booster-box",
@@ -1464,12 +1555,13 @@
     "priceChartingId": "2244939",
     "productName": "Booster Box",
     "consoleName": "Pokemon Darkness Ablaze",
-    "newPrice": null,
+    "newPrice": 296.93,
+    "loosePrice": 296.93,
     "manualOnlyPrice": null,
     "salesVolume": 243,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh3-etb",
@@ -1480,12 +1572,13 @@
     "priceChartingId": "3345961",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Darkness Ablaze",
-    "newPrice": null,
+    "newPrice": 106.75,
+    "loosePrice": 106.75,
     "manualOnlyPrice": null,
     "salesVolume": 355,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh4-booster-box",
@@ -1496,12 +1589,13 @@
     "priceChartingId": "2189391",
     "productName": "Booster Box",
     "consoleName": "Pokemon Vivid Voltage",
-    "newPrice": null,
+    "newPrice": 281.82,
+    "loosePrice": 281.82,
     "manualOnlyPrice": null,
     "salesVolume": 376,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh4-etb",
@@ -1512,12 +1606,13 @@
     "priceChartingId": "3396578",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Vivid Voltage",
-    "newPrice": null,
+    "newPrice": 114.25,
+    "loosePrice": 114.25,
     "manualOnlyPrice": null,
     "salesVolume": 702,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh5-booster-box",
@@ -1528,12 +1623,13 @@
     "priceChartingId": "2189387",
     "productName": "Booster Box",
     "consoleName": "Pokemon Battle Styles",
-    "newPrice": null,
+    "newPrice": 262.57,
+    "loosePrice": 262.57,
     "manualOnlyPrice": null,
     "salesVolume": 1104,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh5-etb",
@@ -1544,12 +1640,13 @@
     "priceChartingId": "2783084",
     "productName": "Elite Trainer Box [Rapid Strike Urshifu]",
     "consoleName": "Pokemon Battle Styles",
-    "newPrice": null,
+    "newPrice": 89.02,
+    "loosePrice": 89.02,
     "manualOnlyPrice": null,
     "salesVolume": 107,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh6-booster-box",
@@ -1560,12 +1657,13 @@
     "priceChartingId": "2261559",
     "productName": "Booster Box",
     "consoleName": "Pokemon Chilling Reign",
-    "newPrice": null,
+    "newPrice": 492.83,
+    "loosePrice": 492.83,
     "manualOnlyPrice": null,
     "salesVolume": 580,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh7-etb",
@@ -1576,12 +1674,13 @@
     "priceChartingId": "6347813",
     "productName": "Elite Trainer Box: Jolteon",
     "consoleName": "Pokemon Evolving Skies",
-    "newPrice": null,
+    "newPrice": 488.53,
+    "loosePrice": 488.53,
     "manualOnlyPrice": null,
     "salesVolume": 369,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh8-etb",
@@ -1592,12 +1691,13 @@
     "priceChartingId": "2782365",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Fusion Strike",
-    "newPrice": 37.11,
+    "newPrice": 290.0,
+    "loosePrice": 290.0,
     "manualOnlyPrice": null,
     "salesVolume": 52,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh9-etb",
@@ -1608,12 +1708,13 @@
     "priceChartingId": "3188413",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Brilliant Stars",
-    "newPrice": 38.91,
+    "newPrice": 139.94,
+    "loosePrice": 139.94,
     "manualOnlyPrice": null,
     "salesVolume": 380,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh10-booster-box",
@@ -1624,12 +1725,13 @@
     "priceChartingId": "3490294",
     "productName": "Booster Box",
     "consoleName": "Pokemon Astral Radiance",
-    "newPrice": 365.0,
+    "newPrice": 360.22,
+    "loosePrice": 360.22,
     "manualOnlyPrice": null,
     "salesVolume": 278,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh10-etb",
@@ -1640,12 +1742,13 @@
     "priceChartingId": "3490292",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Astral Radiance",
-    "newPrice": null,
+    "newPrice": 110.75,
+    "loosePrice": 110.75,
     "manualOnlyPrice": null,
     "salesVolume": 427,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh11-etb",
@@ -1656,12 +1759,13 @@
     "priceChartingId": "4080783",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Lost Origin",
-    "newPrice": null,
+    "newPrice": 189.62,
+    "loosePrice": 189.62,
     "manualOnlyPrice": null,
     "salesVolume": 404,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh12-booster-box",
@@ -1672,12 +1776,13 @@
     "priceChartingId": "4277088",
     "productName": "Booster Box",
     "consoleName": "Pokemon Silver Tempest",
-    "newPrice": null,
+    "newPrice": 462.0,
+    "loosePrice": 462.0,
     "manualOnlyPrice": null,
     "salesVolume": 388,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "swsh12-etb",
@@ -1688,12 +1793,13 @@
     "priceChartingId": "4276924",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Silver Tempest",
-    "newPrice": null,
+    "newPrice": 128.91,
+    "loosePrice": 128.91,
     "manualOnlyPrice": null,
     "salesVolume": 60,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv2-etb",
@@ -1704,12 +1810,13 @@
     "priceChartingId": "5608645",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Paldea Evolved",
-    "newPrice": null,
+    "newPrice": 177.62,
+    "loosePrice": 177.62,
     "manualOnlyPrice": null,
     "salesVolume": 524,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv3-etb",
@@ -1720,12 +1827,13 @@
     "priceChartingId": "5632021",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Obsidian Flames",
-    "newPrice": 36.69,
+    "newPrice": 248.16,
+    "loosePrice": 248.16,
     "manualOnlyPrice": null,
     "salesVolume": 332,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv4-booster-box",
@@ -1736,12 +1844,13 @@
     "priceChartingId": "5952837",
     "productName": "Booster Box",
     "consoleName": "Pokemon Paradox Rift",
-    "newPrice": null,
+    "newPrice": 270.0,
+    "loosePrice": 270.0,
     "manualOnlyPrice": null,
     "salesVolume": 353,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv4-etb",
@@ -1752,12 +1861,13 @@
     "priceChartingId": "5952832",
     "productName": "Elite Trainer Box [Iron Valiant]",
     "consoleName": "Pokemon Paradox Rift",
-    "newPrice": null,
+    "newPrice": 115.0,
+    "loosePrice": 115.0,
     "manualOnlyPrice": null,
     "salesVolume": 241,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv4pt5-etb",
@@ -1768,12 +1878,13 @@
     "priceChartingId": "6276912",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Paldean Fates",
-    "newPrice": 18.5,
+    "newPrice": 368.98,
+    "loosePrice": 368.98,
     "manualOnlyPrice": 75.0,
     "salesVolume": 76,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv5-booster-box",
@@ -1784,12 +1895,13 @@
     "priceChartingId": "6495459",
     "productName": "Booster Box",
     "consoleName": "Pokemon Temporal Forces",
-    "newPrice": null,
+    "newPrice": 279.98,
+    "loosePrice": 279.98,
     "manualOnlyPrice": null,
     "salesVolume": 400,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv5-etb",
@@ -1800,12 +1912,13 @@
     "priceChartingId": "6675549",
     "productName": "Elite Trainer Box [Iron Leaves]",
     "consoleName": "Pokemon Temporal Forces",
-    "newPrice": null,
+    "newPrice": 112.5,
+    "loosePrice": 112.5,
     "manualOnlyPrice": null,
     "salesVolume": 346,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv6-booster-box",
@@ -1816,12 +1929,13 @@
     "priceChartingId": "6769479",
     "productName": "Booster Box",
     "consoleName": "Pokemon Twilight Masquerade",
-    "newPrice": null,
+    "newPrice": 255.66,
+    "loosePrice": 255.66,
     "manualOnlyPrice": null,
     "salesVolume": 352,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv6-etb",
@@ -1832,12 +1946,13 @@
     "priceChartingId": "6769868",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Twilight Masquerade",
-    "newPrice": null,
+    "newPrice": 87.95,
+    "loosePrice": 87.95,
     "manualOnlyPrice": null,
     "salesVolume": 252,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv6pt5-etb",
@@ -1848,12 +1963,13 @@
     "priceChartingId": "7108653",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Shrouded Fable",
-    "newPrice": null,
+    "newPrice": 89.5,
+    "loosePrice": 89.5,
     "manualOnlyPrice": null,
     "salesVolume": 316,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv7-booster-box",
@@ -1864,12 +1980,13 @@
     "priceChartingId": "7418476",
     "productName": "Booster Box",
     "consoleName": "Pokemon Stellar Crown",
-    "newPrice": null,
+    "newPrice": 240.02,
+    "loosePrice": 240.02,
     "manualOnlyPrice": null,
     "salesVolume": 344,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv8-etb",
@@ -1880,12 +1997,13 @@
     "priceChartingId": "7800023",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Surging Sparks",
-    "newPrice": null,
+    "newPrice": 96.71,
+    "loosePrice": 96.71,
     "manualOnlyPrice": null,
     "salesVolume": 254,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv8pt5-etb",
@@ -1896,12 +2014,13 @@
     "priceChartingId": "8256647",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Prismatic Evolutions",
-    "newPrice": null,
+    "newPrice": 160.25,
+    "loosePrice": 160.25,
     "manualOnlyPrice": 134.19,
     "salesVolume": 216,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv9-booster-box",
@@ -1912,12 +2031,13 @@
     "priceChartingId": "8871041",
     "productName": "Booster Box",
     "consoleName": "Pokemon Journey Together",
-    "newPrice": null,
+    "newPrice": 236.25,
+    "loosePrice": 236.25,
     "manualOnlyPrice": null,
     "salesVolume": 268,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv9-etb",
@@ -1928,12 +2048,13 @@
     "priceChartingId": "8871043",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Journey Together",
-    "newPrice": null,
+    "newPrice": 106.0,
+    "loosePrice": 106.0,
     "manualOnlyPrice": null,
     "salesVolume": 306,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv10-booster-box",
@@ -1944,12 +2065,13 @@
     "priceChartingId": "9420220",
     "productName": "Booster Box",
     "consoleName": "Pokemon Destined Rivals",
-    "newPrice": null,
+    "newPrice": 560.99,
+    "loosePrice": 560.99,
     "manualOnlyPrice": null,
     "salesVolume": 235,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "sv10-etb",
@@ -1960,12 +2082,13 @@
     "priceChartingId": "9420221",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Destined Rivals",
-    "newPrice": null,
+    "newPrice": 207.6,
+    "loosePrice": 207.6,
     "manualOnlyPrice": null,
     "salesVolume": 332,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "zsv10pt5-etb",
@@ -1976,12 +2099,13 @@
     "priceChartingId": "10023927",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Black Bolt",
-    "newPrice": null,
+    "newPrice": 105.73,
+    "loosePrice": 105.73,
     "manualOnlyPrice": null,
     "salesVolume": 216,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "rsv10pt5-etb",
@@ -1992,12 +2116,13 @@
     "priceChartingId": "10023931",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon White Flare",
-    "newPrice": null,
+    "newPrice": 97.0,
+    "loosePrice": 97.0,
     "manualOnlyPrice": null,
     "salesVolume": 216,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "me1-booster-box",
@@ -2008,12 +2133,13 @@
     "priceChartingId": "10616084",
     "productName": "Booster Box",
     "consoleName": "Pokemon Mega Evolution",
-    "newPrice": null,
+    "newPrice": 198.48,
+    "loosePrice": 198.48,
     "manualOnlyPrice": null,
     "salesVolume": 3413,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "me1-etb",
@@ -2024,12 +2150,13 @@
     "priceChartingId": "10616101",
     "productName": "Elite Trainer Box [Mega Lucario]",
     "consoleName": "Pokemon Mega Evolution",
-    "newPrice": null,
+    "newPrice": 86.97,
+    "loosePrice": 86.97,
     "manualOnlyPrice": null,
     "salesVolume": 213,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "me2-etb",
@@ -2040,12 +2167,13 @@
     "priceChartingId": "11069122",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Phantasmal Flames",
-    "newPrice": null,
+    "newPrice": 116.11,
+    "loosePrice": 116.11,
     "manualOnlyPrice": null,
     "salesVolume": 150,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "me2-booster-box",
@@ -2056,12 +2184,13 @@
     "priceChartingId": "11069121",
     "productName": "Booster Box",
     "consoleName": "Pokemon Phantasmal Flames",
-    "newPrice": null,
+    "newPrice": 399.6,
+    "loosePrice": 399.6,
     "manualOnlyPrice": null,
     "salesVolume": 155,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "me2pt5-etb",
@@ -2072,12 +2201,13 @@
     "priceChartingId": "11748902",
     "productName": "Elite Trainer Box",
     "consoleName": "Pokemon Ascended Heroes",
-    "newPrice": null,
+    "newPrice": 145.13,
+    "loosePrice": 145.13,
     "manualOnlyPrice": null,
     "salesVolume": 259,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   },
   {
     "setId": "me3-booster-box",
@@ -2088,11 +2218,12 @@
     "priceChartingId": "12416303",
     "productName": "Half Booster Box",
     "consoleName": "Pokemon Perfect Order",
-    "newPrice": null,
+    "newPrice": 101.37,
+    "loosePrice": 101.37,
     "manualOnlyPrice": null,
-    "salesVolume": 548,
+    "salesVolume": 477,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T01:59:31+00:00"
+    "capturedAt": "2026-04-24T02:40:07+00:00"
   }
 ]
