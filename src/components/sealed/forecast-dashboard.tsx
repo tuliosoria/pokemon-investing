@@ -702,9 +702,10 @@ export function ForecastDashboard() {
       if (abortRef.current !== controller) return;
 
       if (didTimeout) {
-        setSearchError(
-          "Search took too long — showing partial results if available. Try a more specific query."
-        );
+        setSearchError("Search took too long. Please try a more specific query.");
+        setApiResults([]);
+        setSearchCuratedResults([]);
+        setSearchUnavailableCards([]);
         setSearchComplete(true);
         setIsSearching(false);
         return;

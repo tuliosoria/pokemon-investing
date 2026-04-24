@@ -1034,7 +1034,7 @@ function applyDemandSignalDampening(
   currentPrice: number,
   options: {
     communityScore?: number | null;
-    liquidityTier?: "high" | "medium" | "low" | null;
+    liquidityTier?: "high" | "normal" | "medium" | "low" | null;
   }
 ): { price: number; dampeningFactor: number } {
   if (currentPrice <= 0 || projectedPrice <= currentPrice) {
@@ -1043,10 +1043,12 @@ function applyDemandSignalDampening(
   const cs = typeof options.communityScore === "number" ? options.communityScore : 50;
   // 0..100 → 0.55..1.20 with a neutral 50 → 0.875
   const communityFactor = clamp(0.55 + (cs / 100) * 0.65, 0.5, 1.25);
+  // The shared `LiquidityTier` type uses "normal" (not "medium") — accept
+  // both so legacy callers and future renames are both safe.
   const liquidityFactor =
     options.liquidityTier === "high"
       ? 1.05
-      : options.liquidityTier === "medium"
+      : options.liquidityTier === "normal" || options.liquidityTier === "medium"
         ? 1.0
         : options.liquidityTier === "low"
           ? 0.85
@@ -1261,8 +1263,7 @@ function buildForecast(
       typeof set.factors?.communityScore === "number"
         ? set.factors.communityScore
         : null,
-    liquidityTier:
-      (set.factors?.liquidityTier as "high" | "medium" | "low" | null | undefined) ?? null,
+    liquidityTier: set.factors?.liquidityTier ?? null,
   };
   const dampenedFiveYear = applyDemandSignalDampening(
     adjustedPredictions.fiveYearPrice,
