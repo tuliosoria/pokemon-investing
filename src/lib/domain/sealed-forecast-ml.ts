@@ -208,7 +208,7 @@ const ERA_LABELS: Record<number, string> = {
   3: "Base / Neo",
 };
 
-const MAX_FORECAST_ROI_PERCENT = 300;
+const MAX_FORECAST_ROI_PERCENT = 200;
 const MAX_ESTIMATED_FACTORS_FOR_FORECAST = 5;
 const MIN_FORECAST_AGE_YEARS = 1;
 const LOW_CONFIDENCE_SCORE_CAP = 69;
@@ -1014,8 +1014,47 @@ function deriveFiveYearFallbackPrice(
       ? annualRate1yr * 0.35 + annualRate3yr * 0.65
       : annualRate3yr ?? annualRate1yr ?? 0;
 
-  const boundedAnnualRate = clamp(blendedAnnualRate, -0.2, 0.32);
+  // Cap the implied annual appreciation. Previously 0.32 → 1.32^5 ≈ 4.0x
+  // which slammed every fallback prediction into the +300% ROI ceiling.
+  // 0.20 → 1.20^5 ≈ 2.49x = +149% which leaves headroom under the
+  // MAX_FORECAST_ROI_PERCENT cap and produces differentiated ROI.
+  const boundedAnnualRate = clamp(blendedAnnualRate, -0.2, 0.2);
   return round(currentPrice * Math.pow(1 + boundedAnnualRate, 5), 2);
+}
+
+/**
+ * Dampen *positive* appreciation by community + liquidity signals so
+ * forecasts can't run away from weak underlying demand. Always applied
+ * after the model prediction (direct 5yr OR fallback derivation) and
+ * before the absolute ROI cap. Returns the dampened price plus a
+ * `dampened` flag so the caller can widen the spread / cap confidence.
+ */
+function applyDemandSignalDampening(
+  projectedPrice: number,
+  currentPrice: number,
+  options: {
+    communityScore?: number | null;
+    liquidityTier?: "high" | "medium" | "low" | null;
+  }
+): { price: number; dampeningFactor: number } {
+  if (currentPrice <= 0 || projectedPrice <= currentPrice) {
+    return { price: projectedPrice, dampeningFactor: 1 };
+  }
+  const cs = typeof options.communityScore === "number" ? options.communityScore : 50;
+  // 0..100 → 0.55..1.20 with a neutral 50 → 0.875
+  const communityFactor = clamp(0.55 + (cs / 100) * 0.65, 0.5, 1.25);
+  const liquidityFactor =
+    options.liquidityTier === "high"
+      ? 1.05
+      : options.liquidityTier === "medium"
+        ? 1.0
+        : options.liquidityTier === "low"
+          ? 0.85
+          : 0.92;
+  const dampeningFactor = clamp(communityFactor * liquidityFactor, 0.45, 1.25);
+  const appreciation = projectedPrice - currentPrice;
+  const dampenedPrice = round(currentPrice + appreciation * dampeningFactor, 2);
+  return { price: dampenedPrice, dampeningFactor };
 }
 
 function resolveConfidence(
@@ -1213,6 +1252,51 @@ function buildForecast(
   });
 
   const currentPrice = Math.max(set.currentPrice, 0);
+
+  // Demand-modulate positive appreciation by community score + liquidity
+  // so weak-signal products can't ride the model's optimism into the
+  // absolute ROI cap.
+  const demandOptions = {
+    communityScore:
+      typeof set.factors?.communityScore === "number"
+        ? set.factors.communityScore
+        : null,
+    liquidityTier:
+      (set.factors?.liquidityTier as "high" | "medium" | "low" | null | undefined) ?? null,
+  };
+  const dampenedFiveYear = applyDemandSignalDampening(
+    adjustedPredictions.fiveYearPrice,
+    currentPrice,
+    demandOptions
+  );
+  const dampenedThreeYear = applyDemandSignalDampening(
+    adjustedPredictions.threeYearPrice,
+    currentPrice,
+    demandOptions
+  );
+  const dampenedOneYear = applyDemandSignalDampening(
+    adjustedPredictions.oneYearPrice,
+    currentPrice,
+    demandOptions
+  );
+  const wasDampened = dampenedFiveYear.dampeningFactor < 0.95;
+  // Only widen the spread when dampening was driven by a genuinely weak
+  // community signal — for high-liquidity / strong-community products
+  // the dampening is mild and shouldn't penalize confidence.
+  const dampeningWeakensSignal =
+    wasDampened &&
+    typeof demandOptions.communityScore === "number" &&
+    demandOptions.communityScore < 40;
+  adjustedPredictions = {
+    ...adjustedPredictions,
+    oneYearPrice: dampenedOneYear.price,
+    threeYearPrice: dampenedThreeYear.price,
+    fiveYearPrice: dampenedFiveYear.price,
+    spreadPercent: dampeningWeakensSignal
+      ? Math.max(adjustedPredictions.spreadPercent, 38)
+      : adjustedPredictions.spreadPercent,
+  };
+
   const maxAllowedProjectedValue =
     currentPrice > 0
       ? round(currentPrice * (1 + MAX_FORECAST_ROI_PERCENT / 100), 2)
@@ -1274,6 +1358,9 @@ function buildForecast(
     confidence = capAtMedium(confidence);
   }
   if (wasRoiCapped) confidence = capAtMedium(confidence);
+  if (wasDampened && demandOptions.communityScore !== null && demandOptions.communityScore < 35) {
+    confidence = capAtMedium(confidence);
+  }
   const confidenceBonus =
     confidence === "High" ? 5 : confidence === "Medium" ? 2 : 0;
   const rawScore = clamp(Math.round(50 + benchmarkDelta * 0.55 + confidenceBonus), 1, 99);
