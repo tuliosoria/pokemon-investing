@@ -21,18 +21,31 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "src" / "lib" / "data" / "sealed-ml"
 MANIFEST_PATH = DATA_DIR / "products.json"
 TRAINING_SNAPSHOT_PATH = DATA_DIR / "dual-provider-monthly-snapshots.json"
+COMMUNITY_SCORE_PATH = DATA_DIR / "community-score.json"
 DATASET_FILENAME = "training-dataset.csv"
 SUMMARY_FILENAME = "training-summary.json"
 LATEST_FEATURES_FILENAME = "product-history-summary.json"
 DEFAULT_OUTPUT_DIR = DATA_DIR
 
+# Feature-name choices:
+#   - "google_trends_score" was the legacy slot; commit 233e004 started feeding
+#     it with a composite communityScore (Reddit 0.45 + Trends 0.35 + Forum 0.20).
+#   - We now rename it to "community_score" and split its sub-signals into their
+#     own features so the model can weight them independently.
+#   - "set_singles_value_ratio" (ratio of singles-pool value to sealed price) is
+#     available at inference time but has no per-month historical series in the
+#     training snapshots, so it cannot be included as a training feature without
+#     fabricating labels. It is therefore omitted here; add it when a
+#     time-series of singles-pool values is backfilled into the snapshot data.
 FEATURE_NAMES = [
     "current_price",
     "most_expensive_card_price",
     "chase_card_count",
     "chase_card_index_score",
     "set_age_years",
-    "google_trends_score",
+    "community_score",
+    "reddit_score",
+    "forum_score",
     "print_run_type_encoded",
     "price_trajectory_6mo",
     "price_trajectory_24mo",
@@ -165,6 +178,67 @@ def load_manifest() -> list[ProductManifest]:
         )
         for item in data
     ]
+
+
+def load_community_scores() -> dict[str, dict[str, float]]:
+    """Load community-score.json and return a dict keyed by setId.
+
+    Returns a dict mapping setId → {communityScore, redditScore, forumScore}.
+    Falls back to empty dict if the file is missing or malformed.
+    """
+    if not COMMUNITY_SCORE_PATH.exists():
+        return {}
+    try:
+        data = json.loads(COMMUNITY_SCORE_PATH.read_text())
+        sets = data.get("sets", {})
+        return {
+            set_id: {
+                "communityScore": float(entry.get("communityScore", 50.0)),
+                "redditScore": float(entry.get("redditScore", 50.0)),
+                "forumScore": float(entry.get("forumScore", 50.0)),
+            }
+            for set_id, entry in sets.items()
+            if isinstance(entry, dict)
+        }
+    except (json.JSONDecodeError, KeyError, ValueError):
+        return {}
+
+
+def enrich_with_community_scores(
+    frame: pd.DataFrame,
+    community_scores: dict[str, dict[str, float]] | None = None,
+) -> pd.DataFrame:
+    """Add/update community_score, reddit_score, forum_score columns in-place.
+
+    When called on a cached training frame that still has a "google_trends_score"
+    column (pre-rename schema), it:
+      1. Renames "google_trends_score" → "community_score" as a starting fallback
+      2. Overwrites that fallback with the real community_score from the JSON file
+         wherever available.
+    This preserves backward-compatibility with old cached CSVs.
+    """
+    if community_scores is None:
+        community_scores = load_community_scores()
+
+    # Backward-compat: rename legacy column so the feature slot exists.
+    if "google_trends_score" in frame.columns and "community_score" not in frame.columns:
+        frame = frame.rename(columns={"google_trends_score": "community_score"})
+
+    # Ensure the three community columns exist (NaN as default).
+    for col in ("community_score", "reddit_score", "forum_score"):
+        if col not in frame.columns:
+            frame[col] = float("nan")
+
+    # Overwrite per-row from the JSON lookup.
+    for set_id, scores in community_scores.items():
+        mask = frame["set_id"] == set_id
+        if not mask.any():
+            continue
+        frame.loc[mask, "community_score"] = scores["communityScore"]
+        frame.loc[mask, "reddit_score"] = scores["redditScore"]
+        frame.loc[mask, "forum_score"] = scores["forumScore"]
+
+    return frame
 
 
 def encode_print_run(value: str) -> int:
@@ -823,6 +897,12 @@ def build_training_rows(
     session = requests.Session()
     session.headers.update(REQUEST_HEADERS)
 
+    # When SKIP_HTTP_BACKFILL=1 (e.g. offline / CI), skip the PriceCharting
+    # HTML fetch and rely entirely on dual-provider artifact snapshots.
+    skip_backfill = os.environ.get("SKIP_HTTP_BACKFILL", "0").strip().lower() in ("1", "true", "yes")
+
+    community_scores = load_community_scores()
+
     rows: list[dict[str, Any]] = []
     history_summary: dict[str, Any] = {}
     artifact_snapshots_by_set = load_dual_provider_snapshots(products)
@@ -848,7 +928,10 @@ def build_training_rows(
     panel_row_count = 0
 
     for product in products:
-        backfill_snapshots = build_backfill_snapshots(product, session)
+        if skip_backfill:
+            backfill_snapshots = []
+        else:
+            backfill_snapshots = build_backfill_snapshots(product, session)
         artifact_snapshots = artifact_snapshots_by_set.get(product.set_id, [])
         merged_snapshots, merge_stats = merge_product_snapshots(
             backfill_snapshots,
@@ -962,7 +1045,11 @@ def build_training_rows(
                 "chase_card_count": product.chase_card_count,
                 "chase_card_index_score": product.chase_card_index_score,
                 "set_age_years": set_age_years,
-                "google_trends_score": product.google_trends_score,
+                "community_score": community_scores.get(product.set_id, {}).get(
+                    "communityScore", product.google_trends_score
+                ),
+                "reddit_score": community_scores.get(product.set_id, {}).get("redditScore", 50.0),
+                "forum_score": community_scores.get(product.set_id, {}).get("forumScore", 50.0),
                 "print_run_type_encoded": encode_print_run(product.print_run_type),
                 "price_trajectory_6mo": safe_pct_change(
                     snapshot.current_price,
@@ -1076,6 +1163,9 @@ def load_cached_training_artifacts(
 
     frame = pd.read_csv(dataset_path)
     frame.sort_values(["snapshot_date", "name"], inplace=True)
+    # Enrich with community scores; also renames legacy "google_trends_score"
+    # column to "community_score" if found (backward-compat with pre-rename CSV).
+    frame = enrich_with_community_scores(frame)
     history_summary = json.loads(history_path.read_text())
     if summary_path.exists():
         summary = json.loads(summary_path.read_text())
@@ -1334,11 +1424,20 @@ def main() -> None:
     output_dir = Path(os.environ.get("SEALED_ML_OUTPUT_DIR", str(DEFAULT_OUTPUT_DIR)))
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    skip_backfill = os.environ.get("SKIP_HTTP_BACKFILL", "0").strip().lower() in ("1", "true", "yes")
     products = load_manifest()
-    try:
-        frame, summary, history_summary = build_training_rows(products)
-    except (requests.RequestException, ValueError):
+
+    if skip_backfill:
+        # Offline mode: skip HTTP backfill, enrich cached CSV with community
+        # scores, then retrain.  The cached CSV may still use the legacy
+        # "google_trends_score" column; load_cached_training_artifacts handles
+        # the rename and enrichment transparently.
         frame, summary, history_summary = load_cached_training_artifacts(DATA_DIR)
+    else:
+        try:
+            frame, summary, history_summary = build_training_rows(products)
+        except (requests.RequestException, ValueError, RuntimeError):
+            frame, summary, history_summary = load_cached_training_artifacts(DATA_DIR)
     frame, audit_summary = audit_training_frame(frame)
     summary = build_dataset_summary(frame, len(products), panel_summary=extract_panel_summary(summary))
     summary["audit"] = audit_summary

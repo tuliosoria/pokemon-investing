@@ -28,7 +28,9 @@ export type FeatureKey =
   | "chase_card_count"
   | "chase_card_index_score"
   | "set_age_years"
-  | "google_trends_score"
+  | "community_score"
+  | "reddit_score"
+  | "forum_score"
   | "print_run_type_encoded"
   | "price_trajectory_6mo"
   | "price_trajectory_24mo"
@@ -670,10 +672,10 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
   // that blends Reddit engagement (0.45), Google Trends (0.35), and a forum
   // placeholder (0.20). The structural EV signals (singlesDepthScore,
   // evDemandScore) are still computed for display in the "Learn More" UI but
-  // no longer drive the google_trends_score slot on their own.
-  // We still write the value into the model's `google_trends_score` slot
-  // because the model artifacts are trained on that feature name; what
-  // changes is *what* number we put there.
+  // The composite communityScore (Reddit 0.45 + Trends 0.35 + Forum 0.20) is
+  // now fed into the model's "community_score" feature slot (renamed from the
+  // legacy "google_trends_score"). Sub-signals reddit_score and forum_score
+  // are now first-class features, letting the model weight them independently.
   const chaseEvRatio = set.factors.chaseEvRatio ?? null;
   const setSinglesValueRatio = set.factors.setSinglesValueRatio ?? null;
   const liquidityTier = set.factors.liquidityTier ?? "normal";
@@ -826,7 +828,9 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     chase_card_count: clamp(Math.round(chaseCardCount), 1, 12),
     chase_card_index_score: chaseCardIndexScore,
     set_age_years: setAgeYears,
-    google_trends_score: clamp(googleTrendsScore, 0, 100),
+    community_score: clamp(googleTrendsScore, 0, 100),
+    reddit_score: clamp(communityEntry?.redditScore ?? 50, 0, 100),
+    forum_score: clamp(communityEntry?.forumScore ?? 50, 0, 100),
     print_run_type_encoded: PRINT_RUN_ENCODING[printRunType],
     price_trajectory_6mo: trajectory6mo,
     price_trajectory_24mo: trajectory24mo,

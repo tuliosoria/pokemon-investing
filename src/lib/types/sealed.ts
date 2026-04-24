@@ -57,7 +57,8 @@ export interface SealedSetData {
      * Composite community-demand score (0–100) built from Reddit engagement,
      * Google Trends, and a forum-presence placeholder.
      * Weights: reddit 0.45 · googleTrends 0.35 · forum 0.20.
-     * This drives the model's `google_trends_score` input slot.
+     * Drives the model's `community_score` feature slot (renamed from
+     * the legacy `google_trends_score` slot as of the community-score retrain).
      */
     communityScore?: number | null;
     /** Reddit sub-score (0–100) derived from post count + engagement. */

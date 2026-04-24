@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-23T04:43:19.829344+00:00",
+  "generatedAt": "2026-04-24T05:44:04.954874+00:00",
   "horizon": "5yr",
   "targetColumn": "price_5yr_later",
   "targetMode": "forward_log_return",
@@ -9,7 +9,9 @@
     "chase_card_count",
     "chase_card_index_score",
     "set_age_years",
-    "google_trends_score",
+    "community_score",
+    "reddit_score",
+    "forum_score",
     "print_run_type_encoded",
     "price_trajectory_6mo",
     "price_trajectory_24mo",

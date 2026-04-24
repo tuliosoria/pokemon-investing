@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-23T04:43:19.050941+00:00",
+  "generatedAt": "2026-04-24T05:44:04.200062+00:00",
   "products": 25,
   "rows": 892,
   "rowsBySet": [
@@ -159,12 +159,12 @@
     "productsWithArtifactSnapshots": 0
   },
   "audit": {
-    "loggedRows": 916,
-    "outlierRowsRemoved": 24,
+    "loggedRows": 892,
+    "outlierRowsRemoved": 0,
     "maxTargetMultipleByHorizon": {
-      "1yr": 54.3478,
-      "3yr": 102.8565,
-      "5yr": 400.1424
+      "1yr": 5.4632,
+      "3yr": 9.9935,
+      "5yr": 3.8572
     },
     "targetTransform": {
       "train": "np.log",
@@ -179,17 +179,17 @@
       "trainingRows": 892,
       "crossValidation": {
         "folds": 5.0,
-        "rmse": 2103.9593,
-        "mae": 904.83,
-        "mape": 29.8492,
-        "returnRmse": 0.462683,
-        "returnMae": 0.34953,
+        "rmse": 2096.8875,
+        "mae": 908.3428,
+        "mape": 29.7862,
+        "returnRmse": 0.458558,
+        "returnMae": 0.34804,
         "strategy": "time_series_split"
       },
       "meanTargetPrice": 3643.2646,
       "meanTargetReturnPercent": 57.4771,
-      "historicalErrorPercent": 29.8492,
-      "maeShareOfMeanTarget": 0.2484,
+      "historicalErrorPercent": 29.7862,
+      "maeShareOfMeanTarget": 0.2493,
       "targetMode": "forward_log_return",
       "targetTransform": {
         "train": "np.log",
@@ -200,8 +200,8 @@
       "dominantFeature": {
         "key": "era_encoded",
         "name": "era_encoded",
-        "gain": 14.222314,
-        "influence": 15.6736
+        "gain": 18.408216,
+        "influence": 19.7608
       },
       "deploymentApproved": true,
       "manualReviewReasons": [],
@@ -212,17 +212,17 @@
       "trainingRows": 354,
       "crossValidation": {
         "folds": 5.0,
-        "rmse": 2491.6222,
-        "mae": 1428.5281,
-        "mape": 37.7032,
-        "returnRmse": 0.625077,
-        "returnMae": 0.468267,
+        "rmse": 2579.2619,
+        "mae": 1470.603,
+        "mape": 35.5857,
+        "returnRmse": 0.59158,
+        "returnMae": 0.445827,
         "strategy": "time_series_split"
       },
       "meanTargetPrice": 5383.2582,
       "meanTargetReturnPercent": 192.2222,
-      "historicalErrorPercent": 37.7032,
-      "maeShareOfMeanTarget": 0.2654,
+      "historicalErrorPercent": 35.5857,
+      "maeShareOfMeanTarget": 0.2732,
       "targetMode": "forward_log_return",
       "targetTransform": {
         "train": "np.log",
@@ -233,8 +233,8 @@
       "dominantFeature": {
         "key": "set_age_years",
         "name": "set_age_years",
-        "gain": 19.199516,
-        "influence": 17.3548
+        "gain": 19.188658,
+        "influence": 17.8334
       },
       "deploymentApproved": true,
       "manualReviewReasons": [],
