@@ -1,5 +1,90 @@
 [
   {
+    "setId": "base-set-unlimited",
+    "name": "Base Set Unlimited",
+    "productType": "Booster Box",
+    "releaseDate": "1999-01-09",
+    "pokedataId": null,
+    "priceChartingId": "2189364",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Base Set",
+    "newPrice": 36228.57,
+    "loosePrice": 36228.57,
+    "manualOnlyPrice": null,
+    "salesVolume": 22,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "jungle",
+    "name": "Jungle",
+    "productType": "Booster Box",
+    "releaseDate": "1999-06-16",
+    "pokedataId": null,
+    "priceChartingId": "2189368",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Jungle",
+    "newPrice": 13453.19,
+    "loosePrice": 13453.19,
+    "manualOnlyPrice": null,
+    "salesVolume": 14,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "fossil",
+    "name": "Fossil",
+    "productType": "Booster Box",
+    "releaseDate": "1999-10-10",
+    "pokedataId": null,
+    "priceChartingId": "2189357",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Fossil",
+    "newPrice": 11955.27,
+    "loosePrice": 11955.27,
+    "manualOnlyPrice": null,
+    "salesVolume": 10,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "base-set-2",
+    "name": "Base Set 2",
+    "productType": "Booster Box",
+    "releaseDate": "2000-02-24",
+    "pokedataId": null,
+    "priceChartingId": "3269420",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Base Set 2",
+    "newPrice": 13935.87,
+    "loosePrice": 13935.87,
+    "manualOnlyPrice": null,
+    "salesVolume": 6,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "team-rocket",
+    "name": "Team Rocket",
+    "productType": "Booster Box",
+    "releaseDate": "2000-04-24",
+    "pokedataId": null,
+    "priceChartingId": "2189358",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Team Rocket",
+    "newPrice": 9134.44,
+    "loosePrice": 9134.44,
+    "manualOnlyPrice": null,
+    "salesVolume": 6,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
     "setId": "gym1-booster-box",
     "name": "Gym Heroes",
     "productType": "Booster Box",
@@ -14,7 +99,7 @@
     "salesVolume": 4,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "gym2-booster-box",
@@ -31,7 +116,24 @@
     "salesVolume": 5,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "neo-genesis",
+    "name": "Neo Genesis",
+    "productType": "Booster Box",
+    "releaseDate": "2000-12-16",
+    "pokedataId": null,
+    "priceChartingId": "2189378",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Neo Genesis",
+    "newPrice": 7600.0,
+    "loosePrice": 7600.0,
+    "manualOnlyPrice": null,
+    "salesVolume": 1,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "neo2-booster-box",
@@ -48,7 +150,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "neo3-booster-box",
@@ -65,7 +167,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "neo4-booster-box",
@@ -82,7 +184,7 @@
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "base6-booster-box",
@@ -99,7 +201,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ecard2-booster-box",
@@ -116,7 +218,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ecard3-booster-box",
@@ -133,7 +235,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ex1-booster-box",
@@ -150,7 +252,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ex5-booster-box",
@@ -167,7 +269,24 @@
     "salesVolume": 3,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "ex-firered-leafgreen",
+    "name": "EX FireRed & LeafGreen",
+    "productType": "Booster Box",
+    "releaseDate": "2004-08-30",
+    "pokedataId": null,
+    "priceChartingId": "2245063",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Fire Red & Leaf Green",
+    "newPrice": 1647.52,
+    "loosePrice": 1647.52,
+    "manualOnlyPrice": null,
+    "salesVolume": 1,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ex7-booster-box",
@@ -184,7 +303,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ex8-booster-box",
@@ -201,7 +320,7 @@
     "salesVolume": 0,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ex9-booster-box",
@@ -218,7 +337,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ex10-booster-box",
@@ -235,7 +354,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ex11-booster-box",
@@ -252,7 +371,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ex12-booster-box",
@@ -269,7 +388,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ex13-booster-box",
@@ -286,7 +405,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ex14-booster-box",
@@ -303,7 +422,7 @@
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ex15-booster-box",
@@ -320,7 +439,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "ex16-booster-box",
@@ -337,7 +456,7 @@
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "dp1-booster-box",
@@ -354,7 +473,7 @@
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "dp2-booster-box",
@@ -371,7 +490,7 @@
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "dp3-booster-box",
@@ -388,7 +507,7 @@
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "dp4-booster-box",
@@ -405,7 +524,7 @@
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "dp5-booster-box",
@@ -422,7 +541,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "dp6-booster-box",
@@ -439,7 +558,7 @@
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "dp7-booster-box",
@@ -456,7 +575,7 @@
     "salesVolume": 3,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "pl1-booster-box",
@@ -473,7 +592,7 @@
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "pl2-booster-box",
@@ -490,7 +609,7 @@
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "pl3-booster-box",
@@ -507,7 +626,7 @@
     "salesVolume": 3,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "pl4-booster-box",
@@ -524,7 +643,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "hgss1-booster-box",
@@ -541,7 +660,7 @@
     "salesVolume": 1,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "bw1-booster-box",
@@ -558,7 +677,7 @@
     "salesVolume": 17,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "bw2-booster-box",
@@ -575,7 +694,7 @@
     "salesVolume": 5,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "bw3-booster-box",
@@ -592,7 +711,7 @@
     "salesVolume": 5,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "bw4-booster-box",
@@ -609,7 +728,7 @@
     "salesVolume": 4,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "bw5-booster-box",
@@ -626,7 +745,7 @@
     "salesVolume": 7,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "bw6-booster-box",
@@ -643,7 +762,7 @@
     "salesVolume": 8,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "bw7-booster-box",
@@ -660,7 +779,7 @@
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "bw8-booster-box",
@@ -677,7 +796,7 @@
     "salesVolume": 5,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "bw9-booster-box",
@@ -694,7 +813,7 @@
     "salesVolume": 3,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "bw10-booster-box",
@@ -711,7 +830,7 @@
     "salesVolume": 3,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "bw11-booster-box",
@@ -728,7 +847,7 @@
     "salesVolume": 6,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy1-booster-box",
@@ -745,7 +864,7 @@
     "salesVolume": 18,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy1-etb",
@@ -762,7 +881,7 @@
     "salesVolume": 6,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy2-booster-box",
@@ -779,7 +898,7 @@
     "salesVolume": 29,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy3-booster-box",
@@ -796,7 +915,7 @@
     "salesVolume": 24,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy3-etb",
@@ -813,7 +932,7 @@
     "salesVolume": 10,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy4-booster-box",
@@ -830,7 +949,7 @@
     "salesVolume": 20,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy4-etb",
@@ -847,7 +966,7 @@
     "salesVolume": 7,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy5-booster-box",
@@ -864,7 +983,7 @@
     "salesVolume": 73,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy5-etb",
@@ -881,7 +1000,7 @@
     "salesVolume": 8,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy6-booster-box",
@@ -898,7 +1017,7 @@
     "salesVolume": 161,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy6-etb",
@@ -915,7 +1034,7 @@
     "salesVolume": 12,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy7-booster-box",
@@ -932,7 +1051,7 @@
     "salesVolume": 74,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy7-etb",
@@ -949,7 +1068,7 @@
     "salesVolume": 16,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy8-booster-box",
@@ -966,7 +1085,7 @@
     "salesVolume": 2,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy8-etb",
@@ -983,7 +1102,7 @@
     "salesVolume": 5,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy9-etb",
@@ -1000,7 +1119,7 @@
     "salesVolume": 18,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "g1-etb",
@@ -1017,7 +1136,7 @@
     "salesVolume": 100,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy9-booster-box",
@@ -1034,7 +1153,7 @@
     "salesVolume": 3,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy10-booster-box",
@@ -1051,7 +1170,7 @@
     "salesVolume": 42,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy10-etb",
@@ -1068,7 +1187,7 @@
     "salesVolume": 84,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy11-booster-box",
@@ -1085,7 +1204,7 @@
     "salesVolume": 49,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "xy11-etb",
@@ -1102,7 +1221,24 @@
     "salesVolume": 32,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "xy-evolutions",
+    "name": "XY Evolutions",
+    "productType": "Booster Box",
+    "releaseDate": "2016-11-02",
+    "pokedataId": null,
+    "priceChartingId": "2244967",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Evolutions",
+    "newPrice": 2300.0,
+    "loosePrice": 2300.0,
+    "manualOnlyPrice": null,
+    "salesVolume": 381,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm2-booster-box",
@@ -1119,7 +1255,7 @@
     "salesVolume": 40,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm2-etb",
@@ -1136,7 +1272,7 @@
     "salesVolume": 165,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm3-booster-box",
@@ -1147,13 +1283,13 @@
     "priceChartingId": "2244963",
     "productName": "Booster Box",
     "consoleName": "Pokemon Burning Shadows",
-    "newPrice": 1037.26,
-    "loosePrice": 1037.26,
+    "newPrice": 1038.0,
+    "loosePrice": 1038.0,
     "manualOnlyPrice": null,
-    "salesVolume": 246,
+    "salesVolume": 258,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm3-etb",
@@ -1170,7 +1306,7 @@
     "salesVolume": 185,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm4-booster-box",
@@ -1187,7 +1323,7 @@
     "salesVolume": 144,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm35-etb",
@@ -1204,7 +1340,7 @@
     "salesVolume": 98,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm4-etb",
@@ -1221,7 +1357,7 @@
     "salesVolume": 387,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm5-etb",
@@ -1238,7 +1374,7 @@
     "salesVolume": 21,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm5-booster-box",
@@ -1255,7 +1391,7 @@
     "salesVolume": 65,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm6-booster-box",
@@ -1272,7 +1408,7 @@
     "salesVolume": 54,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm6-etb",
@@ -1289,7 +1425,7 @@
     "salesVolume": 49,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm7-booster-box",
@@ -1306,7 +1442,7 @@
     "salesVolume": 63,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm7-etb",
@@ -1323,7 +1459,7 @@
     "salesVolume": 102,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm75-etb",
@@ -1340,7 +1476,7 @@
     "salesVolume": 66,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm8-booster-box",
@@ -1357,7 +1493,7 @@
     "salesVolume": 49,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm8-etb",
@@ -1374,7 +1510,24 @@
     "salesVolume": 52,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "team-up",
+    "name": "Team Up",
+    "productType": "Booster Box",
+    "releaseDate": "2019-02-01",
+    "pokedataId": null,
+    "priceChartingId": "2244951",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Team Up",
+    "newPrice": 10000.0,
+    "loosePrice": 10000.0,
+    "manualOnlyPrice": null,
+    "salesVolume": 64,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm9-etb",
@@ -1391,7 +1544,7 @@
     "salesVolume": 91,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm10-booster-box",
@@ -1408,7 +1561,7 @@
     "salesVolume": 119,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm10-etb",
@@ -1425,7 +1578,7 @@
     "salesVolume": 105,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm11-booster-box",
@@ -1442,7 +1595,7 @@
     "salesVolume": 107,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm11-etb",
@@ -1459,7 +1612,41 @@
     "salesVolume": 102,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "cosmic-eclipse",
+    "name": "Cosmic Eclipse",
+    "productType": "Booster Box",
+    "releaseDate": "2019-08-23",
+    "pokedataId": null,
+    "priceChartingId": "2244943",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Cosmic Eclipse",
+    "newPrice": 3681.31,
+    "loosePrice": 3681.31,
+    "manualOnlyPrice": null,
+    "salesVolume": 127,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "hidden-fates",
+    "name": "Hidden Fates",
+    "productType": "ETB",
+    "releaseDate": "2019-08-23",
+    "pokedataId": null,
+    "priceChartingId": "2244945",
+    "productName": "Elite Trainer Box",
+    "consoleName": "Pokemon Hidden Fates",
+    "newPrice": 459.24,
+    "loosePrice": 459.24,
+    "manualOnlyPrice": 313.55,
+    "salesVolume": 775,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sm12-etb",
@@ -1476,7 +1663,7 @@
     "salesVolume": 89,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh1-booster-box",
@@ -1493,7 +1680,7 @@
     "salesVolume": 131,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh1-etb",
@@ -1510,7 +1697,7 @@
     "salesVolume": 129,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh2-booster-box",
@@ -1527,7 +1714,7 @@
     "salesVolume": 22,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh2-etb",
@@ -1544,7 +1731,7 @@
     "salesVolume": 39,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh3-booster-box",
@@ -1561,7 +1748,7 @@
     "salesVolume": 243,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh3-etb",
@@ -1578,7 +1765,24 @@
     "salesVolume": 355,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "champions-path",
+    "name": "Champion's Path",
+    "productType": "ETB",
+    "releaseDate": "2020-09-25",
+    "pokedataId": null,
+    "priceChartingId": "3346511",
+    "productName": "Elite Trainer Box",
+    "consoleName": "Pokemon Champion's Path",
+    "newPrice": 158.95,
+    "loosePrice": 158.95,
+    "manualOnlyPrice": 62.5,
+    "salesVolume": 428,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh4-booster-box",
@@ -1595,7 +1799,7 @@
     "salesVolume": 376,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh4-etb",
@@ -1612,7 +1816,24 @@
     "salesVolume": 702,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "shining-fates",
+    "name": "Shining Fates",
+    "productType": "ETB",
+    "releaseDate": "2021-02-19",
+    "pokedataId": null,
+    "priceChartingId": "2189388",
+    "productName": "Elite Trainer Box",
+    "consoleName": "Pokemon Shining Fates",
+    "newPrice": 119.72,
+    "loosePrice": 119.72,
+    "manualOnlyPrice": null,
+    "salesVolume": 412,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh5-booster-box",
@@ -1629,7 +1850,7 @@
     "salesVolume": 1104,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh5-etb",
@@ -1646,7 +1867,7 @@
     "salesVolume": 107,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh6-booster-box",
@@ -1663,7 +1884,24 @@
     "salesVolume": 580,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "evolving-skies",
+    "name": "Evolving Skies",
+    "productType": "Booster Box",
+    "releaseDate": "2021-08-27",
+    "pokedataId": null,
+    "priceChartingId": "3217472",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Evolving Skies",
+    "newPrice": 2501.95,
+    "loosePrice": 2501.95,
+    "manualOnlyPrice": null,
+    "salesVolume": 333,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh7-etb",
@@ -1680,7 +1918,41 @@
     "salesVolume": 369,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "celebrations",
+    "name": "Celebrations",
+    "productType": "ETB",
+    "releaseDate": "2021-10-08",
+    "pokedataId": null,
+    "priceChartingId": "3345755",
+    "productName": "Elite Trainer Box",
+    "consoleName": "Pokemon Celebrations",
+    "newPrice": 335.0,
+    "loosePrice": 335.0,
+    "manualOnlyPrice": 868.0,
+    "salesVolume": 368,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "fusion-strike",
+    "name": "Fusion Strike",
+    "productType": "Booster Box",
+    "releaseDate": "2021-11-12",
+    "pokedataId": null,
+    "priceChartingId": "2782363",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Fusion Strike",
+    "newPrice": 974.25,
+    "loosePrice": 974.25,
+    "manualOnlyPrice": null,
+    "salesVolume": 867,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh8-etb",
@@ -1697,7 +1969,24 @@
     "salesVolume": 52,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "brilliant-stars",
+    "name": "Brilliant Stars",
+    "productType": "Booster Box",
+    "releaseDate": "2022-02-25",
+    "pokedataId": null,
+    "priceChartingId": "3188412",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Brilliant Stars",
+    "newPrice": 589.0,
+    "loosePrice": 589.0,
+    "manualOnlyPrice": null,
+    "salesVolume": 357,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh9-etb",
@@ -1714,7 +2003,7 @@
     "salesVolume": 380,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh10-booster-box",
@@ -1731,7 +2020,7 @@
     "salesVolume": 278,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh10-etb",
@@ -1748,7 +2037,24 @@
     "salesVolume": 427,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "lost-origin",
+    "name": "Lost Origin",
+    "productType": "Booster Box",
+    "releaseDate": "2022-09-09",
+    "pokedataId": null,
+    "priceChartingId": "4080752",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Lost Origin",
+    "newPrice": 720.0,
+    "loosePrice": 720.0,
+    "manualOnlyPrice": null,
+    "salesVolume": 447,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh11-etb",
@@ -1765,7 +2071,7 @@
     "salesVolume": 404,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh12-booster-box",
@@ -1782,7 +2088,7 @@
     "salesVolume": 388,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "swsh12-etb",
@@ -1799,7 +2105,58 @@
     "salesVolume": 60,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "crown-zenith",
+    "name": "Crown Zenith",
+    "productType": "ETB",
+    "releaseDate": "2023-01-20",
+    "pokedataId": null,
+    "priceChartingId": "4643452",
+    "productName": "Elite Trainer Box",
+    "consoleName": "Pokemon Crown Zenith",
+    "newPrice": 306.67,
+    "loosePrice": 306.67,
+    "manualOnlyPrice": null,
+    "salesVolume": 455,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "scarlet-violet-base",
+    "name": "Scarlet & Violet Base",
+    "productType": "Booster Box",
+    "releaseDate": "2023-03-31",
+    "pokedataId": null,
+    "priceChartingId": "4998474",
+    "productName": "Base Set Booster Box",
+    "consoleName": "Pokemon Scarlet & Violet",
+    "newPrice": 255.0,
+    "loosePrice": 255.0,
+    "manualOnlyPrice": null,
+    "salesVolume": 309,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "paldea-evolved",
+    "name": "Paldea Evolved",
+    "productType": "Booster Box",
+    "releaseDate": "2023-06-09",
+    "pokedataId": null,
+    "priceChartingId": "5287290",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Paldea Evolved",
+    "newPrice": 460.0,
+    "loosePrice": 460.0,
+    "manualOnlyPrice": null,
+    "salesVolume": 374,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv2-etb",
@@ -1816,7 +2173,24 @@
     "salesVolume": 524,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "obsidian-flames",
+    "name": "Obsidian Flames",
+    "productType": "Booster Box",
+    "releaseDate": "2023-08-11",
+    "pokedataId": null,
+    "priceChartingId": "5605518",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Obsidian Flames",
+    "newPrice": 348.0,
+    "loosePrice": 348.0,
+    "manualOnlyPrice": null,
+    "salesVolume": 378,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv3-etb",
@@ -1833,7 +2207,24 @@
     "salesVolume": 332,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "pokemon-151",
+    "name": "Pok\u00e9mon 151",
+    "productType": "ETB",
+    "releaseDate": "2023-09-22",
+    "pokedataId": null,
+    "priceChartingId": "5826208",
+    "productName": "Elite Trainer Box",
+    "consoleName": "Pokemon Scarlet & Violet 151",
+    "newPrice": 600.0,
+    "loosePrice": 600.0,
+    "manualOnlyPrice": 244.5,
+    "salesVolume": 414,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv4-booster-box",
@@ -1850,7 +2241,7 @@
     "salesVolume": 353,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv4-etb",
@@ -1867,7 +2258,7 @@
     "salesVolume": 241,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv4pt5-etb",
@@ -1884,7 +2275,7 @@
     "salesVolume": 76,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv5-booster-box",
@@ -1901,7 +2292,7 @@
     "salesVolume": 400,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv5-etb",
@@ -1918,7 +2309,7 @@
     "salesVolume": 346,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv6-booster-box",
@@ -1935,7 +2326,7 @@
     "salesVolume": 352,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv6-etb",
@@ -1952,7 +2343,7 @@
     "salesVolume": 252,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv6pt5-etb",
@@ -1969,7 +2360,7 @@
     "salesVolume": 316,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv7-booster-box",
@@ -1986,7 +2377,24 @@
     "salesVolume": 344,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "surging-sparks",
+    "name": "Surging Sparks",
+    "productType": "Booster Box",
+    "releaseDate": "2024-11-08",
+    "pokedataId": null,
+    "priceChartingId": "7800021",
+    "productName": "Booster Box",
+    "consoleName": "Pokemon Surging Sparks",
+    "newPrice": 254.7,
+    "loosePrice": 254.7,
+    "manualOnlyPrice": null,
+    "salesVolume": 240,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv8-etb",
@@ -2003,7 +2411,24 @@
     "salesVolume": 254,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
+  },
+  {
+    "setId": "prismatic-evolutions",
+    "name": "Prismatic Evolutions",
+    "productType": "Booster Bundle",
+    "releaseDate": "2025-01-17",
+    "pokedataId": null,
+    "priceChartingId": "8256648",
+    "productName": "Booster Bundle",
+    "consoleName": "Pokemon Prismatic Evolutions",
+    "newPrice": 71.0,
+    "loosePrice": 71.0,
+    "manualOnlyPrice": null,
+    "salesVolume": 149,
+    "catalogSource": "curated-manifest",
+    "mappingConfidence": "curated",
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv8pt5-etb",
@@ -2020,7 +2445,7 @@
     "salesVolume": 216,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv9-booster-box",
@@ -2037,7 +2462,7 @@
     "salesVolume": 268,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv9-etb",
@@ -2054,7 +2479,7 @@
     "salesVolume": 306,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv10-booster-box",
@@ -2071,7 +2496,7 @@
     "salesVolume": 235,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "sv10-etb",
@@ -2088,7 +2513,7 @@
     "salesVolume": 332,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "zsv10pt5-etb",
@@ -2105,7 +2530,7 @@
     "salesVolume": 216,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "rsv10pt5-etb",
@@ -2122,7 +2547,7 @@
     "salesVolume": 216,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "me1-booster-box",
@@ -2139,7 +2564,7 @@
     "salesVolume": 3413,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "me1-etb",
@@ -2156,7 +2581,7 @@
     "salesVolume": 213,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "me2-etb",
@@ -2173,7 +2598,7 @@
     "salesVolume": 150,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "me2-booster-box",
@@ -2190,7 +2615,7 @@
     "salesVolume": 155,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "me2pt5-etb",
@@ -2207,7 +2632,7 @@
     "salesVolume": 259,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   },
   {
     "setId": "me3-booster-box",
@@ -2221,9 +2646,9 @@
     "newPrice": 101.37,
     "loosePrice": 101.37,
     "manualOnlyPrice": null,
-    "salesVolume": 477,
+    "salesVolume": 548,
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "high",
-    "capturedAt": "2026-04-24T02:40:07+00:00"
+    "capturedAt": "2026-04-24T05:04:47+00:00"
   }
 ]
