@@ -247,6 +247,7 @@ export async function GET(request: NextRequest) {
       getSyncedPriceChartingEntryById(requestedPriceChartingId) ??
       findSyncedPriceChartingEntry({
         name: localCatalogEntry.name,
+        productType: localCatalogEntry.productType,
         releaseDate: localCatalogEntry.releaseDate,
       });
     const priceChartingPrice = roundPrice(
@@ -279,6 +280,71 @@ export async function GET(request: NextRequest) {
       salesVolume: syncedEntry?.salesVolume ?? null,
       manualOnlyPrice: syncedEntry?.manualOnlyPrice ?? null,
     };
+    if (
+      pricing.bestPrice !== null ||
+      !allowLiveOfficial ||
+      !hasPriceChartingToken()
+    ) {
+      await cachePut("sealed-pricing", id, pricing, CACHE_TTL);
+      return NextResponse.json({ pricing });
+    }
+
+    try {
+      const officialProduct = requestedPriceChartingId
+        ? await fetchPriceChartingProductById(requestedPriceChartingId)
+        : await searchPriceChartingProduct(requestedName ?? localCatalogEntry.name);
+      const officialPrice = getPriceChartingSealedPrice(officialProduct);
+
+      if (officialProduct?.id && officialPrice) {
+        const snapshotDate = new Date().toISOString().slice(0, 10);
+        const liveOfficialPricing: SealedPricing = {
+          ...pricing,
+          priceChartingId: officialProduct.id,
+          priceChartingProductName: officialProduct["product-name"] ?? null,
+          priceChartingConsoleName: officialProduct["console-name"] ?? null,
+          priceChartingPrice: officialPrice,
+          bestPrice: officialPrice,
+          primaryProvider: "pricecharting",
+          snapshotDate,
+          salesVolume: getPriceChartingSalesVolume(officialProduct),
+          manualOnlyPrice: getPriceChartingManualOnlyPrice(officialProduct),
+        };
+
+        await storeSealedPriceSnapshot({
+          pokedataId: id,
+          name: liveOfficialPricing.name,
+          releaseDate: liveOfficialPricing.releaseDate,
+          imageUrl: liveOfficialPricing.imageUrl,
+          ownedImagePath: liveOfficialPricing.imageAsset?.owned?.path ?? null,
+          imageMirrorSourceUrl:
+            liveOfficialPricing.imageAsset?.mirrorSource?.url ??
+            liveOfficialPricing.imageAsset?.fallback?.url ??
+            null,
+          imageMirrorSourceProvider:
+            liveOfficialPricing.imageAsset?.mirrorSource?.provider ??
+            liveOfficialPricing.imageAsset?.fallback?.provider ??
+            null,
+          imageMirroredAt:
+            liveOfficialPricing.imageAsset?.mirrorSource?.mirroredAt ?? null,
+          snapshotDate,
+          tcgplayerPrice: liveOfficialPricing.tcgplayerPrice,
+          ebayPrice: liveOfficialPricing.ebayPrice,
+          pokedataPrice: liveOfficialPricing.pokedataPrice,
+          priceChartingPrice: officialPrice,
+          bestPrice: officialPrice,
+          primaryProvider: "pricecharting",
+          priceChartingId: officialProduct.id,
+          priceChartingProductName: officialProduct["product-name"] ?? null,
+          priceChartingConsoleName: officialProduct["console-name"] ?? null,
+          priceChartingReleaseDate: officialProduct["release-date"] ?? null,
+        });
+
+        await cachePut("sealed-pricing", id, liveOfficialPricing, CACHE_TTL);
+        return NextResponse.json({ pricing: liveOfficialPricing });
+      }
+    } catch (error) {
+      console.warn("PriceCharting live sealed pricing lookup failed:", error);
+    }
 
     await cachePut("sealed-pricing", id, pricing, CACHE_TTL);
     return NextResponse.json({ pricing });
