@@ -41,6 +41,58 @@ function buildTcgplayerProductUrl(tcgplayerId: string): string {
   return `https://www.tcgplayer.com/product/${tcgplayerId}`;
 }
 
+/**
+ * Build a {@link GradeData} object from a candidate's static baseline pricing.
+ * Used so the page renders zero-config when the live PriceCharting / PokeData
+ * APIs are unavailable. Population data is intentionally left empty — the
+ * downstream {@link computeGradingOpportunity} call only requires graded prices
+ * and a raw price to produce a recommendation.
+ */
+function gradeDataFromBaseline(card: GradingCandidate): GradeData | null {
+  if (!card.baselinePricing) return null;
+  const { rawPrice, gradedPrices } = card.baselinePricing;
+  return {
+    pokedataId: card.pokedataId,
+    name: card.name,
+    set: card.set,
+    rawPrice: rawPrice ?? null,
+    tcgplayerPrice: rawPrice ?? null,
+    ebayRawPrice: null,
+    gradedPrices: { ...gradedPrices } as Record<string, number>,
+    population: {},
+    psa10Probability: null,
+  };
+}
+
+/**
+ * Merge live API grade data over a baseline snapshot. Live values win when
+ * present and finite; baseline fills in gaps. This lets us serve a stable
+ * baseline immediately while still benefiting from fresher live data when the
+ * upstream providers are configured.
+ */
+function mergeGradeData(
+  baseline: GradeData | null,
+  live: GradeData | null
+): GradeData | null {
+  if (!baseline) return live;
+  if (!live) return baseline;
+  const pickNumber = (a: number | null, b: number | null) =>
+    a !== null && Number.isFinite(a) && a > 0 ? a : b;
+  return {
+    ...baseline,
+    ...live,
+    rawPrice: pickNumber(live.rawPrice, baseline.rawPrice),
+    tcgplayerPrice: pickNumber(live.tcgplayerPrice, baseline.tcgplayerPrice),
+    ebayRawPrice: pickNumber(live.ebayRawPrice, baseline.ebayRawPrice),
+    gradedPrices: { ...baseline.gradedPrices, ...live.gradedPrices },
+    population:
+      Object.keys(live.population || {}).length > 0
+        ? live.population
+        : baseline.population,
+    psa10Probability: live.psa10Probability ?? baseline.psa10Probability,
+  };
+}
+
 export function GradingOpportunities() {
   const [opportunities, setOpportunities] = useState<GradingOpportunity[]>([]);
   const [loading, setLoading] = useState<LoadingState>({
@@ -86,7 +138,16 @@ export function GradingOpportunities() {
 
       const batchResults = await Promise.allSettled(
         batch.map(async (card) => {
-          const gradeData = await fetchGradeData(card);
+          const baseline = gradeDataFromBaseline(card);
+          let live: GradeData | null = null;
+          try {
+            live = await fetchGradeData(card);
+          } catch {
+            // Live fetch failure → fall back to baseline silently. We still
+            // surface a soft error below if neither source produced data.
+            live = null;
+          }
+          const gradeData = mergeGradeData(baseline, live);
           if (!gradeData) return null;
 
           const rawPrice =
