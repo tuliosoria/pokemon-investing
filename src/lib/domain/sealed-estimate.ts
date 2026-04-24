@@ -166,6 +166,7 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
     pokedataId: pricing.pokedataId,
     priceChartingId: pricing.priceChartingId,
     imageUrl: pricing.imageUrl ?? undefined,
+    imageAsset: pricing.imageAsset ?? undefined,
     curated: false,
     pricingContext: buildPricingContext(pricing),
 

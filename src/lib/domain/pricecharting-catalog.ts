@@ -30,6 +30,10 @@ const VARIANT_PENALTY_WORDS = [
 ];
 
 const catalog = syncedCatalog as SyncedPriceChartingCatalogEntry[];
+const catalogBySetId = new Map(catalog.map((entry) => [entry.setId, entry]));
+const catalogByPriceChartingId = new Map(
+  catalog.map((entry) => [entry.priceChartingId, entry])
+);
 
 function normalize(value: string): string {
   return value
@@ -109,7 +113,17 @@ export function getSyncedPriceChartingEntryById(
     return null;
   }
 
-  return catalog.find((entry) => entry.priceChartingId === priceChartingId) ?? null;
+  return catalogByPriceChartingId.get(priceChartingId) ?? null;
+}
+
+export function getSyncedPriceChartingEntryBySetId(
+  setId: string | null | undefined
+): SyncedPriceChartingCatalogEntry | null {
+  if (!setId) {
+    return null;
+  }
+
+  return catalogBySetId.get(setId) ?? null;
 }
 
 export function findSyncedPriceChartingEntry(input: {

@@ -18,7 +18,7 @@ export default function HomePage() {
         <div className="relative z-10 container mx-auto px-4 text-center max-w-3xl">
           <div className="animate-fade-in-up">
             <span className="inline-block text-xs font-semibold bg-[hsl(var(--poke-yellow))] text-[hsl(var(--poke-blue))] rounded-full px-4 py-1.5 mb-6 shadow-md">
-              Free &middot; No login required
+              Free &middot; No login required &middot; No sale of personal data
             </span>
           </div>
 
@@ -31,9 +31,10 @@ export default function HomePage() {
           </h1>
 
           <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-200">
-            Data-driven tools for graded cards and sealed product investing.
-            Expected value calculators, price forecasting, and market analysis
-            &mdash; so you invest with math, not gut feeling.
+            Research tools for graded cards and sealed products. Expected value
+            calculators, price forecasting, and market analysis to help you
+            evaluate collecting decisions &mdash; not personalized investment
+            advice.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-300">
@@ -79,7 +80,8 @@ export default function HomePage() {
               </h2>
               <p className="text-[hsl(var(--muted-foreground))] max-w-xl mx-auto">
                 Whether you&rsquo;re grading singles or stacking sealed product,
-                we give you the numbers to decide with confidence.
+                we give you model outputs and market context to review for
+                yourself.
               </p>
             </div>
           </FadeIn>
@@ -95,9 +97,10 @@ export default function HomePage() {
                   <h3 className="text-xl font-bold">Grading Calculator</h3>
                 </div>
                 <p className="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-5">
-                  Should you grade that card? Get a clear Grade / Don&rsquo;t Grade
-                  verdict backed by expected value math. Factors in PSA 10, 9,
-                  and 8 probabilities, grading fees, and real market prices.
+                  Review grading economics using expected value math, estimated
+                  grade distributions, fees, and current market references. The
+                  tool is informational and should be used alongside your own
+                  judgment.
                 </p>
                 <ul className="space-y-2 text-sm text-[hsl(var(--muted-foreground))] mb-6">
                   <li className="flex items-center gap-2">
@@ -132,8 +135,9 @@ export default function HomePage() {
                 </div>
                 <p className="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-5">
                   Track and forecast sealed product prices &mdash; booster boxes,
-                  ETBs, tins, bundles, and more. See historical trends, compare
-                  product types, and find undervalued sealed before the market moves.
+                  ETBs, tins, bundles, and more. Review historical trends,
+                  compare product types, and inspect model-based forecasts using
+                  owned and third-party market data.
                 </p>
                 <ul className="space-y-2 text-sm text-[hsl(var(--muted-foreground))] mb-6">
                   <li className="flex items-center gap-2">
@@ -167,7 +171,8 @@ export default function HomePage() {
                 </h3>
                 <p className="text-sm text-[hsl(var(--muted-foreground))] max-w-lg mx-auto">
                   Booster boxes, Elite Trainer Boxes, tins, bundles, binder collections,
-                  mini tins &mdash; all in one place with live pricing.
+                  mini tins &mdash; all in one place with stored and provider
+                  market references.
                 </p>
               </div>
               <div className="flex gap-6 justify-center items-end flex-wrap">
@@ -218,17 +223,17 @@ export default function HomePage() {
               {
                 step: "1",
                 title: "Search any card or product",
-                desc: "Find Pok\u00e9mon cards or sealed products by name. Live market prices are pulled automatically.",
+                desc: "Find Pok\u00e9mon cards or sealed products by name using owned data first, with provider fallback where needed.",
               },
               {
                 step: "2",
                 title: "Review the data",
-                desc: "See real-time pricing, historical trends, grade multipliers, and comparable sales.",
+                desc: "Review market references, stored history, model outputs, and comparable context where available.",
               },
               {
                 step: "3",
-                title: "Make a confident move",
-                desc: "Get clear recommendations \u2014 grade or don\u2019t grade, buy or wait \u2014 backed by data.",
+                title: "Make your own decision",
+                desc: "Use the analysis as an informational input, not as personalized financial, tax, or legal advice.",
               },
             ].map((item, i) => (
               <FadeIn key={item.step} delay={i * 150}>
@@ -255,7 +260,7 @@ export default function HomePage() {
               Ready to invest smarter?
             </h2>
             <p className="text-[hsl(var(--muted-foreground))] mb-8">
-              No sign-up. No paywall. Just math.
+              No sign-up. No paywall. Informational tools only.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/calculator">
@@ -274,6 +279,23 @@ export default function HomePage() {
                   Sealed Forecast
                 </Button>
               </Link>
+            </div>
+            <div className="mt-8 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-5 py-4 text-left text-xs leading-relaxed text-[hsl(var(--muted-foreground))]">
+              PokeAlpha provides educational market-analysis tools. It does not
+              provide personalized financial, investment, tax, or legal advice.
+              Review our{" "}
+              <Link href="/terms" className="text-[hsl(var(--poke-red))] hover:underline">
+                Terms of Use
+              </Link>
+              ,{" "}
+              <Link href="/privacy" className="text-[hsl(var(--poke-red))] hover:underline">
+                Privacy Policy
+              </Link>
+              , and{" "}
+              <Link href="/privacy-rights" className="text-[hsl(var(--poke-red))] hover:underline">
+                Privacy Rights
+              </Link>
+              {" "}before relying on the site.
             </div>
           </div>
         </FadeIn>

@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cacheGet, cachePut } from "@/lib/db/cache";
 import { loadSealedSearchCatalog } from "@/lib/db/sealed-search";
-import { getStoredSealedProductMeta } from "@/lib/db/sealed-pricing";
-import { pickProductImageUrl } from "@/lib/domain/sealed-image";
-import { findSyncedPriceChartingEntry } from "@/lib/domain/pricecharting-catalog";
+import {
+  getStoredSealedProductMeta,
+  type StoredSealedProductMeta,
+} from "@/lib/db/sealed-pricing";
+import { normalizeSealedSearchText } from "@/lib/domain/sealed-catalog-search";
+import { resolveSealedProductImageAsset } from "@/lib/domain/sealed-image";
+import {
+  findSyncedPriceChartingEntry,
+  getSyncedPriceChartingEntryById,
+  getSyncedPriceChartingEntryBySetId,
+} from "@/lib/domain/pricecharting-catalog";
 import type { SealedSearchResult } from "@/lib/types/sealed";
 
 const CACHE_TTL = 10 * 60; // 10 minutes
@@ -24,13 +32,7 @@ const VARIANT_PENALTY_WORDS = [
 
 /** Strip diacritics and punctuation for normalized comparison */
 function normalize(s: string): string {
-  return s
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")  // strip accents
-    .replace(/[''`]/g, "")            // strip apostrophes
-    .replace(/&/g, "and")             // & → and
-    .toLowerCase()
-    .trim();
+  return normalizeSealedSearchText(s);
 }
 
 /**
@@ -50,25 +52,31 @@ function expandTerms(rawQuery: string): string[] {
   return expanded;
 }
 
+function shouldReturnAllMatches(request: NextRequest): boolean {
+  return request.nextUrl.searchParams.get("all") === "1";
+}
+
 /**
  * Score how well a product name matches the search terms.
  * Higher = better match.
  */
 function scoreProduct(
-  productName: string,
+  product: Awaited<ReturnType<typeof loadSealedSearchCatalog>>[number],
   expandedTerms: string[],
   normalizedQuery: string
 ): number {
-  const norm = normalize(productName);
-  if (!norm) {
+  const searchAliases =
+    product.searchAliases.length > 0
+      ? product.searchAliases
+      : [normalize(product.name ?? "")];
+  const searchText = product.searchText || searchAliases.join(" | ");
+  if (!searchText) {
     return Number.NEGATIVE_INFINITY;
   }
 
-  // Count how many expanded terms match (aliases count as 1 group)
   let matched = 0;
   for (const term of expandedTerms) {
-    // Multi-word terms (from alias expansion) matched as phrase
-    if (norm.includes(term)) matched++;
+    if (searchText.includes(term)) matched++;
   }
 
   if (matched === 0) {
@@ -77,37 +85,64 @@ function scoreProduct(
 
   let score = matched * 100;
 
-  if (norm === normalizedQuery) {
+  if (searchAliases.includes(normalizedQuery)) {
     score += 220;
-  } else if (norm.startsWith(normalizedQuery)) {
+  } else if (searchAliases.some((alias) => alias.startsWith(normalizedQuery))) {
     score += 140;
-  } else if (norm.includes(normalizedQuery)) {
+  } else if (searchText.includes(normalizedQuery)) {
     score += 80;
   }
 
-  // Bonus for shorter names (more specific products rank higher)
-  score += Math.max(0, 50 - norm.length);
+  score += Math.max(0, 50 - normalize(product.name).length);
 
-  // Penalty for variant/bundle keywords
   for (const vw of VARIANT_PENALTY_WORDS) {
-    if (norm.includes(vw)) score -= 30;
+    if (searchText.includes(vw)) score -= 30;
   }
 
   return score;
 }
 
-async function withStoredImageUrl(
-  product: SealedSearchResult
-): Promise<SealedSearchResult> {
-  if (product.imageUrl) {
-    return product;
-  }
+function withResolvedImageAsset(
+  product: SealedSearchResult,
+  meta: StoredSealedProductMeta | null = null
+): SealedSearchResult {
+  const imageAsset = resolveSealedProductImageAsset({
+    pokedataId: product.pokedataId,
+    name: product.name,
+    ownedImagePath:
+      meta?.ownedImagePath ?? product.imageAsset?.owned?.path ?? null,
+    fallbackCandidates: [
+      product.imageAsset?.fallback?.url,
+      product.imageUrl,
+      meta?.imgUrl,
+    ],
+    mirrorSourceUrl:
+      product.imageAsset?.mirrorSource?.url ??
+      meta?.imageMirrorSourceUrl ??
+      meta?.imgUrl,
+    mirrorSourceProvider:
+      product.imageAsset?.mirrorSource?.provider ??
+      meta?.imageMirrorSourceProvider ??
+      null,
+    mirroredAt:
+      product.imageAsset?.mirrorSource?.mirroredAt ??
+      meta?.imageMirroredAt ??
+      null,
+  });
 
-  const meta = await getStoredSealedProductMeta(product.pokedataId);
   return {
     ...product,
-    imageUrl: pickProductImageUrl(meta?.imgUrl),
+    imageUrl: imageAsset.selectedUrl,
+    imageAsset,
+    priceChartingId: product.priceChartingId ?? meta?.priceChartingId ?? undefined,
   };
+}
+
+async function withStoredImageAsset(
+  product: SealedSearchResult
+): Promise<SealedSearchResult> {
+  const meta = await getStoredSealedProductMeta(product.pokedataId);
+  return withResolvedImageAsset(product, meta);
 }
 
 export async function GET(request: NextRequest) {
@@ -120,12 +155,12 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const cacheKey = normalize(q);
+    const cacheKey = `${normalize(q)}|all:${shouldReturnAllMatches(request) ? "1" : "0"}`;
     const normalizedQuery = normalize(q);
 
     const cached = await cacheGet<SealedSearchResult[]>("sealed-search", cacheKey);
     if (cached) {
-      const products = await Promise.all(cached.map(withStoredImageUrl));
+      const products = await Promise.all(cached.map(withStoredImageAsset));
       return NextResponse.json({
         products,
       });
@@ -139,38 +174,55 @@ export async function GET(request: NextRequest) {
       .map((product, index) => ({
         product,
         index,
-        score: scoreProduct(product.name ?? "", expandedTerms, normalizedQuery),
+        score: scoreProduct(product, expandedTerms, normalizedQuery),
       }))
       .filter((entry) => Number.isFinite(entry.score));
 
     // Sort by score desc (stable sort preserves API order for ties)
     scored.sort((a, b) => b.score - a.score || a.index - b.index);
 
-    // Deduplicate by product ID
+    // Deduplicate by owned catalog identity before falling back to runtime ID
     const seen = new Set<string>();
     const deduped = scored.filter((s) => {
-      const id = String(s.product.pokedataId);
+      const id = s.product.catalogId || s.product.catalogKey || String(s.product.pokedataId);
       if (seen.has(id)) return false;
       seen.add(id);
       return true;
-    }).slice(0, SEARCH_RESULT_LIMIT);
+    });
 
-    const products: SealedSearchResult[] = deduped.map((s) => {
+    const limitedResults = shouldReturnAllMatches(request)
+      ? deduped
+      : deduped.slice(0, SEARCH_RESULT_LIMIT);
+
+    const products: SealedSearchResult[] = limitedResults.map((s) => {
       const pokedataId = s.product.pokedataId;
       const releaseDate = s.product.releaseDate ?? null;
       const syncedPriceChartingEntry = findSyncedPriceChartingEntry({
         name: s.product.name ?? "",
         releaseDate,
       });
+      const exactSyncedPriceChartingEntry =
+        getSyncedPriceChartingEntryBySetId(s.product.catalogId) ??
+        getSyncedPriceChartingEntryById(s.product.priceChartingId);
+      const imageAsset = resolveSealedProductImageAsset({
+        setId: s.product.catalogId,
+        pokedataId,
+        name: s.product.name,
+        fallbackCandidates: [s.product.imageUrl],
+        mirrorSourceUrl: s.product.imageUrl,
+      });
 
-      return {
+      return withResolvedImageAsset({
         pokedataId,
         name: s.product.name,
         releaseDate,
-        imageUrl: pickProductImageUrl(s.product.imageUrl),
+        imageUrl: imageAsset.selectedUrl,
+        imageAsset,
         priceChartingId:
-          s.product.priceChartingId ?? syncedPriceChartingEntry?.priceChartingId,
-      };
+          s.product.priceChartingId ??
+          exactSyncedPriceChartingEntry?.priceChartingId ??
+          syncedPriceChartingEntry?.priceChartingId,
+      });
     });
 
     await cachePut("sealed-search", cacheKey, products, CACHE_TTL);

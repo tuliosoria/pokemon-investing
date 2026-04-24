@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { getLegalConfig } from "@/lib/legal-config";
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const legal = getLegalConfig();
 
   return (
     <footer className="border-t border-[hsl(var(--border))] bg-[hsl(var(--card))]">
@@ -20,8 +22,9 @@ export function Footer() {
               </span>
             </div>
             <p className="text-xs text-[hsl(var(--muted-foreground))] leading-relaxed">
-              A calculation tool for Pokémon card investors. Not financial advice.
-              All market data is sourced from public APIs.
+              Educational research tools for Pokémon collectors and investors.
+              Not financial, legal, or tax advice. Market data may be delayed,
+              incomplete, estimated, or sourced from third parties.
             </p>
           </div>
 
@@ -45,6 +48,12 @@ export function Footer() {
               <Link href="/privacy" className="text-xs text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--poke-red))] transition-colors">
                 Privacy Policy
               </Link>
+              <Link href="/privacy-rights" className="text-xs text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--poke-red))] transition-colors">
+                Privacy Rights / Do Not Sell
+              </Link>
+              <Link href="/contact" className="text-xs text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--poke-red))] transition-colors">
+                Contact &amp; Legal Notices
+              </Link>
             </nav>
           </div>
         </div>
@@ -53,10 +62,26 @@ export function Footer() {
           <p className="text-xs text-[hsl(var(--muted-foreground))]">
             © {year} PokeAlpha. All rights reserved.
           </p>
-          <p className="text-xs text-[hsl(var(--muted-foreground))]">
+          <div className="space-y-1 text-center sm:text-right">
+            <p className="text-xs text-[hsl(var(--muted-foreground))]">
+              {legal.contactEmail ? (
+                <>
+                  Contact:{" "}
+                  <a href={`mailto:${legal.contactEmail}`}>{legal.contactEmail}</a>
+                </>
+              ) : (
+                <>No dedicated legal contact email configured yet.</>
+              )}
+            </p>
+            <p className="text-xs text-[hsl(var(--muted-foreground))]">
+              We do not sell personal information based on the website&apos;s
+              current behavior.
+            </p>
+            <p className="text-xs text-[hsl(var(--muted-foreground))]">
             Pokémon is a trademark of Nintendo / Creatures Inc. / GAME FREAK inc.
             This site is not affiliated with The Pokémon Company.
-          </p>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

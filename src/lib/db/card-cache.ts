@@ -11,6 +11,7 @@
  */
 
 import { GetCommand, UpdateCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
+import type { ImageMirrorProvider } from "@/lib/domain/image-assets";
 import { getDynamo, getTableName } from "./dynamo";
 
 // Current schema version — bump to force re-fetch of static data
@@ -31,6 +32,14 @@ export interface CardMeta {
   rarity: string | null;
   imageSmall: string;
   imageLarge: string;
+  ownedImageSmallPath?: string | null;
+  ownedImageLargePath?: string | null;
+  imageSmallMirrorSourceUrl?: string | null;
+  imageSmallMirrorSourceProvider?: ImageMirrorProvider | null;
+  imageSmallMirroredAt?: string | null;
+  imageLargeMirrorSourceUrl?: string | null;
+  imageLargeMirrorSourceProvider?: ImageMirrorProvider | null;
+  imageLargeMirroredAt?: string | null;
   tcgplayerUrl: string | null;
   pokedataId: string | null;
   staticDataVersion: number;
@@ -128,7 +137,16 @@ export async function putCardMeta(
           SET #name = :name, #set = :set, setId = :setId,
               #num = :num, rarity = :rarity,
               imageSmall = :imageSmall, imageLarge = :imageLarge,
+              ownedImageSmallPath = if_not_exists(ownedImageSmallPath, :ownedImageSmallPath),
+              ownedImageLargePath = if_not_exists(ownedImageLargePath, :ownedImageLargePath),
+              imageSmallMirrorSourceUrl = if_not_exists(imageSmallMirrorSourceUrl, :imageSmallMirrorSourceUrl),
+              imageSmallMirrorSourceProvider = if_not_exists(imageSmallMirrorSourceProvider, :imageSmallMirrorSourceProvider),
+              imageSmallMirroredAt = if_not_exists(imageSmallMirroredAt, :imageSmallMirroredAt),
+              imageLargeMirrorSourceUrl = if_not_exists(imageLargeMirrorSourceUrl, :imageLargeMirrorSourceUrl),
+              imageLargeMirrorSourceProvider = if_not_exists(imageLargeMirrorSourceProvider, :imageLargeMirrorSourceProvider),
+              imageLargeMirroredAt = if_not_exists(imageLargeMirroredAt, :imageLargeMirroredAt),
               tcgplayerUrl = :tcgplayerUrl,
+              pokedataId = :pokedataId,
               staticDataVersion = :ver,
               updatedAt = :now,
               createdAt = if_not_exists(createdAt, :now)
@@ -146,7 +164,18 @@ export async function putCardMeta(
           ":rarity": data.rarity,
           ":imageSmall": data.imageSmall,
           ":imageLarge": data.imageLarge,
+          ":ownedImageSmallPath": data.ownedImageSmallPath ?? null,
+          ":ownedImageLargePath": data.ownedImageLargePath ?? null,
+          ":imageSmallMirrorSourceUrl": data.imageSmallMirrorSourceUrl ?? null,
+          ":imageSmallMirrorSourceProvider":
+            data.imageSmallMirrorSourceProvider ?? null,
+          ":imageSmallMirroredAt": data.imageSmallMirroredAt ?? null,
+          ":imageLargeMirrorSourceUrl": data.imageLargeMirrorSourceUrl ?? null,
+          ":imageLargeMirrorSourceProvider":
+            data.imageLargeMirrorSourceProvider ?? null,
+          ":imageLargeMirroredAt": data.imageLargeMirroredAt ?? null,
           ":tcgplayerUrl": data.tcgplayerUrl,
+          ":pokedataId": data.pokedataId,
           ":ver": STATIC_DATA_VERSION,
           ":now": now,
         },

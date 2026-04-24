@@ -100,6 +100,7 @@ export function CardSearch({
       const params = new URLSearchParams({ name: card.name, set: card.set });
       if (card.number) params.set("number", card.number);
       if (card.id) params.set("tcgId", card.id);
+      if (card.pokedataId) params.set("pokedataId", card.pokedataId);
       const res = await fetch(`/api/cards/grade-data?${params}`, {
         signal: gradeController.signal,
       });

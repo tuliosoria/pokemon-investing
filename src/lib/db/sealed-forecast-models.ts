@@ -7,11 +7,16 @@ import {
   type ForecastModelBundle,
   type ModelArtifact,
 } from "@/lib/domain/sealed-forecast-ml";
+import {
+  SEALED_FORECAST_MODEL_PK,
+  SEALED_FORECAST_MODEL_SUMMARY_SK,
+  buildSealedForecastModelChunkPrefix,
+  buildSealedForecastModelMetaKey,
+  type PublishedModelHorizon,
+} from "@/lib/owned-data/dynamo-keys";
 import { getDynamo, getTableName } from "./dynamo";
 
-const MODEL_PK = "SEALED_MODEL#sealed-forecast";
 const CACHE_TTL_MS = 5 * 60 * 1000;
-const MODEL_SUMMARY_SK = "MODEL#SUMMARY";
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 const HORIZONS = {
   oneYear: "1yr",
@@ -109,14 +114,6 @@ let modelCache:
     }
   | null = null;
 
-function metaKey(horizon: string): string {
-  return `MODEL#${horizon}#META`;
-}
-
-function chunkPrefix(horizon: string): string {
-  return `MODEL#${horizon}#CHUNK#`;
-}
-
 function getModelSourcePreference(): ModelSourcePreference {
   return process.env.SEALED_ML_MODEL_SOURCE?.trim().toLowerCase() === "bundled"
     ? "bundled"
@@ -150,11 +147,11 @@ async function loadStoredModelMeta(horizon: PublishedHorizon): Promise<StoredMod
   }
 
   const result = await dynamo.send(
-    new GetCommand({
-      TableName: table,
-      Key: { pk: MODEL_PK, sk: metaKey(horizon) },
-    })
-  );
+      new GetCommand({
+        TableName: table,
+        Key: buildSealedForecastModelMetaKey(horizon),
+      })
+    );
 
   return (result.Item as StoredModelMeta | undefined) ?? null;
 }
@@ -167,11 +164,14 @@ async function loadStoredModelSummary(): Promise<StoredModelSummary | null> {
   }
 
   const result = await dynamo.send(
-    new GetCommand({
-      TableName: table,
-      Key: { pk: MODEL_PK, sk: MODEL_SUMMARY_SK },
-    })
-  );
+      new GetCommand({
+        TableName: table,
+        Key: {
+          pk: SEALED_FORECAST_MODEL_PK,
+          sk: SEALED_FORECAST_MODEL_SUMMARY_SK,
+        },
+      })
+    );
 
   return (result.Item as StoredModelSummary | undefined) ?? null;
 }
@@ -210,11 +210,11 @@ async function loadStoredModel(horizon: string): Promise<ModelArtifact | null> {
   }
 
   const metaResult = await dynamo.send(
-    new GetCommand({
-      TableName: table,
-      Key: { pk: MODEL_PK, sk: metaKey(horizon) },
-    })
-  );
+      new GetCommand({
+        TableName: table,
+        Key: buildSealedForecastModelMetaKey(horizon as PublishedModelHorizon),
+      })
+    );
   const meta = metaResult.Item as StoredModelMeta | undefined;
   if (!meta?.chunkCount || meta.chunkCount < 1) {
     return null;
@@ -225,15 +225,17 @@ async function loadStoredModel(horizon: string): Promise<ModelArtifact | null> {
 
   do {
     const page = await dynamo.send(
-      new QueryCommand({
-        TableName: table,
-        KeyConditionExpression: "pk = :pk AND begins_with(sk, :prefix)",
-        ExpressionAttributeValues: {
-          ":pk": MODEL_PK,
-          ":prefix": chunkPrefix(horizon),
-        },
-        ExclusiveStartKey: exclusiveStartKey,
-      })
+        new QueryCommand({
+          TableName: table,
+          KeyConditionExpression: "pk = :pk AND begins_with(sk, :prefix)",
+          ExpressionAttributeValues: {
+            ":pk": SEALED_FORECAST_MODEL_PK,
+            ":prefix": buildSealedForecastModelChunkPrefix(
+              horizon as PublishedModelHorizon
+            ),
+          },
+          ExclusiveStartKey: exclusiveStartKey,
+        })
     );
 
     chunks.push(...((page.Items as Array<{ chunkData?: string; chunkIndex?: number }>) ?? []));

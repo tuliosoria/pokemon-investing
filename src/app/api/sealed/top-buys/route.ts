@@ -1,31 +1,67 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cacheGet, cachePut } from "@/lib/db/cache";
-import { SEALED_SETS } from "@/lib/data/sealed-sets";
 import { getSealedForecastModels } from "@/lib/db/sealed-forecast-models";
-import { findSyncedPriceChartingEntry } from "@/lib/domain/pricecharting-catalog";
+import {
+  getLatestStoredSealedPriceSnapshot,
+  getStoredSealedProductMeta,
+} from "@/lib/db/sealed-pricing";
+import { loadSealedSearchCatalog } from "@/lib/db/sealed-search";
+import { SEALED_SETS } from "@/lib/data/sealed-sets";
 import {
   buildDynamicSetData,
   buildPricingContext,
   inferProductType,
 } from "@/lib/domain/sealed-estimate";
+import {
+  findSyncedPriceChartingEntry,
+  getSyncedPriceChartingEntryById,
+  getSyncedPriceChartingEntryBySetId,
+} from "@/lib/domain/pricecharting-catalog";
+import { resolveSealedProductImageAsset } from "@/lib/domain/sealed-image";
 import { getTopBuyOpportunities } from "@/lib/domain/top-buys";
 import type { ProductType, SealedSetData, SealedPricing } from "@/lib/types/sealed";
 
-const POKEDATA_PRODUCTS_URL = "https://www.pokedata.io/api/products";
 const CACHE_TTL = 30 * 60;
 const VARIANT_WORDS = ["costco", "walmart", "target", "pokemon center", "display"];
 
-interface PokeDataCatalogProduct {
-  id: number | string;
-  img_url?: string | null;
-  language?: string | null;
-  market_value?: number | null;
-  name?: string | null;
-  release_date?: string | null;
-  tcg?: string | null;
+interface SealedTopBuyPosture {
+  source: "owned-catalog";
+  liveCatalogAllowed: false;
+  ownedProductsConsidered: number;
+  storedSnapshotsUsed: number;
+  syncedCatalogPricesUsed: number;
+  bundledCatalogFallbacks: number;
 }
 
-function normalizeTopBuyKey({ name, productType }: Pick<SealedSetData, "name" | "productType">): string {
+interface SealedTopBuyResponse {
+  count: number;
+  opportunities: Array<{
+    id: string;
+    name: string;
+    productType: string;
+    releaseYear: number;
+    currentPrice: number;
+    imageUrl: string | null;
+    compositeScore: number;
+    signal: string;
+    confidence: string;
+    roiPercent: number;
+    projectedValue: number;
+    dollarGain: number;
+    annualRate: number;
+    chaseCards: string[];
+    printRunLabel: string;
+    notes: string;
+    set: SealedSetData;
+    forecast: ReturnType<typeof getTopBuyOpportunities>[number]["forecast"];
+  }>;
+  posture: SealedTopBuyPosture;
+}
+
+function normalizeTopBuyKey({
+  name,
+  productType,
+}: Pick<SealedSetData, "name" | "productType">): string {
   return `${name}|${productType}`
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -40,6 +76,14 @@ function normalizeCatalogName(value: string): string {
     .replace(/&/g, "and")
     .toLowerCase()
     .trim();
+}
+
+function roundPrice(value: number | null | undefined): number | null {
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
+    return null;
+  }
+
+  return Math.round(value * 100) / 100;
 }
 
 function buildCatalogSet(pricing: SealedPricing): SealedSetData {
@@ -68,7 +112,20 @@ function buildCatalogSet(pricing: SealedPricing): SealedSetData {
     pokedataId: pricing.pokedataId,
     priceChartingId: pricing.priceChartingId ?? curatedMatch.priceChartingId,
     imageUrl: pricing.imageUrl ?? curatedMatch.imageUrl,
+    imageAsset: pricing.imageAsset ?? curatedMatch.imageAsset,
     pricingContext: buildPricingContext(pricing),
+  };
+}
+
+function withOwnedCatalogNote(set: SealedSetData): SealedSetData {
+  if (set.curated) {
+    return set;
+  }
+
+  return {
+    ...set,
+    notes:
+      "Owned runtime pricing from sealed search metadata, synced PriceCharting snapshots, and stored sealed history.",
   };
 }
 
@@ -96,6 +153,7 @@ function mergeTopBuySets(dynamicSets: SealedSetData[]): SealedSetData[] {
       ...set,
       currentPrice: existing.currentPrice > 0 ? existing.currentPrice : set.currentPrice,
       imageUrl: existing.imageUrl ?? set.imageUrl,
+      imageAsset: existing.imageAsset ?? set.imageAsset,
       pokedataId: existing.pokedataId ?? set.pokedataId,
       priceChartingId: existing.priceChartingId ?? set.priceChartingId,
       tcgplayerUrl: existing.tcgplayerUrl ?? set.tcgplayerUrl,
@@ -107,33 +165,104 @@ function mergeTopBuySets(dynamicSets: SealedSetData[]): SealedSetData[] {
   return [...merged.values()];
 }
 
-function toDynamicPricing(product: PokeDataCatalogProduct): SealedPricing {
-  const marketValue = product.market_value ?? null;
-  const syncedPriceChartingEntry = findSyncedPriceChartingEntry({
-    name: product.name ?? "",
-    productType: inferProductType(product.name ?? ""),
-    releaseDate: product.release_date ?? null,
+async function resolveOwnedPricing(
+  entry: Awaited<ReturnType<typeof loadSealedSearchCatalog>>[number]
+): Promise<{
+  pricing: SealedPricing | null;
+  usedStoredSnapshot: boolean;
+  usedSyncedCatalogPrice: boolean;
+  usedBundledCatalogFallback: boolean;
+}> {
+  const [meta, latestSnapshot] = await Promise.all([
+    getStoredSealedProductMeta(entry.pokedataId),
+    getLatestStoredSealedPriceSnapshot(entry.pokedataId),
+  ]);
+  const exactSyncedEntry =
+    getSyncedPriceChartingEntryBySetId(entry.catalogId) ??
+    getSyncedPriceChartingEntryById(entry.priceChartingId);
+  const syncedPriceChartingEntry =
+    exactSyncedEntry ??
+    findSyncedPriceChartingEntry({
+      name: meta?.catalogDisplayName ?? meta?.name ?? entry.name,
+      productType: entry.productType,
+      releaseDate: meta?.releaseDate ?? entry.releaseDate,
+    });
+  const snapshotBestPrice =
+    roundPrice(latestSnapshot?.bestPrice) ??
+    roundPrice(latestSnapshot?.priceChartingPrice) ??
+    roundPrice(latestSnapshot?.pokedataPrice) ??
+    roundPrice(latestSnapshot?.tcgplayerPrice) ??
+    roundPrice(latestSnapshot?.ebayPrice);
+  const priceChartingPrice =
+    roundPrice(latestSnapshot?.priceChartingPrice) ??
+    roundPrice(syncedPriceChartingEntry?.newPrice);
+  const localCatalogPrice = roundPrice(entry.currentPrice);
+  const pokedataPrice =
+    roundPrice(latestSnapshot?.pokedataPrice) ?? localCatalogPrice;
+  const bestPrice = snapshotBestPrice ?? priceChartingPrice ?? pokedataPrice;
+
+  if (bestPrice === null) {
+    return {
+      pricing: null,
+      usedStoredSnapshot: false,
+      usedSyncedCatalogPrice: false,
+      usedBundledCatalogFallback: false,
+    };
+  }
+
+  const name = meta?.catalogDisplayName ?? meta?.name ?? entry.name;
+  const releaseDate = meta?.releaseDate ?? entry.releaseDate ?? null;
+  const imageAsset = resolveSealedProductImageAsset({
+    setId: meta?.catalogId ?? entry.catalogId,
+    pokedataId: entry.pokedataId,
+    name,
+    ownedImagePath: meta?.ownedImagePath ?? null,
+    fallbackCandidates: [meta?.imgUrl, entry.imageUrl],
+    mirrorSourceUrl: meta?.imageMirrorSourceUrl ?? meta?.imgUrl ?? entry.imageUrl,
+    mirrorSourceProvider: meta?.imageMirrorSourceProvider ?? null,
+    mirroredAt: meta?.imageMirroredAt ?? null,
   });
-  const priceChartingPrice = syncedPriceChartingEntry?.newPrice ?? null;
-  const bestPrice = priceChartingPrice ?? marketValue;
 
   return {
-    pokedataId: String(product.id),
-    name: product.name ?? "",
-    releaseDate: product.release_date ?? null,
-    imageUrl: product.img_url ?? null,
-    priceChartingId: syncedPriceChartingEntry?.priceChartingId,
-    priceChartingProductName: syncedPriceChartingEntry?.productName ?? null,
-    priceChartingConsoleName: syncedPriceChartingEntry?.consoleName ?? null,
-    priceChartingPrice,
-    tcgplayerPrice: marketValue,
-    ebayPrice: null,
-    pokedataPrice: marketValue,
-    bestPrice,
-    primaryProvider: priceChartingPrice ? "pricecharting" : "pokedata",
-    snapshotDate: syncedPriceChartingEntry?.capturedAt?.slice(0, 10) ?? null,
-    salesVolume: syncedPriceChartingEntry?.salesVolume ?? null,
-    manualOnlyPrice: syncedPriceChartingEntry?.manualOnlyPrice ?? null,
+    pricing: {
+      pokedataId: entry.pokedataId,
+      name,
+      releaseDate,
+      imageUrl: imageAsset.selectedUrl,
+      imageAsset,
+      priceChartingId:
+        meta?.priceChartingId ??
+        entry.priceChartingId ??
+        syncedPriceChartingEntry?.priceChartingId,
+      priceChartingProductName:
+        meta?.priceChartingProductName ??
+        syncedPriceChartingEntry?.productName ??
+        null,
+      priceChartingConsoleName:
+        meta?.priceChartingConsoleName ??
+        syncedPriceChartingEntry?.consoleName ??
+        null,
+      priceChartingPrice,
+      tcgplayerPrice: roundPrice(latestSnapshot?.tcgplayerPrice),
+      ebayPrice: roundPrice(latestSnapshot?.ebayPrice),
+      pokedataPrice,
+      bestPrice,
+      primaryProvider:
+        latestSnapshot?.primaryProvider ??
+        (priceChartingPrice ? "pricecharting" : "pokedata"),
+      snapshotDate:
+        latestSnapshot?.snapshotDate ??
+        latestSnapshot?.updatedAt ??
+        syncedPriceChartingEntry?.capturedAt?.slice(0, 10) ??
+        null,
+      salesVolume: syncedPriceChartingEntry?.salesVolume ?? null,
+      manualOnlyPrice: syncedPriceChartingEntry?.manualOnlyPrice ?? null,
+    },
+    usedStoredSnapshot: snapshotBestPrice !== null,
+    usedSyncedCatalogPrice:
+      snapshotBestPrice === null && priceChartingPrice !== null,
+    usedBundledCatalogFallback:
+      snapshotBestPrice === null && priceChartingPrice === null && localCatalogPrice !== null,
   };
 }
 
@@ -165,67 +294,36 @@ export async function GET(request: NextRequest) {
   if (setName) filters.setName = setName;
 
   const cacheKey = JSON.stringify({ limit, filters });
-  const cached = await cacheGet<{
-    count: number;
-    opportunities: Array<{
-      id: string;
-      name: string;
-      productType: string;
-      releaseYear: number;
-      currentPrice: number;
-      imageUrl: string | null;
-      compositeScore: number;
-      signal: string;
-      confidence: string;
-      roiPercent: number;
-      projectedValue: number;
-      dollarGain: number;
-      annualRate: number;
-      chaseCards: string[];
-      printRunLabel: string;
-      notes: string;
-      set: SealedSetData;
-      forecast: ReturnType<typeof getTopBuyOpportunities>[number]["forecast"];
-    }>;
-  }>("sealed-top-buys", cacheKey);
+  const cached = await cacheGet<SealedTopBuyResponse>("sealed-top-buys", cacheKey);
 
   if (cached) {
     return NextResponse.json(cached);
   }
 
-  const res = await fetch(POKEDATA_PRODUCTS_URL, {
-    headers: {
-      Accept: "application/json",
-      "User-Agent": "Mozilla/5.0",
+  const ownedCatalog = await loadSealedSearchCatalog();
+  const resolvedCatalogEntries = await Promise.all(
+    ownedCatalog.map(resolveOwnedPricing)
+  );
+  const posture = resolvedCatalogEntries.reduce<SealedTopBuyPosture>(
+    (acc, entry) => {
+      if (entry.usedStoredSnapshot) acc.storedSnapshotsUsed += 1;
+      if (entry.usedSyncedCatalogPrice) acc.syncedCatalogPricesUsed += 1;
+      if (entry.usedBundledCatalogFallback) acc.bundledCatalogFallbacks += 1;
+      return acc;
     },
-  });
-
-  if (!res.ok) {
-    return NextResponse.json(
-      { error: "PokeData products failed" },
-      { status: 502 }
-    );
-  }
-
-  const rawProducts = (await res.json()) as PokeDataCatalogProduct[];
-  if (!Array.isArray(rawProducts)) {
-    return NextResponse.json(
-      { error: "Unexpected PokeData products response" },
-      { status: 502 }
-    );
-  }
-
-  const catalogSets = rawProducts
-    .filter(
-      (product) =>
-        product.tcg === "Pokemon" &&
-        product.language === "ENGLISH" &&
-        typeof product.market_value === "number" &&
-        product.market_value > 0 &&
-        !String(product.name ?? "").toLowerCase().includes("code card")
-    )
-    .map(toDynamicPricing)
-    .map(buildCatalogSet);
+    {
+      source: "owned-catalog",
+      liveCatalogAllowed: false,
+      ownedProductsConsidered: ownedCatalog.length,
+      storedSnapshotsUsed: 0,
+      syncedCatalogPricesUsed: 0,
+      bundledCatalogFallbacks: 0,
+    }
+  );
+  const catalogSets = resolvedCatalogEntries
+    .flatMap((entry) => (entry.pricing ? [entry.pricing] : []))
+    .map(buildCatalogSet)
+    .map(withOwnedCatalogNote);
 
   const models = await getSealedForecastModels();
   const results = getTopBuyOpportunities(
@@ -257,7 +355,8 @@ export async function GET(request: NextRequest) {
       set,
       forecast,
     })),
-  };
+    posture,
+  } satisfies SealedTopBuyResponse;
 
   await cachePut("sealed-top-buys", cacheKey, payload, CACHE_TTL);
 

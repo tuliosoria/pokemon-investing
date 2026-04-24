@@ -423,7 +423,9 @@ async function main() {
         ? await requestPriceChartingById(product.priceChartingId)
         : await requestPriceCharting(buildSearchQuery(product));
       const newPrice = roundPrice(payload["new-price"]);
-      if (!payload.id || !newPrice) {
+      const manualOnlyPrice = roundPrice(payload["manual-only-price"]);
+      const effectivePrice = newPrice ?? manualOnlyPrice;
+      if (!payload.id || !effectivePrice) {
         throw new Error("Missing PriceCharting product id or sealed price");
       }
 
@@ -435,8 +437,8 @@ async function main() {
         priceChartingId: String(payload.id),
         productName: payload["product-name"] || product.name,
         consoleName: payload["console-name"] || null,
-        newPrice,
-        manualOnlyPrice: roundPrice(payload["manual-only-price"]),
+        newPrice: effectivePrice,
+        manualOnlyPrice,
         salesVolume:
           Number.parseInt(String(payload["sales-volume"] || ""), 10) || null,
         catalogSource: product.catalogSource || "curated-manifest",

@@ -8,12 +8,14 @@ import {
   getLatestStoredSealedPriceSnapshot,
   getStoredSealedProductMeta,
   storeSealedPriceSnapshot,
+  type StoredSealedProductMeta,
 } from "@/lib/db/sealed-pricing";
 import {
   findSyncedPriceChartingEntry,
   getSyncedPriceChartingEntryById,
+  getSyncedPriceChartingEntryBySetId,
 } from "@/lib/domain/pricecharting-catalog";
-import { pickProductImageUrl } from "@/lib/domain/sealed-image";
+import { resolveSealedProductImageAsset } from "@/lib/domain/sealed-image";
 import type { SealedPricing } from "@/lib/types/sealed";
 import {
   fetchPriceChartingProductById,
@@ -65,6 +67,63 @@ function resolveStoredSnapshotBestPrice(
   );
 }
 
+function buildSealedImageAsset(input: {
+  pokedataId: string;
+  setId?: string | null;
+  name?: string | null;
+  imageUrl?: string | null;
+  imageAsset?: SealedPricing["imageAsset"];
+  meta?: StoredSealedProductMeta | null;
+}): NonNullable<SealedPricing["imageAsset"]> {
+  return resolveSealedProductImageAsset({
+    setId: input.setId,
+    pokedataId: input.pokedataId,
+    name: input.name,
+    ownedImagePath:
+      input.imageAsset?.owned?.path ?? input.meta?.ownedImagePath ?? null,
+    fallbackCandidates: [
+      input.imageAsset?.fallback?.url,
+      input.imageUrl,
+      input.meta?.imgUrl,
+    ],
+    mirrorSourceUrl:
+      input.imageAsset?.mirrorSource?.url ??
+      input.meta?.imageMirrorSourceUrl ??
+      input.meta?.imgUrl,
+    mirrorSourceProvider:
+      input.imageAsset?.mirrorSource?.provider ??
+      input.meta?.imageMirrorSourceProvider ??
+      null,
+    mirroredAt:
+      input.imageAsset?.mirrorSource?.mirroredAt ??
+      input.meta?.imageMirroredAt ??
+      null,
+  });
+}
+
+function withResolvedSealedImage(
+  pricing: SealedPricing,
+  meta: StoredSealedProductMeta | null = null,
+  options?: {
+    setId?: string | null;
+  }
+): SealedPricing {
+  const imageAsset = buildSealedImageAsset({
+    pokedataId: pricing.pokedataId,
+    setId: options?.setId,
+    name: pricing.name,
+    imageUrl: pricing.imageUrl,
+    imageAsset: pricing.imageAsset,
+    meta,
+  });
+
+  return {
+    ...pricing,
+    imageUrl: imageAsset.selectedUrl,
+    imageAsset,
+  };
+}
+
 function buildStoredSnapshotPricing(
   id: string,
   requestedName: string | null,
@@ -89,13 +148,21 @@ function buildStoredSnapshotPricing(
     return null;
   }
 
-  const imageUrl = pickProductImageUrl(meta?.imgUrl);
+  const name = meta?.catalogDisplayName ?? meta?.name ?? requestedName ?? "";
+  const imageAsset = buildSealedImageAsset({
+    pokedataId: id,
+    setId: meta?.catalogId ?? null,
+    name,
+    imageUrl: meta?.imgUrl ?? null,
+    meta,
+  });
 
   return {
     pokedataId: id,
-    name: meta?.name ?? requestedName ?? "",
+    name,
     releaseDate: meta?.releaseDate ?? null,
-    imageUrl,
+    imageUrl: imageAsset.selectedUrl,
+    imageAsset,
     priceChartingId: meta?.priceChartingId ?? undefined,
     priceChartingProductName: meta?.priceChartingProductName ?? null,
     priceChartingConsoleName: meta?.priceChartingConsoleName ?? null,
@@ -115,7 +182,7 @@ function buildSyncedPriceChartingPricing(
   id: string,
   requestedName: string | null,
   requestedReleaseDate: string | null,
-  imageUrl: string | null,
+  imageAsset: NonNullable<SealedPricing["imageAsset"]>,
   syncedEntry: ReturnType<typeof getSyncedPriceChartingEntryById>,
   storedSnapshot: Awaited<ReturnType<typeof getLatestStoredSealedPriceSnapshot>>
 ): SealedPricing | null {
@@ -127,7 +194,8 @@ function buildSyncedPriceChartingPricing(
     pokedataId: id,
     name: requestedName ?? syncedEntry.name,
     releaseDate: requestedReleaseDate ?? syncedEntry.releaseDate,
-    imageUrl,
+    imageUrl: imageAsset.selectedUrl,
+    imageAsset,
     priceChartingId: syncedEntry.priceChartingId,
     priceChartingProductName: syncedEntry.productName,
     priceChartingConsoleName: syncedEntry.consoleName,
@@ -159,15 +227,11 @@ export async function GET(request: NextRequest) {
 
   const cached = await cacheGet<SealedPricing>("sealed-pricing", id);
   if (cached) {
-    const cachedMeta = cached.imageUrl ? null : await getStoredSealedProductMeta(id);
+    const cachedMeta = cached.imageAsset?.owned
+      ? null
+      : await getStoredSealedProductMeta(id);
     return NextResponse.json({
-      pricing: {
-        ...cached,
-        imageUrl: pickProductImageUrl(
-          cached.imageUrl,
-          cachedMeta?.imgUrl
-        ),
-      },
+      pricing: withResolvedSealedImage(cached, cachedMeta),
     });
   }
 
@@ -176,6 +240,7 @@ export async function GET(request: NextRequest) {
     : null;
   if (localCatalogEntry) {
     const syncedEntry =
+      getSyncedPriceChartingEntryBySetId(localCatalogEntry.catalogId) ??
       getSyncedPriceChartingEntryById(requestedPriceChartingId) ??
       findSyncedPriceChartingEntry({
         name: localCatalogEntry.name,
@@ -183,11 +248,18 @@ export async function GET(request: NextRequest) {
       });
     const priceChartingPrice = roundPrice(syncedEntry?.newPrice ?? null);
     const localPrice = roundPrice(localCatalogEntry.currentPrice);
+    const imageAsset = buildSealedImageAsset({
+      pokedataId: localCatalogEntry.pokedataId,
+      setId: localCatalogEntry.catalogId,
+      name: requestedName ?? localCatalogEntry.name,
+      imageUrl: localCatalogEntry.imageUrl,
+    });
     const pricing: SealedPricing = {
       pokedataId: localCatalogEntry.pokedataId,
       name: requestedName ?? localCatalogEntry.name,
       releaseDate: requestedReleaseDate ?? localCatalogEntry.releaseDate,
-      imageUrl: pickProductImageUrl(localCatalogEntry.imageUrl),
+      imageUrl: imageAsset.selectedUrl,
+      imageAsset,
       priceChartingId:
         syncedEntry?.priceChartingId ?? localCatalogEntry.priceChartingId,
       priceChartingProductName: syncedEntry?.productName ?? null,
@@ -229,7 +301,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ pricing: storedPricing });
   }
 
-  const imageUrl = pickProductImageUrl(meta?.imgUrl);
+  const imageAsset = buildSealedImageAsset({
+    pokedataId: id,
+    setId: meta?.catalogId ?? null,
+    name: requestedName ?? meta?.catalogDisplayName ?? meta?.name ?? "",
+    imageUrl: meta?.imgUrl ?? null,
+    meta,
+  });
 
   const syncedEntry =
     getSyncedPriceChartingEntryById(requestedPriceChartingId) ??
@@ -244,7 +322,7 @@ export async function GET(request: NextRequest) {
     id,
     requestedName,
     requestedReleaseDate,
-    imageUrl,
+    imageAsset,
     syncedEntry,
     latestSnapshot
   );
@@ -255,6 +333,16 @@ export async function GET(request: NextRequest) {
       name: syncedPricing.name,
       releaseDate: syncedPricing.releaseDate,
       imageUrl: syncedPricing.imageUrl,
+      ownedImagePath: syncedPricing.imageAsset?.owned?.path ?? null,
+      imageMirrorSourceUrl:
+        syncedPricing.imageAsset?.mirrorSource?.url ??
+        syncedPricing.imageAsset?.fallback?.url ??
+        null,
+      imageMirrorSourceProvider:
+        syncedPricing.imageAsset?.mirrorSource?.provider ??
+        syncedPricing.imageAsset?.fallback?.provider ??
+        null,
+      imageMirroredAt: syncedPricing.imageAsset?.mirrorSource?.mirroredAt ?? null,
       snapshotDate: syncedPricing.snapshotDate ?? new Date().toISOString().slice(0, 10),
       tcgplayerPrice: syncedPricing.tcgplayerPrice,
       ebayPrice: syncedPricing.ebayPrice,
@@ -296,7 +384,8 @@ export async function GET(request: NextRequest) {
             officialProduct["release-date"] ??
             meta?.releaseDate ??
             null,
-          imageUrl,
+          imageUrl: imageAsset.selectedUrl,
+          imageAsset,
           priceChartingId: officialProduct.id,
           priceChartingProductName: officialProduct["product-name"] ?? null,
           priceChartingConsoleName: officialProduct["console-name"] ?? null,
@@ -316,6 +405,17 @@ export async function GET(request: NextRequest) {
           name: liveOfficialPricing.name,
           releaseDate: liveOfficialPricing.releaseDate,
           imageUrl: liveOfficialPricing.imageUrl,
+          ownedImagePath: liveOfficialPricing.imageAsset?.owned?.path ?? null,
+          imageMirrorSourceUrl:
+            liveOfficialPricing.imageAsset?.mirrorSource?.url ??
+            liveOfficialPricing.imageAsset?.fallback?.url ??
+            null,
+          imageMirrorSourceProvider:
+            liveOfficialPricing.imageAsset?.mirrorSource?.provider ??
+            liveOfficialPricing.imageAsset?.fallback?.provider ??
+            null,
+          imageMirroredAt:
+            liveOfficialPricing.imageAsset?.mirrorSource?.mirroredAt ?? null,
           snapshotDate,
           tcgplayerPrice: liveOfficialPricing.tcgplayerPrice,
           ebayPrice: liveOfficialPricing.ebayPrice,

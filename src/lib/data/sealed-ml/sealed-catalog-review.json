@@ -1,16 +1,5335 @@
 {
-  "generatedAt": "2026-04-23T03:49:51+00:00",
-  "mode": "offline",
+  "generatedAt": "2026-04-24T01:50:36+00:00",
+  "mode": "provider-sync",
   "approvedCatalogPath": "src/lib/data/sealed-ml/sealed-catalog.json",
   "summary": {
     "curatedApproved": 25,
-    "autoApproved": 0,
-    "reviewRequired": 0,
-    "rejected": 0,
-    "pokedataCandidatesProcessed": 0,
-    "approvedCatalogSize": 25
+    "autoApproved": 131,
+    "reviewRequired": 19,
+    "rejected": 6,
+    "pokedataCandidatesProcessed": 156,
+    "approvedCatalogSize": 156
   },
-  "autoApproved": [],
-  "reviewRequired": [],
-  "rejected": []
+  "autoApproved": [
+    {
+      "decision": "approved",
+      "setId": "gym1-booster-box",
+      "name": "Gym Heroes",
+      "productType": "Booster Box",
+      "releaseDate": "2000-08-14",
+      "normalizedKey": "gym heroes|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Gym Heroes Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "3880844",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Gym Heroes",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "4"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "gym2-booster-box",
+      "name": "Gym Challenge",
+      "productType": "Booster Box",
+      "releaseDate": "2000-10-16",
+      "normalizedKey": "gym challenge|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Gym Challenge Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2418130",
+          "productName": "Booster Box [1st Edition]",
+          "consoleName": "Pokemon Gym Challenge",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "5"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "neo2-booster-box",
+      "name": "Neo Discovery",
+      "productType": "Booster Box",
+      "releaseDate": "2001-06-01",
+      "normalizedKey": "neo discovery|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Neo Discovery Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2189377",
+          "productName": "Booster Box [1st Edition]",
+          "consoleName": "Pokemon Neo Discovery",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "neo3-booster-box",
+      "name": "Neo Revelation",
+      "productType": "Booster Box",
+      "releaseDate": "2001-09-21",
+      "normalizedKey": "neo revelation|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Neo Revelation Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2189384",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Neo Revelation",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "neo4-booster-box",
+      "name": "Neo Destiny",
+      "productType": "Booster Box",
+      "releaseDate": "2002-02-28",
+      "normalizedKey": "neo destiny|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Neo Destiny Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2189370",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Neo Destiny",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "2"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "base6-booster-box",
+      "name": "Legendary Collection",
+      "productType": "Booster Box",
+      "releaseDate": "2002-05-24",
+      "normalizedKey": "legendary collection|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Legendary Collection Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245073",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Legendary Collection",
+          "releaseDate": "2002-05-24",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ecard2-booster-box",
+      "name": "Aquapolis",
+      "productType": "Booster Box",
+      "releaseDate": "2003-01-15",
+      "normalizedKey": "aquapolis|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Aquapolis Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245069",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Aquapolis",
+          "releaseDate": "2003-01-15",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ecard3-booster-box",
+      "name": "Skyridge",
+      "productType": "Booster Box",
+      "releaseDate": "2003-05-12",
+      "normalizedKey": "skyridge|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Skyridge Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245067",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Skyridge",
+          "releaseDate": "2003-05-12",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ex1-booster-box",
+      "name": "Ruby & Sapphire",
+      "productType": "Booster Box",
+      "releaseDate": "2003-07-01",
+      "normalizedKey": "ruby and sapphire|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Ruby & Sapphire Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "7596590",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Ruby & Sapphire",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ex5-booster-box",
+      "name": "Hidden Legends",
+      "productType": "Booster Box",
+      "releaseDate": "2004-06-01",
+      "normalizedKey": "hidden legends|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Hidden Legends Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245065",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Hidden Legends",
+          "releaseDate": "2004-06-14",
+          "newPrice": null,
+          "salesVolume": "3"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ex7-booster-box",
+      "name": "Team Rocket Returns",
+      "productType": "Booster Box",
+      "releaseDate": "2004-11-01",
+      "normalizedKey": "team rocket returns|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Team Rocket Returns Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245061",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Team Rocket Returns",
+          "releaseDate": "2004-11-08",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ex8-booster-box",
+      "name": "Deoxys",
+      "productType": "Booster Box",
+      "releaseDate": "2005-02-01",
+      "normalizedKey": "deoxys|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Deoxys Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245059",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Deoxys",
+          "releaseDate": "2005-02-14",
+          "newPrice": null,
+          "salesVolume": "0"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ex9-booster-box",
+      "name": "Emerald",
+      "productType": "Booster Box",
+      "releaseDate": "2005-05-01",
+      "normalizedKey": "emerald|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Emerald Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245057",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Emerald",
+          "releaseDate": "2005-05-09",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ex10-booster-box",
+      "name": "Unseen Forces",
+      "productType": "Booster Box",
+      "releaseDate": "2005-08-01",
+      "normalizedKey": "unseen forces|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Unseen Forces Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245055",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Unseen Forces",
+          "releaseDate": "2005-08-22",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ex11-booster-box",
+      "name": "Delta Species",
+      "productType": "Booster Box",
+      "releaseDate": "2005-10-31",
+      "normalizedKey": "delta species|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Delta Species Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245053",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Delta Species",
+          "releaseDate": "2005-10-31",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ex12-booster-box",
+      "name": "Legend Maker",
+      "productType": "Booster Box",
+      "releaseDate": "2006-02-01",
+      "normalizedKey": "legend maker|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Legend Maker Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245051",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Legend Maker",
+          "releaseDate": "2006-02-13",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ex13-booster-box",
+      "name": "Holon Phantoms",
+      "productType": "Booster Box",
+      "releaseDate": "2006-05-01",
+      "normalizedKey": "holon phantoms|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Holon Phantoms Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245049",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Holon Phantoms",
+          "releaseDate": "2006-05-03",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ex14-booster-box",
+      "name": "Crystal Guardians",
+      "productType": "Booster Box",
+      "releaseDate": "2006-08-01",
+      "normalizedKey": "crystal guardians|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Crystal Guardians Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245047",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Crystal Guardians",
+          "releaseDate": "2006-08-30",
+          "newPrice": null,
+          "salesVolume": "2"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ex15-booster-box",
+      "name": "Dragon Frontiers",
+      "productType": "Booster Box",
+      "releaseDate": "2006-11-01",
+      "normalizedKey": "dragon frontiers|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Dragon Frontiers Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245045",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Dragon Frontiers",
+          "releaseDate": "2006-11-06",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "ex16-booster-box",
+      "name": "Power Keepers",
+      "productType": "Booster Box",
+      "releaseDate": "2007-02-02",
+      "normalizedKey": "power keepers|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Power Keepers Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245043",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Power Keepers",
+          "releaseDate": "2007-02-14",
+          "newPrice": null,
+          "salesVolume": "2"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "dp1-booster-box",
+      "name": "Diamond & Pearl",
+      "productType": "Booster Box",
+      "releaseDate": "2007-05-01",
+      "normalizedKey": "diamond and pearl|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Diamond & Pearl Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "5881532",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Diamond & Pearl",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "2"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "dp2-booster-box",
+      "name": "Mysterious Treasures",
+      "productType": "Booster Box",
+      "releaseDate": "2007-08-01",
+      "normalizedKey": "mysterious treasures|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Mysterious Treasures Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245041",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Mysterious Treasures",
+          "releaseDate": "2007-08-22",
+          "newPrice": null,
+          "salesVolume": "2"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "dp3-booster-box",
+      "name": "Secret Wonders",
+      "productType": "Booster Box",
+      "releaseDate": "2007-11-01",
+      "normalizedKey": "secret wonders|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Secret Wonders Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245037",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Secret Wonders",
+          "releaseDate": "2007-11-07",
+          "newPrice": null,
+          "salesVolume": "2"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "dp4-booster-box",
+      "name": "Great Encounters",
+      "productType": "Booster Box",
+      "releaseDate": "2008-02-01",
+      "normalizedKey": "great encounters|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Great Encounters Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245035",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Great Encounters",
+          "releaseDate": "2008-02-13",
+          "newPrice": null,
+          "salesVolume": "2"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "dp5-booster-box",
+      "name": "Majestic Dawn",
+      "productType": "Booster Box",
+      "releaseDate": "2008-05-01",
+      "normalizedKey": "majestic dawn|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Majestic Dawn Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245039",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Majestic Dawn",
+          "releaseDate": "2008-05-21",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "dp6-booster-box",
+      "name": "Legends Awakened",
+      "productType": "Booster Box",
+      "releaseDate": "2008-08-01",
+      "normalizedKey": "legends awakened|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Legends Awakened Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245033",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Legends Awakened",
+          "releaseDate": "2008-08-20",
+          "newPrice": null,
+          "salesVolume": "2"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "dp7-booster-box",
+      "name": "Stormfront",
+      "productType": "Booster Box",
+      "releaseDate": "2008-11-01",
+      "normalizedKey": "stormfront|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Stormfront Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245031",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Stormfront",
+          "releaseDate": "2008-11-05",
+          "newPrice": null,
+          "salesVolume": "3"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "pl1-booster-box",
+      "name": "Platinum",
+      "productType": "Booster Box",
+      "releaseDate": "2009-02-11",
+      "normalizedKey": "platinum|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Platinum Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245029",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Platinum",
+          "releaseDate": "2009-02-11",
+          "newPrice": null,
+          "salesVolume": "2"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "pl2-booster-box",
+      "name": "Rising Rivals",
+      "productType": "Booster Box",
+      "releaseDate": "2009-05-16",
+      "normalizedKey": "rising rivals|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Rising Rivals Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245027",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Rising Rivals",
+          "releaseDate": "2009-05-16",
+          "newPrice": null,
+          "salesVolume": "2"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "pl3-booster-box",
+      "name": "Supreme Victors",
+      "productType": "Booster Box",
+      "releaseDate": "2009-08-19",
+      "normalizedKey": "supreme victors|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Supreme Victors Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245025",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Supreme Victors",
+          "releaseDate": "2009-08-19",
+          "newPrice": null,
+          "salesVolume": "3"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "pl4-booster-box",
+      "name": "Arceus",
+      "productType": "Booster Box",
+      "releaseDate": "2009-11-04",
+      "normalizedKey": "arceus|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Arceus Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245023",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Arceus",
+          "releaseDate": "2009-11-04",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "hgss1-booster-box",
+      "name": "HeartGold & SoulSilver",
+      "productType": "Booster Box",
+      "releaseDate": "2010-02-10",
+      "normalizedKey": "heartgold and soulsilver|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "HeartGold & SoulSilver Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245021",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon HeartGold & SoulSilver",
+          "releaseDate": "2010-02-10",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "bw1-booster-box",
+      "name": "Black & White",
+      "productType": "Booster Box",
+      "releaseDate": "2011-04-25",
+      "normalizedKey": "black and white|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Black & White Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245013",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Black & White",
+          "releaseDate": "2011-04-25",
+          "newPrice": null,
+          "salesVolume": "17"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "bw2-booster-box",
+      "name": "Emerging Powers",
+      "productType": "Booster Box",
+      "releaseDate": "2011-08-31",
+      "normalizedKey": "emerging powers|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Emerging Powers Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245011",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Emerging Powers",
+          "releaseDate": "2011-08-31",
+          "newPrice": null,
+          "salesVolume": "5"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "bw3-booster-box",
+      "name": "Noble Victories",
+      "productType": "Booster Box",
+      "releaseDate": "2011-11-16",
+      "normalizedKey": "noble victories|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Noble Victories Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245009",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Noble Victories",
+          "releaseDate": "2011-11-16",
+          "newPrice": null,
+          "salesVolume": "5"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "bw4-booster-box",
+      "name": "Next Destinies",
+      "productType": "Booster Box",
+      "releaseDate": "2012-02-08",
+      "normalizedKey": "next destinies|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Next Destinies Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245007",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Next Destinies",
+          "releaseDate": "2012-02-08",
+          "newPrice": null,
+          "salesVolume": "4"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "bw5-booster-box",
+      "name": "Dark Explorers",
+      "productType": "Booster Box",
+      "releaseDate": "2012-05-09",
+      "normalizedKey": "dark explorers|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Dark Explorers Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245005",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Dark Explorers",
+          "releaseDate": "2012-05-09",
+          "newPrice": null,
+          "salesVolume": "7"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "bw6-booster-box",
+      "name": "Dragons Exalted",
+      "productType": "Booster Box",
+      "releaseDate": "2012-08-15",
+      "normalizedKey": "dragons exalted|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Dragons Exalted Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "5438828",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Dragons Exalted",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "8"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "bw7-booster-box",
+      "name": "Boundaries Crossed",
+      "productType": "Booster Box",
+      "releaseDate": "2012-11-07",
+      "normalizedKey": "boundaries crossed|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Boundaries Crossed Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245003",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Boundaries Crossed",
+          "releaseDate": "2012-11-07",
+          "newPrice": null,
+          "salesVolume": "2"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "bw8-booster-box",
+      "name": "Plasma Storm",
+      "productType": "Booster Box",
+      "releaseDate": "2013-02-06",
+      "normalizedKey": "plasma storm|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Plasma Storm Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245001",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Plasma Storm",
+          "releaseDate": "2013-02-06",
+          "newPrice": null,
+          "salesVolume": "5"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "bw9-booster-box",
+      "name": "Plasma Freeze",
+      "productType": "Booster Box",
+      "releaseDate": "2013-05-08",
+      "normalizedKey": "plasma freeze|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Plasma Freeze Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244999",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Plasma Freeze",
+          "releaseDate": "2013-05-08",
+          "newPrice": null,
+          "salesVolume": "3"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "bw10-booster-box",
+      "name": "Plasma Blast",
+      "productType": "Booster Box",
+      "releaseDate": "2013-08-14",
+      "normalizedKey": "plasma blast|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Plasma Blast Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244997",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Plasma Blast",
+          "releaseDate": "2013-08-14",
+          "newPrice": null,
+          "salesVolume": "3"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "bw11-booster-box",
+      "name": "Legendary Treasures",
+      "productType": "Booster Box",
+      "releaseDate": "2013-11-06",
+      "normalizedKey": "legendary treasures|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Legendary Treasures Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244995",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Legendary Treasures",
+          "releaseDate": "2013-11-06",
+          "newPrice": null,
+          "salesVolume": "6"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy1-booster-box",
+      "name": "XY",
+      "productType": "Booster Box",
+      "releaseDate": "2014-02-05",
+      "normalizedKey": "xy|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "XY Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244993",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon XY",
+          "releaseDate": "2014-02-05",
+          "newPrice": null,
+          "salesVolume": "18"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy1-etb",
+      "name": "XY",
+      "productType": "ETB",
+      "releaseDate": "2014-02-05",
+      "normalizedKey": "xy|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "XY elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6345890",
+          "productName": "Elite Trainer Box [Yveltal]",
+          "consoleName": "Pokemon XY",
+          "releaseDate": "2014-02-05",
+          "newPrice": null,
+          "salesVolume": "6"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy2-booster-box",
+      "name": "Flashfire",
+      "productType": "Booster Box",
+      "releaseDate": "2014-05-07",
+      "normalizedKey": "flashfire|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Flashfire Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244989",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Flashfire",
+          "releaseDate": "2014-03-07",
+          "newPrice": null,
+          "salesVolume": "29"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy3-booster-box",
+      "name": "Furious Fists",
+      "productType": "Booster Box",
+      "releaseDate": "2014-08-13",
+      "normalizedKey": "furious fists|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Furious Fists Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244987",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Furious Fists",
+          "releaseDate": "2014-08-13",
+          "newPrice": null,
+          "salesVolume": "24"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy3-etb",
+      "name": "Furious Fists",
+      "productType": "ETB",
+      "releaseDate": "2014-08-13",
+      "normalizedKey": "furious fists|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Furious Fists elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6345770",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Furious Fists",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "10"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy4-booster-box",
+      "name": "Phantom Forces",
+      "productType": "Booster Box",
+      "releaseDate": "2014-11-05",
+      "normalizedKey": "phantom forces|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Phantom Forces Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244985",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Phantom Forces",
+          "releaseDate": "2014-11-05",
+          "newPrice": null,
+          "salesVolume": "20"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy4-etb",
+      "name": "Phantom Forces",
+      "productType": "ETB",
+      "releaseDate": "2014-11-05",
+      "normalizedKey": "phantom forces|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Phantom Forces elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4780183",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Phantom Forces",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "7"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy5-booster-box",
+      "name": "Primal Clash",
+      "productType": "Booster Box",
+      "releaseDate": "2015-02-04",
+      "normalizedKey": "primal clash|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Primal Clash Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244983",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Primal Clash",
+          "releaseDate": "2015-02-04",
+          "newPrice": null,
+          "salesVolume": "73"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy5-etb",
+      "name": "Primal Clash",
+      "productType": "ETB",
+      "releaseDate": "2015-02-04",
+      "normalizedKey": "primal clash|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Primal Clash elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6346183",
+          "productName": "Elite Trainer Box [Groudon]",
+          "consoleName": "Pokemon Primal Clash",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "8"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy6-booster-box",
+      "name": "Roaring Skies",
+      "productType": "Booster Box",
+      "releaseDate": "2015-05-06",
+      "normalizedKey": "roaring skies|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Roaring Skies Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244981",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Roaring Skies",
+          "releaseDate": "2015-05-06",
+          "newPrice": null,
+          "salesVolume": "161"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy6-etb",
+      "name": "Roaring Skies",
+      "productType": "ETB",
+      "releaseDate": "2015-05-06",
+      "normalizedKey": "roaring skies|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Roaring Skies elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6241385",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Roaring Skies",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "12"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy7-booster-box",
+      "name": "Ancient Origins",
+      "productType": "Booster Box",
+      "releaseDate": "2015-08-12",
+      "normalizedKey": "ancient origins|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Ancient Origins Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244979",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Ancient Origins",
+          "releaseDate": "2015-08-12",
+          "newPrice": null,
+          "salesVolume": "74"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy7-etb",
+      "name": "Ancient Origins",
+      "productType": "ETB",
+      "releaseDate": "2015-08-12",
+      "normalizedKey": "ancient origins|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Ancient Origins elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6345977",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Ancient Origins",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "16"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy8-booster-box",
+      "name": "BREAKthrough",
+      "productType": "Booster Box",
+      "releaseDate": "2015-11-04",
+      "normalizedKey": "breakthrough|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "BREAKthrough Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244977",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon BREAKthrough",
+          "releaseDate": "2015-11-04",
+          "newPrice": null,
+          "salesVolume": "2"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy8-etb",
+      "name": "BREAKthrough",
+      "productType": "ETB",
+      "releaseDate": "2015-11-04",
+      "normalizedKey": "breakthrough|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "BREAKthrough elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6346356",
+          "productName": "Elite Trainer Box: Mewtwo Y",
+          "consoleName": "Pokemon BREAKthrough",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "5"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy9-booster-box",
+      "name": "BREAKpoint",
+      "productType": "Booster Box",
+      "releaseDate": "2016-02-03",
+      "normalizedKey": "breakpoint|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "BREAKpoint Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244975",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon BREAKpoint",
+          "releaseDate": "2016-03-02",
+          "newPrice": null,
+          "salesVolume": "3"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy9-etb",
+      "name": "BREAKpoint",
+      "productType": "ETB",
+      "releaseDate": "2016-02-03",
+      "normalizedKey": "breakpoint|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "BREAKpoint elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4780182",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon BREAKpoint",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "18"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "g1-etb",
+      "name": "Generations",
+      "productType": "ETB",
+      "releaseDate": "2016-02-22",
+      "normalizedKey": "generations|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Generations elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 540,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown",
+        "has-price"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "3765632",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Generations",
+          "releaseDate": null,
+          "newPrice": 4200.0,
+          "salesVolume": "100"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy10-booster-box",
+      "name": "Fates Collide",
+      "productType": "Booster Box",
+      "releaseDate": "2016-05-02",
+      "normalizedKey": "fates collide|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Fates Collide Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244971",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Fates Collide",
+          "releaseDate": "2016-05-02",
+          "newPrice": null,
+          "salesVolume": "42"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy10-etb",
+      "name": "Fates Collide",
+      "productType": "ETB",
+      "releaseDate": "2016-05-02",
+      "normalizedKey": "fates collide|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Fates Collide elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4780176",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Fates Collide",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "84"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy11-booster-box",
+      "name": "Steam Siege",
+      "productType": "Booster Box",
+      "releaseDate": "2016-08-03",
+      "normalizedKey": "steam siege|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Steam Siege Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244969",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Steam Siege",
+          "releaseDate": "2016-08-03",
+          "newPrice": null,
+          "salesVolume": "48"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "xy11-etb",
+      "name": "Steam Siege",
+      "productType": "ETB",
+      "releaseDate": "2016-08-03",
+      "normalizedKey": "steam siege|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Steam Siege elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4780174",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Steam Siege",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "32"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm2-booster-box",
+      "name": "Guardians Rising",
+      "productType": "Booster Box",
+      "releaseDate": "2017-05-05",
+      "normalizedKey": "guardians rising|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Guardians Rising Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244965",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Guardians Rising",
+          "releaseDate": "2017-05-05",
+          "newPrice": null,
+          "salesVolume": "40"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm2-etb",
+      "name": "Guardians Rising",
+      "productType": "ETB",
+      "releaseDate": "2017-05-05",
+      "normalizedKey": "guardians rising|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Guardians Rising elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4780177",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Guardians Rising",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "167"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm3-booster-box",
+      "name": "Burning Shadows",
+      "productType": "Booster Box",
+      "releaseDate": "2017-08-05",
+      "normalizedKey": "burning shadows|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Burning Shadows Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244963",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Burning Shadows",
+          "releaseDate": "2017-08-04",
+          "newPrice": null,
+          "salesVolume": "246"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm3-etb",
+      "name": "Burning Shadows",
+      "productType": "ETB",
+      "releaseDate": "2017-08-05",
+      "normalizedKey": "burning shadows|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Burning Shadows elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "3839387",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Burning Shadows",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "185"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm35-etb",
+      "name": "Shining Legends",
+      "productType": "ETB",
+      "releaseDate": "2017-10-06",
+      "normalizedKey": "shining legends|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Shining Legends elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4780180",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Shining Legends",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "98"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm4-booster-box",
+      "name": "Crimson Invasion",
+      "productType": "Booster Box",
+      "releaseDate": "2017-11-03",
+      "normalizedKey": "crimson invasion|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Crimson Invasion Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244961",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Crimson Invasion",
+          "releaseDate": "2017-10-06",
+          "newPrice": null,
+          "salesVolume": "144"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm4-etb",
+      "name": "Crimson Invasion",
+      "productType": "ETB",
+      "releaseDate": "2017-11-03",
+      "normalizedKey": "crimson invasion|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Crimson Invasion elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4780179",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Crimson Invasion",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "443"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm5-booster-box",
+      "name": "Ultra Prism",
+      "productType": "Booster Box",
+      "releaseDate": "2018-02-02",
+      "normalizedKey": "ultra prism|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Ultra Prism Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244959",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Ultra Prism",
+          "releaseDate": "2018-02-12",
+          "newPrice": null,
+          "salesVolume": "65"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm5-etb",
+      "name": "Ultra Prism",
+      "productType": "ETB",
+      "releaseDate": "2018-02-02",
+      "normalizedKey": "ultra prism|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Ultra Prism elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6346976",
+          "productName": "Elite Trainer Box [Dawn Wings Necrozma]",
+          "consoleName": "Pokemon Ultra Prism",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "21"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm6-booster-box",
+      "name": "Forbidden Light",
+      "productType": "Booster Box",
+      "releaseDate": "2018-05-04",
+      "normalizedKey": "forbidden light|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Forbidden Light Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244957",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Forbidden Light",
+          "releaseDate": "2018-05-04",
+          "newPrice": null,
+          "salesVolume": "54"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm6-etb",
+      "name": "Forbidden Light",
+      "productType": "ETB",
+      "releaseDate": "2018-05-04",
+      "normalizedKey": "forbidden light|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Forbidden Light elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "5529515",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Forbidden Light",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "49"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm7-booster-box",
+      "name": "Celestial Storm",
+      "productType": "Booster Box",
+      "releaseDate": "2018-08-03",
+      "normalizedKey": "celestial storm|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Celestial Storm Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244955",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Celestial Storm",
+          "releaseDate": "2018-08-03",
+          "newPrice": null,
+          "salesVolume": "63"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm7-etb",
+      "name": "Celestial Storm",
+      "productType": "ETB",
+      "releaseDate": "2018-08-03",
+      "normalizedKey": "celestial storm|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Celestial Storm elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4780178",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Celestial Storm",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "102"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm75-etb",
+      "name": "Dragon Majesty",
+      "productType": "ETB",
+      "releaseDate": "2018-09-07",
+      "normalizedKey": "dragon majesty|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Dragon Majesty elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4766912",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Dragon Majesty",
+          "releaseDate": "2018-09-07",
+          "newPrice": null,
+          "salesVolume": "66"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm8-booster-box",
+      "name": "Lost Thunder",
+      "productType": "Booster Box",
+      "releaseDate": "2018-11-02",
+      "normalizedKey": "lost thunder|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Lost Thunder Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244953",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Lost Thunder",
+          "releaseDate": "2018-11-02",
+          "newPrice": null,
+          "salesVolume": "48"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm8-etb",
+      "name": "Lost Thunder",
+      "productType": "ETB",
+      "releaseDate": "2018-11-02",
+      "normalizedKey": "lost thunder|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Lost Thunder elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6347152",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Lost Thunder",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "51"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm9-etb",
+      "name": "Team Up",
+      "productType": "ETB",
+      "releaseDate": "2019-02-01",
+      "normalizedKey": "team up|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Team Up elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4780191",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Team Up",
+          "releaseDate": "2019-02-01",
+          "newPrice": null,
+          "salesVolume": "91"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm10-booster-box",
+      "name": "Unbroken Bonds",
+      "productType": "Booster Box",
+      "releaseDate": "2019-05-03",
+      "normalizedKey": "unbroken bonds|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Unbroken Bonds Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244949",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Unbroken Bonds",
+          "releaseDate": "2019-03-29",
+          "newPrice": null,
+          "salesVolume": "123"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm10-etb",
+      "name": "Unbroken Bonds",
+      "productType": "ETB",
+      "releaseDate": "2019-05-03",
+      "normalizedKey": "unbroken bonds|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Unbroken Bonds elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "5837163",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Unbroken Bonds",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "105"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm11-booster-box",
+      "name": "Unified Minds",
+      "productType": "Booster Box",
+      "releaseDate": "2019-08-02",
+      "normalizedKey": "unified minds|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Unified Minds Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244947",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Unified Minds",
+          "releaseDate": "2019-08-02",
+          "newPrice": null,
+          "salesVolume": "107"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm11-etb",
+      "name": "Unified Minds",
+      "productType": "ETB",
+      "releaseDate": "2019-08-02",
+      "normalizedKey": "unified minds|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Unified Minds elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4780181",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Unified Minds",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "102"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sm12-etb",
+      "name": "Cosmic Eclipse",
+      "productType": "ETB",
+      "releaseDate": "2019-11-01",
+      "normalizedKey": "cosmic eclipse|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Cosmic Eclipse elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6347243",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Cosmic Eclipse",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "89"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh1-booster-box",
+      "name": "Sword & Shield",
+      "productType": "Booster Box",
+      "releaseDate": "2020-02-07",
+      "normalizedKey": "sword and shield|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Sword & Shield Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 545,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-near"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "5134202",
+          "productName": "Booster Box [Base Set]",
+          "consoleName": "Pokemon Sword & Shield",
+          "releaseDate": "2019-11-15",
+          "newPrice": null,
+          "salesVolume": "131"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh1-etb",
+      "name": "Sword & Shield",
+      "productType": "ETB",
+      "releaseDate": "2020-02-07",
+      "normalizedKey": "sword and shield|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Sword & Shield elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "3808302",
+          "productName": "Elite Trainer Box [Zamazenta]",
+          "consoleName": "Pokemon Sword & Shield",
+          "releaseDate": "2020-02-07",
+          "newPrice": null,
+          "salesVolume": "129"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh2-booster-box",
+      "name": "Rebel Clash",
+      "productType": "Booster Box",
+      "releaseDate": "2020-05-01",
+      "normalizedKey": "rebel clash|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Rebel Clash Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244941",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Rebel Clash",
+          "releaseDate": "2020-05-01",
+          "newPrice": null,
+          "salesVolume": "22"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh2-etb",
+      "name": "Rebel Clash",
+      "productType": "ETB",
+      "releaseDate": "2020-05-01",
+      "normalizedKey": "rebel clash|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Rebel Clash elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4780172",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Rebel Clash",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "39"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh3-booster-box",
+      "name": "Darkness Ablaze",
+      "productType": "Booster Box",
+      "releaseDate": "2020-08-14",
+      "normalizedKey": "darkness ablaze|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Darkness Ablaze Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244939",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Darkness Ablaze",
+          "releaseDate": "2020-08-14",
+          "newPrice": null,
+          "salesVolume": "243"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh3-etb",
+      "name": "Darkness Ablaze",
+      "productType": "ETB",
+      "releaseDate": "2020-08-14",
+      "normalizedKey": "darkness ablaze|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Darkness Ablaze elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "3345961",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Darkness Ablaze",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "355"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh4-booster-box",
+      "name": "Vivid Voltage",
+      "productType": "Booster Box",
+      "releaseDate": "2020-11-13",
+      "normalizedKey": "vivid voltage|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Vivid Voltage Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2189391",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Vivid Voltage",
+          "releaseDate": "2020-11-13",
+          "newPrice": null,
+          "salesVolume": "376"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh4-etb",
+      "name": "Vivid Voltage",
+      "productType": "ETB",
+      "releaseDate": "2020-11-13",
+      "normalizedKey": "vivid voltage|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Vivid Voltage elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "3396578",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Vivid Voltage",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "632"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh5-booster-box",
+      "name": "Battle Styles",
+      "productType": "Booster Box",
+      "releaseDate": "2021-03-19",
+      "normalizedKey": "battle styles|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Battle Styles Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2189387",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Battle Styles",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "1104"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh5-etb",
+      "name": "Battle Styles",
+      "productType": "ETB",
+      "releaseDate": "2021-03-19",
+      "normalizedKey": "battle styles|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Battle Styles elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2783084",
+          "productName": "Elite Trainer Box [Rapid Strike Urshifu]",
+          "consoleName": "Pokemon Battle Styles",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "107"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh6-booster-box",
+      "name": "Chilling Reign",
+      "productType": "Booster Box",
+      "releaseDate": "2021-06-18",
+      "normalizedKey": "chilling reign|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Chilling Reign Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2261559",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Chilling Reign",
+          "releaseDate": "2021-06-18",
+          "newPrice": null,
+          "salesVolume": "580"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh7-etb",
+      "name": "Evolving Skies",
+      "productType": "ETB",
+      "releaseDate": "2021-08-27",
+      "normalizedKey": "evolving skies|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Evolving Skies elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6347813",
+          "productName": "Elite Trainer Box: Jolteon",
+          "consoleName": "Pokemon Evolving Skies",
+          "releaseDate": "2021-08-27",
+          "newPrice": null,
+          "salesVolume": "369"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh8-etb",
+      "name": "Fusion Strike",
+      "productType": "ETB",
+      "releaseDate": "2021-11-12",
+      "normalizedKey": "fusion strike|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Fusion Strike elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 540,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown",
+        "has-price"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2782365",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Fusion Strike",
+          "releaseDate": null,
+          "newPrice": 37.11,
+          "salesVolume": "52"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh9-etb",
+      "name": "Brilliant Stars",
+      "productType": "ETB",
+      "releaseDate": "2022-02-25",
+      "normalizedKey": "brilliant stars|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Brilliant Stars elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 540,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown",
+        "has-price"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "3188413",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Brilliant Stars",
+          "releaseDate": null,
+          "newPrice": 38.91,
+          "salesVolume": "380"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh10-booster-box",
+      "name": "Astral Radiance",
+      "productType": "Booster Box",
+      "releaseDate": "2022-05-27",
+      "normalizedKey": "astral radiance|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Astral Radiance Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 600,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match",
+        "has-price"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "3490294",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Astral Radiance",
+          "releaseDate": "2022-05-27",
+          "newPrice": 365.0,
+          "salesVolume": "278"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh10-etb",
+      "name": "Astral Radiance",
+      "productType": "ETB",
+      "releaseDate": "2022-05-27",
+      "normalizedKey": "astral radiance|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Astral Radiance elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "3490292",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Astral Radiance",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "427"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh11-etb",
+      "name": "Lost Origin",
+      "productType": "ETB",
+      "releaseDate": "2022-09-09",
+      "normalizedKey": "lost origin|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Lost Origin elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4080783",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Lost Origin",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "404"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh12-booster-box",
+      "name": "Silver Tempest",
+      "productType": "Booster Box",
+      "releaseDate": "2022-11-11",
+      "normalizedKey": "silver tempest|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Silver Tempest Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4277088",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Silver Tempest",
+          "releaseDate": "2022-11-11",
+          "newPrice": null,
+          "salesVolume": "388"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "swsh12-etb",
+      "name": "Silver Tempest",
+      "productType": "ETB",
+      "releaseDate": "2022-11-11",
+      "normalizedKey": "silver tempest|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Silver Tempest elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4276924",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Silver Tempest",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "60"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv2-etb",
+      "name": "Paldea Evolved",
+      "productType": "ETB",
+      "releaseDate": "2023-06-09",
+      "normalizedKey": "paldea evolved|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Paldea Evolved elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "5608645",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Paldea Evolved",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "524"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv3-etb",
+      "name": "Obsidian Flames",
+      "productType": "ETB",
+      "releaseDate": "2023-08-11",
+      "normalizedKey": "obsidian flames|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Obsidian Flames elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 540,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown",
+        "has-price"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "5632021",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Obsidian Flames",
+          "releaseDate": null,
+          "newPrice": 36.69,
+          "salesVolume": "332"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv4-booster-box",
+      "name": "Paradox Rift",
+      "productType": "Booster Box",
+      "releaseDate": "2023-11-03",
+      "normalizedKey": "paradox rift|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Paradox Rift Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "5952837",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Paradox Rift",
+          "releaseDate": "2023-11-03",
+          "newPrice": null,
+          "salesVolume": "353"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv4-etb",
+      "name": "Paradox Rift",
+      "productType": "ETB",
+      "releaseDate": "2023-11-03",
+      "normalizedKey": "paradox rift|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Paradox Rift elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "5952832",
+          "productName": "Elite Trainer Box [Iron Valiant]",
+          "consoleName": "Pokemon Paradox Rift",
+          "releaseDate": "2023-11-03",
+          "newPrice": null,
+          "salesVolume": "241"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv4pt5-etb",
+      "name": "Paldean Fates",
+      "productType": "ETB",
+      "releaseDate": "2024-01-26",
+      "normalizedKey": "paldean fates|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Paldean Fates elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 600,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match",
+        "has-price"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6276912",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Paldean Fates",
+          "releaseDate": "2024-01-26",
+          "newPrice": 18.5,
+          "salesVolume": "76"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv5-booster-box",
+      "name": "Temporal Forces",
+      "productType": "Booster Box",
+      "releaseDate": "2024-03-22",
+      "normalizedKey": "temporal forces|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Temporal Forces Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6495459",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Temporal Forces",
+          "releaseDate": "2024-03-22",
+          "newPrice": null,
+          "salesVolume": "400"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv5-etb",
+      "name": "Temporal Forces",
+      "productType": "ETB",
+      "releaseDate": "2024-03-22",
+      "normalizedKey": "temporal forces|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Temporal Forces elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6675549",
+          "productName": "Elite Trainer Box [Iron Leaves]",
+          "consoleName": "Pokemon Temporal Forces",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "346"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv6-booster-box",
+      "name": "Twilight Masquerade",
+      "productType": "Booster Box",
+      "releaseDate": "2024-05-24",
+      "normalizedKey": "twilight masquerade|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Twilight Masquerade Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6769479",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Twilight Masquerade",
+          "releaseDate": "2024-05-24",
+          "newPrice": null,
+          "salesVolume": "352"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv6-etb",
+      "name": "Twilight Masquerade",
+      "productType": "ETB",
+      "releaseDate": "2024-05-24",
+      "normalizedKey": "twilight masquerade|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Twilight Masquerade elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "6769868",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Twilight Masquerade",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "252"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv6pt5-etb",
+      "name": "Shrouded Fable",
+      "productType": "ETB",
+      "releaseDate": "2024-08-02",
+      "normalizedKey": "shrouded fable|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Shrouded Fable elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "7108653",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Shrouded Fable",
+          "releaseDate": "2024-08-02",
+          "newPrice": null,
+          "salesVolume": "316"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv7-booster-box",
+      "name": "Stellar Crown",
+      "productType": "Booster Box",
+      "releaseDate": "2024-09-13",
+      "normalizedKey": "stellar crown|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Stellar Crown Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "7418476",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Stellar Crown",
+          "releaseDate": "2024-09-13",
+          "newPrice": null,
+          "salesVolume": "344"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv8-etb",
+      "name": "Surging Sparks",
+      "productType": "ETB",
+      "releaseDate": "2024-11-08",
+      "normalizedKey": "surging sparks|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Surging Sparks elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "7800023",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Surging Sparks",
+          "releaseDate": "2024-11-08",
+          "newPrice": null,
+          "salesVolume": "254"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv8pt5-etb",
+      "name": "Prismatic Evolutions",
+      "productType": "ETB",
+      "releaseDate": "2025-01-17",
+      "normalizedKey": "prismatic evolutions|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Prismatic Evolutions elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "8256647",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Prismatic Evolutions",
+          "releaseDate": "2025-01-17",
+          "newPrice": null,
+          "salesVolume": "216"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv9-booster-box",
+      "name": "Journey Together",
+      "productType": "Booster Box",
+      "releaseDate": "2025-03-28",
+      "normalizedKey": "journey together|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Journey Together Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "8871041",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Journey Together",
+          "releaseDate": "2025-03-28",
+          "newPrice": null,
+          "salesVolume": "268"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv9-etb",
+      "name": "Journey Together",
+      "productType": "ETB",
+      "releaseDate": "2025-03-28",
+      "normalizedKey": "journey together|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Journey Together elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "8871043",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Journey Together",
+          "releaseDate": "2025-03-28",
+          "newPrice": null,
+          "salesVolume": "306"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv10-booster-box",
+      "name": "Destined Rivals",
+      "productType": "Booster Box",
+      "releaseDate": "2025-05-30",
+      "normalizedKey": "destined rivals|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Destined Rivals Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "9420220",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Destined Rivals",
+          "releaseDate": "2025-05-30",
+          "newPrice": null,
+          "salesVolume": "235"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "sv10-etb",
+      "name": "Destined Rivals",
+      "productType": "ETB",
+      "releaseDate": "2025-05-30",
+      "normalizedKey": "destined rivals|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Destined Rivals elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "9420221",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Destined Rivals",
+          "releaseDate": "2025-05-30",
+          "newPrice": null,
+          "salesVolume": "332"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "zsv10pt5-etb",
+      "name": "Black Bolt",
+      "productType": "ETB",
+      "releaseDate": "2025-07-18",
+      "normalizedKey": "black bolt|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Black Bolt elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "10023927",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Black Bolt",
+          "releaseDate": "2025-07-18",
+          "newPrice": null,
+          "salesVolume": "216"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "rsv10pt5-etb",
+      "name": "White Flare",
+      "productType": "ETB",
+      "releaseDate": "2025-07-18",
+      "normalizedKey": "white flare|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "White Flare elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "10023931",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon White Flare",
+          "releaseDate": "2025-07-18",
+          "newPrice": null,
+          "salesVolume": "216"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "me1-booster-box",
+      "name": "Mega Evolution",
+      "productType": "Booster Box",
+      "releaseDate": "2025-09-26",
+      "normalizedKey": "mega evolution|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Mega Evolution Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "10616084",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Mega Evolution",
+          "releaseDate": "2025-09-26",
+          "newPrice": null,
+          "salesVolume": "3269"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "me1-etb",
+      "name": "Mega Evolution",
+      "productType": "ETB",
+      "releaseDate": "2025-09-26",
+      "normalizedKey": "mega evolution|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Mega Evolution elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "10616101",
+          "productName": "Elite Trainer Box [Mega Lucario]",
+          "consoleName": "Pokemon Mega Evolution",
+          "releaseDate": "2025-09-26",
+          "newPrice": null,
+          "salesVolume": "213"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "me2-booster-box",
+      "name": "Phantasmal Flames",
+      "productType": "Booster Box",
+      "releaseDate": "2025-11-14",
+      "normalizedKey": "phantasmal flames|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Phantasmal Flames Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "11069121",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Phantasmal Flames",
+          "releaseDate": "2025-11-21",
+          "newPrice": null,
+          "salesVolume": "155"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "me2-etb",
+      "name": "Phantasmal Flames",
+      "productType": "ETB",
+      "releaseDate": "2025-11-14",
+      "normalizedKey": "phantasmal flames|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Phantasmal Flames elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "11069122",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Phantasmal Flames",
+          "releaseDate": "2025-11-14",
+          "newPrice": null,
+          "salesVolume": "150"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "me2pt5-etb",
+      "name": "Ascended Heroes",
+      "productType": "ETB",
+      "releaseDate": "2026-01-30",
+      "normalizedKey": "ascended heroes|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Ascended Heroes elite trainer box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 580,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "11748902",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Ascended Heroes",
+          "releaseDate": "2026-01-30",
+          "newPrice": null,
+          "salesVolume": "259"
+        }
+      }
+    },
+    {
+      "decision": "approved",
+      "setId": "me3-booster-box",
+      "name": "Perfect Order",
+      "productType": "Booster Box",
+      "releaseDate": "2026-03-27",
+      "normalizedKey": "perfect order|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Perfect Order Booster Box pokemon",
+      "mappingConfidence": "high",
+      "mappingScore": 520,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "12416303",
+          "productName": "Half Booster Box",
+          "consoleName": "Pokemon Perfect Order",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "477"
+        }
+      }
+    }
+  ],
+  "reviewRequired": [
+    {
+      "decision": "review_required",
+      "setId": "ecard1-booster-box",
+      "name": "Expedition Base Set",
+      "productType": "Booster Box",
+      "releaseDate": "2002-09-15",
+      "normalizedKey": "expedition base set|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Expedition Base Set Booster Box pokemon",
+      "mappingConfidence": "medium",
+      "mappingScore": 440,
+      "matchReasons": [
+        "partial-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245071",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Expedition",
+          "releaseDate": "2002-09-15",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "ex2-booster-box",
+      "name": "Sandstorm",
+      "productType": "Booster Box",
+      "releaseDate": "2003-09-18",
+      "normalizedKey": "sandstorm|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Sandstorm Booster Box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": 480,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-unknown",
+        "release-year-match",
+        "has-price"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "849244",
+          "productName": "Aron #56",
+          "consoleName": "Pokemon Sandstorm",
+          "releaseDate": "2003-09-17",
+          "newPrice": 51.99,
+          "salesVolume": "73"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "ex3-booster-box",
+      "name": "Dragon",
+      "productType": "Booster Box",
+      "releaseDate": "2003-11-24",
+      "normalizedKey": "dragon|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Dragon Booster Box pokemon",
+      "mappingConfidence": "medium",
+      "mappingScore": 320,
+      "matchReasons": [
+        "partial-console-match",
+        "product-type-match",
+        "release-year-mismatch:2003:2006"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245045",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Dragon Frontiers",
+          "releaseDate": "2006-11-06",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "ex6-booster-box",
+      "name": "FireRed & LeafGreen",
+      "productType": "Booster Box",
+      "releaseDate": "2004-09-01",
+      "normalizedKey": "firered and leafgreen|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "FireRed & LeafGreen Booster Box pokemon",
+      "mappingConfidence": "medium",
+      "mappingScore": 380,
+      "matchReasons": [
+        "partial-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "8193478",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Japanese E-Battle Firered & Leafgreen",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "hgss2-booster-box",
+      "name": "HS\u2014Unleashed",
+      "productType": "Booster Box",
+      "releaseDate": "2010-05-12",
+      "normalizedKey": "hs unleashed|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "HS\u2014Unleashed Booster Box pokemon",
+      "mappingConfidence": "medium",
+      "mappingScore": 440,
+      "matchReasons": [
+        "partial-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245019",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Unleashed",
+          "releaseDate": "2010-05-12",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "hgss3-booster-box",
+      "name": "HS\u2014Undaunted",
+      "productType": "Booster Box",
+      "releaseDate": "2010-08-18",
+      "normalizedKey": "hs undaunted|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "HS\u2014Undaunted Booster Box pokemon",
+      "mappingConfidence": "medium",
+      "mappingScore": 380,
+      "matchReasons": [
+        "partial-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "5861292",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Undaunted",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "hgss4-booster-box",
+      "name": "HS\u2014Triumphant",
+      "productType": "Booster Box",
+      "releaseDate": "2010-11-03",
+      "normalizedKey": "hs triumphant|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "HS\u2014Triumphant Booster Box pokemon",
+      "mappingConfidence": "medium",
+      "mappingScore": 440,
+      "matchReasons": [
+        "partial-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2245017",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Triumphant",
+          "releaseDate": "2010-11-03",
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "xy12-etb",
+      "name": "Evolutions",
+      "productType": "ETB",
+      "releaseDate": "2016-11-02",
+      "normalizedKey": "evolutions|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Evolutions elite trainer box pokemon",
+      "mappingConfidence": "medium",
+      "mappingScore": 320,
+      "matchReasons": [
+        "partial-console-match",
+        "product-type-match",
+        "release-year-mismatch:2016:2025"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "8256647",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Prismatic Evolutions",
+          "releaseDate": "2025-01-17",
+          "newPrice": null,
+          "salesVolume": "216"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "sm35-booster-box",
+      "name": "Shining Legends",
+      "productType": "Booster Box",
+      "releaseDate": "2017-10-06",
+      "normalizedKey": "shining legends|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Shining Legends Booster Box pokemon",
+      "mappingConfidence": "medium",
+      "mappingScore": 380,
+      "matchReasons": [
+        "partial-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "8820781",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Japanese Shining Legends",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "15"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "sm75-booster-box",
+      "name": "Dragon Majesty",
+      "productType": "Booster Box",
+      "releaseDate": "2018-09-07",
+      "normalizedKey": "dragon majesty|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Dragon Majesty Booster Box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": 460,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-unknown",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "962276",
+          "productName": "Bagon #42",
+          "consoleName": "Pokemon Dragon Majesty",
+          "releaseDate": "2018-09-07",
+          "newPrice": null,
+          "salesVolume": "10"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "sma-booster-box",
+      "name": "Hidden Fates Shiny Vault",
+      "productType": "Booster Box",
+      "releaseDate": "2019-08-23",
+      "normalizedKey": "hidden fates shiny vault|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Hidden Fates Shiny Vault Booster Box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": 340,
+      "matchReasons": [
+        "partial-console-match",
+        "product-type-unknown",
+        "release-year-match",
+        "has-price"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "964052",
+          "productName": "Mew #32",
+          "consoleName": "Pokemon Hidden Fates",
+          "releaseDate": "2019-08-23",
+          "newPrice": 14.25,
+          "salesVolume": "243"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "swsh35-booster-box",
+      "name": "Champion's Path",
+      "productType": "Booster Box",
+      "releaseDate": "2020-09-25",
+      "normalizedKey": "champions path|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Champion's Path Booster Box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": 460,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-unknown",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "887480",
+          "productName": "Hop #53",
+          "consoleName": "Pokemon Champion's Path",
+          "releaseDate": "2020-09-25",
+          "newPrice": null,
+          "salesVolume": "11"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "swsh45sv-booster-box",
+      "name": "Shining Fates Shiny Vault",
+      "productType": "Booster Box",
+      "releaseDate": "2021-02-19",
+      "normalizedKey": "shining fates shiny vault|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Shining Fates Shiny Vault Booster Box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": 280,
+      "matchReasons": [
+        "partial-console-match",
+        "product-type-unknown",
+        "release-year-unknown",
+        "has-price"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "7747196",
+          "productName": "Shiny Eldegoss V Collection",
+          "consoleName": "Pokemon Shining Fates",
+          "releaseDate": null,
+          "newPrice": 35.0,
+          "salesVolume": "67"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "swsh6-etb",
+      "name": "Chilling Reign",
+      "productType": "ETB",
+      "releaseDate": "2021-06-18",
+      "normalizedKey": "chilling reign|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Chilling Reign elite trainer box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": 340,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-unknown",
+        "variant-penalty"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2783086",
+          "productName": "Elite Trainer Box [Shadow Rider Pokemon Center]",
+          "consoleName": "Pokemon Chilling Reign",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "62"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "pgo-etb",
+      "name": "Pok\u00e9mon GO",
+      "productType": "ETB",
+      "releaseDate": "2022-07-01",
+      "normalizedKey": "pokemon go|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Pok\u00e9mon GO elite trainer box pokemon",
+      "mappingConfidence": "medium",
+      "mappingScore": 380,
+      "matchReasons": [
+        "partial-console-match",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "3669778",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Go",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "52"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "sv7-etb",
+      "name": "Stellar Crown",
+      "productType": "ETB",
+      "releaseDate": "2024-09-13",
+      "normalizedKey": "stellar crown|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Stellar Crown elite trainer box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": 400,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match",
+        "variant-penalty"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "7418485",
+          "productName": "Elite Trainer Box [Pokemon Center]",
+          "consoleName": "Pokemon Stellar Crown",
+          "releaseDate": "2024-09-13",
+          "newPrice": null,
+          "salesVolume": "67"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "zsv10pt5-booster-box",
+      "name": "Black Bolt",
+      "productType": "Booster Box",
+      "releaseDate": "2025-07-18",
+      "normalizedKey": "black bolt|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Black Bolt Booster Box pokemon",
+      "mappingConfidence": "medium",
+      "mappingScore": 440,
+      "matchReasons": [
+        "partial-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "9647241",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Japanese Black Bolt",
+          "releaseDate": "2025-06-06",
+          "newPrice": null,
+          "salesVolume": "339"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "rsv10pt5-booster-box",
+      "name": "White Flare",
+      "productType": "Booster Box",
+      "releaseDate": "2025-07-18",
+      "normalizedKey": "white flare|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "White Flare Booster Box pokemon",
+      "mappingConfidence": "medium",
+      "mappingScore": 440,
+      "matchReasons": [
+        "partial-console-match",
+        "product-type-match",
+        "release-year-match"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "9647240",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Japanese White Flare",
+          "releaseDate": "2025-06-06",
+          "newPrice": null,
+          "salesVolume": "868"
+        }
+      }
+    },
+    {
+      "decision": "review_required",
+      "setId": "me3-etb",
+      "name": "Perfect Order",
+      "productType": "ETB",
+      "releaseDate": "2026-03-27",
+      "normalizedKey": "perfect order|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Perfect Order elite trainer box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": 400,
+      "matchReasons": [
+        "exact-console-match",
+        "product-type-match",
+        "release-year-match",
+        "variant-penalty"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "12368461",
+          "productName": "Elite Trainer Box [Pokemon Center]",
+          "consoleName": "Pokemon Perfect Order",
+          "releaseDate": "2026-03-27",
+          "newPrice": null,
+          "salesVolume": "686"
+        }
+      }
+    }
+  ],
+  "rejected": [
+    {
+      "decision": "rejected",
+      "setId": "ex4-booster-box",
+      "name": "Team Magma vs Team Aqua",
+      "productType": "Booster Box",
+      "releaseDate": "2004-03-01",
+      "normalizedKey": "team magma vs team aqua|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Team Magma vs Team Aqua Booster Box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": -40,
+      "matchReasons": [
+        "name-mismatch",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "9157751",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Team Magma & Team Aqua",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "1"
+        }
+      }
+    },
+    {
+      "decision": "rejected",
+      "setId": "xy2-etb",
+      "name": "Flashfire",
+      "productType": "ETB",
+      "releaseDate": "2014-05-07",
+      "normalizedKey": "flashfire|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Flashfire elite trainer box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": -40,
+      "matchReasons": [
+        "name-mismatch",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "5807283",
+          "productName": "Elite Trainer Box [Xerneas]",
+          "consoleName": "Pokemon XY",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "5"
+        }
+      }
+    },
+    {
+      "decision": "rejected",
+      "setId": "sm1-booster-box",
+      "name": "Sun & Moon",
+      "productType": "Booster Box",
+      "releaseDate": "2017-02-03",
+      "normalizedKey": "sun and moon|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Sun & Moon Booster Box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": -100,
+      "matchReasons": [
+        "name-mismatch",
+        "product-type-match",
+        "release-year-mismatch:2017:2019"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "2244951",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Team Up",
+          "releaseDate": "2019-02-01",
+          "newPrice": null,
+          "salesVolume": "64"
+        }
+      }
+    },
+    {
+      "decision": "rejected",
+      "setId": "sm1-etb",
+      "name": "Sun & Moon",
+      "productType": "ETB",
+      "releaseDate": "2017-02-03",
+      "normalizedKey": "sun and moon|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Sun & Moon elite trainer box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": -100,
+      "matchReasons": [
+        "name-mismatch",
+        "product-type-match",
+        "release-year-mismatch:2017:2019"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "4780191",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Team Up",
+          "releaseDate": "2019-02-01",
+          "newPrice": null,
+          "salesVolume": "91"
+        }
+      }
+    },
+    {
+      "decision": "rejected",
+      "setId": "sv1-etb",
+      "name": "Scarlet & Violet Base",
+      "productType": "ETB",
+      "releaseDate": "2023-03-31",
+      "normalizedKey": "scarlet and violet base|etb",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Scarlet & Violet Base elite trainer box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": -40,
+      "matchReasons": [
+        "name-mismatch",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "5826208",
+          "productName": "Elite Trainer Box",
+          "consoleName": "Pokemon Scarlet & Violet 151",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "414"
+        }
+      }
+    },
+    {
+      "decision": "rejected",
+      "setId": "me2pt5-booster-box",
+      "name": "Ascended Heroes",
+      "productType": "Booster Box",
+      "releaseDate": "2026-01-30",
+      "normalizedKey": "ascended heroes|booster box",
+      "catalogSource": "pokemon-tcg-api-set-universe",
+      "priceChartingQuery": "Ascended Heroes Booster Box pokemon",
+      "mappingConfidence": "low",
+      "mappingScore": -40,
+      "matchReasons": [
+        "name-mismatch",
+        "product-type-match",
+        "release-year-unknown"
+      ],
+      "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured.",
+      "providers": {
+        "pokedata": {
+          "pokedataId": null,
+          "rawType": null,
+          "imgUrl": null,
+          "tcgplayerId": null
+        },
+        "priceCharting": {
+          "priceChartingId": "3880844",
+          "productName": "Booster Box",
+          "consoleName": "Pokemon Gym Heroes",
+          "releaseDate": null,
+          "newPrice": null,
+          "salesVolume": "4"
+        }
+      }
+    }
+  ]
 }

@@ -167,11 +167,55 @@ Recommended production values:
 | --- | --- | --- |
 | `AWS_REGION` | Amplify SSR + retrainer Lambda | Keep this aligned with DynamoDB and ECR. |
 | `DYNAMODB_TABLE` | Amplify SSR + sync/retraining jobs | Enables cached pricing, lookup capture, and published model reads. |
+| `OWNED_DATA_ASSET_BUCKET` | Amplify SSR + future archive jobs | Optional today; canonical S3-like bucket for immutable owned history/model artifacts. |
+| `OWNED_DATA_ASSET_PREFIX` | Amplify SSR + future archive jobs | Defaults to `owned-data`; keep stable so asset keys stay predictable. |
+| `LEGAL_OPERATOR_NAME` | SSR legal/footer pages | Public operator/business name shown on launch-facing legal pages. |
+| `LEGAL_CONTACT_EMAIL` | SSR legal/footer pages | Public contact email for legal/terms questions. |
+| `PRIVACY_REQUEST_EMAIL` | SSR privacy pages | Optional separate privacy-rights email; defaults to `LEGAL_CONTACT_EMAIL`. |
+| `LEGAL_BUSINESS_ADDRESS` | SSR contact/legal pages | Optional postal/business address block for launch readiness. |
+| `LEGAL_CONTACT_URL` | SSR contact/legal pages | Fallback support/contact URL if email is not yet configured. |
 | `POKEDATA_API_KEY` | Optional backfill/admin jobs | Only needed for one-time PokeData harvests or optional live population enrichment. |
 | `PRICECHARTING_API_TOKEN` | Sync job / optional runtime lookups | Required for monthly PriceCharting ingestion. |
 | `SEALED_ML_MODEL_SOURCE` | Amplify SSR | `auto` by default; set to `bundled` for rollback. |
 
 For local ops, copy `.env.example` and fill in the same values before running scripts.
+
+### Launch legal/contact checklist
+
+Before a public launch, set these legal-facing values in Amplify so the site no longer relies on
+GitHub issues or placeholders as the primary contact path:
+
+```bash
+LEGAL_OPERATOR_NAME=...
+LEGAL_CONTACT_EMAIL=...
+PRIVACY_REQUEST_EMAIL=...
+LEGAL_BUSINESS_ADDRESS=...
+LEGAL_CONTACT_URL=...
+```
+
+At minimum, publish a real operator name and contact email. If you later add analytics, accounts,
+payments, email capture, or ad-tech, review the legal pages again before launch.
+
+### Owned data storage tiering contract
+
+The repo now has one canonical ownership model:
+
+| Tier | What belongs there | Current repo contract |
+| --- | --- | --- |
+| Bundled JSON | Small deploy-time seeds, rollback copies, and fallback artifacts | `src/lib/data/sealed-ml/*.json` stays the canonical bundled copy for app-shipped fallbacks, including owned sealed search metadata. |
+| DynamoDB | Mutable/queryable owned state and bounded history used directly by APIs/jobs | Product meta, sealed price snapshots, trend snapshots, forecast lookups, training snapshots, and published model chunks. |
+| S3-like immutable assets | Append-only history exports, replay datasets, and archived model artifacts | Canonical key/prefix helpers live in `src/lib/owned-data/storage-tier.ts`; configure a bucket when you want durable history outside DynamoDB. |
+
+Canonical key helpers now live in:
+
+- `src/lib/owned-data/dynamo-keys.ts`
+- `src/lib/owned-data/storage-tier.ts`
+
+Use that contract when deciding where new owned datasets belong:
+
+- **Bundled JSON first** only when the dataset must ship with the build and stay small enough for git/app bundle fallback usage.
+- **DynamoDB first** when the app or jobs need point reads, latest-state reads, or bounded historical queries.
+- **Immutable assets first** for append-only exports, large historical backfills, replayable training corpora, and archived published models.
 
 ### Syncing official PriceCharting sealed prices
 The sealed pricing runtime can consume a synced PriceCharting snapshot artifact and
@@ -191,15 +235,103 @@ If `DYNAMODB_TABLE` and AWS credentials are also configured, the same sync comma
 best-effort persist provider-aware price snapshots, PriceCharting ID mappings, and
 normalized monthly training snapshots into DynamoDB.
 
+If you have access to PriceCharting's bulk CSV export, you can import broader current-price
+coverage from that file as well:
+
+```bash
+cd ~/Desktop/pokemon-investing
+python3 scripts/import_pricecharting_csv.py --csv /path/to/pricecharting-pokemon-cards.csv
+```
+
+That writes `src/lib/data/sealed-ml/pricecharting-current-prices.json` directly from the CSV
+and is useful when the per-product API returns sparse sealed pricing fields.
+
 Recommended monthly ingestion checklist:
 
 1. Confirm `/api/health` reports `monthlyIngestion.priceChartingConfigured=true`
    and the expected Dynamo table/region. `monthlyIngestion.pokedataConfigured=true`
    is only needed if you are still capturing optional dual-provider snapshots.
 2. Run `npm run sync:pricecharting`.
-3. Review the generated artifacts under `src/lib/data/sealed-ml/`.
+3. Review the generated artifacts under `src/lib/data/sealed-ml/`, especially `pricecharting-current-prices.json` and `sealed-search-catalog.json` if you refreshed catalog ownership metadata.
 4. If DynamoDB is configured, spot-check a fresh `SEALED_TRAINING#... / SNAPSHOT#YYYY-MM`
-   item before retraining.
+     item before retraining.
+
+### Expanding the owned ETB + Booster Box catalog
+The repo now supports a two-step sealed catalog flow so **All ETBs** and **All Booster Boxes**
+are not limited by the small curated ML manifest:
+
+1. Refresh the owned candidate universe from the public Pokemon TCG set list:
+
+```bash
+cd ~/Desktop/pokemon-investing
+npm run sync:sealed:expansion
+```
+
+This writes `src/lib/data/sealed-ml/products-expansion.json`, which is the owned expansion layer
+used by local sealed search/listing even before every product is fully enriched.
+
+2. Validate and approve that universe against PriceCharting when a token is configured:
+
+```bash
+cd ~/Desktop/pokemon-investing
+PRICECHARTING_API_TOKEN=... npm run sync:sealed:catalog
+```
+
+That command refreshes:
+
+- `src/lib/data/sealed-ml/sealed-catalog.json`
+- `src/lib/data/sealed-ml/sealed-search-catalog.json`
+- `src/lib/data/sealed-ml/sealed-catalog-review.json`
+
+Operational notes:
+
+- `products.json` remains the curated ML-rich baseline; it is no longer the only path for sealed
+  catalog visibility.
+- `products-expansion.json` is the broader owned candidate universe for ETBs and Booster Boxes.
+- If `POKEDATA_API_KEY` is configured, the catalog sync will also merge optional PokeData metadata
+  (ids/images/release details) into candidate matching, but PriceCharting remains the approval path.
+- Without a `PRICECHARTING_API_TOKEN`, the catalog sync intentionally skips candidate matching and
+  leaves the approved catalog unchanged.
+
+### Syncing owned trend snapshots
+The trends route now prefers owned DynamoDB snapshots over live Google Trends requests.
+Prewarm or refresh those snapshots with:
+
+```bash
+cd ~/Desktop/pokemon-investing
+npm run sync:trends
+```
+
+If you only want to refresh one keyword:
+
+```bash
+cd ~/Desktop/pokemon-investing
+npm run sync:trends -- --keyword "Pokemon Evolving Skies"
+```
+
+Recommended cadence:
+
+1. Run `npm run sync:trends` on the same schedule as other market-data refresh jobs.
+2. Confirm `/api/health` reports `monthlyIngestion.trendSnapshotStorageConfigured=true`.
+3. Treat DynamoDB as the canonical read/write tier for current trend snapshots and use immutable asset exports for full-history retention when you add archive jobs.
+4. Use live Google Trends only as a fallback for uncached keywords or manual refreshes.
+
+### Reading owned sealed price history
+Stored sealed price snapshots are now readable through:
+
+```bash
+curl "https://<your-app>/api/sealed/history?id=<PRODUCT_ID>&limit=90"
+```
+
+This route reads your owned `PRICE#...` snapshots from DynamoDB instead of calling a
+market API, which makes historical price analysis and future charting/backtests less
+dependent on provider availability.
+
+Canonical owned sealed pricing placement:
+
+- `PRODUCT#<pokedataId> / META` → product shell + sync metadata
+- `PRODUCT#<pokedataId> / PRICE#YYYY-MM-DD` → queryable owned price history
+- `owned-data/sealed-price-history/...` → future immutable exports/replay archives
 
 ### Monthly Sealed ML Retraining
 The sealed forecast runtime now checks DynamoDB for published XGBoost model artifacts before
@@ -262,6 +394,13 @@ Each run captures any due 1-year / 3-year / 5-year outcomes from preserved
 PriceCharting-backed product snapshots when available), retrains the models, and
 publishes chunked model artifacts back into DynamoDB for the app to consume.
 
+Canonical owned retraining placement:
+
+- `SEALED_FORECAST#<setId> / LOOKUP#<capturedAt>#<n>` → mutable/queryable lookup captures
+- `SEALED_TRAINING#<setId> / SNAPSHOT#YYYY-MM` → normalized monthly training facts
+- `SEALED_MODEL#sealed-forecast / MODEL#SUMMARY|MODEL#<horizon>#META|MODEL#<horizon>#CHUNK#...` → runtime published model copy
+- `owned-data/sealed-forecast-training/...` and `owned-data/sealed-forecast-models/...` → immutable export/archive tier
+
 You can also run the same logic locally with:
 
 ```bash
@@ -277,7 +416,8 @@ outcomes, and inspect the training summary without publishing new model chunks i
 
 - **Application health:** `GET /api/health`
   - shows DynamoDB wiring, ingestion provider readiness, model source preference, active model
-    source, bundled fallback metadata, and published Dynamo model metadata when available
+    source, bundled fallback metadata, published Dynamo model metadata when available, and the
+    owned-data tier placement/config contract (`services.ownedData`)
 - **Retrainer logs:** CloudWatch log group `/aws/lambda/pokealpha-sealed-ml-retrainer`
 - **Published model summary:** DynamoDB item
   `pk=SEALED_MODEL#sealed-forecast, sk=MODEL#SUMMARY`

@@ -1,3 +1,5 @@
+import type { ResolvedImageAsset } from "@/lib/domain/image-assets";
+
 export type ProductType = "Booster Box" | "ETB" | "Booster Bundle" | "UPC" | "Special Collection" | "Case" | "Booster Pack" | "Tin" | "Collection Box" | "Unknown";
 
 export interface SealedSetData {
@@ -31,6 +33,7 @@ export interface SealedSetData {
   pokedataId?: string;
   /** Product image URL from PokeData */
   imageUrl?: string;
+  imageAsset?: ResolvedImageAsset | null;
   /** Google Trends data when available */
   trendData?: {
     current: number;
@@ -81,6 +84,7 @@ export interface SealedSearchResult {
   name: string;
   releaseDate: string | null;
   imageUrl: string | null;
+  imageAsset?: ResolvedImageAsset | null;
   tcgplayerUrl?: string | null;
   priceChartingId?: string;
 }
@@ -91,6 +95,7 @@ export interface SealedPricing {
   name: string;
   releaseDate: string | null;
   imageUrl: string | null;
+  imageAsset?: ResolvedImageAsset | null;
   tcgplayerUrl?: string | null;
   priceChartingId?: string;
   priceChartingProductName?: string | null;

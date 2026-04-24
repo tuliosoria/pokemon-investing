@@ -64,6 +64,39 @@ const PRICE_WORTHY_TYPES = new Set([
   "PINCOLLECTION",
 ]);
 
+const PRODUCT_TYPE_LABELS: Record<string, string> = {
+  BOOSTERBOX: "Booster Box",
+  ELITETRAINERBOX: "ETB",
+  BOOSTERBUNDLE: "Booster Bundle",
+  PREMIUMTRAINERBOX: "UPC",
+  ULTRAPREMIUMCOLLECTION: "UPC",
+  SPECIALBOX: "Special Collection",
+  SPECIALSET: "Special Collection",
+  SPECIALPACK: "Special Collection",
+  LIMITEDSET: "Special Collection",
+  JUMBOPACK: "Special Collection",
+  PINCOLLECTION: "Special Collection",
+  BOOSTERPACK: "Booster Pack",
+  BLISTERPACK: "Booster Pack",
+  TIN: "Tin",
+  COLLECTIONBOX: "Collection Box",
+  COLLECTIONCHEST: "Collection Box",
+  CASE: "Case",
+};
+
+const PRODUCT_TYPE_SEARCH_ALIASES: Record<string, string[]> = {
+  "Booster Box": ["booster box", "bb"],
+  ETB: ["elite trainer box", "etb"],
+  "Booster Bundle": ["booster bundle", "bundle"],
+  UPC: ["ultra premium collection", "upc"],
+  "Special Collection": ["special collection"],
+  "Booster Pack": ["booster pack", "pack", "blister"],
+  Tin: ["tin"],
+  "Collection Box": ["collection box"],
+  Case: ["case"],
+  Unknown: [],
+};
+
 // ---------------------------------------------------------------------------
 // Parse CLI args
 // ---------------------------------------------------------------------------
@@ -112,6 +145,70 @@ function log(level: string, msg: string, data?: Record<string, unknown>) {
   const ts = new Date().toISOString();
   const extra = data ? " " + JSON.stringify(data) : "";
   console.log(`[${ts}] [${level}] ${msg}${extra}`);
+}
+
+function normalizeCatalogText(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/['’`]/g, "")
+    .replace(/&/g, " and ")
+    .replace(/[^a-zA-Z0-9]+/g, " ")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+function getCatalogProductType(rawType: string): string {
+  return PRODUCT_TYPE_LABELS[rawType] || "Unknown";
+}
+
+function buildCatalogKey(name: string, productType: string): string {
+  return `${normalizeCatalogText(name)}|${normalizeCatalogText(productType)}`;
+}
+
+function buildCatalogDisplayName(name: string, productType: string): string {
+  if (!productType || productType === "Unknown") {
+    return name.trim();
+  }
+
+  const normalizedName = normalizeCatalogText(name);
+  const normalizedType = normalizeCatalogText(productType);
+  if (normalizedName.includes(normalizedType)) {
+    return name.trim();
+  }
+
+  return `${name.trim()} ${productType}`.trim();
+}
+
+function buildCatalogSearchAliases(name: string, productType: string): string[] {
+  const displayName = buildCatalogDisplayName(name, productType);
+  const aliases = new Set<string>();
+  const combineAlias = (left: string, right: string) => {
+    const normalizedLeft = normalizeCatalogText(left);
+    const normalizedRight = normalizeCatalogText(right);
+    if (!normalizedRight || normalizedLeft.includes(normalizedRight)) {
+      return left;
+    }
+    return `${left} ${right}`;
+  };
+  const addAlias = (value: string) => {
+    const normalized = normalizeCatalogText(value);
+    if (normalized) {
+      aliases.add(normalized);
+    }
+  };
+
+  addAlias(name);
+  addAlias(displayName);
+
+  for (const variant of PRODUCT_TYPE_SEARCH_ALIASES[productType] || []) {
+    addAlias(combineAlias(name, variant));
+    addAlias(combineAlias(displayName, variant));
+    addAlias(`${variant} ${name}`);
+  }
+
+  return Array.from(aliases);
 }
 
 // ---------------------------------------------------------------------------
@@ -265,6 +362,15 @@ function getDdb(): DynamoDBDocumentClient {
 async function writeProductMeta(product: RawProduct) {
   const releaseDate = product.release_date || "1970-01-01";
   const setName = setNameCache.get(product.set_id) || `Set ${product.set_id}`;
+  const catalogProductType = getCatalogProductType(product.type);
+  const catalogDisplayName = buildCatalogDisplayName(
+    product.name,
+    catalogProductType
+  );
+  const catalogSearchAliases = buildCatalogSearchAliases(
+    product.name,
+    catalogProductType
+  );
   await getDdb().send(
     new PutCommand({
       TableName: CONFIG.TABLE,
@@ -281,6 +387,11 @@ async function writeProductMeta(product: RawProduct) {
         releaseDate,
         year: product.year,
         imgUrl: product.img_url,
+        catalogProductType,
+        catalogKey: buildCatalogKey(product.name, catalogProductType),
+        catalogDisplayName,
+        catalogSearchAliases,
+        catalogSearchText: catalogSearchAliases.join(" | "),
         tcgplayerId: product.tcgplayer_id,
         language: product.language,
         marketValue: product.market_value,

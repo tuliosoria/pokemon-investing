@@ -1,4 +1,9 @@
+import Link from "next/link";
+import { getLegalConfig } from "@/lib/legal-config";
+
 export default function PrivacyPage() {
+  const legal = getLegalConfig();
+
   return (
     <div className="min-h-screen bg-[hsl(var(--background))]">
       <div className="container mx-auto px-4 py-12 max-w-3xl">
@@ -14,19 +19,29 @@ export default function PrivacyPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">1. Information We Collect</h2>
             <p>
-              PokeAlpha currently does not require user accounts or collect personal information.
-              The calculator tools operate entirely in your browser and on our server without
-              storing your inputs or results.
+              {legal.operatorName} currently operates this site without user
+              accounts, subscriptions, or checkout flows. We do not ask visitors
+              to create an account or intentionally submit profile information to
+              use the core tools.
+            </p>
+            <p>
+              Depending on the feature you use, our servers may temporarily
+              receive search terms, product identifiers, and similar request
+              inputs in order to return results. We also maintain owned cached
+              datasets and market snapshots in our infrastructure for
+              performance, reliability, and model-training purposes.
             </p>
           </section>
 
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">2. Automatically Collected Information</h2>
             <p>
-              When you visit PokeAlpha, our hosting provider (AWS Amplify) may automatically
-              collect standard web server logs, including your IP address, browser type,
-              referring page, and timestamps. This data is used solely for maintaining the
-              service and analyzing aggregate traffic patterns.
+              When you visit {legal.operatorName}, our hosting and infrastructure
+              providers may automatically collect standard server/request logs,
+              such as IP address, user agent, request path, referrer, timestamps,
+              and error/latency information. This information is used for
+              security, abuse prevention, operations, and aggregate traffic
+              analysis.
             </p>
           </section>
 
@@ -36,31 +51,43 @@ export default function PrivacyPage() {
               We use the following third-party services:
             </p>
             <ul className="list-disc list-inside space-y-1 ml-2">
-              <li><strong>PokémonTCG.io API</strong> — to retrieve card data and pricing information.</li>
-              <li><strong>TCGPlayer</strong> — pricing data is sourced from TCGPlayer via the PokémonTCG.io API.</li>
-              <li><strong>AWS Amplify</strong> — for hosting and serving the application.</li>
+              <li><strong>AWS Amplify / AWS</strong> — for hosting, request handling, and owned stored data.</li>
+              <li><strong>tcgapi.dev</strong> and <strong>PokémonTCG.io</strong> — for card catalog or pricing fallback data.</li>
+              <li><strong>PriceCharting</strong> — for market pricing and related catalog mappings.</li>
+              <li><strong>Google Trends / stored trend snapshots</strong> — for popularity/trend signals.</li>
+              <li><strong>TCGPlayer</strong> — outbound link destination and price-reference source through upstream providers.</li>
             </ul>
             <p>
-              Card search queries are sent to our server, which forwards them to the PokémonTCG.io
-              API. We do not log or store your search queries beyond temporary in-memory caching
-              for performance.
+              We aim to serve results from owned snapshots and cached data first.
+              However, some requests may still trigger third-party lookups when
+              owned data is missing, stale, or incomplete.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">4. Cookies</h2>
+            <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">4. Cookies, ads, and sale of data</h2>
             <p>
-              PokeAlpha does not currently use cookies or tracking technologies. If this changes
-              in the future (e.g., for user accounts), this policy will be updated accordingly.
+              {legal.operatorName} does not currently run behavioral advertising
+              or sell personal information. We also do not currently rely on a
+              user-facing cookie consent banner because the site does not use the
+              kind of ad-tech or account-tracking stack that would typically
+              require one. If this changes, this policy and our privacy-rights
+              disclosures should be updated before launch of those features.
+            </p>
+            <p>
+              See our <Link href="/privacy-rights">Privacy Rights</Link> page for
+              a short-form no-sale / no-sharing disclosure.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">5. Data Security</h2>
+            <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">5. Data retention and security</h2>
             <p>
-              We take reasonable measures to protect the security of our service. The application
-              is served over HTTPS. Since we do not collect or store personal data, the risk of
-              data breach is minimal.
+              We use reasonable technical and organizational measures to protect
+              the service, including HTTPS and managed cloud infrastructure. Some
+              market/trend/search artifacts and caches may be retained in memory,
+              DynamoDB, or owned storage so the app can serve results more
+              reliably and train/update models over time.
             </p>
           </section>
 
@@ -82,9 +109,17 @@ export default function PrivacyPage() {
 
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">8. Contact</h2>
-            <p>
-              For questions about this Privacy Policy, please open an issue on our GitHub repository.
-            </p>
+            {legal.privacyEmail ? (
+              <p>
+                For privacy questions or requests, contact{" "}
+                <a href={`mailto:${legal.privacyEmail}`}>{legal.privacyEmail}</a>.
+              </p>
+            ) : (
+              <p>
+                For privacy questions, use the contact route published on our{" "}
+                <Link href="/contact">Contact</Link> page.
+              </p>
+            )}
           </section>
         </div>
       </div>

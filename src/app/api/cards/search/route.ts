@@ -1,14 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { CardSearchResult, CardPrices } from "@/lib/types/card";
+import { loadCardCatalog, warmCardCatalog } from "@/lib/db/card-catalog";
 import { cacheGet, cachePut } from "@/lib/db/cache";
 import {
+  getCardMeta,
   putCardMeta,
   putCardTcgPrices,
 } from "@/lib/db/card-cache";
+import {
+  buildImageMirrorSource,
+  resolveImageAsset,
+} from "@/lib/domain/image-assets";
+import { getBestPrice, type CardSearchResult, type CardPrices } from "@/lib/types/card";
 
 const TCG_API_BASE = "https://api.tcgapi.dev/v1/search";
 const POKEMON_TCG_API_BASE = "https://api.pokemontcg.io/v2/cards";
 const CACHE_TTL = 5 * 60; // 5 minutes — for search query→results mapping
+const SEARCH_RESULT_LIMIT = 20;
 const TCG_API_RATE_LIMIT = "TCG_API_RATE_LIMIT";
 
 // --- Query parsing ---
@@ -45,6 +52,27 @@ interface PokemonTcgApiCard {
     url?: string | null;
     prices?: Record<string, PokemonTcgPrice>;
   };
+}
+
+function normalizeSearchText(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/['’`"]/g, "")
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, " ")
+    .toLowerCase()
+    .trim();
+}
+
+function normalizeCardNumber(value: string | null | undefined): string {
+  return (value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/^#/, "")
+    .replace(/^0+/, "")
+    .split("/")[0]
+    .trim();
 }
 
 function parseSearchQuery(raw: string): ParsedQuery {
@@ -101,6 +129,288 @@ function scoreResult(card: CardSearchResult, parsed: ParsedQuery): number {
   }
 
   return score;
+}
+
+function hasUsablePrice(card: CardSearchResult): boolean {
+  return getBestPrice(card.prices) !== null;
+}
+
+function buildCatalogKey(card: CardSearchResult): string {
+  return [
+    normalizeSearchText(card.name),
+    normalizeSearchText(card.set),
+    normalizeCardNumber(card.number),
+  ].join("|");
+}
+
+function mergeCardPrices(base: CardPrices, incoming: CardPrices): CardPrices {
+  const merged: CardPrices = { ...base };
+
+  for (const [variant, price] of Object.entries(incoming)) {
+    merged[variant] = {
+      ...(merged[variant] ?? {
+        low: null,
+        mid: null,
+        high: null,
+        market: null,
+        directLow: null,
+      }),
+      ...price,
+    };
+  }
+
+  return merged;
+}
+
+function mergeCardResults(
+  existing: CardSearchResult,
+  incoming: CardSearchResult
+): CardSearchResult {
+  const existingRichness =
+    (hasUsablePrice(existing) ? 2 : 0) +
+    (existing.tcgplayerUrl ? 1 : 0) +
+    (existing.imageSmall ? 1 : 0) +
+    (existing.imageLarge ? 1 : 0);
+  const incomingRichness =
+    (hasUsablePrice(incoming) ? 2 : 0) +
+    (incoming.tcgplayerUrl ? 1 : 0) +
+    (incoming.imageSmall ? 1 : 0) +
+    (incoming.imageLarge ? 1 : 0);
+
+  const primary = incomingRichness > existingRichness ? incoming : existing;
+  const secondary = primary === existing ? incoming : existing;
+
+  return {
+    ...secondary,
+    ...primary,
+    prices: mergeCardPrices(secondary.prices, primary.prices),
+  };
+}
+
+function dedupeCards(cards: CardSearchResult[]): CardSearchResult[] {
+  const deduped = new Map<string, CardSearchResult>();
+
+  for (const card of cards) {
+    const key = buildCatalogKey(card) || card.id;
+    const existing = deduped.get(key);
+    deduped.set(key, existing ? mergeCardResults(existing, card) : card);
+  }
+
+  return [...deduped.values()];
+}
+
+function scoreCatalogResult(
+  card: CardSearchResult,
+  parsed: ParsedQuery,
+  rawQuery: string
+): number {
+  const normalizedQuery = normalizeSearchText(rawQuery);
+  const queryTokens = normalizedQuery.split(/\s+/).filter(Boolean);
+  const normalizedName = normalizeSearchText(card.name);
+  const normalizedSet = normalizeSearchText(card.set);
+  const haystack = [normalizedName, normalizedSet].filter(Boolean).join(" ");
+  const cardNumber = normalizeCardNumber(card.number);
+  const queryNumber = normalizeCardNumber(parsed.number);
+
+  let score = scoreResult(card, parsed);
+  let matchedTokens = 0;
+
+  for (const token of queryTokens) {
+    if (haystack.includes(token)) {
+      matchedTokens += 1;
+      score += token.length > 2 ? 75 : 30;
+    }
+  }
+
+  if (normalizedQuery) {
+    if (normalizedName === normalizedQuery) {
+      score += 260;
+    } else if (haystack === normalizedQuery) {
+      score += 220;
+    } else if (normalizedName.startsWith(normalizedQuery)) {
+      score += 180;
+    } else if (haystack.includes(normalizedQuery)) {
+      score += 120;
+    }
+  }
+
+  if (queryNumber) {
+    if (cardNumber === queryNumber) {
+      score += 250;
+    } else if (
+      cardNumber &&
+      (cardNumber.startsWith(queryNumber) || queryNumber.startsWith(cardNumber))
+    ) {
+      score += 120;
+    }
+  }
+
+  if (
+    matchedTokens === 0 &&
+    (!queryNumber || !cardNumber || cardNumber !== queryNumber)
+  ) {
+    return Number.NEGATIVE_INFINITY;
+  }
+
+  if (hasUsablePrice(card)) {
+    score += 25;
+  }
+
+  return score;
+}
+
+function rankCards(
+  cards: CardSearchResult[],
+  parsed: ParsedQuery,
+  rawQuery: string,
+  requireMatch = false
+): CardSearchResult[] {
+  return dedupeCards(cards)
+    .map((card, index) => ({
+      card,
+      index,
+      score: scoreCatalogResult(card, parsed, rawQuery),
+    }))
+    .filter((entry) => !requireMatch || Number.isFinite(entry.score))
+    .sort((a, b) => b.score - a.score || a.index - b.index)
+    .slice(0, SEARCH_RESULT_LIMIT)
+    .map(({ card }) => card);
+}
+
+function shouldUseLocalCatalogOnly(
+  localCards: CardSearchResult[],
+  parsed: ParsedQuery,
+  rawQuery: string
+): boolean {
+  if (localCards.length === 0) {
+    return false;
+  }
+
+  const topCard = localCards[0];
+  const topScore = topCard ? scoreCatalogResult(topCard, parsed, rawQuery) : 0;
+  const pricedCount = localCards.filter(hasUsablePrice).length;
+
+  if (topCard && hasUsablePrice(topCard) && topScore >= 250) {
+    return true;
+  }
+
+  if (parsed.number) {
+    return pricedCount > 0;
+  }
+
+  return localCards.length >= 5 && pricedCount >= 2;
+}
+
+function buildCardImageAssets(input: {
+  imageSmall?: string | null;
+  imageLarge?: string | null;
+  ownedImageSmallPath?: string | null;
+  ownedImageLargePath?: string | null;
+  imageSmallMirrorSourceUrl?: string | null;
+  imageSmallMirrorSourceProvider?: NonNullable<
+    Awaited<ReturnType<typeof getCardMeta>>
+  >["imageSmallMirrorSourceProvider"];
+  imageSmallMirroredAt?: string | null;
+  imageLargeMirrorSourceUrl?: string | null;
+  imageLargeMirrorSourceProvider?: NonNullable<
+    Awaited<ReturnType<typeof getCardMeta>>
+  >["imageLargeMirrorSourceProvider"];
+  imageLargeMirroredAt?: string | null;
+}): NonNullable<CardSearchResult["imageAssets"]> {
+  return {
+    small: resolveImageAsset({
+      kind: "card-small",
+      ownedPath: input.ownedImageSmallPath ?? null,
+      fallbackCandidates: [input.imageSmall],
+      mirrorSource: buildImageMirrorSource({
+        provider: input.imageSmallMirrorSourceProvider ?? null,
+        url: input.imageSmallMirrorSourceUrl ?? null,
+        mirroredAt: input.imageSmallMirroredAt ?? null,
+      }),
+    }),
+    large: resolveImageAsset({
+      kind: "card-large",
+      ownedPath: input.ownedImageLargePath ?? null,
+      fallbackCandidates: [input.imageLarge, input.imageSmall],
+      mirrorSource: buildImageMirrorSource({
+        provider: input.imageLargeMirrorSourceProvider ?? null,
+        url: input.imageLargeMirrorSourceUrl ?? null,
+        mirroredAt: input.imageLargeMirroredAt ?? null,
+      }),
+    }),
+  };
+}
+
+function withCardImageAssets(
+  card: CardSearchResult,
+  meta: Awaited<ReturnType<typeof getCardMeta>> = null
+): CardSearchResult {
+  const imageAssets = buildCardImageAssets({
+    imageSmall:
+      card.imageAssets?.small?.fallback?.url ??
+      meta?.imageSmallMirrorSourceUrl ??
+      card.imageSmall,
+    imageLarge:
+      card.imageAssets?.large?.fallback?.url ??
+      meta?.imageLargeMirrorSourceUrl ??
+      card.imageLarge,
+    ownedImageSmallPath:
+      meta?.ownedImageSmallPath ?? card.imageAssets?.small?.owned?.path ?? null,
+    ownedImageLargePath:
+      meta?.ownedImageLargePath ?? card.imageAssets?.large?.owned?.path ?? null,
+    imageSmallMirrorSourceUrl:
+      card.imageAssets?.small?.mirrorSource?.url ??
+      meta?.imageSmallMirrorSourceUrl ??
+      card.imageSmall,
+    imageSmallMirrorSourceProvider:
+      card.imageAssets?.small?.mirrorSource?.provider ??
+      meta?.imageSmallMirrorSourceProvider ??
+      null,
+    imageSmallMirroredAt:
+      card.imageAssets?.small?.mirrorSource?.mirroredAt ??
+      meta?.imageSmallMirroredAt ??
+      null,
+    imageLargeMirrorSourceUrl:
+      card.imageAssets?.large?.mirrorSource?.url ??
+      meta?.imageLargeMirrorSourceUrl ??
+      card.imageLarge,
+    imageLargeMirrorSourceProvider:
+      card.imageAssets?.large?.mirrorSource?.provider ??
+      meta?.imageLargeMirrorSourceProvider ??
+      null,
+    imageLargeMirroredAt:
+      card.imageAssets?.large?.mirrorSource?.mirroredAt ??
+      meta?.imageLargeMirroredAt ??
+      null,
+  });
+
+  return {
+    ...card,
+    pokedataId: meta?.pokedataId ?? card.pokedataId ?? null,
+    imageSmall: imageAssets.small?.selectedUrl ?? card.imageSmall ?? "",
+    imageLarge:
+      imageAssets.large?.selectedUrl ??
+      imageAssets.small?.selectedUrl ??
+      card.imageLarge ??
+      card.imageSmall ??
+      "",
+    imageAssets,
+  };
+}
+
+async function hydrateStoredCardImages(
+  cards: CardSearchResult[]
+): Promise<CardSearchResult[]> {
+  if (cards.length === 0) {
+    return cards;
+  }
+
+  const metaEntries = await Promise.all(
+    cards.map(async (card) => [card.id, await getCardMeta(card.id)] as const)
+  );
+  const metaById = new Map(metaEntries);
+
+  return cards.map((card) => withCardImageAssets(card, metaById.get(card.id) ?? null));
 }
 
 // --- API fetching ---
@@ -199,6 +509,11 @@ async function fetchCardsFromPokemonTcg(
       {}
     );
 
+    const imageAssets = buildCardImageAssets({
+      imageSmall: card.images?.small ?? "",
+      imageLarge: card.images?.large ?? card.images?.small ?? "",
+    });
+
     return {
       id: String(card.id ?? ""),
       name: card.name ?? "",
@@ -206,8 +521,10 @@ async function fetchCardsFromPokemonTcg(
       setId: String(card.set?.id ?? ""),
       number: card.number ?? "",
       rarity: card.rarity ?? null,
-      imageSmall: card.images?.small ?? "",
-      imageLarge: card.images?.large ?? card.images?.small ?? "",
+      imageSmall: imageAssets.small?.selectedUrl ?? "",
+      imageLarge:
+        imageAssets.large?.selectedUrl ?? imageAssets.small?.selectedUrl ?? "",
+      imageAssets,
       prices,
       tcgplayerUrl: card.tcgplayer?.url ?? null,
     };
@@ -247,20 +564,29 @@ function groupResults(data: any[]): CardSearchResult[] {
     }
   }
 
-  return [...grouped.values()].map(({ base, prices }) => ({
-    id: String(base.tcgplayer_id ?? base.id),
-    name: base.name,
-    set: base.set_name ?? "Unknown",
-    setId: String(base.set_id ?? ""),
-    number: base.number ?? "",
-    rarity: base.rarity ?? null,
-    imageSmall: base.image_url ?? "",
-    imageLarge: base.image_url ?? "",
-    prices,
-    tcgplayerUrl: base.tcgplayer_id
-      ? `https://www.tcgplayer.com/product/${base.tcgplayer_id}`
-      : null,
-  }));
+  return [...grouped.values()].map(({ base, prices }) => {
+    const imageAssets = buildCardImageAssets({
+      imageSmall: base.image_url ?? "",
+      imageLarge: base.image_url ?? "",
+    });
+
+    return {
+      id: String(base.tcgplayer_id ?? base.id),
+      name: base.name,
+      set: base.set_name ?? "Unknown",
+      setId: String(base.set_id ?? ""),
+      number: base.number ?? "",
+      rarity: base.rarity ?? null,
+      imageSmall: imageAssets.small?.selectedUrl ?? "",
+      imageLarge:
+        imageAssets.large?.selectedUrl ?? imageAssets.small?.selectedUrl ?? "",
+      imageAssets,
+      prices,
+      tcgplayerUrl: base.tcgplayer_id
+        ? `https://www.tcgplayer.com/product/${base.tcgplayer_id}`
+        : null,
+    };
+  });
 }
 
 export async function GET(request: NextRequest) {
@@ -275,60 +601,57 @@ export async function GET(request: NextRequest) {
   // Check short-lived query cache (L1 memory + L2 DynamoDB)
   const cached = await cacheGet<CardSearchResult[]>("card-search", cacheKey);
   if (cached) {
-    return NextResponse.json({ cards: cached });
+    return NextResponse.json({
+      cards: await hydrateStoredCardImages(cached),
+    });
   }
 
   try {
-    const apiKey = process.env.TCG_API_KEY;
-    if (!apiKey) {
-      console.error("TCG_API_KEY not configured");
-      return NextResponse.json(
-        { error: "Card search not configured" },
-        { status: 503 }
-      );
-    }
-
+    const apiKey = process.env.TCG_API_KEY?.trim() || null;
     const parsed = parseSearchQuery(q);
+    const localCards = rankCards(await loadCardCatalog(), parsed, q, true);
 
-    // Primary search
-    let cards: CardSearchResult[] = [];
+    let liveCards: CardSearchResult[] = [];
 
-    try {
-      cards = await fetchCards(parsed.apiSearch, apiKey);
+    if (!shouldUseLocalCatalogOnly(localCards, parsed, q)) {
+      try {
+        if (apiKey) {
+          try {
+            liveCards = await fetchCards(parsed.apiSearch, apiKey);
 
-      // Fallback: if few results and multi-word text, retry with just the first word
-      // Handles "Scorbunny Ascended Heroes" → search "Scorbunny", score by set match
-      if (cards.length < 3 && parsed.extraTerms.length > 1) {
-        const fallbackCards = await fetchCards(parsed.extraTerms[0], apiKey);
-        const seen = new Set(cards.map((c) => c.id));
-        for (const c of fallbackCards) {
-          if (!seen.has(c.id)) {
-            cards.push(c);
-            seen.add(c.id);
+            // Fallback: if few results and multi-word text, retry with just the first word
+            // Handles "Scorbunny Ascended Heroes" → search "Scorbunny", score by set match
+            if (liveCards.length < 3 && parsed.extraTerms.length > 1) {
+              const fallbackCards = await fetchCards(parsed.extraTerms[0], apiKey);
+              liveCards = dedupeCards([...liveCards, ...fallbackCards]);
+            }
+          } catch (err) {
+            if (!(err instanceof Error) || err.message !== TCG_API_RATE_LIMIT) {
+              throw err;
+            }
           }
         }
+
+        if (liveCards.length === 0) {
+          liveCards = await fetchCardsFromPokemonTcg(parsed);
+        }
+      } catch (error) {
+        if (localCards.length === 0) {
+          throw error;
+        }
+
+        console.warn("Card search fallback provider failed, using local catalog:", error);
       }
-    } catch (err) {
-      if (!(err instanceof Error) || err.message !== TCG_API_RATE_LIMIT) {
-        throw err;
-      }
     }
 
-    if (cards.length === 0) {
-      cards = await fetchCardsFromPokemonTcg(parsed);
-    }
+    const cards = await hydrateStoredCardImages(
+      rankCards([...localCards, ...liveCards], parsed, q)
+    );
+    const hydratedLiveCards = await hydrateStoredCardImages(liveCards);
 
-    // Score and sort when query has number or multiple terms
-    if (parsed.number || parsed.extraTerms.length > 1) {
-      cards = cards
-        .map((card) => ({ card, score: scoreResult(card, parsed) }))
-        .sort((a, b) => b.score - a.score)
-        .map(({ card }) => card);
+    if (liveCards.length > 0) {
+      persistCardData(hydratedLiveCards);
     }
-
-    // Persist static card data + prices to DynamoDB (fire-and-forget)
-    // Each card gets: META (permanent) + TCG_PRICES (timestamped)
-    persistCardData(cards);
 
     // Cache the search query→results mapping (short-lived)
     await cachePut("card-search", cacheKey, cards, CACHE_TTL);
@@ -351,6 +674,8 @@ function persistCardData(cards: CardSearchResult[]): void {
   // Limit to first 20 cards to avoid excessive DDB writes
   const batch = cards.slice(0, 20);
 
+  warmCardCatalog(batch);
+
   for (const card of batch) {
     // Upsert META (idempotent — skips if schema version matches)
     putCardMeta(card.id, {
@@ -361,8 +686,30 @@ function persistCardData(cards: CardSearchResult[]): void {
       rarity: card.rarity,
       imageSmall: card.imageSmall,
       imageLarge: card.imageLarge,
+      ownedImageSmallPath: card.imageAssets?.small?.owned?.path ?? null,
+      ownedImageLargePath: card.imageAssets?.large?.owned?.path ?? null,
+      imageSmallMirrorSourceUrl:
+        card.imageAssets?.small?.mirrorSource?.url ??
+        card.imageAssets?.small?.fallback?.url ??
+        null,
+      imageSmallMirrorSourceProvider:
+        card.imageAssets?.small?.mirrorSource?.provider ??
+        card.imageAssets?.small?.fallback?.provider ??
+        null,
+      imageSmallMirroredAt:
+        card.imageAssets?.small?.mirrorSource?.mirroredAt ?? null,
+      imageLargeMirrorSourceUrl:
+        card.imageAssets?.large?.mirrorSource?.url ??
+        card.imageAssets?.large?.fallback?.url ??
+        null,
+      imageLargeMirrorSourceProvider:
+        card.imageAssets?.large?.mirrorSource?.provider ??
+        card.imageAssets?.large?.fallback?.provider ??
+        null,
+      imageLargeMirroredAt:
+        card.imageAssets?.large?.mirrorSource?.mirroredAt ?? null,
       tcgplayerUrl: card.tcgplayerUrl,
-      pokedataId: null,
+      pokedataId: card.pokedataId ?? null,
     }).catch(() => {});
 
     // Save current TCG prices with timestamp

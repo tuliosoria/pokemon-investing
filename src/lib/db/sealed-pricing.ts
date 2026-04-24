@@ -6,13 +6,27 @@ import {
   QueryCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
+import {
+  SEALED_PRICE_SNAPSHOT_SK_PREFIX,
+  buildSealedPriceSnapshotKey,
+  buildSealedProductMetaKey,
+  buildSealedProductPartitionKey,
+} from "@/lib/owned-data/dynamo-keys";
+import type { ImageMirrorProvider } from "@/lib/domain/image-assets";
 import { getDynamo, getTableName } from "./dynamo";
 
 export interface StoredSealedProductMeta {
+  catalogId?: string;
+  catalogKey?: string;
+  catalogDisplayName?: string;
   name?: string;
   productType?: string;
   releaseDate?: string | null;
   imgUrl?: string | null;
+  ownedImagePath?: string | null;
+  imageMirrorSourceUrl?: string | null;
+  imageMirrorSourceProvider?: ImageMirrorProvider | null;
+  imageMirroredAt?: string | null;
   priceChartingId?: string | null;
   priceChartingProductName?: string | null;
   priceChartingConsoleName?: string | null;
@@ -31,11 +45,20 @@ export interface StoredSealedPriceSnapshot {
   updatedAt?: string | null;
 }
 
+export interface ListStoredSealedPriceSnapshotsOptions {
+  limit?: number;
+  ascending?: boolean;
+}
+
 export interface StoreSealedPriceSnapshotInput {
   pokedataId: string;
   name?: string;
   releaseDate?: string | null;
   imageUrl?: string | null;
+  ownedImagePath?: string | null;
+  imageMirrorSourceUrl?: string | null;
+  imageMirrorSourceProvider?: ImageMirrorProvider | null;
+  imageMirroredAt?: string | null;
   snapshotDate: string;
   tcgplayerPrice?: number | null;
   ebayPrice?: number | null;
@@ -62,7 +85,7 @@ export async function getStoredSealedProductMeta(
     const response = await dynamo.send(
       new GetCommand({
         TableName: table,
-        Key: { pk: `PRODUCT#${pokedataId}`, sk: "META" },
+        Key: buildSealedProductMetaKey(pokedataId),
       })
     );
 
@@ -88,8 +111,8 @@ export async function getLatestStoredSealedPriceSnapshot(
         TableName: table,
         KeyConditionExpression: "pk = :pk AND begins_with(sk, :prefix)",
         ExpressionAttributeValues: {
-          ":pk": `PRODUCT#${pokedataId}`,
-          ":prefix": "PRICE#",
+          ":pk": buildSealedProductPartitionKey(pokedataId),
+          ":prefix": SEALED_PRICE_SNAPSHOT_SK_PREFIX,
         },
         ScanIndexForward: false,
         Limit: 1,
@@ -101,6 +124,37 @@ export async function getLatestStoredSealedPriceSnapshot(
   } catch (error) {
     console.warn("DynamoDB sealed price snapshot lookup failed:", error);
     return null;
+  }
+}
+
+export async function listStoredSealedPriceSnapshots(
+  pokedataId: string,
+  options?: ListStoredSealedPriceSnapshotsOptions
+): Promise<StoredSealedPriceSnapshot[]> {
+  const dynamo = getDynamo();
+  const table = getTableName();
+  if (!dynamo || !table) {
+    return [];
+  }
+
+  try {
+    const response = await dynamo.send(
+      new QueryCommand({
+        TableName: table,
+        KeyConditionExpression: "pk = :pk AND begins_with(sk, :prefix)",
+        ExpressionAttributeValues: {
+          ":pk": buildSealedProductPartitionKey(pokedataId),
+          ":prefix": SEALED_PRICE_SNAPSHOT_SK_PREFIX,
+        },
+        ScanIndexForward: options?.ascending ?? true,
+        Limit: options?.limit,
+      })
+    );
+
+    return (response.Items as StoredSealedPriceSnapshot[] | undefined) ?? [];
+  } catch (error) {
+    console.warn("DynamoDB sealed price history lookup failed:", error);
+    return [];
   }
 }
 
@@ -120,8 +174,7 @@ export async function storeSealedPriceSnapshot(
       new PutCommand({
         TableName: table,
         Item: {
-          pk: `PRODUCT#${input.pokedataId}`,
-          sk: `PRICE#${input.snapshotDate}`,
+          ...buildSealedPriceSnapshotKey(input.pokedataId, input.snapshotDate),
           tcgplayerPrice: input.tcgplayerPrice ?? null,
           ebayPrice: input.ebayPrice ?? null,
           pokedataPrice: input.pokedataPrice ?? null,
@@ -141,11 +194,19 @@ export async function storeSealedPriceSnapshot(
     "#name = if_not_exists(#name, :name)",
     "releaseDate = if_not_exists(releaseDate, :releaseDate)",
     "imgUrl = if_not_exists(imgUrl, :imgUrl)",
+    "ownedImagePath = if_not_exists(ownedImagePath, :ownedImagePath)",
+    "imageMirrorSourceUrl = if_not_exists(imageMirrorSourceUrl, :imageMirrorSourceUrl)",
+    "imageMirrorSourceProvider = if_not_exists(imageMirrorSourceProvider, :imageMirrorSourceProvider)",
+    "imageMirroredAt = if_not_exists(imageMirroredAt, :imageMirroredAt)",
   ];
   const expressionValues: Record<string, unknown> = {
     ":name": input.name ?? "",
     ":releaseDate": input.releaseDate ?? null,
     ":imgUrl": input.imageUrl ?? null,
+    ":ownedImagePath": input.ownedImagePath ?? null,
+    ":imageMirrorSourceUrl": input.imageMirrorSourceUrl ?? null,
+    ":imageMirrorSourceProvider": input.imageMirrorSourceProvider ?? null,
+    ":imageMirroredAt": input.imageMirroredAt ?? null,
   };
 
   if (input.priceChartingId) {
@@ -170,7 +231,7 @@ export async function storeSealedPriceSnapshot(
     await dynamo.send(
       new UpdateCommand({
         TableName: table,
-        Key: { pk: `PRODUCT#${input.pokedataId}`, sk: "META" },
+        Key: buildSealedProductMetaKey(input.pokedataId),
         UpdateExpression: `SET ${updateParts.join(", ")}`,
         ExpressionAttributeNames: {
           "#name": "name",

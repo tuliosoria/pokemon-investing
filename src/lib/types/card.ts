@@ -1,3 +1,5 @@
+import type { ResolvedImageAsset } from "@/lib/domain/image-assets";
+
 export interface CardPriceVariant {
   low: number | null;
   mid: number | null;
@@ -10,8 +12,14 @@ export interface CardPrices {
   [variant: string]: CardPriceVariant;
 }
 
+export interface CardImageAssets {
+  small: ResolvedImageAsset | null;
+  large: ResolvedImageAsset | null;
+}
+
 export interface CardSearchResult {
   id: string;
+  pokedataId?: string | null;
   name: string;
   set: string;
   setId: string;
@@ -19,6 +27,7 @@ export interface CardSearchResult {
   rarity: string | null;
   imageSmall: string;
   imageLarge: string;
+  imageAssets?: CardImageAssets;
   prices: CardPrices;
   tcgplayerUrl: string | null;
 }

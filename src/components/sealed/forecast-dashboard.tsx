@@ -424,7 +424,10 @@ export function ForecastDashboard() {
   }, [isLoadingTopBuys]);
 
   // Live search — pricing, trends, and image preload all complete before a single render
-  const searchApi = useCallback(async (query: string) => {
+  const searchApi = useCallback(async (
+    query: string,
+    options?: { includeAllMatches?: boolean }
+  ) => {
     const trimmedQuery = query.trim();
     if (trimmedQuery.length < 2) {
       abortRef.current?.abort();
@@ -470,7 +473,7 @@ export function ForecastDashboard() {
       const payload = await Promise.race([
         (async () => {
           const searchRes = await fetch(
-            `/api/sealed/search?q=${encodeURIComponent(trimmedQuery)}`,
+            `/api/sealed/search?q=${encodeURIComponent(trimmedQuery)}${options?.includeAllMatches ? "&all=1" : ""}`,
             { signal: controller.signal }
           );
           if (!searchRes.ok) throw new Error("Search failed");
@@ -769,7 +772,7 @@ export function ForecastDashboard() {
       setHasInteracted(true);
       setShowingTopBuys(false);
       setApiQuery(trimmed);
-      searchApi(trimmed);
+      searchApi(trimmed, { includeAllMatches: true });
       searchInputRef.current?.focus();
     },
     [resetVisibleCards, searchApi]
@@ -1087,7 +1090,7 @@ export function ForecastDashboard() {
             Showing {renderedResultCount}{isCuratedMode && filtered.length > visibleFiltered.length ? ` of ${filtered.length}` : ""} {showingTopBuys ? "top buy opportunities" : apiQuery.length >= 2 ? "results" : `of ${totalSets} sets`}
             {apiQuery.length >= 2 && apiResults.length > 0 && (
               <span className="ml-1">
-                ({apiResults.length} from PokeData)
+                ({apiResults.length} direct matches)
               </span>
             )}
           </p>
@@ -1167,7 +1170,7 @@ export function ForecastDashboard() {
             </div>
 
             <p className="text-[11px] text-[hsl(var(--muted-foreground))]/60 mt-6">
-              Powered by live PokeData pricing &amp; XGBoost forecasting
+              Powered by stored market pricing &amp; XGBoost forecasting
             </p>
           </div>
         </div>

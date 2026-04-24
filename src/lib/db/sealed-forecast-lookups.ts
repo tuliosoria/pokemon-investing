@@ -3,6 +3,7 @@ import {
   buildFeatureSnapshot,
   type ForecastFeatureSnapshot,
 } from "@/lib/domain/sealed-forecast-ml";
+import { buildSealedForecastLookupKey } from "@/lib/owned-data/dynamo-keys";
 import type { Forecast, SealedSetData } from "@/lib/types/sealed";
 import { getDynamo, getTableName } from "./dynamo";
 
@@ -47,8 +48,7 @@ export async function logSealedForecastLookups(
         new PutCommand({
           TableName: table,
           Item: {
-            pk: `SEALED_FORECAST#${set.id}`,
-            sk: `LOOKUP#${createdAt}#${index}`,
+            ...buildSealedForecastLookupKey(set.id, createdAt, index),
             entityType: "SEALED_FORECAST_LOOKUP",
             source,
             setId: set.id,

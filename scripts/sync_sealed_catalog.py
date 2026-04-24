@@ -18,9 +18,11 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "src" / "lib" / "data" / "sealed-ml"
 MANIFEST_PATH = DATA_DIR / "products.json"
+EXPANSION_PATH = DATA_DIR / "products-expansion.json"
 OVERRIDES_PATH = DATA_DIR / "sealed-catalog-overrides.json"
 APPROVED_OUTPUT_PATH = DATA_DIR / "sealed-catalog.json"
 REVIEW_OUTPUT_PATH = DATA_DIR / "sealed-catalog-review.json"
+SEARCH_OUTPUT_PATH = DATA_DIR / "sealed-search-catalog.json"
 
 PRICECHARTING_BASE_URL = "https://www.pricecharting.com/api/product"
 POKEDATA_CATALOG_URL = "https://www.pokedata.io/api/products"
@@ -29,6 +31,19 @@ MIN_PRICECHARTING_REQUEST_INTERVAL_SECONDS = 1.1
 TYPE_ALIASES = {
     "ETB": "elite trainer box",
     "UPC": "ultra premium collection",
+}
+
+TYPE_DISPLAY_LABELS = {
+    "Booster Box": "Booster Box",
+    "ETB": "Elite Trainer Box",
+    "Booster Bundle": "Booster Bundle",
+    "UPC": "Ultra Premium Collection",
+    "Special Collection": "Special Collection",
+    "Case": "Case",
+    "Booster Pack": "Booster Pack",
+    "Tin": "Tin",
+    "Collection Box": "Collection Box",
+    "Unknown": "",
 }
 
 POKEDATA_TYPE_MAP = {
@@ -58,6 +73,19 @@ TYPE_SUFFIX_MAP = {
     "Tin": "tin",
     "Collection Box": "collection-box",
     "Unknown": "unknown",
+}
+
+TYPE_SEARCH_ALIASES = {
+    "Booster Box": ["booster box", "bb"],
+    "ETB": ["elite trainer box", "etb"],
+    "Booster Bundle": ["booster bundle", "bundle"],
+    "UPC": ["ultra premium collection", "upc"],
+    "Special Collection": ["special collection"],
+    "Case": ["case"],
+    "Booster Pack": ["booster pack", "pack", "blister"],
+    "Tin": ["tin"],
+    "Collection Box": ["collection box"],
+    "Unknown": [],
 }
 
 VARIANT_PENALTY_WORDS = (
@@ -200,6 +228,61 @@ def build_generated_set_id(name: str, product_type: str) -> str:
     return f"{name_slug}-{type_suffix}"
 
 
+def build_display_name(name: str, product_type: str) -> str:
+    suffix = TYPE_DISPLAY_LABELS.get(product_type, product_type)
+    if not suffix or normalize_text(suffix) in normalize_text(name):
+        return name
+    return f"{name} {suffix}".strip()
+
+
+def build_search_aliases(name: str, product_type: str) -> list[str]:
+    display_name = build_display_name(name, product_type)
+    aliases: list[str] = []
+    def combine_alias(left: str, right: str) -> str:
+        normalized_left = normalize_text(left)
+        normalized_right = normalize_text(right)
+        if not normalized_right or normalized_right in normalized_left:
+            return left
+        return f"{left} {right}"
+
+    for candidate in [name, display_name]:
+        normalized = normalize_text(candidate)
+        if normalized and normalized not in aliases:
+            aliases.append(normalized)
+
+    for variant in TYPE_SEARCH_ALIASES.get(product_type, []):
+        for candidate in [
+            combine_alias(name, variant),
+            combine_alias(display_name, variant),
+            f"{variant} {name}",
+        ]:
+            normalized = normalize_text(candidate)
+            if normalized and normalized not in aliases:
+                aliases.append(normalized)
+
+    return aliases
+
+
+def build_search_entry(approved_entry: dict[str, Any]) -> dict[str, Any]:
+    set_id = approved_entry["setId"]
+    product_type = approved_entry["productType"]
+    aliases = build_search_aliases(approved_entry["name"], product_type)
+    return {
+        "catalogId": set_id,
+        "catalogKey": build_catalog_key(approved_entry["name"], product_type),
+        "runtimeId": f"local-sealed:{set_id}",
+        "setId": set_id,
+        "name": approved_entry["name"],
+        "displayName": build_display_name(approved_entry["name"], product_type),
+        "productType": product_type,
+        "releaseDate": approved_entry.get("releaseDate"),
+        "pokedataId": approved_entry.get("pokedataId"),
+        "priceChartingId": approved_entry.get("priceChartingId"),
+        "searchAliases": aliases,
+        "searchText": " | ".join(aliases),
+    }
+
+
 def fetch_json(url: str, *, headers: dict[str, str] | None = None) -> Any:
     request = urllib.request.Request(url, headers=headers or {})
     try:
@@ -302,6 +385,55 @@ def dedupe_pokedata_products(raw_products: list[dict[str, Any]]) -> list[dict[st
     )
 
 
+def load_expansion_candidates() -> list[dict[str, Any]]:
+    payload = load_json(EXPANSION_PATH, [])
+    raw_entries = payload.get("entries", []) if isinstance(payload, dict) else payload
+    if not isinstance(raw_entries, list):
+        return []
+
+    candidates: dict[str, dict[str, Any]] = {}
+    for item in raw_entries:
+        if not isinstance(item, dict):
+            continue
+        name = str(item.get("name") or "").strip()
+        product_type = str(item.get("productType") or "").strip()
+        if not name or not product_type:
+            continue
+
+        key = build_catalog_key(name, product_type)
+        candidate = {
+            "catalogId": str(item.get("catalogId") or "").strip() or None,
+            "setId": str(item.get("setId") or "").strip() or None,
+            "name": name,
+            "productType": product_type,
+            "releaseDate": str(item.get("releaseDate") or "").strip() or None,
+            "catalogSource": str(item.get("catalogSource") or "owned-expansion").strip(),
+            "notes": str(item.get("notes") or "").strip() or None,
+            "pokedataId": None,
+            "rawType": None,
+            "imgUrl": None,
+            "tcgplayerId": None,
+        }
+        current = candidates.get(key)
+        if not current:
+            candidates[key] = candidate
+            continue
+
+        current_year = release_year(current.get("releaseDate"))
+        candidate_year = release_year(candidate.get("releaseDate"))
+        if candidate_year and (not current_year or candidate_year > current_year):
+            candidates[key] = candidate
+
+    return sorted(
+        candidates.values(),
+        key=lambda item: (
+            item.get("releaseDate") or "9999-99-99",
+            normalize_text(item["name"]),
+            normalize_text(item["productType"]),
+        ),
+    )
+
+
 def load_pokedata_candidates(args: argparse.Namespace) -> list[dict[str, Any]]:
     if args.pokedata_catalog:
         return dedupe_pokedata_products(load_json(args.pokedata_catalog, []))
@@ -310,7 +442,7 @@ def load_pokedata_candidates(args: argparse.Namespace) -> list[dict[str, Any]]:
 
     api_key = (os.environ.get("POKEDATA_API_KEY") or "").strip()
     if not api_key:
-        raise RuntimeError("POKEDATA_API_KEY is required unless --offline is used")
+        return []
 
     payload = fetch_json(
         POKEDATA_CATALOG_URL,
@@ -323,6 +455,56 @@ def load_pokedata_candidates(args: argparse.Namespace) -> list[dict[str, Any]]:
     if not isinstance(payload, list):
         raise RuntimeError("Unexpected PokeData catalog payload")
     return dedupe_pokedata_products(payload)
+
+
+def dedupe_candidate_sources(raw_candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    deduped: dict[str, dict[str, Any]] = {}
+    for item in raw_candidates:
+        name = str(item.get("name") or "").strip()
+        product_type = str(item.get("productType") or "").strip()
+        if not name or not product_type:
+            continue
+
+        key = build_catalog_key(name, product_type)
+        candidate = {
+            "catalogId": item.get("catalogId") or None,
+            "setId": item.get("setId") or None,
+            "pokedataId": item.get("pokedataId") or None,
+            "name": name,
+            "productType": product_type,
+            "releaseDate": item.get("releaseDate") or None,
+            "rawType": item.get("rawType") or None,
+            "imgUrl": item.get("imgUrl") or None,
+            "tcgplayerId": item.get("tcgplayerId") or None,
+            "catalogSource": item.get("catalogSource") or ("pokedata" if item.get("pokedataId") else "owned-expansion"),
+            "notes": item.get("notes") or None,
+        }
+        current = deduped.get(key)
+        if not current:
+            deduped[key] = candidate
+            continue
+
+        current_score = (
+            (1 if current.get("pokedataId") else 0)
+            + (1 if current.get("imgUrl") else 0)
+            + (1 if current.get("releaseDate") else 0)
+        )
+        candidate_score = (
+            (1 if candidate.get("pokedataId") else 0)
+            + (1 if candidate.get("imgUrl") else 0)
+            + (1 if candidate.get("releaseDate") else 0)
+        )
+        if candidate_score > current_score:
+            deduped[key] = candidate
+
+    return sorted(
+        deduped.values(),
+        key=lambda item: (
+            item.get("releaseDate") or "9999-99-99",
+            normalize_text(item["name"]),
+            normalize_text(item["productType"]),
+        ),
+    )
 
 
 def build_override_indexes(payload: dict[str, Any]) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
@@ -359,13 +541,23 @@ def score_pricecharting_match(candidate: dict[str, Any], pricecharting: dict[str
     reasons: list[str] = []
     score = 0
     candidate_name = normalize_text(candidate["name"])
-    result_name = normalize_text(
+    result_console = normalize_text(str(pricecharting.get("console-name") or ""))
+    if result_console.startswith("pokemon "):
+        result_console = result_console[len("pokemon ") :]
+    result_product_name = normalize_text(
         str(pricecharting.get("product-name") or pricecharting.get("name") or "")
     )
+    result_name = normalize_text(f"{result_console} {result_product_name}")
 
-    if candidate_name == result_name:
+    if candidate_name == result_console:
         score += 400
+        reasons.append("exact-console-match")
+    elif candidate_name == result_name:
+        score += 380
         reasons.append("exact-name-match")
+    elif candidate_name in result_console or result_console in candidate_name:
+        score += 260
+        reasons.append("partial-console-match")
     elif candidate_name in result_name or result_name in candidate_name:
         score += 220
         reasons.append("partial-name-match")
@@ -426,9 +618,19 @@ def score_pricecharting_match(candidate: dict[str, Any], pricecharting: dict[str
 def classify_mapping_confidence(score: int, reasons: list[str], override_decision: str | None) -> str:
     if override_decision == "approved":
         return "manual"
-    if "exact-name-match" in reasons and "product-type-match" in reasons and "variant-penalty" not in reasons and score >= 520:
+    if (
+        ("exact-name-match" in reasons or "exact-console-match" in reasons)
+        and "product-type-match" in reasons
+        and "variant-penalty" not in reasons
+        and score >= 520
+    ):
         return "high"
-    if "partial-name-match" in reasons and "product-type-match" in reasons and "variant-penalty" not in reasons and score >= 320:
+    if (
+        ("partial-name-match" in reasons or "partial-console-match" in reasons)
+        and "product-type-match" in reasons
+        and "variant-penalty" not in reasons
+        and score >= 320
+    ):
         return "medium"
     return "low"
 
@@ -472,18 +674,20 @@ def build_candidate_review_entry(
         "setId": (
             override.get("setId")
             if override and override.get("setId")
-            else build_generated_set_id(effective_name, effective_type)
+            else candidate.get("catalogId")
+            or candidate.get("setId")
+            or build_generated_set_id(effective_name, effective_type)
         ),
         "name": effective_name,
         "productType": effective_type,
         "releaseDate": effective_release_date,
         "normalizedKey": build_catalog_key(effective_name, effective_type),
-        "catalogSource": "pokedata",
+        "catalogSource": candidate.get("catalogSource") or "pokedata",
         "priceChartingQuery": query,
         "mappingConfidence": confidence,
         "mappingScore": score,
         "matchReasons": reasons,
-        "notes": override.get("notes") if override else None,
+        "notes": (override.get("notes") if override else None) or candidate.get("notes"),
         "providers": {
             "pokedata": {
                 "pokedataId": candidate.get("pokedataId"),
@@ -544,11 +748,16 @@ def run() -> int:
     manifest = load_json(MANIFEST_PATH, [])
     overrides_payload = load_json(OVERRIDES_PATH, {"entries": []})
     override_by_id, override_by_key = build_override_indexes(overrides_payload)
+    token = (os.environ.get("PRICECHARTING_API_TOKEN") or "").strip()
 
     approved_entries = [build_curated_entry(item) for item in manifest]
     approved_keys = {build_catalog_key(item["name"], item["productType"]) for item in approved_entries}
 
-    provider_candidates = load_pokedata_candidates(args)
+    provider_candidates = []
+    if not args.offline and token:
+        provider_candidates = dedupe_candidate_sources(
+            load_expansion_candidates() + load_pokedata_candidates(args)
+        )
     if args.limit > 0:
         provider_candidates = provider_candidates[: args.limit]
 
@@ -556,7 +765,6 @@ def run() -> int:
     auto_approved_entries: list[dict[str, Any]] = []
     rejected_entries: list[dict[str, Any]] = []
 
-    token = (os.environ.get("PRICECHARTING_API_TOKEN") or "").strip()
     live_provider_mode = not args.offline and bool(token) and bool(provider_candidates)
 
     for candidate in provider_candidates:
@@ -624,10 +832,12 @@ def run() -> int:
         "reviewRequired": review_required_entries,
         "rejected": rejected_entries,
     }
+    search_entries = [build_search_entry(entry) for entry in approved_entries]
 
     if not args.dry_run:
         write_json(APPROVED_OUTPUT_PATH, approved_entries)
         write_json(REVIEW_OUTPUT_PATH, review_payload)
+        write_json(SEARCH_OUTPUT_PATH, search_entries)
 
     print(json.dumps(review_payload["summary"], indent=2))
     return 0
