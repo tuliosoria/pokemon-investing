@@ -43,6 +43,16 @@ export interface SealedSetData {
      */
     expectedChaseValue?: number | null;
     chaseEvRatio?: number | null;
+    /**
+     * Sum of every single's market price for the expansion this product
+     * opens (from PokemonTCG.io / TCGPlayer). `setSinglesValueRatio` =
+     * setSinglesValue / currentPrice — captures the depth of the
+     * secondary-market singles pool, which complements `chaseEvRatio`
+     * for sets where the value is spread across many secondary chases
+     * rather than a single mega-card.
+     */
+    setSinglesValue?: number | null;
+    setSinglesValueRatio?: number | null;
   };
 
   chaseCards: string[];

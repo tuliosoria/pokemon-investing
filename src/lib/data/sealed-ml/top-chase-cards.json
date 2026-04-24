@@ -2,7 +2,7 @@
   "base1": {
     "setId": "base1",
     "setName": "Base Set Unlimited",
-    "fetchedAt": "2026-04-24T02:56:50.359Z",
+    "fetchedAt": "2026-04-24T04:46:21.460Z",
     "cards": [
       {
         "name": "Charizard",
@@ -28,12 +28,15 @@
         "rarity": "Rare Holo",
         "marketPrice": 76.65
       }
-    ]
+    ],
+    "cardCount": 101,
+    "setTotalSinglesValue": 1704.49,
+    "top10SinglesValue": 1313.74
   },
   "base2": {
     "setId": "base2",
     "setName": "Jungle",
-    "fetchedAt": "2026-04-24T02:56:52.084Z",
+    "fetchedAt": "2026-04-24T04:46:23.496Z",
     "cards": [
       {
         "name": "Snorlax",
@@ -59,12 +62,15 @@
         "rarity": "Rare Holo",
         "marketPrice": 163.71
       }
-    ]
+    ],
+    "cardCount": 64,
+    "setTotalSinglesValue": 2548.58,
+    "top10SinglesValue": 1503.37
   },
   "base3": {
     "setId": "base3",
     "setName": "Fossil",
-    "fetchedAt": "2026-04-24T02:56:53.949Z",
+    "fetchedAt": "2026-04-24T04:46:27.384Z",
     "cards": [
       {
         "name": "Gengar",
@@ -90,12 +96,15 @@
         "rarity": "Rare Holo",
         "marketPrice": 167.3
       }
-    ]
+    ],
+    "cardCount": 62,
+    "setTotalSinglesValue": 2563.06,
+    "top10SinglesValue": 1710.72
   },
   "base4": {
     "setId": "base4",
     "setName": "Base Set 2",
-    "fetchedAt": "2026-04-24T02:56:55.891Z",
+    "fetchedAt": "2026-04-24T04:46:30.763Z",
     "cards": [
       {
         "name": "Charizard",
@@ -121,12 +130,15 @@
         "rarity": "Rare Holo",
         "marketPrice": 55.96
       }
-    ]
+    ],
+    "cardCount": 130,
+    "setTotalSinglesValue": 1240.02,
+    "top10SinglesValue": 837.11
   },
   "base5": {
     "setId": "base5",
     "setName": "Team Rocket",
-    "fetchedAt": "2026-04-24T02:56:57.650Z",
+    "fetchedAt": "2026-04-24T04:46:33.301Z",
     "cards": [
       {
         "name": "Dark Charizard",
@@ -147,17 +159,20 @@
         "marketPrice": 358.37
       },
       {
-        "name": "Dark Alakazam",
-        "number": "1",
-        "rarity": "Rare Holo",
-        "marketPrice": 139.73
+        "name": "Dark Raichu",
+        "number": "83",
+        "rarity": "Rare Secret",
+        "marketPrice": 189.93
       }
-    ]
+    ],
+    "cardCount": 83,
+    "setTotalSinglesValue": 3380.51,
+    "top10SinglesValue": 2281.37
   },
   "gym1": {
     "setId": "gym1",
     "setName": "Gym Heroes",
-    "fetchedAt": "2026-04-24T02:56:59.358Z",
+    "fetchedAt": "2026-04-24T04:46:36.807Z",
     "cards": [
       {
         "name": "Sabrina's Gengar",
@@ -183,12 +198,15 @@
         "rarity": "Rare Holo",
         "marketPrice": 200.91
       }
-    ]
+    ],
+    "cardCount": 132,
+    "setTotalSinglesValue": 3836.14,
+    "top10SinglesValue": 2103.46
   },
   "gym2": {
     "setId": "gym2",
     "setName": "Gym Challenge",
-    "fetchedAt": "2026-04-24T02:57:01.072Z",
+    "fetchedAt": "2026-04-24T04:46:40.294Z",
     "cards": [
       {
         "name": "Blaine's Charizard",
@@ -214,12 +232,15 @@
         "rarity": "Rare Holo",
         "marketPrice": 290
       }
-    ]
+    ],
+    "cardCount": 131,
+    "setTotalSinglesValue": 5590.11,
+    "top10SinglesValue": 3306.57
   },
   "neo1": {
     "setId": "neo1",
     "setName": "Neo Genesis",
-    "fetchedAt": "2026-04-24T02:57:03.346Z",
+    "fetchedAt": "2026-04-24T04:46:43.385Z",
     "cards": [
       {
         "name": "Lugia",
@@ -245,12 +266,15 @@
         "rarity": "Rare Holo",
         "marketPrice": 200
       }
-    ]
+    ],
+    "cardCount": 111,
+    "setTotalSinglesValue": 4125.37,
+    "top10SinglesValue": 3100.68
   },
   "neo2": {
     "setId": "neo2",
     "setName": "Neo Discovery",
-    "fetchedAt": "2026-04-24T02:57:05.401Z",
+    "fetchedAt": "2026-04-24T04:46:45.717Z",
     "cards": [
       {
         "name": "Umbreon",
@@ -276,13 +300,22 @@
         "rarity": "Rare Holo",
         "marketPrice": 172.73
       }
-    ]
+    ],
+    "cardCount": 75,
+    "setTotalSinglesValue": 3131.91,
+    "top10SinglesValue": 1997.08
   },
   "neo3": {
     "setId": "neo3",
     "setName": "Neo Revelation",
-    "fetchedAt": "2026-04-24T02:57:07.444Z",
+    "fetchedAt": "2026-04-24T04:46:47.864Z",
     "cards": [
+      {
+        "name": "Shining Gyarados",
+        "number": "65",
+        "rarity": "Rare Shining",
+        "marketPrice": 532.81
+      },
       {
         "name": "Raikou",
         "number": "13",
@@ -296,54 +329,54 @@
         "marketPrice": 461.45
       },
       {
-        "name": "Ho-oh",
-        "number": "7",
-        "rarity": "Rare Holo",
-        "marketPrice": 350
-      },
-      {
-        "name": "Houndoom",
-        "number": "8",
-        "rarity": "Rare Holo",
-        "marketPrice": 231.66
+        "name": "Shining Magikarp",
+        "number": "66",
+        "rarity": "Rare Shining",
+        "marketPrice": 441.82
       }
-    ]
+    ],
+    "cardCount": 66,
+    "setTotalSinglesValue": 4192.43,
+    "top10SinglesValue": 3202.87
   },
   "neo4": {
     "setId": "neo4",
     "setName": "Neo Destiny",
-    "fetchedAt": "2026-04-24T02:57:09.285Z",
+    "fetchedAt": "2026-04-24T04:46:51.109Z",
     "cards": [
       {
-        "name": "Dark Gengar",
-        "number": "6",
-        "rarity": "Rare Holo",
-        "marketPrice": 612.75
+        "name": "Shining Charizard",
+        "number": "107",
+        "rarity": "Rare Shining",
+        "marketPrice": 7583
       },
       {
-        "name": "Dark Scizor",
-        "number": "9",
-        "rarity": "Rare Holo",
-        "marketPrice": 595.34
+        "name": "Shining Tyranitar",
+        "number": "113",
+        "rarity": "Rare Shining",
+        "marketPrice": 4249.99
       },
       {
-        "name": "Dark Tyranitar",
-        "number": "11",
-        "rarity": "Rare Holo",
-        "marketPrice": 470
+        "name": "Shining Celebi",
+        "number": "106",
+        "rarity": "Rare Shining",
+        "marketPrice": 3781.98
       },
       {
-        "name": "Dark Feraligatr",
-        "number": "5",
-        "rarity": "Rare Holo",
-        "marketPrice": 403.31
+        "name": "Shining Raichu",
+        "number": "111",
+        "rarity": "Rare Shining",
+        "marketPrice": 1200
       }
-    ]
+    ],
+    "cardCount": 113,
+    "setTotalSinglesValue": 25788.68,
+    "top10SinglesValue": 20976.36
   },
   "base6": {
     "setId": "base6",
     "setName": "Legendary Collection",
-    "fetchedAt": "2026-04-24T02:57:11.090Z",
+    "fetchedAt": "2026-04-24T04:46:54.316Z",
     "cards": [
       {
         "name": "Charizard",
@@ -369,12 +402,15 @@
         "rarity": "Rare Holo",
         "marketPrice": 498.33
       }
-    ]
+    ],
+    "cardCount": 110,
+    "setTotalSinglesValue": 16129.67,
+    "top10SinglesValue": 6135.19
   },
   "ecard1": {
     "setId": "ecard1",
     "setName": "Expedition Base Set",
-    "fetchedAt": "2026-04-24T02:57:12.971Z",
+    "fetchedAt": "2026-04-24T04:46:58.619Z",
     "cards": [
       {
         "name": "Gengar",
@@ -400,13 +436,22 @@
         "rarity": "Rare Holo",
         "marketPrice": 411.66
       }
-    ]
+    ],
+    "cardCount": 165,
+    "setTotalSinglesValue": 12303.84,
+    "top10SinglesValue": 4461.32
   },
   "ecard2": {
     "setId": "ecard2",
     "setName": "Aquapolis",
-    "fetchedAt": "2026-04-24T02:57:14.712Z",
+    "fetchedAt": "2026-04-24T04:47:03.329Z",
     "cards": [
+      {
+        "name": "Lugia",
+        "number": "149",
+        "rarity": "Rare Secret",
+        "marketPrice": 2225
+      },
       {
         "name": "Umbreon",
         "number": "H29",
@@ -414,30 +459,39 @@
         "marketPrice": 750
       },
       {
-        "name": "Suicune",
-        "number": "H25",
-        "rarity": "Rare Holo",
-        "marketPrice": 449.99
+        "name": "Kingdra",
+        "number": "148",
+        "rarity": "Rare Secret",
+        "marketPrice": 599.99
       },
       {
-        "name": "Tyranitar",
-        "number": "H28",
-        "rarity": "Rare Holo",
-        "marketPrice": 425
-      },
-      {
-        "name": "Muk",
-        "number": "H17",
-        "rarity": "Rare Holo",
-        "marketPrice": 261.66
+        "name": "Nidoking",
+        "number": "150",
+        "rarity": "Rare Secret",
+        "marketPrice": 560
       }
-    ]
+    ],
+    "cardCount": 171,
+    "setTotalSinglesValue": 14828.41,
+    "top10SinglesValue": 6096.64
   },
   "ecard3": {
     "setId": "ecard3",
     "setName": "Skyridge",
-    "fetchedAt": "2026-04-24T02:57:16.557Z",
+    "fetchedAt": "2026-04-24T04:47:08.141Z",
     "cards": [
+      {
+        "name": "Celebi",
+        "number": "145",
+        "rarity": "Rare Secret",
+        "marketPrice": 3999.99
+      },
+      {
+        "name": "Golem",
+        "number": "148",
+        "rarity": "Rare Secret",
+        "marketPrice": 1388.48
+      },
       {
         "name": "Gyarados",
         "number": "H10",
@@ -445,30 +499,27 @@
         "marketPrice": 1249.94
       },
       {
-        "name": "Vaporeon",
-        "number": "H31",
-        "rarity": "Rare Holo",
-        "marketPrice": 809.84
-      },
-      {
-        "name": "Umbreon",
-        "number": "H30",
-        "rarity": "Rare Holo",
-        "marketPrice": 659.99
-      },
-      {
-        "name": "Raikou",
-        "number": "H26",
-        "rarity": "Rare Holo",
-        "marketPrice": 475
+        "name": "Charizard",
+        "number": "146",
+        "rarity": "Rare Secret",
+        "marketPrice": 1200
       }
-    ]
+    ],
+    "cardCount": 173,
+    "setTotalSinglesValue": 24374.14,
+    "top10SinglesValue": 11430.73
   },
   "ex1": {
     "setId": "ex1",
     "setName": "Ruby & Sapphire",
-    "fetchedAt": "2026-04-24T02:57:18.399Z",
+    "fetchedAt": "2026-04-24T04:47:11.083Z",
     "cards": [
+      {
+        "name": "Mewtwo ex",
+        "number": "101",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 269.08
+      },
       {
         "name": "Blaziken",
         "number": "3",
@@ -476,30 +527,39 @@
         "marketPrice": 122.12
       },
       {
-        "name": "Sceptile",
-        "number": "11",
-        "rarity": "Rare Holo",
-        "marketPrice": 86.74
+        "name": "Lapras ex",
+        "number": "99",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 108.6
       },
       {
-        "name": "Gardevoir",
-        "number": "7",
-        "rarity": "Rare Holo",
-        "marketPrice": 52.36
-      },
-      {
-        "name": "Aggron",
-        "number": "1",
-        "rarity": "Rare Holo",
-        "marketPrice": 51.18
+        "name": "Scyther ex",
+        "number": "102",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 100.27
       }
-    ]
+    ],
+    "cardCount": 109,
+    "setTotalSinglesValue": 2213.18,
+    "top10SinglesValue": 1003.02
   },
   "ex2": {
     "setId": "ex2",
     "setName": "Sandstorm",
-    "fetchedAt": "2026-04-24T02:57:20.245Z",
+    "fetchedAt": "2026-04-24T04:47:13.873Z",
     "cards": [
+      {
+        "name": "Raichu ex",
+        "number": "98",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 189.98
+      },
+      {
+        "name": "Gardevoir ex",
+        "number": "96",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 182.46
+      },
       {
         "name": "Arcanine",
         "number": "15",
@@ -507,215 +567,224 @@
         "marketPrice": 158.15
       },
       {
-        "name": "Jolteon",
-        "number": "6",
-        "rarity": "Rare Holo",
-        "marketPrice": 104.5
-      },
-      {
-        "name": "Espeon",
-        "number": "16",
-        "rarity": "Rare",
-        "marketPrice": 84.98
-      },
-      {
-        "name": "Flareon",
-        "number": "5",
-        "rarity": "Rare Holo",
-        "marketPrice": 81.61
+        "name": "Typhlosion ex",
+        "number": "99",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 148.33
       }
-    ]
+    ],
+    "cardCount": 100,
+    "setTotalSinglesValue": 2821.24,
+    "top10SinglesValue": 1298.02
   },
   "ex3": {
     "setId": "ex3",
     "setName": "Dragon",
-    "fetchedAt": "2026-04-24T02:57:21.944Z",
+    "fetchedAt": "2026-04-24T04:47:16.740Z",
     "cards": [
       {
-        "name": "Absol",
-        "number": "1",
-        "rarity": "Rare Holo",
-        "marketPrice": 153.87
+        "name": "Charizard",
+        "number": "100",
+        "rarity": "Rare Secret",
+        "marketPrice": 781.65
       },
       {
-        "name": "Gyarados",
-        "number": "32",
-        "rarity": "Uncommon",
-        "marketPrice": 88.5
+        "name": "Dragonite ex",
+        "number": "90",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 527.25
       },
       {
-        "name": "Plusle",
-        "number": "8",
-        "rarity": "Rare Holo",
-        "marketPrice": 86.2
+        "name": "Rayquaza ex",
+        "number": "97",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 302.78
       },
       {
-        "name": "Salamence",
-        "number": "10",
-        "rarity": "Rare Holo",
-        "marketPrice": 84.36
+        "name": "Latios ex",
+        "number": "94",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 275
       }
-    ]
+    ],
+    "cardCount": 100,
+    "setTotalSinglesValue": 4679.68,
+    "top10SinglesValue": 2828.09
   },
   "ex4": {
     "setId": "ex4",
     "setName": "Team Magma vs Team Aqua",
-    "fetchedAt": "2026-04-24T02:57:23.930Z",
+    "fetchedAt": "2026-04-24T04:47:19.504Z",
     "cards": [
       {
-        "name": "Team Magma's Houndoom",
-        "number": "10",
-        "rarity": "Rare Holo",
-        "marketPrice": 153.56
+        "name": "Suicune ex",
+        "number": "94",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 324.99
       },
       {
-        "name": "Team Magma's Groudon",
-        "number": "9",
-        "rarity": "Rare Holo",
-        "marketPrice": 133.25
+        "name": "Swampert ex",
+        "number": "95",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 280
       },
       {
-        "name": "Squirtle",
-        "number": "46",
-        "rarity": "Common",
-        "marketPrice": 126.24
+        "name": "Entei ex",
+        "number": "91",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 272.41
       },
       {
-        "name": "Team Magma's Zangoose",
-        "number": "23",
-        "rarity": "Rare",
-        "marketPrice": 69.69
+        "name": "Sceptile ex",
+        "number": "93",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 249.99
       }
-    ]
+    ],
+    "cardCount": 97,
+    "setTotalSinglesValue": 3793.14,
+    "top10SinglesValue": 2113.35
   },
   "ex5": {
     "setId": "ex5",
     "setName": "Hidden Legends",
-    "fetchedAt": "2026-04-24T02:57:25.669Z",
+    "fetchedAt": "2026-04-24T04:47:22.477Z",
     "cards": [
+      {
+        "name": "Kyogre ex",
+        "number": "94",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 212.5
+      },
+      {
+        "name": "Ninetales ex",
+        "number": "96",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 209.78
+      },
+      {
+        "name": "Plusle",
+        "number": "69",
+        "rarity": "Common",
+        "marketPrice": 160.33
+      },
       {
         "name": "Milotic",
         "number": "12",
         "rarity": "Rare Holo",
         "marketPrice": 149.97
-      },
-      {
-        "name": "Ninetales",
-        "number": "22",
-        "rarity": "Rare",
-        "marketPrice": 69.11
-      },
-      {
-        "name": "Metagross",
-        "number": "11",
-        "rarity": "Rare Holo",
-        "marketPrice": 63.5
-      },
-      {
-        "name": "Dark Celebi",
-        "number": "4",
-        "rarity": "Rare Holo",
-        "marketPrice": 45.87
       }
-    ]
+    ],
+    "cardCount": 102,
+    "setTotalSinglesValue": 3355.33,
+    "top10SinglesValue": 1468.28
   },
   "ex6": {
     "setId": "ex6",
     "setName": "FireRed & LeafGreen",
-    "fetchedAt": "2026-04-24T02:57:27.511Z",
+    "fetchedAt": "2026-04-24T04:47:25.650Z",
     "cards": [
       {
-        "name": "Snorlax",
-        "number": "15",
-        "rarity": "Rare Holo",
-        "marketPrice": 174.71
+        "name": "Gengar ex",
+        "number": "108",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 838
       },
       {
-        "name": "Ditto",
-        "number": "4",
-        "rarity": "Rare Holo",
-        "marketPrice": 102
+        "name": "Charizard ex",
+        "number": "105",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 500
       },
       {
-        "name": "Haunter",
-        "number": "34",
-        "rarity": "Uncommon",
-        "marketPrice": 79.66
+        "name": "Blastoise ex",
+        "number": "104",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 430
       },
       {
-        "name": "Arcanine",
-        "number": "18",
-        "rarity": "Rare",
-        "marketPrice": 61.49
+        "name": "Mr. Mime ex",
+        "number": "111",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 427.37
       }
-    ]
+    ],
+    "cardCount": 116,
+    "setTotalSinglesValue": 6738.27,
+    "top10SinglesValue": 3461.4
   },
   "ex7": {
     "setId": "ex7",
     "setName": "Team Rocket Returns",
-    "fetchedAt": "2026-04-24T02:57:29.255Z",
+    "fetchedAt": "2026-04-24T04:47:28.929Z",
     "cards": [
       {
-        "name": "Dark Tyranitar",
-        "number": "19",
-        "rarity": "Rare",
-        "marketPrice": 275
+        "name": "Torchic ★",
+        "number": "108",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 6249.85
       },
       {
-        "name": "Dark Gyarados",
-        "number": "36",
-        "rarity": "Uncommon",
-        "marketPrice": 247.32
+        "name": "Mudkip ★",
+        "number": "107",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 2800
       },
       {
-        "name": "Rocket's Meowth",
-        "number": "46",
-        "rarity": "Uncommon",
-        "marketPrice": 199.95
+        "name": "Treecko ★",
+        "number": "109",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 2250
       },
       {
-        "name": "Dark Dragonair",
-        "number": "31",
-        "rarity": "Uncommon",
-        "marketPrice": 195.91
+        "name": "Rocket's Mewtwo ex",
+        "number": "99",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 1200
       }
-    ]
+    ],
+    "cardCount": 111,
+    "setTotalSinglesValue": 23740.44,
+    "top10SinglesValue": 16018.46
   },
   "ex8": {
     "setId": "ex8",
     "setName": "Deoxys",
-    "fetchedAt": "2026-04-24T02:57:30.922Z",
+    "fetchedAt": "2026-04-24T04:47:32.001Z",
     "cards": [
       {
-        "name": "Rayquaza",
-        "number": "22",
-        "rarity": "Rare",
-        "marketPrice": 257.68
+        "name": "Rayquaza ★",
+        "number": "107",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 5500
       },
       {
-        "name": "Deoxys",
-        "number": "17",
-        "rarity": "Rare",
-        "marketPrice": 217.5
+        "name": "Latias ★",
+        "number": "105",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 2300
       },
       {
-        "name": "Gyarados",
-        "number": "8",
-        "rarity": "Rare Holo",
-        "marketPrice": 212.5
+        "name": "Latios ★",
+        "number": "106",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 899
       },
       {
-        "name": "Jirachi",
-        "number": "9",
-        "rarity": "Rare Holo",
-        "marketPrice": 149.95
+        "name": "Deoxys ex",
+        "number": "99",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 500
       }
-    ]
+    ],
+    "cardCount": 108,
+    "setTotalSinglesValue": 13969.85,
+    "top10SinglesValue": 10675.75
   },
   "ex9": {
     "setId": "ex9",
     "setName": "Emerald",
-    "fetchedAt": "2026-04-24T02:57:32.531Z",
+    "fetchedAt": "2026-04-24T04:47:34.868Z",
     "cards": [
       {
         "name": "Rayquaza",
@@ -724,154 +793,181 @@
         "marketPrice": 550
       },
       {
+        "name": "Milotic ex",
+        "number": "96",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 409.43
+      },
+      {
         "name": "Groudon",
         "number": "5",
         "rarity": "Rare Holo",
         "marketPrice": 202
       },
       {
-        "name": "Kyogre",
-        "number": "15",
-        "rarity": "Rare",
-        "marketPrice": 175
-      },
-      {
-        "name": "Gardevoir",
-        "number": "4",
-        "rarity": "Rare Holo",
-        "marketPrice": 148.99
+        "name": "Regice ex",
+        "number": "98",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 189.74
       }
-    ]
+    ],
+    "cardCount": 107,
+    "setTotalSinglesValue": 5812.26,
+    "top10SinglesValue": 2254.9
   },
   "ex10": {
     "setId": "ex10",
     "setName": "Unseen Forces",
-    "fetchedAt": "2026-04-24T02:57:34.581Z",
+    "fetchedAt": "2026-04-24T04:47:38.835Z",
     "cards": [
       {
-        "name": "Feraligatr",
-        "number": "4",
-        "rarity": "Rare Holo",
-        "marketPrice": 232.99
+        "name": "Raikou ★",
+        "number": "114",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 1100
       },
       {
-        "name": "Lugia",
-        "number": "29",
-        "rarity": "Rare",
-        "marketPrice": 225.47
+        "name": "Suicune ★",
+        "number": "115",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 1100
       },
       {
-        "name": "Flareon",
-        "number": "5",
-        "rarity": "Rare Holo",
-        "marketPrice": 198.99
+        "name": "Entei ★",
+        "number": "113",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 990
       },
       {
-        "name": "Typhlosion",
-        "number": "17",
-        "rarity": "Rare Holo",
-        "marketPrice": 134.65
+        "name": "Lugia ex",
+        "number": "105",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 902.49
       }
-    ]
+    ],
+    "cardCount": 145,
+    "setTotalSinglesValue": 11869.38,
+    "top10SinglesValue": 6034.51
   },
   "ex11": {
     "setId": "ex11",
     "setName": "Delta Species",
-    "fetchedAt": "2026-04-24T02:57:36.831Z",
+    "fetchedAt": "2026-04-24T04:47:42.138Z",
     "cards": [
+      {
+        "name": "Groudon ★",
+        "number": "111",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 3499.99
+      },
+      {
+        "name": "Kyogre ★",
+        "number": "112",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 2100.98
+      },
+      {
+        "name": "Metagross ★",
+        "number": "113",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 1562.48
+      },
       {
         "name": "Dragonite δ",
         "number": "3",
         "rarity": "Rare Holo",
         "marketPrice": 399.95
-      },
-      {
-        "name": "Umbreon δ",
-        "number": "17",
-        "rarity": "Rare Holo",
-        "marketPrice": 330.94
-      },
-      {
-        "name": "Mewtwo δ",
-        "number": "12",
-        "rarity": "Rare Holo",
-        "marketPrice": 261.49
-      },
-      {
-        "name": "Tyranitar δ",
-        "number": "16",
-        "rarity": "Rare Holo",
-        "marketPrice": 257.23
       }
-    ]
+    ],
+    "cardCount": 114,
+    "setTotalSinglesValue": 14205.52,
+    "top10SinglesValue": 9148.22
   },
   "ex12": {
     "setId": "ex12",
     "setName": "Legend Maker",
-    "fetchedAt": "2026-04-24T02:57:38.984Z",
+    "fetchedAt": "2026-04-24T04:47:44.820Z",
     "cards": [
       {
-        "name": "Gengar",
-        "number": "5",
-        "rarity": "Rare Holo",
-        "marketPrice": 244.99
+        "name": "Regice ★",
+        "number": "90",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 1250
       },
       {
-        "name": "Mew",
-        "number": "10",
-        "rarity": "Rare Holo",
-        "marketPrice": 190
+        "name": "Registeel ★",
+        "number": "92",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 799
       },
       {
-        "name": "Haunter",
-        "number": "35",
-        "rarity": "Uncommon",
-        "marketPrice": 119.75
+        "name": "Regirock ★",
+        "number": "91",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 747
       },
       {
-        "name": "Lapras",
-        "number": "8",
-        "rarity": "Rare Holo",
-        "marketPrice": 100.99
+        "name": "Arcanine ex",
+        "number": "83",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 432.5
       }
-    ]
+    ],
+    "cardCount": 93,
+    "setTotalSinglesValue": 6617.89,
+    "top10SinglesValue": 4294.07
   },
   "ex13": {
     "setId": "ex13",
     "setName": "Holon Phantoms",
-    "fetchedAt": "2026-04-24T02:57:45.739Z",
+    "fetchedAt": "2026-04-24T04:47:47.821Z",
     "cards": [
       {
-        "name": "Rayquaza δ",
-        "number": "16",
-        "rarity": "Rare Holo",
-        "marketPrice": 450
+        "name": "Mewtwo ★",
+        "number": "103",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 6000
       },
       {
-        "name": "Deoxys δ",
-        "number": "5",
-        "rarity": "Rare Holo",
-        "marketPrice": 349.99
+        "name": "Pikachu ★",
+        "number": "104",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 3200
       },
       {
-        "name": "Gyarados δ",
-        "number": "8",
-        "rarity": "Rare Holo",
-        "marketPrice": 349.99
+        "name": "Gyarados ★ δ",
+        "number": "102",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 1200
       },
       {
-        "name": "Mewtwo δ",
-        "number": "24",
-        "rarity": "Rare",
-        "marketPrice": 287.5
+        "name": "Mew ex",
+        "number": "100",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 499.56
       }
-    ]
+    ],
+    "cardCount": 111,
+    "setTotalSinglesValue": 16073.53,
+    "top10SinglesValue": 12801.43
   },
   "ex14": {
     "setId": "ex14",
     "setName": "Crystal Guardians",
-    "fetchedAt": "2026-04-24T02:57:47.480Z",
+    "fetchedAt": "2026-04-24T04:47:50.635Z",
     "cards": [
+      {
+        "name": "Alakazam ★",
+        "number": "99",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 1025
+      },
+      {
+        "name": "Celebi ★",
+        "number": "100",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 950
+      },
       {
         "name": "Charizard δ",
         "number": "4",
@@ -879,92 +975,101 @@
         "marketPrice": 539
       },
       {
-        "name": "Blastoise δ",
-        "number": "2",
-        "rarity": "Rare Holo",
-        "marketPrice": 221.23
-      },
-      {
-        "name": "Blastoise",
-        "number": "14",
-        "rarity": "Rare",
-        "marketPrice": 125
-      },
-      {
-        "name": "Charmander δ",
-        "number": "49",
-        "rarity": "Common",
-        "marketPrice": 95.91
+        "name": "Swampert ex",
+        "number": "98",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 255
       }
-    ]
+    ],
+    "cardCount": 100,
+    "setTotalSinglesValue": 6006.11,
+    "top10SinglesValue": 3751.9
   },
   "ex15": {
     "setId": "ex15",
     "setName": "Dragon Frontiers",
-    "fetchedAt": "2026-04-24T02:57:49.224Z",
+    "fetchedAt": "2026-04-24T04:47:53.503Z",
     "cards": [
+      {
+        "name": "Charizard ★ δ",
+        "number": "100",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 4000
+      },
+      {
+        "name": "Mew ★ δ",
+        "number": "101",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 1550.49
+      },
+      {
+        "name": "Rayquaza ex δ",
+        "number": "97",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 340.5
+      },
       {
         "name": "Snorlax δ",
         "number": "10",
         "rarity": "Rare Holo",
         "marketPrice": 311.07
-      },
-      {
-        "name": "Ninetales δ",
-        "number": "8",
-        "rarity": "Rare Holo",
-        "marketPrice": 203.1
-      },
-      {
-        "name": "Feraligatr δ",
-        "number": "2",
-        "rarity": "Rare Holo",
-        "marketPrice": 103.37
-      },
-      {
-        "name": "Milotic δ",
-        "number": "5",
-        "rarity": "Rare Holo",
-        "marketPrice": 93.06
       }
-    ]
+    ],
+    "cardCount": 101,
+    "setTotalSinglesValue": 9808.86,
+    "top10SinglesValue": 7293.95
   },
   "ex16": {
     "setId": "ex16",
     "setName": "Power Keepers",
-    "fetchedAt": "2026-04-24T02:57:50.964Z",
+    "fetchedAt": "2026-04-24T04:47:56.485Z",
     "cards": [
       {
-        "name": "Charizard",
-        "number": "6",
-        "rarity": "Rare Holo",
-        "marketPrice": 190.84
+        "name": "Jolteon ★",
+        "number": "101",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 1701.21
       },
       {
-        "name": "Ninetales",
-        "number": "19",
-        "rarity": "Rare",
-        "marketPrice": 149.99
+        "name": "Flareon ★",
+        "number": "100",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 1499.98
       },
       {
-        "name": "Blaziken",
-        "number": "5",
-        "rarity": "Rare Holo",
-        "marketPrice": 129.68
+        "name": "Vaporeon ★",
+        "number": "102",
+        "rarity": "Rare Holo Star",
+        "marketPrice": 839.94
       },
       {
-        "name": "Pichu",
-        "number": "21",
-        "rarity": "Rare",
-        "marketPrice": 63.32
+        "name": "Absol ex",
+        "number": "92",
+        "rarity": "Rare Holo EX",
+        "marketPrice": 235.86
       }
-    ]
+    ],
+    "cardCount": 108,
+    "setTotalSinglesValue": 6561.68,
+    "top10SinglesValue": 5066.17
   },
   "dp1": {
     "setId": "dp1",
     "setName": "Diamond & Pearl",
-    "fetchedAt": "2026-04-24T02:57:52.809Z",
+    "fetchedAt": "2026-04-24T04:48:00.204Z",
     "cards": [
+      {
+        "name": "Infernape LV.X",
+        "number": "121",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 118.47
+      },
+      {
+        "name": "Torterra LV.X",
+        "number": "122",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 93.28
+      },
       {
         "name": "Gengar",
         "number": "27",
@@ -972,60 +1077,54 @@
         "marketPrice": 71.13
       },
       {
-        "name": "Lucario",
-        "number": "6",
-        "rarity": "Rare Holo",
-        "marketPrice": 55.77
-      },
-      {
-        "name": "Snorlax",
-        "number": "37",
-        "rarity": "Rare",
-        "marketPrice": 54.24
-      },
-      {
-        "name": "Haunter",
-        "number": "50",
-        "rarity": "Uncommon",
-        "marketPrice": 54.2
+        "name": "Empoleon LV.X",
+        "number": "120",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 61.94
       }
-    ]
+    ],
+    "cardCount": 129,
+    "setTotalSinglesValue": 1303.4,
+    "top10SinglesValue": 622.38
   },
   "dp2": {
     "setId": "dp2",
     "setName": "Mysterious Treasures",
-    "fetchedAt": "2026-04-24T02:57:54.550Z",
+    "fetchedAt": "2026-04-24T04:48:03.850Z",
     "cards": [
       {
-        "name": "Alakazam",
-        "number": "2",
-        "rarity": "Rare Holo",
-        "marketPrice": 43.71
+        "name": "Time-Space Distortion",
+        "number": "124",
+        "rarity": "Rare Secret",
+        "marketPrice": 59.2
       },
       {
-        "name": "Garchomp",
-        "number": "9",
-        "rarity": "Rare Holo",
-        "marketPrice": 35.99
+        "name": "Lucario LV.X",
+        "number": "122",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 56.14
       },
       {
-        "name": "Celebi",
-        "number": "7",
-        "rarity": "Rare Holo",
-        "marketPrice": 34.4
+        "name": "Magmortar LV.X",
+        "number": "123",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 49.64
       },
       {
-        "name": "Typhlosion",
-        "number": "16",
-        "rarity": "Rare Holo",
-        "marketPrice": 32.08
+        "name": "Electivire LV.X",
+        "number": "121",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 45.31
       }
-    ]
+    ],
+    "cardCount": 124,
+    "setTotalSinglesValue": 1017.41,
+    "top10SinglesValue": 433.12
   },
   "dp3": {
     "setId": "dp3",
     "setName": "Secret Wonders",
-    "fetchedAt": "2026-04-24T02:57:56.390Z",
+    "fetchedAt": "2026-04-24T04:48:08.762Z",
     "cards": [
       {
         "name": "Mew",
@@ -1046,49 +1145,67 @@
         "marketPrice": 125.5
       },
       {
-        "name": "Blastoise",
-        "number": "2",
-        "rarity": "Rare Holo",
-        "marketPrice": 87.03
+        "name": "Gardevoir LV.X",
+        "number": "131",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 113.49
       }
-    ]
+    ],
+    "cardCount": 132,
+    "setTotalSinglesValue": 1701.4,
+    "top10SinglesValue": 852.38
   },
   "dp4": {
     "setId": "dp4",
     "setName": "Great Encounters",
-    "fetchedAt": "2026-04-24T02:57:58.233Z",
+    "fetchedAt": "2026-04-24T04:48:12.241Z",
     "cards": [
       {
-        "name": "Swampert",
-        "number": "9",
-        "rarity": "Rare Holo",
-        "marketPrice": 47.09
+        "name": "Dialga LV.X",
+        "number": "105",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 249.99
       },
       {
-        "name": "Darkrai",
-        "number": "3",
-        "rarity": "Rare Holo",
-        "marketPrice": 41.23
+        "name": "Palkia LV.X",
+        "number": "106",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 140
       },
       {
-        "name": "Lapras",
-        "number": "21",
-        "rarity": "Rare",
-        "marketPrice": 33.66
+        "name": "Darkrai LV.X",
+        "number": "104",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 110.69
       },
       {
-        "name": "Latios",
-        "number": "23",
-        "rarity": "Rare",
-        "marketPrice": 28.97
+        "name": "Mudkip",
+        "number": "80",
+        "rarity": "Common",
+        "marketPrice": 75
       }
-    ]
+    ],
+    "cardCount": 106,
+    "setTotalSinglesValue": 1472.48,
+    "top10SinglesValue": 811.95
   },
   "dp5": {
     "setId": "dp5",
     "setName": "Majestic Dawn",
-    "fetchedAt": "2026-04-24T02:58:00.076Z",
+    "fetchedAt": "2026-04-24T04:48:15.111Z",
     "cards": [
+      {
+        "name": "Glaceon LV.X",
+        "number": "98",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 500
+      },
+      {
+        "name": "Leafeon LV.X",
+        "number": "99",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 340
+      },
       {
         "name": "Glaceon",
         "number": "5",
@@ -1096,30 +1213,27 @@
         "marketPrice": 169.99
       },
       {
-        "name": "Umbreon",
-        "number": "32",
-        "rarity": "Rare",
-        "marketPrice": 85.03
-      },
-      {
-        "name": "Leafeon",
-        "number": "7",
-        "rarity": "Rare Holo",
-        "marketPrice": 83.72
-      },
-      {
-        "name": "Mewtwo",
-        "number": "9",
-        "rarity": "Rare Holo",
-        "marketPrice": 72.44
+        "name": "Garchomp LV.X",
+        "number": "97",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 146.67
       }
-    ]
+    ],
+    "cardCount": 100,
+    "setTotalSinglesValue": 2559.87,
+    "top10SinglesValue": 1597.26
   },
   "dp6": {
     "setId": "dp6",
     "setName": "Legends Awakened",
-    "fetchedAt": "2026-04-24T02:58:01.838Z",
+    "fetchedAt": "2026-04-24T04:48:19.308Z",
     "cards": [
+      {
+        "name": "Mewtwo LV.X",
+        "number": "144",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 247.99
+      },
       {
         "name": "Dragonite",
         "number": "2",
@@ -1127,340 +1241,379 @@
         "marketPrice": 154.99
       },
       {
+        "name": "Gliscor LV.X",
+        "number": "141",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 107.82
+      },
+      {
         "name": "Mewtwo",
         "number": "11",
         "rarity": "Rare Holo",
         "marketPrice": 103.46
-      },
-      {
-        "name": "Giratina",
-        "number": "4",
-        "rarity": "Rare Holo",
-        "marketPrice": 69.97
-      },
-      {
-        "name": "Rayquaza",
-        "number": "14",
-        "rarity": "Rare Holo",
-        "marketPrice": 53.99
       }
-    ]
+    ],
+    "cardCount": 145,
+    "setTotalSinglesValue": 2101.48,
+    "top10SinglesValue": 1051.12
   },
   "dp7": {
     "setId": "dp7",
     "setName": "Stormfront",
-    "fetchedAt": "2026-04-24T02:58:04.071Z",
+    "fetchedAt": "2026-04-24T04:48:22.486Z",
     "cards": [
+      {
+        "name": "Charizard",
+        "number": "103",
+        "rarity": "Rare Secret",
+        "marketPrice": 658.33
+      },
+      {
+        "name": "Charmander",
+        "number": "101",
+        "rarity": "Rare Secret",
+        "marketPrice": 179.05
+      },
+      {
+        "name": "Charmeleon",
+        "number": "102",
+        "rarity": "Rare Secret",
+        "marketPrice": 117.47
+      },
       {
         "name": "Gengar",
         "number": "18",
         "rarity": "Rare",
         "marketPrice": 116.49
-      },
-      {
-        "name": "Gyarados",
-        "number": "19",
-        "rarity": "Rare",
-        "marketPrice": 28.48
-      },
-      {
-        "name": "Tyranitar",
-        "number": "30",
-        "rarity": "Rare",
-        "marketPrice": 27.99
-      },
-      {
-        "name": "Raichu",
-        "number": "8",
-        "rarity": "Rare Holo",
-        "marketPrice": 25.23
       }
-    ]
+    ],
+    "cardCount": 106,
+    "setTotalSinglesValue": 2331.76,
+    "top10SinglesValue": 1554.42
   },
   "pl1": {
     "setId": "pl1",
     "setName": "Platinum",
-    "fetchedAt": "2026-04-24T02:58:05.912Z",
+    "fetchedAt": "2026-04-24T04:48:26.375Z",
     "cards": [
       {
-        "name": "Giratina",
-        "number": "10",
-        "rarity": "Rare Holo",
-        "marketPrice": 58.56
+        "name": "Giratina LV.X",
+        "number": "124",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 156.76
       },
       {
-        "name": "Gyarados G",
-        "number": "30",
+        "name": "Vulpix",
+        "number": "SH6",
         "rarity": "Rare",
-        "marketPrice": 53.32
+        "marketPrice": 152.8
       },
       {
-        "name": "Gardevoir",
-        "number": "8",
-        "rarity": "Rare Holo",
-        "marketPrice": 47.99
+        "name": "Psyduck",
+        "number": "87",
+        "rarity": "Common",
+        "marketPrice": 149.99
       },
       {
-        "name": "Blastoise",
-        "number": "2",
-        "rarity": "Rare Holo",
-        "marketPrice": 36.5
+        "name": "Shaymin LV.X",
+        "number": "126",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 83.8
       }
-    ]
+    ],
+    "cardCount": 133,
+    "setTotalSinglesValue": 1932.27,
+    "top10SinglesValue": 922.67
   },
   "pl2": {
     "setId": "pl2",
     "setName": "Rising Rivals",
-    "fetchedAt": "2026-04-24T02:58:07.654Z",
+    "fetchedAt": "2026-04-24T04:48:29.878Z",
     "cards": [
+      {
+        "name": "Snorlax LV.X",
+        "number": "111",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 797.47
+      },
+      {
+        "name": "Infernape E4 LV.X",
+        "number": "108",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 300
+      },
+      {
+        "name": "Gallade E4 LV.X",
+        "number": "106",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 130.48
+      },
       {
         "name": "Darkrai G",
         "number": "3",
         "rarity": "Rare Holo",
         "marketPrice": 123.11
-      },
-      {
-        "name": "Arcanine",
-        "number": "1",
-        "rarity": "Rare Holo",
-        "marketPrice": 69.69
-      },
-      {
-        "name": "Gengar GL",
-        "number": "40",
-        "rarity": "Uncommon",
-        "marketPrice": 46.17
-      },
-      {
-        "name": "Raichu GL",
-        "number": "31",
-        "rarity": "Rare",
-        "marketPrice": 36.88
       }
-    ]
+    ],
+    "cardCount": 120,
+    "setTotalSinglesValue": 3379.64,
+    "top10SinglesValue": 2029.83
   },
   "pl3": {
     "setId": "pl3",
     "setName": "Supreme Victors",
-    "fetchedAt": "2026-04-24T02:58:09.397Z",
+    "fetchedAt": "2026-04-24T04:48:34.158Z",
     "cards": [
       {
-        "name": "Lucario C",
-        "number": "31",
+        "name": "Charizard G LV.X",
+        "number": "143",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 399
+      },
+      {
+        "name": "Articuno",
+        "number": "148",
+        "rarity": "Rare Secret",
+        "marketPrice": 329.99
+      },
+      {
+        "name": "Milotic",
+        "number": "SH7",
         "rarity": "Rare",
-        "marketPrice": 99.98
+        "marketPrice": 235.54
       },
       {
-        "name": "Charizard G",
-        "number": "20",
-        "rarity": "Rare",
-        "marketPrice": 94.24
-      },
-      {
-        "name": "Rayquaza C",
-        "number": "8",
-        "rarity": "Rare Holo",
-        "marketPrice": 75.11
-      },
-      {
-        "name": "Swampert",
-        "number": "12",
-        "rarity": "Rare Holo",
-        "marketPrice": 42.46
+        "name": "Moltres",
+        "number": "149",
+        "rarity": "Rare Secret",
+        "marketPrice": 200.99
       }
-    ]
+    ],
+    "cardCount": 153,
+    "setTotalSinglesValue": 3420.27,
+    "top10SinglesValue": 1858.4
   },
   "pl4": {
     "setId": "pl4",
     "setName": "Arceus",
-    "fetchedAt": "2026-04-24T02:58:11.136Z",
+    "fetchedAt": "2026-04-24T04:48:37.329Z",
     "cards": [
+      {
+        "name": "Gengar LV.X",
+        "number": "97",
+        "rarity": "Rare Holo LV.X",
+        "marketPrice": 372.18
+      },
+      {
+        "name": "Ponyta",
+        "number": "SH11",
+        "rarity": "Rare",
+        "marketPrice": 185.78
+      },
+      {
+        "name": "Shinx",
+        "number": "SH12",
+        "rarity": "Rare",
+        "marketPrice": 128.52
+      },
       {
         "name": "Gengar",
         "number": "17",
         "rarity": "Rare",
         "marketPrice": 108.49
-      },
-      {
-        "name": "Charizard",
-        "number": "1",
-        "rarity": "Rare Holo",
-        "marketPrice": 55.85
-      },
-      {
-        "name": "Zapdos G",
-        "number": "12",
-        "rarity": "Rare Holo",
-        "marketPrice": 24.75
-      },
-      {
-        "name": "Pichu",
-        "number": "25",
-        "rarity": "Rare",
-        "marketPrice": 23.99
       }
-    ]
+    ],
+    "cardCount": 111,
+    "setTotalSinglesValue": 2182.07,
+    "top10SinglesValue": 1280.26
   },
   "hgss1": {
     "setId": "hgss1",
     "setName": "HeartGold & SoulSilver",
-    "fetchedAt": "2026-04-24T02:58:12.995Z",
+    "fetchedAt": "2026-04-24T04:48:40.713Z",
     "cards": [
       {
-        "name": "Arcanine",
-        "number": "1",
-        "rarity": "Rare Holo",
-        "marketPrice": 52.14
+        "name": "Grass Energy",
+        "number": "115",
+        "rarity": "Common",
+        "marketPrice": 999
+      },
+      {
+        "name": "Lugia LEGEND",
+        "number": "114",
+        "rarity": "LEGEND",
+        "marketPrice": 240.15
+      },
+      {
+        "name": "Ho-Oh LEGEND",
+        "number": "111",
+        "rarity": "LEGEND",
+        "marketPrice": 173.34
       },
       {
         "name": "Gyarados",
-        "number": "4",
+        "number": "123",
         "rarity": "Rare Holo",
-        "marketPrice": 46.33
-      },
-      {
-        "name": "Feraligatr",
-        "number": "20",
-        "rarity": "Rare",
-        "marketPrice": 38.31
-      },
-      {
-        "name": "Lapras",
-        "number": "24",
-        "rarity": "Rare",
-        "marketPrice": 34.27
+        "marketPrice": 122.81
       }
-    ]
+    ],
+    "cardCount": 124,
+    "setTotalSinglesValue": 3704.29,
+    "top10SinglesValue": 2134.32
   },
   "hgss2": {
     "setId": "hgss2",
     "setName": "HS—Unleashed",
-    "fetchedAt": "2026-04-24T02:58:14.720Z",
+    "fetchedAt": "2026-04-24T04:48:43.474Z",
     "cards": [
       {
+        "name": "Raikou & Suicune LEGEND",
+        "number": "92",
+        "rarity": "LEGEND",
+        "marketPrice": 183.55
+      },
+      {
+        "name": "Suicune & Entei LEGEND",
+        "number": "95",
+        "rarity": "LEGEND",
+        "marketPrice": 180
+      },
+      {
         "name": "Tyranitar",
-        "number": "26",
-        "rarity": "Rare",
-        "marketPrice": 33.86
+        "number": "88",
+        "rarity": "Rare Prime",
+        "marketPrice": 176.69
       },
       {
-        "name": "Blastoise",
-        "number": "13",
-        "rarity": "Rare",
-        "marketPrice": 29.36
-      },
-      {
-        "name": "Jirachi",
-        "number": "1",
-        "rarity": "Rare Holo",
-        "marketPrice": 27.95
-      },
-      {
-        "name": "Ninetales",
-        "number": "20",
-        "rarity": "Rare",
-        "marketPrice": 21
+        "name": "Alph Lithograph",
+        "number": "TWO",
+        "rarity": "Rare Secret",
+        "marketPrice": 118.11
       }
-    ]
+    ],
+    "cardCount": 96,
+    "setTotalSinglesValue": 2010.3,
+    "top10SinglesValue": 1258.38
   },
   "hgss3": {
     "setId": "hgss3",
     "setName": "HS—Undaunted",
-    "fetchedAt": "2026-04-24T02:58:16.564Z",
+    "fetchedAt": "2026-04-24T04:48:46.239Z",
     "cards": [
       {
         "name": "Umbreon",
-        "number": "10",
-        "rarity": "Rare Holo",
-        "marketPrice": 80
+        "number": "86",
+        "rarity": "Rare Prime",
+        "marketPrice": 455.68
+      },
+      {
+        "name": "Kyogre & Groudon LEGEND",
+        "number": "88",
+        "rarity": "LEGEND",
+        "marketPrice": 245
+      },
+      {
+        "name": "Rayquaza & Deoxys LEGEND",
+        "number": "90",
+        "rarity": "LEGEND",
+        "marketPrice": 225.64
       },
       {
         "name": "Espeon",
-        "number": "2",
-        "rarity": "Rare Holo",
-        "marketPrice": 45.54
-      },
-      {
-        "name": "Scizor",
-        "number": "7",
-        "rarity": "Rare Holo",
-        "marketPrice": 42.49
-      },
-      {
-        "name": "Jolteon",
-        "number": "28",
-        "rarity": "Uncommon",
-        "marketPrice": 32.33
+        "number": "81",
+        "rarity": "Rare Prime",
+        "marketPrice": 157.11
       }
-    ]
+    ],
+    "cardCount": 91,
+    "setTotalSinglesValue": 2865.01,
+    "top10SinglesValue": 1845.77
   },
   "hgss4": {
     "setId": "hgss4",
     "setName": "HS—Triumphant",
-    "fetchedAt": "2026-04-24T02:58:18.304Z",
+    "fetchedAt": "2026-04-24T04:48:49.313Z",
     "cards": [
       {
-        "name": "Dragonite",
-        "number": "18",
-        "rarity": "Rare",
-        "marketPrice": 94.03
+        "name": "Gengar",
+        "number": "94",
+        "rarity": "Rare Prime",
+        "marketPrice": 449.49
       },
       {
-        "name": "Ditto",
-        "number": "17",
-        "rarity": "Rare",
-        "marketPrice": 73.64
+        "name": "Mew",
+        "number": "97",
+        "rarity": "Rare Prime",
+        "marketPrice": 231.83
       },
       {
-        "name": "Haunter",
-        "number": "35",
-        "rarity": "Uncommon",
-        "marketPrice": 32.22
+        "name": "Darkrai & Cresselia LEGEND",
+        "number": "99",
+        "rarity": "LEGEND",
+        "marketPrice": 155.83
       },
       {
-        "name": "Wailord",
-        "number": "31",
-        "rarity": "Rare",
-        "marketPrice": 21.33
+        "name": "Palkia & Dialga LEGEND",
+        "number": "102",
+        "rarity": "LEGEND",
+        "marketPrice": 115.6
       }
-    ]
+    ],
+    "cardCount": 103,
+    "setTotalSinglesValue": 2242.93,
+    "top10SinglesValue": 1522.37
   },
   "bw1": {
     "setId": "bw1",
     "setName": "Black & White",
-    "fetchedAt": "2026-04-24T02:58:20.045Z",
+    "fetchedAt": "2026-04-24T04:48:52.487Z",
     "cards": [
       {
-        "name": "Reshiram",
-        "number": "26",
-        "rarity": "Rare Holo",
-        "marketPrice": 7.46
-      },
-      {
-        "name": "Maractus",
-        "number": "12",
-        "rarity": "Rare",
-        "marketPrice": 6.72
-      },
-      {
-        "name": "Sawsbuck",
-        "number": "14",
-        "rarity": "Rare",
-        "marketPrice": 6.7
-      },
-      {
         "name": "Zekrom",
-        "number": "47",
+        "number": "114",
+        "rarity": "Rare Ultra",
+        "marketPrice": 132.34
+      },
+      {
+        "name": "Reshiram",
+        "number": "113",
+        "rarity": "Rare Ultra",
+        "marketPrice": 120.75
+      },
+      {
+        "name": "Pikachu",
+        "number": "115",
+        "rarity": "Rare Secret",
+        "marketPrice": 97.93
+      },
+      {
+        "name": "Zoroark",
+        "number": "71",
         "rarity": "Rare Holo",
-        "marketPrice": 6.62
+        "marketPrice": 8.65
       }
-    ]
+    ],
+    "cardCount": 115,
+    "setTotalSinglesValue": 607.08,
+    "top10SinglesValue": 401.22
   },
   "bw2": {
     "setId": "bw2",
     "setName": "Emerging Powers",
-    "fetchedAt": "2026-04-24T02:58:21.786Z",
+    "fetchedAt": "2026-04-24T04:48:55.356Z",
     "cards": [
+      {
+        "name": "Thundurus",
+        "number": "97",
+        "rarity": "Rare Ultra",
+        "marketPrice": 24.99
+      },
+      {
+        "name": "Tornadus",
+        "number": "98",
+        "rarity": "Rare Ultra",
+        "marketPrice": 18.1
+      },
       {
         "name": "Joltik",
         "number": "33",
@@ -1468,587 +1621,632 @@
         "marketPrice": 6.27
       },
       {
-        "name": "Cubchoo",
-        "number": "29",
-        "rarity": "Common",
-        "marketPrice": 5.09
-      },
-      {
-        "name": "Sawsbuck",
-        "number": "16",
+        "name": "Unfezant",
+        "number": "82",
         "rarity": "Rare",
-        "marketPrice": 4.69
-      },
-      {
-        "name": "Beartic",
-        "number": "31",
-        "rarity": "Rare",
-        "marketPrice": 4.33
+        "marketPrice": 5.49
       }
-    ]
+    ],
+    "cardCount": 98,
+    "setTotalSinglesValue": 211.77,
+    "top10SinglesValue": 83.2
   },
   "bw3": {
     "setId": "bw3",
     "setName": "Noble Victories",
-    "fetchedAt": "2026-04-24T02:58:23.525Z",
+    "fetchedAt": "2026-04-24T04:48:58.322Z",
     "cards": [
       {
-        "name": "Eelektrik",
-        "number": "40",
-        "rarity": "Uncommon",
-        "marketPrice": 17.62
+        "name": "N",
+        "number": "101",
+        "rarity": "Rare Ultra",
+        "marketPrice": 244.72
       },
       {
         "name": "Victini",
-        "number": "43",
-        "rarity": "Rare",
-        "marketPrice": 15
+        "number": "98",
+        "rarity": "Rare Ultra",
+        "marketPrice": 133.21
       },
       {
-        "name": "Larvesta",
-        "number": "19",
-        "rarity": "Common",
-        "marketPrice": 12.99
+        "name": "Meowth",
+        "number": "102",
+        "rarity": "Rare Secret",
+        "marketPrice": 83.55
       },
       {
-        "name": "Trubbish",
-        "number": "48",
-        "rarity": "Common",
-        "marketPrice": 8.01
+        "name": "Cobalion",
+        "number": "100",
+        "rarity": "Rare Ultra",
+        "marketPrice": 55.02
       }
-    ]
+    ],
+    "cardCount": 102,
+    "setTotalSinglesValue": 954.08,
+    "top10SinglesValue": 660.86
   },
   "bw4": {
     "setId": "bw4",
     "setName": "Next Destinies",
-    "fetchedAt": "2026-04-24T02:58:25.266Z",
+    "fetchedAt": "2026-04-24T04:49:01.294Z",
     "cards": [
       {
+        "name": "Zekrom-EX",
+        "number": "97",
+        "rarity": "Rare Ultra",
+        "marketPrice": 276.27
+      },
+      {
+        "name": "Kyurem-EX",
+        "number": "96",
+        "rarity": "Rare Ultra",
+        "marketPrice": 248.99
+      },
+      {
         "name": "Reshiram-EX",
-        "number": "22",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 18.94
+        "number": "95",
+        "rarity": "Rare Ultra",
+        "marketPrice": 244.65
       },
       {
-        "name": "Growlithe",
-        "number": "10",
-        "rarity": "Common",
-        "marketPrice": 16.18
-      },
-      {
-        "name": "Pikachu",
-        "number": "39",
-        "rarity": "Common",
-        "marketPrice": 16.15
-      },
-      {
-        "name": "Shaymin-EX",
-        "number": "5",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 8.93
+        "name": "Mewtwo-EX",
+        "number": "98",
+        "rarity": "Rare Ultra",
+        "marketPrice": 232.48
       }
-    ]
+    ],
+    "cardCount": 103,
+    "setTotalSinglesValue": 2100.39,
+    "top10SinglesValue": 1779.71
   },
   "bw5": {
     "setId": "bw5",
     "setName": "Dark Explorers",
-    "fetchedAt": "2026-04-24T02:58:26.923Z",
+    "fetchedAt": "2026-04-24T04:49:04.467Z",
     "cards": [
       {
-        "name": "Kyogre-EX",
-        "number": "26",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 91.73
+        "name": "Gardevoir",
+        "number": "109",
+        "rarity": "Rare Secret",
+        "marketPrice": 544
+      },
+      {
+        "name": "Darkrai-EX",
+        "number": "107",
+        "rarity": "Rare Ultra",
+        "marketPrice": 499.99
+      },
+      {
+        "name": "Groudon-EX",
+        "number": "106",
+        "rarity": "Rare Ultra",
+        "marketPrice": 474.83
       },
       {
         "name": "Entei-EX",
-        "number": "13",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 49.99
-      },
-      {
-        "name": "Raikou-EX",
-        "number": "38",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 39.14
-      },
-      {
-        "name": "Venusaur",
-        "number": "3",
-        "rarity": "Rare Holo",
-        "marketPrice": 35.55
+        "number": "103",
+        "rarity": "Rare Ultra",
+        "marketPrice": 320
       }
-    ]
+    ],
+    "cardCount": 111,
+    "setTotalSinglesValue": 3672.19,
+    "top10SinglesValue": 2765.6
   },
   "bw6": {
     "setId": "bw6",
     "setName": "Dragons Exalted",
-    "fetchedAt": "2026-04-24T02:58:28.596Z",
+    "fetchedAt": "2026-04-24T04:49:08.154Z",
     "cards": [
       {
+        "name": "Rayquaza",
+        "number": "128",
+        "rarity": "Rare Secret",
+        "marketPrice": 969.69
+      },
+      {
         "name": "Mew-EX",
-        "number": "46",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 81.27
+        "number": "120",
+        "rarity": "Rare Ultra",
+        "marketPrice": 423.51
       },
       {
-        "name": "Roserade",
-        "number": "15",
-        "rarity": "Rare",
-        "marketPrice": 27.8
+        "name": "Giratina-EX",
+        "number": "124",
+        "rarity": "Rare Ultra",
+        "marketPrice": 279.93
       },
       {
-        "name": "Gyarados",
-        "number": "24",
-        "rarity": "Rare",
-        "marketPrice": 14.94
-      },
-      {
-        "name": "Magikarp",
-        "number": "23",
-        "rarity": "Common",
-        "marketPrice": 10.82
+        "name": "Ho-Oh-EX",
+        "number": "119",
+        "rarity": "Rare Ultra",
+        "marketPrice": 244.99
       }
-    ]
+    ],
+    "cardCount": 128,
+    "setTotalSinglesValue": 3186.71,
+    "top10SinglesValue": 2752.98
   },
   "bw7": {
     "setId": "bw7",
     "setName": "Boundaries Crossed",
-    "fetchedAt": "2026-04-24T02:58:30.388Z",
+    "fetchedAt": "2026-04-24T04:49:12.355Z",
     "cards": [
       {
-        "name": "Charizard",
-        "number": "20",
-        "rarity": "Rare Holo",
-        "marketPrice": 53.38
+        "name": "Black Kyurem-EX",
+        "number": "145",
+        "rarity": "Rare Ultra",
+        "marketPrice": 596.65
       },
       {
-        "name": "Squirtle",
-        "number": "29",
-        "rarity": "Common",
-        "marketPrice": 38.39
+        "name": "Bianca",
+        "number": "147",
+        "rarity": "Rare Ultra",
+        "marketPrice": 318.51
+      },
+      {
+        "name": "Skyla",
+        "number": "149",
+        "rarity": "Rare Ultra",
+        "marketPrice": 226.61
       },
       {
         "name": "Celebi-EX",
-        "number": "9",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 29.92
-      },
-      {
-        "name": "Pikachu",
-        "number": "50",
-        "rarity": "Common",
-        "marketPrice": 25.29
+        "number": "141",
+        "rarity": "Rare Ultra",
+        "marketPrice": 174.66
       }
-    ]
+    ],
+    "cardCount": 153,
+    "setTotalSinglesValue": 3027.24,
+    "top10SinglesValue": 2106.15
   },
   "bw8": {
     "setId": "bw8",
     "setName": "Plasma Storm",
-    "fetchedAt": "2026-04-24T02:58:32.128Z",
+    "fetchedAt": "2026-04-24T04:49:16.244Z",
     "cards": [
       {
-        "name": "Squirtle",
-        "number": "24",
-        "rarity": "Common",
-        "marketPrice": 15.84
+        "name": "Charizard",
+        "number": "136",
+        "rarity": "Rare Secret",
+        "marketPrice": 1075
       },
       {
-        "name": "Magnezone",
-        "number": "46",
-        "rarity": "Rare Holo",
-        "marketPrice": 15.37
+        "name": "Blastoise",
+        "number": "137",
+        "rarity": "Rare Secret",
+        "marketPrice": 453.09
+      },
+      {
+        "name": "Lugia-EX",
+        "number": "134",
+        "rarity": "Rare Ultra",
+        "marketPrice": 394.08
       },
       {
         "name": "Articuno-EX",
-        "number": "25",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 15.16
-      },
-      {
-        "name": "Victini-EX",
-        "number": "18",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 11.52
+        "number": "132",
+        "rarity": "Rare Ultra",
+        "marketPrice": 318.97
       }
-    ]
+    ],
+    "cardCount": 138,
+    "setTotalSinglesValue": 3200.8,
+    "top10SinglesValue": 2653.63
   },
   "bw9": {
     "setId": "bw9",
     "setName": "Plasma Freeze",
-    "fetchedAt": "2026-04-24T02:58:33.868Z",
+    "fetchedAt": "2026-04-24T04:49:19.724Z",
     "cards": [
       {
-        "name": "Jolteon",
-        "number": "34",
-        "rarity": "Uncommon",
-        "marketPrice": 46.41
+        "name": "Ultra Ball",
+        "number": "122",
+        "rarity": "Rare Secret",
+        "marketPrice": 667.19
       },
       {
-        "name": "Espeon",
-        "number": "48",
-        "rarity": "Uncommon",
-        "marketPrice": 43.9
+        "name": "Garchomp",
+        "number": "120",
+        "rarity": "Rare Secret",
+        "marketPrice": 491.3
       },
       {
-        "name": "Vaporeon",
-        "number": "20",
-        "rarity": "Uncommon",
-        "marketPrice": 42.16
+        "name": "Deoxys-EX",
+        "number": "111",
+        "rarity": "Rare Ultra",
+        "marketPrice": 395
       },
       {
-        "name": "Leafeon",
-        "number": "11",
-        "rarity": "Rare",
-        "marketPrice": 34.26
+        "name": "Latias-EX",
+        "number": "112",
+        "rarity": "Rare Ultra",
+        "marketPrice": 246.35
       }
-    ]
+    ],
+    "cardCount": 122,
+    "setTotalSinglesValue": 3942.86,
+    "top10SinglesValue": 2761.18
   },
   "bw10": {
     "setId": "bw10",
     "setName": "Plasma Blast",
-    "fetchedAt": "2026-04-24T02:58:35.711Z",
+    "fetchedAt": "2026-04-24T04:49:22.798Z",
     "cards": [
       {
+        "name": "Palkia-EX",
+        "number": "100",
+        "rarity": "Rare Ultra",
+        "marketPrice": 499.99
+      },
+      {
         "name": "Genesect-EX",
-        "number": "11",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 19.07
+        "number": "97",
+        "rarity": "Rare Ultra",
+        "marketPrice": 293.23
       },
       {
-        "name": "Blastoise",
-        "number": "16",
-        "rarity": "Rare Holo",
-        "marketPrice": 17.04
+        "name": "Dialga-EX",
+        "number": "99",
+        "rarity": "Rare Ultra",
+        "marketPrice": 237.52
       },
       {
-        "name": "Kyurem-EX",
-        "number": "30",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 13.83
-      },
-      {
-        "name": "Suicune",
-        "number": "20",
-        "rarity": "Rare",
-        "marketPrice": 9.61
+        "name": "Rare Candy",
+        "number": "105",
+        "rarity": "Rare Secret",
+        "marketPrice": 163.79
       }
-    ]
+    ],
+    "cardCount": 105,
+    "setTotalSinglesValue": 2137.3,
+    "top10SinglesValue": 1843.72
   },
   "bw11": {
     "setId": "bw11",
     "setName": "Legendary Treasures",
-    "fetchedAt": "2026-04-24T02:58:37.453Z",
+    "fetchedAt": "2026-04-24T04:49:26.689Z",
     "cards": [
       {
-        "name": "Charizard",
-        "number": "19",
-        "rarity": "Rare Holo",
-        "marketPrice": 52.1
-      },
-      {
-        "name": "Charmander",
-        "number": "17",
-        "rarity": "Common",
-        "marketPrice": 25.16
+        "name": "Zekrom",
+        "number": "115",
+        "rarity": "Rare Secret",
+        "marketPrice": 430.98
       },
       {
         "name": "Reshiram",
-        "number": "28",
-        "rarity": "Rare Holo",
-        "marketPrice": 23.97
+        "number": "114",
+        "rarity": "Rare Secret",
+        "marketPrice": 232.17
       },
       {
-        "name": "Shuckle",
-        "number": "3",
-        "rarity": "Uncommon",
-        "marketPrice": 23.66
+        "name": "Mew-EX",
+        "number": "RC24",
+        "rarity": "Rare Ultra",
+        "marketPrice": 182.5
+      },
+      {
+        "name": "Emolga",
+        "number": "RC23",
+        "rarity": "Rare Ultra",
+        "marketPrice": 64.81
       }
-    ]
+    ],
+    "cardCount": 140,
+    "setTotalSinglesValue": 2069.3,
+    "top10SinglesValue": 1268.94
   },
   "xy1": {
     "setId": "xy1",
     "setName": "XY",
-    "fetchedAt": "2026-04-24T02:58:39.104Z",
+    "fetchedAt": "2026-04-24T04:49:30.581Z",
     "cards": [
       {
-        "name": "M Blastoise-EX",
-        "number": "30",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 26.89
-      },
-      {
-        "name": "M Venusaur-EX",
-        "number": "2",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 21.67
-      },
-      {
-        "name": "Greninja",
-        "number": "41",
-        "rarity": "Rare Holo",
-        "marketPrice": 10.79
-      },
-      {
         "name": "Blastoise-EX",
-        "number": "29",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 9.27
+        "number": "142",
+        "rarity": "Rare Ultra",
+        "marketPrice": 148.87
+      },
+      {
+        "name": "Xerneas-EX",
+        "number": "146",
+        "rarity": "Rare Ultra",
+        "marketPrice": 88.55
+      },
+      {
+        "name": "Venusaur-EX",
+        "number": "141",
+        "rarity": "Rare Ultra",
+        "marketPrice": 86.67
+      },
+      {
+        "name": "Yveltal-EX",
+        "number": "144",
+        "rarity": "Rare Ultra",
+        "marketPrice": 75.8
       }
-    ]
+    ],
+    "cardCount": 146,
+    "setTotalSinglesValue": 774.1,
+    "top10SinglesValue": 567.92
   },
   "xy2": {
     "setId": "xy2",
     "setName": "Flashfire",
-    "fetchedAt": "2026-04-24T02:58:40.829Z",
+    "fetchedAt": "2026-04-24T04:49:33.623Z",
     "cards": [
       {
         "name": "M Charizard-EX",
-        "number": "13",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 65.74
+        "number": "108",
+        "rarity": "Rare Secret",
+        "marketPrice": 540.84
       },
       {
         "name": "Charizard-EX",
-        "number": "12",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 17.05
+        "number": "100",
+        "rarity": "Rare Ultra",
+        "marketPrice": 266.09
       },
       {
-        "name": "Toxicroak-EX",
-        "number": "41",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 4.33
+        "name": "Pokémon Center Lady",
+        "number": "105",
+        "rarity": "Rare Ultra",
+        "marketPrice": 59.71
       },
       {
-        "name": "Milotic",
-        "number": "23",
-        "rarity": "Rare Holo",
-        "marketPrice": 2.94
+        "name": "M Kangaskhan-EX",
+        "number": "109",
+        "rarity": "Rare Secret",
+        "marketPrice": 53.34
       }
-    ]
+    ],
+    "cardCount": 109,
+    "setTotalSinglesValue": 1830.95,
+    "top10SinglesValue": 1610.4
   },
   "xy3": {
     "setId": "xy3",
     "setName": "Furious Fists",
-    "fetchedAt": "2026-04-24T02:58:42.499Z",
+    "fetchedAt": "2026-04-24T04:49:36.833Z",
     "cards": [
       {
+        "name": "M Lucario-EX",
+        "number": "113",
+        "rarity": "Rare Secret",
+        "marketPrice": 157.29
+      },
+      {
+        "name": "Lucario-EX",
+        "number": "107",
+        "rarity": "Rare Ultra",
+        "marketPrice": 152.26
+      },
+      {
+        "name": "Dragonite-EX",
+        "number": "108",
+        "rarity": "Rare Ultra",
+        "marketPrice": 113.86
+      },
+      {
         "name": "M Heracross-EX",
-        "number": "5",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 19.01
-      },
-      {
-        "name": "Pikachu",
-        "number": "27",
-        "rarity": "Common",
-        "marketPrice": 12.45
-      },
-      {
-        "name": "Aurorus",
-        "number": "26",
-        "rarity": "Rare",
-        "marketPrice": 10.73
-      },
-      {
-        "name": "Glaceon",
-        "number": "19",
-        "rarity": "Rare",
-        "marketPrice": 9.7
+        "number": "112",
+        "rarity": "Rare Secret",
+        "marketPrice": 54.19
       }
-    ]
+    ],
+    "cardCount": 113,
+    "setTotalSinglesValue": 920.69,
+    "top10SinglesValue": 687.49
   },
   "xy4": {
     "setId": "xy4",
     "setName": "Phantom Forces",
-    "fetchedAt": "2026-04-24T02:58:44.620Z",
+    "fetchedAt": "2026-04-24T04:49:42.666Z",
     "cards": [
       {
-        "name": "M Gengar-EX",
-        "number": "35",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 188.95
+        "name": "Dialga-EX",
+        "number": "122",
+        "rarity": "Rare Secret",
+        "marketPrice": 974.97
       },
       {
         "name": "Gengar-EX",
-        "number": "34",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 73.26
+        "number": "114",
+        "rarity": "Rare Ultra",
+        "marketPrice": 742.72
+      },
+      {
+        "name": "M Gengar-EX",
+        "number": "121",
+        "rarity": "Rare Secret",
+        "marketPrice": 524.6
       },
       {
         "name": "M Manectric-EX",
-        "number": "24",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 15.71
-      },
-      {
-        "name": "Wobbuffet",
-        "number": "36",
-        "rarity": "Uncommon",
-        "marketPrice": 5.28
+        "number": "120",
+        "rarity": "Rare Secret",
+        "marketPrice": 48.71
       }
-    ]
+    ],
+    "cardCount": 122,
+    "setTotalSinglesValue": 2830.66,
+    "top10SinglesValue": 2633.59
   },
   "xy5": {
     "setId": "xy5",
     "setName": "Primal Clash",
-    "fetchedAt": "2026-04-24T02:58:46.567Z",
+    "fetchedAt": "2026-04-24T04:49:47.376Z",
     "cards": [
       {
-        "name": "Swampert",
-        "number": "36",
-        "rarity": "Rare Holo",
-        "marketPrice": 27.51
+        "name": "Primal Kyogre-EX",
+        "number": "149",
+        "rarity": "Rare Ultra",
+        "marketPrice": 220.66
       },
       {
-        "name": "Torchic",
-        "number": "26",
-        "rarity": "Uncommon",
-        "marketPrice": 13.08
+        "name": "Primal Groudon-EX",
+        "number": "151",
+        "rarity": "Rare Ultra",
+        "marketPrice": 210.28
       },
       {
-        "name": "Sceptile",
-        "number": "9",
-        "rarity": "Rare Holo",
-        "marketPrice": 11.48
+        "name": "Kyogre-EX",
+        "number": "148",
+        "rarity": "Rare Ultra",
+        "marketPrice": 102.05
       },
       {
-        "name": "Ludicolo",
-        "number": "37",
-        "rarity": "Rare",
-        "marketPrice": 5.12
+        "name": "Groudon-EX",
+        "number": "150",
+        "rarity": "Rare Ultra",
+        "marketPrice": 100.05
       }
-    ]
+    ],
+    "cardCount": 164,
+    "setTotalSinglesValue": 1596.83,
+    "top10SinglesValue": 1030.98
   },
   "xy6": {
     "setId": "xy6",
     "setName": "Roaring Skies",
-    "fetchedAt": "2026-04-24T02:58:48.263Z",
+    "fetchedAt": "2026-04-24T04:49:50.548Z",
     "cards": [
       {
+        "name": "M Rayquaza-EX",
+        "number": "105",
+        "rarity": "Rare Ultra",
+        "marketPrice": 323.59
+      },
+      {
+        "name": "Rayquaza-EX",
+        "number": "104",
+        "rarity": "Rare Ultra",
+        "marketPrice": 125.24
+      },
+      {
+        "name": "M Latios-EX",
+        "number": "102",
+        "rarity": "Rare Ultra",
+        "marketPrice": 98.74
+      },
+      {
         "name": "M Gallade-EX",
-        "number": "35",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 14.64
-      },
-      {
-        "name": "Articuno",
-        "number": "17",
-        "rarity": "Rare",
-        "marketPrice": 7.1
-      },
-      {
-        "name": "Jirachi",
-        "number": "42",
-        "rarity": "Rare Holo",
-        "marketPrice": 4.5
-      },
-      {
-        "name": "Togekiss",
-        "number": "46",
-        "rarity": "Rare Holo",
-        "marketPrice": 3.26
+        "number": "100",
+        "rarity": "Rare Ultra",
+        "marketPrice": 59.53
       }
-    ]
+    ],
+    "cardCount": 110,
+    "setTotalSinglesValue": 1242.84,
+    "top10SinglesValue": 916.33
   },
   "xy7": {
     "setId": "xy7",
     "setName": "Ancient Origins",
-    "fetchedAt": "2026-04-24T02:58:50.050Z",
+    "fetchedAt": "2026-04-24T04:49:53.517Z",
     "cards": [
       {
-        "name": "Gyarados",
-        "number": "21",
-        "rarity": "Rare Holo",
-        "marketPrice": 57.93
+        "name": "M Rayquaza-EX",
+        "number": "98",
+        "rarity": "Rare Secret",
+        "marketPrice": 908.73
       },
       {
-        "name": "M Tyranitar-EX",
-        "number": "43",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 26.44
+        "name": "Primal Groudon-EX",
+        "number": "97",
+        "rarity": "Rare Secret",
+        "marketPrice": 320.33
       },
       {
-        "name": "M Sceptile-EX",
-        "number": "8",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 19.48
+        "name": "Primal Kyogre-EX",
+        "number": "96",
+        "rarity": "Rare Secret",
+        "marketPrice": 277.52
       },
       {
-        "name": "M Ampharos-EX",
-        "number": "28",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 16.35
+        "name": "Lugia-EX",
+        "number": "94",
+        "rarity": "Rare Ultra",
+        "marketPrice": 204.09
       }
-    ]
+    ],
+    "cardCount": 100,
+    "setTotalSinglesValue": 2783.73,
+    "top10SinglesValue": 2319.34
   },
   "xy8": {
     "setId": "xy8",
     "setName": "BREAKthrough",
-    "fetchedAt": "2026-04-24T02:58:51.789Z",
+    "fetchedAt": "2026-04-24T04:49:57.923Z",
     "cards": [
       {
+        "name": "Mewtwo-EX",
+        "number": "164",
+        "rarity": "Rare Secret",
+        "marketPrice": 166.19
+      },
+      {
+        "name": "M Mewtwo-EX",
+        "number": "160",
+        "rarity": "Rare Ultra",
+        "marketPrice": 151.61
+      },
+      {
         "name": "M Houndoom-EX",
-        "number": "22",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 20.25
+        "number": "154",
+        "rarity": "Rare Ultra",
+        "marketPrice": 56.7
       },
       {
-        "name": "Raichu BREAK",
-        "number": "50",
-        "rarity": "Rare BREAK",
-        "marketPrice": 9.41
-      },
-      {
-        "name": "M Glalie-EX",
-        "number": "35",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 8.6
-      },
-      {
-        "name": "Pikachu",
-        "number": "48",
-        "rarity": "Common",
-        "marketPrice": 7.62
+        "name": "Gengar",
+        "number": "60",
+        "rarity": "Rare Holo",
+        "marketPrice": 35.45
       }
-    ]
+    ],
+    "cardCount": 164,
+    "setTotalSinglesValue": 1254.27,
+    "top10SinglesValue": 883.33
   },
   "xy9": {
     "setId": "xy9",
     "setName": "BREAKpoint",
-    "fetchedAt": "2026-04-24T02:58:53.530Z",
+    "fetchedAt": "2026-04-24T04:50:01.506Z",
     "cards": [
       {
-        "name": "M Gyarados-EX",
-        "number": "27",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 42.91
-      },
-      {
         "name": "Gyarados-EX",
-        "number": "26",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 17.15
+        "number": "123",
+        "rarity": "Rare Secret",
+        "marketPrice": 168.42
       },
       {
-        "name": "Greninja BREAK",
-        "number": "41",
-        "rarity": "Rare BREAK",
-        "marketPrice": 16.35
+        "name": "M Gyarados-EX",
+        "number": "115",
+        "rarity": "Rare Ultra",
+        "marketPrice": 105.89
       },
       {
-        "name": "Psyduck",
-        "number": "16",
-        "rarity": "Common",
-        "marketPrice": 6.53
+        "name": "Espeon-EX",
+        "number": "117",
+        "rarity": "Rare Ultra",
+        "marketPrice": 72.19
+      },
+      {
+        "name": "Skyla",
+        "number": "122",
+        "rarity": "Rare Ultra",
+        "marketPrice": 55.49
       }
-    ]
+    ],
+    "cardCount": 123,
+    "setTotalSinglesValue": 939.39,
+    "top10SinglesValue": 678.34
   },
   "g1": {
     "setId": "g1",
     "setName": "Generations",
-    "fetchedAt": "2026-04-24T02:58:55.181Z",
+    "fetchedAt": "2026-04-24T04:50:04.783Z",
     "cards": [
       {
         "name": "M Charizard-EX",
@@ -2057,92 +2255,107 @@
         "marketPrice": 154.3
       },
       {
-        "name": "Articuno",
-        "number": "25",
-        "rarity": "Rare Holo",
-        "marketPrice": 38.16
+        "name": "Flareon-EX",
+        "number": "RC28",
+        "rarity": "Rare Ultra",
+        "marketPrice": 150.02
       },
       {
-        "name": "Zapdos",
-        "number": "29",
-        "rarity": "Rare Holo",
-        "marketPrice": 37.9
+        "name": "Sylveon-EX",
+        "number": "RC32",
+        "rarity": "Rare Ultra",
+        "marketPrice": 135.28
       },
       {
-        "name": "Gengar",
-        "number": "35",
-        "rarity": "Rare Holo",
-        "marketPrice": 34.29
+        "name": "Pikachu",
+        "number": "RC29",
+        "rarity": "Rare Ultra",
+        "marketPrice": 115.91
       }
-    ]
+    ],
+    "cardCount": 115,
+    "setTotalSinglesValue": 1557.86,
+    "top10SinglesValue": 934.35
   },
   "xy10": {
     "setId": "xy10",
     "setName": "Fates Collide",
-    "fetchedAt": "2026-04-24T02:58:56.830Z",
+    "fetchedAt": "2026-04-24T04:50:08.266Z",
     "cards": [
       {
+        "name": "Umbreon-EX",
+        "number": "119",
+        "rarity": "Rare Ultra",
+        "marketPrice": 139.97
+      },
+      {
+        "name": "Alakazam-EX",
+        "number": "125",
+        "rarity": "Rare Secret",
+        "marketPrice": 111.4
+      },
+      {
         "name": "M Alakazam-EX",
-        "number": "26",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 16.25
+        "number": "118",
+        "rarity": "Rare Ultra",
+        "marketPrice": 79.53
       },
       {
         "name": "Glaceon-EX",
-        "number": "20",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 13.33
-      },
-      {
-        "name": "Mew",
-        "number": "29",
-        "rarity": "Rare Holo",
-        "marketPrice": 11.08
-      },
-      {
-        "name": "Moltres",
-        "number": "9",
-        "rarity": "Rare",
-        "marketPrice": 6.93
+        "number": "116",
+        "rarity": "Rare Ultra",
+        "marketPrice": 29.14
       }
-    ]
+    ],
+    "cardCount": 125,
+    "setTotalSinglesValue": 722.51,
+    "top10SinglesValue": 512.29
   },
   "xy11": {
     "setId": "xy11",
     "setName": "Steam Siege",
-    "fetchedAt": "2026-04-24T02:58:58.548Z",
+    "fetchedAt": "2026-04-24T04:50:11.745Z",
     "cards": [
       {
-        "name": "Pyroar BREAK",
-        "number": "24",
-        "rarity": "Rare BREAK",
-        "marketPrice": 3.78
+        "name": "Gardevoir-EX",
+        "number": "116",
+        "rarity": "Rare Secret",
+        "marketPrice": 84.98
       },
       {
-        "name": "Talonflame BREAK",
-        "number": "21",
-        "rarity": "Rare BREAK",
-        "marketPrice": 3.6
+        "name": "M Gardevoir-EX",
+        "number": "112",
+        "rarity": "Rare Ultra",
+        "marketPrice": 48.62
       },
       {
-        "name": "Nidoking",
-        "number": "45",
-        "rarity": "Rare",
-        "marketPrice": 2.89
+        "name": "Volcanion-EX",
+        "number": "115",
+        "rarity": "Rare Secret",
+        "marketPrice": 33.53
       },
       {
-        "name": "Clawitzer BREAK",
-        "number": "35",
-        "rarity": "Rare BREAK",
-        "marketPrice": 2.77
+        "name": "M Steelix-EX",
+        "number": "109",
+        "rarity": "Rare Ultra",
+        "marketPrice": 26.06
       }
-    ]
+    ],
+    "cardCount": 116,
+    "setTotalSinglesValue": 399.08,
+    "top10SinglesValue": 282.74
   },
   "xy12": {
     "setId": "xy12",
     "setName": "Evolutions",
-    "fetchedAt": "2026-04-24T02:59:00.286Z",
+    "fetchedAt": "2026-04-24T04:50:15.022Z",
     "cards": [
+      {
+        "name": "M Charizard-EX",
+        "number": "101",
+        "rarity": "Rare Ultra",
+        "marketPrice": 127.67
+      },
       {
         "name": "Charizard",
         "number": "11",
@@ -2150,123 +2363,135 @@
         "marketPrice": 86.52
       },
       {
-        "name": "M Charizard-EX",
-        "number": "13",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 53.29
-      },
-      {
         "name": "M Blastoise-EX",
-        "number": "22",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 19.44
+        "number": "102",
+        "rarity": "Rare Ultra",
+        "marketPrice": 58.52
       },
       {
-        "name": "Charizard-EX",
-        "number": "12",
-        "rarity": "Rare Holo EX",
-        "marketPrice": 16.96
+        "name": "Dragonite-EX",
+        "number": "106",
+        "rarity": "Rare Ultra",
+        "marketPrice": 45.7
       }
-    ]
+    ],
+    "cardCount": 113,
+    "setTotalSinglesValue": 798.54,
+    "top10SinglesValue": 521.51
   },
   "sm1": {
     "setId": "sm1",
     "setName": "Sun & Moon",
-    "fetchedAt": "2026-04-24T02:59:02.028Z",
+    "fetchedAt": "2026-04-24T04:50:19.531Z",
     "cards": [
       {
-        "name": "Psyduck",
-        "number": "28",
-        "rarity": "Common",
-        "marketPrice": 4.31
+        "name": "Umbreon-GX",
+        "number": "154",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 110.66
       },
       {
-        "name": "Lapras-GX",
-        "number": "35",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 3.32
+        "name": "Lillie",
+        "number": "147",
+        "rarity": "Rare Ultra",
+        "marketPrice": 49.54
       },
       {
-        "name": "Primarina-GX",
-        "number": "42",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 3.17
+        "name": "Espeon-GX",
+        "number": "152",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 46.73
       },
       {
-        "name": "Incineroar-GX",
-        "number": "27",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 2.65
+        "name": "Ultra Ball",
+        "number": "161",
+        "rarity": "Rare Secret",
+        "marketPrice": 30.25
       }
-    ]
+    ],
+    "cardCount": 163,
+    "setTotalSinglesValue": 591.81,
+    "top10SinglesValue": 383.35
   },
   "sm2": {
     "setId": "sm2",
     "setName": "Guardians Rising",
-    "fetchedAt": "2026-04-24T02:59:03.770Z",
+    "fetchedAt": "2026-04-24T04:50:24.445Z",
     "cards": [
       {
+        "name": "Sylveon-GX",
+        "number": "158",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 140.42
+      },
+      {
         "name": "Alolan Ninetales-GX",
-        "number": "22",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 4.75
+        "number": "150",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 68.46
       },
       {
-        "name": "Wishiwashi-GX",
-        "number": "38",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 2.41
+        "name": "Decidueye-GX",
+        "number": "146",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 34.2
       },
       {
-        "name": "Turtonator-GX",
-        "number": "18",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 1.89
-      },
-      {
-        "name": "Politoed",
-        "number": "25",
-        "rarity": "Rare Holo",
-        "marketPrice": 1.88
+        "name": "Mallow",
+        "number": "145",
+        "rarity": "Rare Ultra",
+        "marketPrice": 30.46
       }
-    ]
+    ],
+    "cardCount": 169,
+    "setTotalSinglesValue": 889.79,
+    "top10SinglesValue": 458.13
   },
   "sm3": {
     "setId": "sm3",
     "setName": "Burning Shadows",
-    "fetchedAt": "2026-04-24T02:59:05.510Z",
+    "fetchedAt": "2026-04-24T04:50:29.257Z",
     "cards": [
       {
         "name": "Charizard-GX",
-        "number": "20",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 23.86
+        "number": "150",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 482.72
       },
       {
-        "name": "Ho-Oh-GX",
-        "number": "21",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 5.83
+        "name": "Fairy Energy",
+        "number": "169",
+        "rarity": "Rare Secret",
+        "marketPrice": 76.13
       },
       {
-        "name": "Gyarados",
-        "number": "33",
-        "rarity": "Rare Holo",
-        "marketPrice": 3.71
+        "name": "Wicke",
+        "number": "147",
+        "rarity": "Rare Ultra",
+        "marketPrice": 51.86
       },
       {
-        "name": "Pikachu",
-        "number": "40",
-        "rarity": "Common",
-        "marketPrice": 2.25
+        "name": "Darkness Energy",
+        "number": "168",
+        "rarity": "Rare Secret",
+        "marketPrice": 48.06
       }
-    ]
+    ],
+    "cardCount": 169,
+    "setTotalSinglesValue": 1304.75,
+    "top10SinglesValue": 872.4
   },
   "sm35": {
     "setId": "sm35",
     "setName": "Shining Legends",
-    "fetchedAt": "2026-04-24T02:59:07.252Z",
+    "fetchedAt": "2026-04-24T04:50:31.713Z",
     "cards": [
+      {
+        "name": "Mewtwo-GX",
+        "number": "78",
+        "rarity": "Rare Secret",
+        "marketPrice": 554.25
+      },
       {
         "name": "Shining Mew",
         "number": "40",
@@ -2274,30 +2499,39 @@
         "marketPrice": 115
       },
       {
-        "name": "Shining Jirachi",
-        "number": "42",
+        "name": "Shining Rayquaza",
+        "number": "56",
         "rarity": "Rare Shining",
-        "marketPrice": 24.61
+        "marketPrice": 82.95
       },
       {
-        "name": "Shining Genesect",
-        "number": "9",
-        "rarity": "Rare Shining",
-        "marketPrice": 11.68
-      },
-      {
-        "name": "Mewtwo-GX",
-        "number": "39",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 10.91
+        "name": "Raichu-GX",
+        "number": "75",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 41.21
       }
-    ]
+    ],
+    "cardCount": 78,
+    "setTotalSinglesValue": 1081.62,
+    "top10SinglesValue": 978.9
   },
   "sm4": {
     "setId": "sm4",
     "setName": "Crimson Invasion",
-    "fetchedAt": "2026-04-24T02:59:09.401Z",
+    "fetchedAt": "2026-04-24T04:50:35.400Z",
     "cards": [
+      {
+        "name": "Gyarados-GX",
+        "number": "112",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 61.39
+      },
+      {
+        "name": "Lusamine",
+        "number": "110",
+        "rarity": "Rare Ultra",
+        "marketPrice": 40.77
+      },
       {
         "name": "Gengar",
         "number": "38",
@@ -2305,278 +2539,299 @@
         "marketPrice": 21.01
       },
       {
-        "name": "Gyarados-GX",
-        "number": "18",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 16.68
-      },
-      {
-        "name": "Pikachu",
-        "number": "30",
-        "rarity": "Common",
-        "marketPrice": 10.9
-      },
-      {
-        "name": "Nihilego-GX",
-        "number": "49",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 7.89
+        "name": "Olivia",
+        "number": "111",
+        "rarity": "Rare Ultra",
+        "marketPrice": 18.11
       }
-    ]
+    ],
+    "cardCount": 124,
+    "setTotalSinglesValue": 447.99,
+    "top10SinglesValue": 237.67
   },
   "sm5": {
     "setId": "sm5",
     "setName": "Ultra Prism",
-    "fetchedAt": "2026-04-24T02:59:11.141Z",
+    "fetchedAt": "2026-04-24T04:50:40.109Z",
     "cards": [
       {
-        "name": "Alolan Vulpix",
-        "number": "30",
-        "rarity": "Common",
-        "marketPrice": 17.9
+        "name": "Lillie",
+        "number": "151",
+        "rarity": "Rare Ultra",
+        "marketPrice": 430.66
+      },
+      {
+        "name": "Cynthia",
+        "number": "148",
+        "rarity": "Rare Ultra",
+        "marketPrice": 223.94
+      },
+      {
+        "name": "Lusamine",
+        "number": "153",
+        "rarity": "Rare Ultra",
+        "marketPrice": 164.88
       },
       {
         "name": "Leafeon-GX",
-        "number": "13",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 8.54
-      },
-      {
-        "name": "Glaceon-GX",
-        "number": "39",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 7.94
-      },
-      {
-        "name": "Cherubi",
-        "number": "10",
-        "rarity": "Common",
-        "marketPrice": 5.78
+        "number": "157",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 83.04
       }
-    ]
+    ],
+    "cardCount": 173,
+    "setTotalSinglesValue": 2019.58,
+    "top10SinglesValue": 1246.85
   },
   "sm6": {
     "setId": "sm6",
     "setName": "Forbidden Light",
-    "fetchedAt": "2026-04-24T02:59:12.827Z",
+    "fetchedAt": "2026-04-24T04:50:44.312Z",
     "cards": [
       {
+        "name": "Lucario-GX",
+        "number": "135",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 115.8
+      },
+      {
         "name": "Greninja-GX",
-        "number": "24",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 15.62
+        "number": "133",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 103.56
       },
       {
-        "name": "Amaura",
-        "number": "27",
-        "rarity": "Uncommon",
-        "marketPrice": 9.85
+        "name": "Dialga-GX",
+        "number": "138",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 75.72
       },
       {
-        "name": "Aurorus",
-        "number": "28",
-        "rarity": "Rare Holo",
-        "marketPrice": 9.34
-      },
-      {
-        "name": "Pheromosa",
-        "number": "11",
-        "rarity": "Rare Holo",
-        "marketPrice": 8.2
+        "name": "Xerneas-GX",
+        "number": "139",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 68.65
       }
-    ]
+    ],
+    "cardCount": 146,
+    "setTotalSinglesValue": 1239.18,
+    "top10SinglesValue": 638.08
   },
   "sm7": {
     "setId": "sm7",
     "setName": "Celestial Storm",
-    "fetchedAt": "2026-04-24T02:59:14.519Z",
+    "fetchedAt": "2026-04-24T04:50:49.286Z",
     "cards": [
       {
-        "name": "Mudkip",
-        "number": "32",
-        "rarity": "Common",
-        "marketPrice": 18.21
+        "name": "Rayquaza-GX",
+        "number": "177",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 251.55
       },
       {
-        "name": "Luvdisc",
-        "number": "44",
-        "rarity": "Common",
-        "marketPrice": 10.03
+        "name": "Lisia",
+        "number": "164",
+        "rarity": "Rare Ultra",
+        "marketPrice": 206.48
       },
       {
         "name": "Blaziken-GX",
-        "number": "28",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 9.65
+        "number": "170",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 69.2
       },
       {
-        "name": "Articuno-GX",
-        "number": "31",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 8.21
+        "name": "Scizor-GX",
+        "number": "175",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 60.61
       }
-    ]
+    ],
+    "cardCount": 183,
+    "setTotalSinglesValue": 1652.51,
+    "top10SinglesValue": 931.13
   },
   "sm75": {
     "setId": "sm75",
     "setName": "Dragon Majesty",
-    "fetchedAt": "2026-04-24T02:59:16.210Z",
+    "fetchedAt": "2026-04-24T04:50:51.783Z",
     "cards": [
       {
-        "name": "Charizard",
-        "number": "3",
-        "rarity": "Rare Holo",
-        "marketPrice": 22.96
+        "name": "Ultra Necrozma-GX",
+        "number": "78",
+        "rarity": "Rare Secret",
+        "marketPrice": 96.56
       },
       {
-        "name": "Charmander",
-        "number": "1",
-        "rarity": "Common",
-        "marketPrice": 22.14
+        "name": "Reshiram-GX",
+        "number": "71",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 65.78
+      },
+      {
+        "name": "Zinnia",
+        "number": "70",
+        "rarity": "Rare Ultra",
+        "marketPrice": 58.03
       },
       {
         "name": "Dragonite-GX",
-        "number": "37",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 16.63
-      },
-      {
-        "name": "Blaziken",
-        "number": "6",
-        "rarity": "Rare Holo",
-        "marketPrice": 8.32
+        "number": "67",
+        "rarity": "Rare Ultra",
+        "marketPrice": 55.5
       }
-    ]
+    ],
+    "cardCount": 78,
+    "setTotalSinglesValue": 739.07,
+    "top10SinglesValue": 509.32
   },
   "sm8": {
     "setId": "sm8",
     "setName": "Lost Thunder",
-    "fetchedAt": "2026-04-24T02:59:17.901Z",
+    "fetchedAt": "2026-04-24T04:50:58.134Z",
     "cards": [
       {
-        "name": "Typhlosion",
-        "number": "42",
-        "rarity": "Rare Holo",
-        "marketPrice": 11.26
+        "name": "Lugia-GX",
+        "number": "227",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 225.03
       },
       {
-        "name": "Sceptile-GX",
-        "number": "22",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 6.22
+        "name": "Mimikyu-GX",
+        "number": "226",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 211.61
       },
       {
-        "name": "Meganium",
-        "number": "8",
-        "rarity": "Rare Holo",
-        "marketPrice": 5.89
+        "name": "Professor Elm's Lecture",
+        "number": "213",
+        "rarity": "Rare Ultra",
+        "marketPrice": 129.94
       },
       {
-        "name": "Celebi ◇",
-        "number": "19",
-        "rarity": "Rare Prism Star",
-        "marketPrice": 5.82
+        "name": "Tyranitar-GX",
+        "number": "223",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 94.11
       }
-    ]
+    ],
+    "cardCount": 236,
+    "setTotalSinglesValue": 2363.07,
+    "top10SinglesValue": 1196.96
   },
   "sm9": {
     "setId": "sm9",
     "setName": "Team Up",
-    "fetchedAt": "2026-04-24T02:59:19.641Z",
+    "fetchedAt": "2026-04-24T04:51:03.461Z",
     "cards": [
       {
-        "name": "Celebi & Venusaur-GX",
-        "number": "1",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 42.78
+        "name": "Latias & Latios-GX",
+        "number": "170",
+        "rarity": "Rare Ultra",
+        "marketPrice": 2495.66
       },
       {
-        "name": "Pikachu & Zekrom-GX",
-        "number": "33",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 37.31
+        "name": "Gengar & Mimikyu-GX",
+        "number": "165",
+        "rarity": "Rare Ultra",
+        "marketPrice": 1400.28
       },
       {
-        "name": "Electrode",
-        "number": "39",
-        "rarity": "Rare Holo",
-        "marketPrice": 23.37
+        "name": "Magikarp & Wailord-GX",
+        "number": "161",
+        "rarity": "Rare Ultra",
+        "marketPrice": 845.57
       },
       {
-        "name": "Charizard",
-        "number": "14",
-        "rarity": "Rare",
-        "marketPrice": 19.69
+        "name": "Eevee & Snorlax-GX",
+        "number": "191",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 236.16
       }
-    ]
+    ],
+    "cardCount": 196,
+    "setTotalSinglesValue": 8468.95,
+    "top10SinglesValue": 6500.63
   },
   "sm10": {
     "setId": "sm10",
     "setName": "Unbroken Bonds",
-    "fetchedAt": "2026-04-24T02:59:21.383Z",
+    "fetchedAt": "2026-04-24T04:51:09.912Z",
     "cards": [
       {
+        "name": "Gardevoir & Sylveon-GX",
+        "number": "205",
+        "rarity": "Rare Ultra",
+        "marketPrice": 546.71
+      },
+      {
+        "name": "Greninja & Zoroark-GX",
+        "number": "201",
+        "rarity": "Rare Ultra",
+        "marketPrice": 288.88
+      },
+      {
+        "name": "Marshadow & Machamp-GX",
+        "number": "199",
+        "rarity": "Rare Ultra",
+        "marketPrice": 235.68
+      },
+      {
         "name": "Reshiram & Charizard-GX",
-        "number": "20",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 47.41
-      },
-      {
-        "name": "Blastoise-GX",
-        "number": "35",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 16.42
-      },
-      {
-        "name": "Pheromosa & Buzzwole-GX",
-        "number": "1",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 10.57
-      },
-      {
-        "name": "Blacephalon",
-        "number": "32",
-        "rarity": "Rare",
-        "marketPrice": 4.68
+        "number": "217",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 198.58
       }
-    ]
+    ],
+    "cardCount": 234,
+    "setTotalSinglesValue": 3479.07,
+    "top10SinglesValue": 1915.51
   },
   "sm11": {
     "setId": "sm11",
     "setName": "Unified Minds",
-    "fetchedAt": "2026-04-24T02:59:23.122Z",
+    "fetchedAt": "2026-04-24T04:51:17.280Z",
     "cards": [
       {
-        "name": "Slowpoke & Psyduck-GX",
-        "number": "35",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 88.6
+        "name": "Mewtwo & Mew-GX",
+        "number": "242",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 365.99
       },
       {
-        "name": "Rowlet & Alolan Exeggutor-GX",
-        "number": "1",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 14.76
+        "name": "Mega Sableye & Tyranitar-GX",
+        "number": "226",
+        "rarity": "Rare Ultra",
+        "marketPrice": 336.43
       },
       {
-        "name": "Lapras",
-        "number": "36",
-        "rarity": "Uncommon",
-        "marketPrice": 9.24
+        "name": "Misty's Favor",
+        "number": "235",
+        "rarity": "Rare Ultra",
+        "marketPrice": 317.88
       },
       {
-        "name": "Keldeo-GX",
-        "number": "47",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 2.87
+        "name": "Raichu & Alolan Raichu-GX",
+        "number": "221",
+        "rarity": "Rare Ultra",
+        "marketPrice": 317.63
       }
-    ]
+    ],
+    "cardCount": 258,
+    "setTotalSinglesValue": 3940.2,
+    "top10SinglesValue": 2273.97
   },
   "sm115": {
     "setId": "sm115",
     "setName": "Hidden Fates",
-    "fetchedAt": "2026-04-24T02:59:24.864Z",
+    "fetchedAt": "2026-04-24T04:51:19.533Z",
     "cards": [
+      {
+        "name": "Jessie & James",
+        "number": "68",
+        "rarity": "Rare Ultra",
+        "marketPrice": 78.95
+      },
       {
         "name": "Moltres & Zapdos & Articuno-GX",
         "number": "44",
@@ -2594,19 +2849,16 @@
         "number": "31",
         "rarity": "Rare Holo GX",
         "marketPrice": 8.45
-      },
-      {
-        "name": "Gyarados-GX",
-        "number": "16",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 6.14
       }
-    ]
+    ],
+    "cardCount": 69,
+    "setTotalSinglesValue": 295.52,
+    "top10SinglesValue": 245.91
   },
   "sma": {
     "setId": "sma",
     "setName": "Hidden Fates Shiny Vault",
-    "fetchedAt": "2026-04-24T02:59:26.604Z",
+    "fetchedAt": "2026-04-24T04:51:22.277Z",
     "cards": [
       {
         "name": "Charizard-GX",
@@ -2615,122 +2867,134 @@
         "marketPrice": 613.21
       },
       {
-        "name": "Leafeon-GX",
-        "number": "SV46",
+        "name": "Umbreon-GX",
+        "number": "SV69",
         "rarity": "Rare Shiny GX",
-        "marketPrice": 58.49
+        "marketPrice": 248.78
       },
       {
-        "name": "Eevee",
-        "number": "SV41",
-        "rarity": "Rare Shiny",
-        "marketPrice": 38.22
+        "name": "Cynthia",
+        "number": "SV82",
+        "rarity": "Rare Ultra",
+        "marketPrice": 169.03
       },
       {
-        "name": "Ho-Oh-GX",
-        "number": "SV50",
+        "name": "Sylveon-GX",
+        "number": "SV76",
         "rarity": "Rare Shiny GX",
-        "marketPrice": 34.62
+        "marketPrice": 163.08
       }
-    ]
+    ],
+    "cardCount": 94,
+    "setTotalSinglesValue": 2726.18,
+    "top10SinglesValue": 1684.34
   },
   "sm12": {
     "setId": "sm12",
     "setName": "Cosmic Eclipse",
-    "fetchedAt": "2026-04-24T02:59:28.290Z",
+    "fetchedAt": "2026-04-24T04:51:30.284Z",
     "cards": [
       {
+        "name": "Arceus & Dialga & Palkia-GX",
+        "number": "221",
+        "rarity": "Rare Ultra",
+        "marketPrice": 462.29
+      },
+      {
+        "name": "Reshiram & Zekrom-GX",
+        "number": "222",
+        "rarity": "Rare Ultra",
+        "marketPrice": 406.93
+      },
+      {
         "name": "Blastoise & Piplup-GX",
-        "number": "38",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 62.2
+        "number": "215",
+        "rarity": "Rare Ultra",
+        "marketPrice": 379.59
       },
       {
-        "name": "Charizard & Braixen-GX",
-        "number": "22",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 34.55
-      },
-      {
-        "name": "Venusaur & Snivy-GX",
-        "number": "1",
-        "rarity": "Rare Holo GX",
-        "marketPrice": 20.93
-      },
-      {
-        "name": "Psyduck",
-        "number": "40",
-        "rarity": "Common",
-        "marketPrice": 17.06
+        "name": "Solgaleo & Lunala-GX",
+        "number": "216",
+        "rarity": "Rare Ultra",
+        "marketPrice": 301.25
       }
-    ]
+    ],
+    "cardCount": 271,
+    "setTotalSinglesValue": 5538.67,
+    "top10SinglesValue": 2785.9
   },
   "swsh1": {
     "setId": "swsh1",
     "setName": "Sword & Shield",
-    "fetchedAt": "2026-04-24T02:59:29.984Z",
+    "fetchedAt": "2026-04-24T04:51:36.285Z",
     "cards": [
       {
-        "name": "Lapras VMAX",
-        "number": "50",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 4.96
+        "name": "Snorlax VMAX",
+        "number": "206",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 84.95
       },
       {
-        "name": "Lapras V",
-        "number": "49",
-        "rarity": "Rare Holo V",
-        "marketPrice": 2.15
+        "name": "Marnie",
+        "number": "200",
+        "rarity": "Rare Ultra",
+        "marketPrice": 37.12
       },
       {
-        "name": "Celebi V",
-        "number": "1",
-        "rarity": "Rare Holo V",
-        "marketPrice": 1.59
+        "name": "Snorlax V",
+        "number": "197",
+        "rarity": "Rare Ultra",
+        "marketPrice": 28.86
       },
       {
-        "name": "Torkoal V",
-        "number": "24",
-        "rarity": "Rare Holo V",
-        "marketPrice": 1.15
+        "name": "Zacian V",
+        "number": "211",
+        "rarity": "Rare Secret",
+        "marketPrice": 16.36
       }
-    ]
+    ],
+    "cardCount": 216,
+    "setTotalSinglesValue": 522.01,
+    "top10SinglesValue": 297.89
   },
   "swsh2": {
     "setId": "swsh2",
     "setName": "Rebel Clash",
-    "fetchedAt": "2026-04-24T02:59:31.827Z",
+    "fetchedAt": "2026-04-24T04:51:41.860Z",
     "cards": [
       {
-        "name": "Magikarp",
-        "number": "39",
-        "rarity": "Common",
-        "marketPrice": 14.46
+        "name": "Boss's Orders",
+        "number": "189",
+        "rarity": "Rare Ultra",
+        "marketPrice": 65.6
       },
       {
         "name": "Ninetales V",
-        "number": "26",
-        "rarity": "Rare Holo V",
-        "marketPrice": 3.55
+        "number": "177",
+        "rarity": "Rare Ultra",
+        "marketPrice": 21.44
       },
       {
-        "name": "Milotic V",
-        "number": "43",
-        "rarity": "Rare Holo V",
-        "marketPrice": 3.51
+        "name": "Sonia",
+        "number": "192",
+        "rarity": "Rare Ultra",
+        "marketPrice": 20.03
       },
       {
-        "name": "Ninetales",
-        "number": "25",
-        "rarity": "Rare",
-        "marketPrice": 2.98
+        "name": "Dragapult VMAX",
+        "number": "197",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 19.97
       }
-    ]
+    ],
+    "cardCount": 209,
+    "setTotalSinglesValue": 506.13,
+    "top10SinglesValue": 233.53
   },
   "swsh3": {
     "setId": "swsh3",
     "setName": "Darkness Ablaze",
-    "fetchedAt": "2026-04-24T02:59:33.565Z",
+    "fetchedAt": "2026-04-24T04:51:47.287Z",
     "cards": [
       {
         "name": "Charizard VMAX",
@@ -2739,433 +3003,487 @@
         "marketPrice": 48.1
       },
       {
-        "name": "Charizard V",
-        "number": "19",
-        "rarity": "Rare Holo V",
-        "marketPrice": 7.87
-      },
-      {
         "name": "Butterfree VMAX",
-        "number": "2",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 4.1
+        "number": "190",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 16.41
       },
       {
-        "name": "Houndoom V",
-        "number": "21",
-        "rarity": "Rare Holo V",
-        "marketPrice": 1.83
+        "name": "Salamence VMAX",
+        "number": "194",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 14.86
+      },
+      {
+        "name": "Eternatus VMAX",
+        "number": "192",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 11.55
       }
-    ]
+    ],
+    "cardCount": 201,
+    "setTotalSinglesValue": 271.51,
+    "top10SinglesValue": 134.65
   },
   "swsh35": {
     "setId": "swsh35",
     "setName": "Champion's Path",
-    "fetchedAt": "2026-04-24T02:59:35.309Z",
+    "fetchedAt": "2026-04-24T04:51:49.639Z",
     "cards": [
       {
-        "name": "Alcremie VMAX",
-        "number": "23",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 5.3
+        "name": "Charizard V",
+        "number": "79",
+        "rarity": "Rare Secret",
+        "marketPrice": 253.98
+      },
+      {
+        "name": "Charizard VMAX",
+        "number": "74",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 174.18
       },
       {
         "name": "Gardevoir VMAX",
-        "number": "17",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 3.56
+        "number": "76",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 15.87
       },
       {
-        "name": "Lucario V",
-        "number": "27",
-        "rarity": "Rare Holo V",
-        "marketPrice": 2.82
-      },
-      {
-        "name": "Venusaur V",
-        "number": "1",
-        "rarity": "Rare Holo V",
-        "marketPrice": 2.29
+        "name": "Drednaw VMAX",
+        "number": "75",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 7.12
       }
-    ]
+    ],
+    "cardCount": 80,
+    "setTotalSinglesValue": 512.87,
+    "top10SinglesValue": 473.82
   },
   "swsh4": {
     "setId": "swsh4",
     "setName": "Vivid Voltage",
-    "fetchedAt": "2026-04-24T02:59:37.049Z",
+    "fetchedAt": "2026-04-24T04:51:54.969Z",
     "cards": [
       {
         "name": "Pikachu VMAX",
-        "number": "44",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 11.29
+        "number": "188",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 186.35
       },
       {
-        "name": "Celebi",
-        "number": "9",
+        "name": "Pikachu V",
+        "number": "170",
+        "rarity": "Rare Ultra",
+        "marketPrice": 40.82
+      },
+      {
+        "name": "Rayquaza",
+        "number": "138",
         "rarity": "Amazing Rare",
-        "marketPrice": 6.29
+        "marketPrice": 22.68
       },
       {
-        "name": "Raikou",
-        "number": "50",
-        "rarity": "Amazing Rare",
-        "marketPrice": 5.81
-      },
-      {
-        "name": "Charizard",
-        "number": "25",
-        "rarity": "Rare",
-        "marketPrice": 3.59
+        "name": "Pokémon Center Lady",
+        "number": "185",
+        "rarity": "Rare Ultra",
+        "marketPrice": 17.82
       }
-    ]
+    ],
+    "cardCount": 203,
+    "setTotalSinglesValue": 546.37,
+    "top10SinglesValue": 328
   },
   "swsh45": {
     "setId": "swsh45",
     "setName": "Shining Fates",
-    "fetchedAt": "2026-04-24T02:59:39.507Z",
+    "fetchedAt": "2026-04-24T04:51:57.217Z",
     "cards": [
       {
-        "name": "Kyogre",
-        "number": "21",
-        "rarity": "Amazing Rare",
-        "marketPrice": 3
+        "name": "Skyla",
+        "number": "72",
+        "rarity": "Rare Ultra",
+        "marketPrice": 11.55
       },
       {
-        "name": "Morpeko VMAX",
-        "number": "38",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 2.35
+        "name": "Poké Kid",
+        "number": "70",
+        "rarity": "Rare Ultra",
+        "marketPrice": 7.94
       },
       {
-        "name": "Reshiram",
-        "number": "17",
-        "rarity": "Amazing Rare",
-        "marketPrice": 1.94
+        "name": "Alcremie V",
+        "number": "64",
+        "rarity": "Rare Ultra",
+        "marketPrice": 6.1
       },
       {
-        "name": "Cinderace VMAX",
-        "number": "19",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 1.89
+        "name": "Alcremie VMAX",
+        "number": "73",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 4.38
       }
-    ]
+    ],
+    "cardCount": 73,
+    "setTotalSinglesValue": 80.26,
+    "top10SinglesValue": 46.79
   },
   "swsh45sv": {
     "setId": "swsh45sv",
     "setName": "Shining Fates Shiny Vault",
-    "fetchedAt": "2026-04-24T02:59:41.247Z",
+    "fetchedAt": "2026-04-24T04:52:01.007Z",
     "cards": [
+      {
+        "name": "Charizard VMAX",
+        "number": "SV107",
+        "rarity": "Rare Holo VMAX",
+        "marketPrice": 146.25
+      },
+      {
+        "name": "Ditto VMAX",
+        "number": "SV119",
+        "rarity": "Rare Holo VMAX",
+        "marketPrice": 16.57
+      },
+      {
+        "name": "Koffing",
+        "number": "SV076",
+        "rarity": "Rare Shiny",
+        "marketPrice": 14.79
+      },
       {
         "name": "Suicune",
         "number": "SV022",
         "rarity": "Rare Shiny",
         "marketPrice": 13.08
-      },
-      {
-        "name": "Yamper",
-        "number": "SV039",
-        "rarity": "Rare Shiny",
-        "marketPrice": 12.67
-      },
-      {
-        "name": "Galarian Ponyta",
-        "number": "SV047",
-        "rarity": "Rare Shiny",
-        "marketPrice": 11.2
-      },
-      {
-        "name": "Morpeko",
-        "number": "SV044",
-        "rarity": "Rare Shiny",
-        "marketPrice": 10.29
       }
-    ]
+    ],
+    "cardCount": 122,
+    "setTotalSinglesValue": 540.9,
+    "top10SinglesValue": 248.56
   },
   "swsh5": {
     "setId": "swsh5",
     "setName": "Battle Styles",
-    "fetchedAt": "2026-04-24T02:59:42.989Z",
+    "fetchedAt": "2026-04-24T04:52:06.027Z",
     "cards": [
       {
-        "name": "Victini VMAX",
-        "number": "22",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 3.06
+        "name": "Tyranitar V",
+        "number": "155",
+        "rarity": "Rare Ultra",
+        "marketPrice": 241.08
       },
       {
-        "name": "Flapple VMAX",
-        "number": "19",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 2.17
+        "name": "Rapid Strike Urshifu VMAX",
+        "number": "170",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 72.72
       },
       {
-        "name": "Cherrim",
-        "number": "8",
-        "rarity": "Rare Holo",
-        "marketPrice": 1.02
+        "name": "Empoleon V",
+        "number": "146",
+        "rarity": "Rare Ultra",
+        "marketPrice": 61.91
       },
       {
-        "name": "Victini V",
-        "number": "21",
-        "rarity": "Rare Holo V",
-        "marketPrice": 0.98
+        "name": "Single Strike Urshifu VMAX",
+        "number": "168",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 33.15
       }
-    ]
+    ],
+    "cardCount": 183,
+    "setTotalSinglesValue": 762.15,
+    "top10SinglesValue": 527.23
   },
   "swsh6": {
     "setId": "swsh6",
     "setName": "Chilling Reign",
-    "fetchedAt": "2026-04-24T02:59:44.731Z",
+    "fetchedAt": "2026-04-24T04:52:14.324Z",
     "cards": [
       {
         "name": "Blaziken VMAX",
-        "number": "21",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 4.49
+        "number": "201",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 356.83
       },
       {
-        "name": "Celebi VMAX",
-        "number": "8",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 3.56
+        "name": "Galarian Moltres V",
+        "number": "177",
+        "rarity": "Rare Ultra",
+        "marketPrice": 188.39
       },
       {
-        "name": "Ice Rider Calyrex VMAX",
-        "number": "46",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 1.52
+        "name": "Snorlax",
+        "number": "224",
+        "rarity": "Rare Secret",
+        "marketPrice": 108.21
       },
       {
-        "name": "Blaziken V",
-        "number": "20",
-        "rarity": "Rare Holo V",
-        "marketPrice": 1.33
+        "name": "Galarian Slowking V",
+        "number": "179",
+        "rarity": "Rare Ultra",
+        "marketPrice": 77.94
       }
-    ]
+    ],
+    "cardCount": 233,
+    "setTotalSinglesValue": 1746.95,
+    "top10SinglesValue": 1092.94
   },
   "swsh7": {
     "setId": "swsh7",
     "setName": "Evolving Skies",
-    "fetchedAt": "2026-04-24T02:59:46.415Z",
+    "fetchedAt": "2026-04-24T04:52:26.710Z",
     "cards": [
       {
-        "name": "Flareon VMAX",
-        "number": "18",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 11.43
+        "name": "Umbreon VMAX",
+        "number": "215",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 2023.52
       },
       {
-        "name": "Vaporeon VMAX",
-        "number": "30",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 9.29
+        "name": "Rayquaza VMAX",
+        "number": "218",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 787.94
       },
       {
-        "name": "Leafeon VMAX",
-        "number": "8",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 8.47
+        "name": "Dragonite V",
+        "number": "192",
+        "rarity": "Rare Ultra",
+        "marketPrice": 399.05
       },
       {
-        "name": "Gyarados VMAX",
-        "number": "29",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 8.03
+        "name": "Sylveon VMAX",
+        "number": "212",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 360.38
       }
-    ]
+    ],
+    "cardCount": 237,
+    "setTotalSinglesValue": 6613.14,
+    "top10SinglesValue": 5174.23
   },
   "swsh8": {
     "setId": "swsh8",
     "setName": "Fusion Strike",
-    "fetchedAt": "2026-04-24T02:59:48.111Z",
+    "fetchedAt": "2026-04-24T04:52:34.594Z",
     "cards": [
       {
-        "name": "Cinderace VMAX",
-        "number": "45",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 2.6
+        "name": "Gengar VMAX",
+        "number": "271",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 856.22
       },
       {
-        "name": "Chandelure VMAX",
-        "number": "40",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 2.57
+        "name": "Espeon VMAX",
+        "number": "270",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 284.65
       },
       {
-        "name": "Rillaboom VMAX",
-        "number": "23",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 1.89
+        "name": "Mew VMAX",
+        "number": "269",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 194.88
       },
       {
-        "name": "Appletun V",
-        "number": "26",
-        "rarity": "Rare Holo V",
-        "marketPrice": 1.13
+        "name": "Mew V",
+        "number": "251",
+        "rarity": "Rare Ultra",
+        "marketPrice": 107.73
       }
-    ]
+    ],
+    "cardCount": 284,
+    "setTotalSinglesValue": 1985.41,
+    "top10SinglesValue": 1736.43
   },
   "swsh9": {
     "setId": "swsh9",
     "setName": "Brilliant Stars",
-    "fetchedAt": "2026-04-24T02:59:49.854Z",
+    "fetchedAt": "2026-04-24T04:52:39.614Z",
     "cards": [
       {
-        "name": "Charizard VSTAR",
-        "number": "18",
-        "rarity": "Rare Holo VSTAR",
-        "marketPrice": 11.4
-      },
-      {
         "name": "Charizard V",
-        "number": "17",
-        "rarity": "Rare Holo V",
-        "marketPrice": 5.91
+        "number": "154",
+        "rarity": "Rare Ultra",
+        "marketPrice": 321.34
       },
       {
-        "name": "Kingler VMAX",
-        "number": "29",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 2.07
+        "name": "Charizard VSTAR",
+        "number": "174",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 77.65
       },
       {
-        "name": "Entei V",
-        "number": "22",
-        "rarity": "Rare Holo V",
-        "marketPrice": 1.54
+        "name": "Arceus V",
+        "number": "166",
+        "rarity": "Rare Ultra",
+        "marketPrice": 54.24
+      },
+      {
+        "name": "Pikachu V",
+        "number": "157",
+        "rarity": "Rare Ultra",
+        "marketPrice": 22.47
       }
-    ]
+    ],
+    "cardCount": 186,
+    "setTotalSinglesValue": 808.24,
+    "top10SinglesValue": 595.55
   },
   "swsh10": {
     "setId": "swsh10",
     "setName": "Astral Radiance",
-    "fetchedAt": "2026-04-24T02:59:51.595Z",
+    "fetchedAt": "2026-04-24T04:52:45.453Z",
     "cards": [
       {
-        "name": "Radiant Greninja",
-        "number": "46",
-        "rarity": "Radiant Rare",
-        "marketPrice": 3.25
+        "name": "Machamp V",
+        "number": "172",
+        "rarity": "Rare Ultra",
+        "marketPrice": 177.04
       },
       {
-        "name": "Luxray V",
-        "number": "50",
-        "rarity": "Rare Holo V",
-        "marketPrice": 2.16
+        "name": "Origin Forme Palkia V",
+        "number": "167",
+        "rarity": "Rare Ultra",
+        "marketPrice": 76.13
       },
       {
-        "name": "Heatran VMAX",
-        "number": "26",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 1.76
+        "name": "Origin Forme Dialga V",
+        "number": "177",
+        "rarity": "Rare Ultra",
+        "marketPrice": 57.58
       },
       {
-        "name": "Hisuian Lilligant VSTAR",
-        "number": "18",
-        "rarity": "Rare Holo VSTAR",
-        "marketPrice": 1.55
+        "name": "Beedrill V",
+        "number": "161",
+        "rarity": "Rare Ultra",
+        "marketPrice": 56.69
       }
-    ]
+    ],
+    "cardCount": 216,
+    "setTotalSinglesValue": 794.21,
+    "top10SinglesValue": 477.36
   },
   "pgo": {
     "setId": "pgo",
     "setName": "Pokémon GO",
-    "fetchedAt": "2026-04-24T02:59:53.336Z",
+    "fetchedAt": "2026-04-24T04:52:48.112Z",
     "cards": [
+      {
+        "name": "Mewtwo V",
+        "number": "72",
+        "rarity": "Rare Ultra",
+        "marketPrice": 58.37
+      },
+      {
+        "name": "Mewtwo VSTAR",
+        "number": "79",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 48.53
+      },
+      {
+        "name": "Dragonite VSTAR",
+        "number": "81",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 48.03
+      },
       {
         "name": "Radiant Charizard",
         "number": "11",
         "rarity": "Radiant Rare",
         "marketPrice": 20.9
-      },
-      {
-        "name": "Radiant Blastoise",
-        "number": "18",
-        "rarity": "Radiant Rare",
-        "marketPrice": 9.56
-      },
-      {
-        "name": "Radiant Venusaur",
-        "number": "4",
-        "rarity": "Radiant Rare",
-        "marketPrice": 8.21
-      },
-      {
-        "name": "Mewtwo VSTAR",
-        "number": "31",
-        "rarity": "Rare Holo VSTAR",
-        "marketPrice": 6.59
       }
-    ]
+    ],
+    "cardCount": 88,
+    "setTotalSinglesValue": 364.3,
+    "top10SinglesValue": 260.18
   },
   "swsh11": {
     "setId": "swsh11",
     "setName": "Lost Origin",
-    "fetchedAt": "2026-04-24T02:59:55.077Z",
+    "fetchedAt": "2026-04-24T04:52:54.054Z",
     "cards": [
       {
-        "name": "Kyurem VMAX",
-        "number": "49",
-        "rarity": "Rare Holo VMAX",
-        "marketPrice": 2.29
+        "name": "Giratina V",
+        "number": "186",
+        "rarity": "Rare Ultra",
+        "marketPrice": 664.03
       },
       {
-        "name": "Delphox V",
-        "number": "27",
-        "rarity": "Rare Holo V",
-        "marketPrice": 0.79
+        "name": "Aerodactyl V",
+        "number": "180",
+        "rarity": "Rare Ultra",
+        "marketPrice": 199.44
       },
       {
-        "name": "Kyurem V",
-        "number": "48",
-        "rarity": "Rare Holo V",
-        "marketPrice": 0.77
+        "name": "Rotom V",
+        "number": "177",
+        "rarity": "Rare Ultra",
+        "marketPrice": 29.53
       },
       {
-        "name": "Gloom",
-        "number": "2",
-        "rarity": "Uncommon",
-        "marketPrice": 0.43
+        "name": "Giratina VSTAR",
+        "number": "201",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 25.52
       }
-    ]
+    ],
+    "cardCount": 217,
+    "setTotalSinglesValue": 1183.99,
+    "top10SinglesValue": 1000.04
   },
   "swsh12": {
     "setId": "swsh12",
     "setName": "Silver Tempest",
-    "fetchedAt": "2026-04-24T02:59:56.823Z",
+    "fetchedAt": "2026-04-24T04:52:59.891Z",
     "cards": [
       {
-        "name": "Alolan Vulpix VSTAR",
-        "number": "34",
-        "rarity": "Rare Holo VSTAR",
-        "marketPrice": 2.24
+        "name": "Lugia V",
+        "number": "186",
+        "rarity": "Rare Ultra",
+        "marketPrice": 442.67
       },
       {
-        "name": "Alolan Vulpix V",
-        "number": "33",
-        "rarity": "Rare Holo V",
-        "marketPrice": 1.43
+        "name": "Lugia VSTAR",
+        "number": "202",
+        "rarity": "Rare Rainbow",
+        "marketPrice": 35.46
       },
       {
-        "name": "Serperior VSTAR",
-        "number": "8",
-        "rarity": "Rare Holo VSTAR",
-        "marketPrice": 1.33
+        "name": "Unown V",
+        "number": "177",
+        "rarity": "Rare Ultra",
+        "marketPrice": 22.64
       },
       {
-        "name": "Reshiram V",
-        "number": "24",
-        "rarity": "Rare Holo V",
-        "marketPrice": 1.04
+        "name": "Regidrago V",
+        "number": "184",
+        "rarity": "Rare Ultra",
+        "marketPrice": 22.13
       }
-    ]
+    ],
+    "cardCount": 215,
+    "setTotalSinglesValue": 871.58,
+    "top10SinglesValue": 626.72
   },
   "swsh12pt5": {
     "setId": "swsh12pt5",
     "setName": "Crown Zenith",
-    "fetchedAt": "2026-04-24T02:59:58.559Z",
+    "fetchedAt": "2026-04-24T04:53:04.202Z",
     "cards": [
+      {
+        "name": "Pikachu",
+        "number": "160",
+        "rarity": "Rare Secret",
+        "marketPrice": 54.67
+      },
+      {
+        "name": "Elesa's Sparkle",
+        "number": "147",
+        "rarity": "Rare Ultra",
+        "marketPrice": 15.25
+      },
       {
         "name": "Radiant Charizard",
         "number": "20",
@@ -3177,460 +3495,499 @@
         "number": "19",
         "rarity": "Rare Holo VSTAR",
         "marketPrice": 10.08
-      },
-      {
-        "name": "Charizard V",
-        "number": "18",
-        "rarity": "Rare Holo V",
-        "marketPrice": 9.14
-      },
-      {
-        "name": "Leafeon VSTAR",
-        "number": "14",
-        "rarity": "Rare Holo VSTAR",
-        "marketPrice": 3.13
       }
-    ]
+    ],
+    "cardCount": 160,
+    "setTotalSinglesValue": 266.06,
+    "top10SinglesValue": 142.55
   },
   "sv1": {
     "setId": "sv1",
     "setName": "Scarlet & Violet Base",
-    "fetchedAt": "2026-04-24T03:00:00.300Z",
+    "fetchedAt": "2026-04-24T04:53:14.429Z",
     "cards": [
       {
-        "name": "Gyarados ex",
-        "number": "45",
-        "rarity": "Double Rare",
-        "marketPrice": 1.54
+        "name": "Gardevoir ex",
+        "number": "245",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 88.61
       },
       {
-        "name": "Arcanine ex",
-        "number": "32",
-        "rarity": "Double Rare",
-        "marketPrice": 0.97
+        "name": "Drowzee",
+        "number": "210",
+        "rarity": "Illustration Rare",
+        "marketPrice": 64.38
       },
       {
-        "name": "Spidops ex",
-        "number": "19",
-        "rarity": "Double Rare",
-        "marketPrice": 0.65
+        "name": "Kirlia",
+        "number": "212",
+        "rarity": "Illustration Rare",
+        "marketPrice": 52.49
       },
       {
-        "name": "Slowbro",
-        "number": "43",
-        "rarity": "Rare",
-        "marketPrice": 0.34
+        "name": "Ralts",
+        "number": "211",
+        "rarity": "Illustration Rare",
+        "marketPrice": 45.54
       }
-    ]
+    ],
+    "cardCount": 258,
+    "setTotalSinglesValue": 785.06,
+    "top10SinglesValue": 427.55
   },
   "sv2": {
     "setId": "sv2",
     "setName": "Paldea Evolved",
-    "fetchedAt": "2026-04-24T03:00:03.885Z",
+    "fetchedAt": "2026-04-24T04:53:23.233Z",
     "cards": [
       {
-        "name": "Skeledirge ex",
-        "number": "37",
-        "rarity": "Double Rare",
-        "marketPrice": 1.06
+        "name": "Magikarp",
+        "number": "203",
+        "rarity": "Illustration Rare",
+        "marketPrice": 378.91
       },
       {
-        "name": "Forretress ex",
-        "number": "5",
-        "rarity": "Double Rare",
-        "marketPrice": 0.88
+        "name": "Raichu",
+        "number": "211",
+        "rarity": "Illustration Rare",
+        "marketPrice": 107.9
       },
       {
-        "name": "Meowscarada ex",
-        "number": "15",
-        "rarity": "Double Rare",
-        "marketPrice": 0.87
+        "name": "Maushold",
+        "number": "226",
+        "rarity": "Illustration Rare",
+        "marketPrice": 87.01
       },
       {
-        "name": "Wo-Chien ex",
-        "number": "27",
-        "rarity": "Double Rare",
-        "marketPrice": 0.86
+        "name": "Tyranitar",
+        "number": "222",
+        "rarity": "Illustration Rare",
+        "marketPrice": 72.14
       }
-    ]
+    ],
+    "cardCount": 279,
+    "setTotalSinglesValue": 1772.7,
+    "top10SinglesValue": 957.55
   },
   "sv3": {
     "setId": "sv3",
     "setName": "Obsidian Flames",
-    "fetchedAt": "2026-04-24T03:00:13.613Z",
+    "fetchedAt": "2026-04-24T04:53:30.714Z",
     "cards": [
       {
-        "name": "Clefable ex",
-        "number": "82",
-        "rarity": "Double Rare",
-        "marketPrice": 1.29
+        "name": "Charizard ex",
+        "number": "223",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 111.65
       },
       {
-        "name": "Victini ex",
-        "number": "33",
-        "rarity": "Double Rare",
-        "marketPrice": 1.07
+        "name": "Cleffa",
+        "number": "202",
+        "rarity": "Illustration Rare",
+        "marketPrice": 43.56
       },
       {
-        "name": "Eiscue ex",
-        "number": "42",
-        "rarity": "Double Rare",
-        "marketPrice": 0.99
+        "name": "Ninetales",
+        "number": "199",
+        "rarity": "Illustration Rare",
+        "marketPrice": 41.65
       },
       {
-        "name": "Espeon",
-        "number": "86",
-        "rarity": "Uncommon",
-        "marketPrice": 0.94
+        "name": "Gloom",
+        "number": "198",
+        "rarity": "Illustration Rare",
+        "marketPrice": 24.82
       }
-    ]
+    ],
+    "cardCount": 230,
+    "setTotalSinglesValue": 505.35,
+    "top10SinglesValue": 347.49
   },
   "sv3pt5": {
     "setId": "sv3pt5",
     "setName": "Pokémon 151",
-    "fetchedAt": "2026-04-24T03:00:15.661Z",
+    "fetchedAt": "2026-04-24T04:53:36.295Z",
     "cards": [
       {
         "name": "Charizard ex",
-        "number": "6",
-        "rarity": "Double Rare",
-        "marketPrice": 9.32
+        "number": "199",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 422.9
       },
       {
-        "name": "Kakuna",
-        "number": "14",
-        "rarity": "Common",
-        "marketPrice": 2.76
+        "name": "Blastoise ex",
+        "number": "200",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 151.41
       },
       {
-        "name": "Pidgeotto",
-        "number": "17",
-        "rarity": "Common",
-        "marketPrice": 2.58
+        "name": "Venusaur ex",
+        "number": "198",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 138.55
       },
       {
-        "name": "Nidoran ♂",
-        "number": "32",
-        "rarity": "Common",
-        "marketPrice": 2.38
+        "name": "Charmander",
+        "number": "168",
+        "rarity": "Illustration Rare",
+        "marketPrice": 110.57
       }
-    ]
+    ],
+    "cardCount": 207,
+    "setTotalSinglesValue": 2243.24,
+    "top10SinglesValue": 1363.91
   },
   "sv4": {
     "setId": "sv4",
     "setName": "Paradox Rift",
-    "fetchedAt": "2026-04-24T03:00:26.515Z",
+    "fetchedAt": "2026-04-24T04:53:43.795Z",
     "cards": [
       {
-        "name": "Garchomp ex",
-        "number": "38",
-        "rarity": "Double Rare",
-        "marketPrice": 0.85
+        "name": "Groudon",
+        "number": "199",
+        "rarity": "Illustration Rare",
+        "marketPrice": 110.92
       },
       {
-        "name": "Armarouge ex",
-        "number": "27",
-        "rarity": "Double Rare",
-        "marketPrice": 0.76
+        "name": "Altaria ex",
+        "number": "253",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 53.03
       },
       {
-        "name": "Froslass ex",
-        "number": "3",
-        "rarity": "Double Rare",
-        "marketPrice": 0.7
+        "name": "Minun",
+        "number": "194",
+        "rarity": "Illustration Rare",
+        "marketPrice": 43.16
       },
       {
-        "name": "Golisopod ex",
-        "number": "50",
-        "rarity": "Double Rare",
-        "marketPrice": 0.63
+        "name": "Roaring Moon ex",
+        "number": "251",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 40.75
       }
-    ]
+    ],
+    "cardCount": 266,
+    "setTotalSinglesValue": 1022.31,
+    "top10SinglesValue": 438.52
   },
   "sv4pt5": {
     "setId": "sv4pt5",
     "setName": "Paldean Fates",
-    "fetchedAt": "2026-04-24T03:00:58.671Z",
+    "fetchedAt": "2026-04-24T04:53:50.375Z",
     "cards": [
       {
-        "name": "Scyther",
-        "number": "95",
-        "rarity": "Shiny Rare",
-        "marketPrice": 8.2
+        "name": "Mew ex",
+        "number": "232",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 845.41
       },
       {
-        "name": "Pineco",
-        "number": "99",
-        "rarity": "Shiny Rare",
-        "marketPrice": 2.35
-      },
-      {
-        "name": "Snover",
-        "number": "100",
-        "rarity": "Shiny Rare",
-        "marketPrice": 2.32
+        "name": "Charizard ex",
+        "number": "234",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 288.5
       },
       {
         "name": "Gardevoir ex",
-        "number": "29",
-        "rarity": "Double Rare",
-        "marketPrice": 0.75
+        "number": "233",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 173.1
+      },
+      {
+        "name": "Pikachu",
+        "number": "131",
+        "rarity": "Shiny Rare",
+        "marketPrice": 74.97
       }
-    ]
+    ],
+    "cardCount": 244,
+    "setTotalSinglesValue": 2439.56,
+    "top10SinglesValue": 1661.61
   },
   "sv5": {
     "setId": "sv5",
     "setName": "Temporal Forces",
-    "fetchedAt": "2026-04-24T03:01:08.590Z",
+    "fetchedAt": "2026-04-24T04:53:56.313Z",
     "cards": [
       {
-        "name": "Torterra ex",
-        "number": "12",
-        "rarity": "Double Rare",
-        "marketPrice": 0.77
+        "name": "Gastly",
+        "number": "177",
+        "rarity": "Illustration Rare",
+        "marketPrice": 113.97
       },
       {
-        "name": "Iron Leaves ex",
-        "number": "25",
-        "rarity": "Double Rare",
-        "marketPrice": 0.77
+        "name": "Morty's Conviction",
+        "number": "211",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 79.01
       },
       {
-        "name": "Gouging Fire ex",
-        "number": "38",
-        "rarity": "Double Rare",
-        "marketPrice": 0.75
+        "name": "Raging Bolt ex",
+        "number": "208",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 64.72
       },
       {
-        "name": "Incineroar ex",
-        "number": "34",
-        "rarity": "Double Rare",
-        "marketPrice": 0.71
+        "name": "Gengar ex",
+        "number": "193",
+        "rarity": "Ultra Rare",
+        "marketPrice": 55.56
       }
-    ]
+    ],
+    "cardCount": 218,
+    "setTotalSinglesValue": 1042.09,
+    "top10SinglesValue": 528.33
   },
   "sv6": {
     "setId": "sv6",
     "setName": "Twilight Masquerade",
-    "fetchedAt": "2026-04-24T03:01:10.549Z",
+    "fetchedAt": "2026-04-24T04:54:02.564Z",
     "cards": [
       {
-        "name": "Teal Mask Ogerpon ex",
-        "number": "25",
-        "rarity": "Double Rare",
-        "marketPrice": 5.09
+        "name": "Greninja ex",
+        "number": "214",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 366.13
       },
       {
-        "name": "Sinistcha ex",
-        "number": "23",
-        "rarity": "Double Rare",
-        "marketPrice": 0.73
+        "name": "Perrin",
+        "number": "220",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 176.15
       },
       {
-        "name": "Magcargo ex",
-        "number": "29",
-        "rarity": "Double Rare",
-        "marketPrice": 0.62
+        "name": "Eevee",
+        "number": "188",
+        "rarity": "Illustration Rare",
+        "marketPrice": 90.17
       },
       {
-        "name": "Hearthflame Mask Ogerpon ex",
-        "number": "40",
-        "rarity": "Double Rare",
-        "marketPrice": 0.53
+        "name": "Carmine",
+        "number": "217",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 73.49
       }
-    ]
+    ],
+    "cardCount": 226,
+    "setTotalSinglesValue": 1326.34,
+    "top10SinglesValue": 911.33
   },
   "sv6pt5": {
     "setId": "sv6pt5",
     "setName": "Shrouded Fable",
-    "fetchedAt": "2026-04-24T03:01:12.495Z",
+    "fetchedAt": "2026-04-24T04:54:05.424Z",
     "cards": [
       {
-        "name": "Pecharunt ex",
-        "number": "39",
-        "rarity": "Double Rare",
-        "marketPrice": 4.79
+        "name": "Basic Darkness Energy",
+        "number": "98",
+        "rarity": "Hyper Rare",
+        "marketPrice": 63.82
       },
       {
-        "name": "Fezandipiti ex",
-        "number": "38",
-        "rarity": "Double Rare",
-        "marketPrice": 4.63
+        "name": "Persian",
+        "number": "78",
+        "rarity": "Illustration Rare",
+        "marketPrice": 55
       },
       {
-        "name": "Okidogi ex",
-        "number": "36",
-        "rarity": "Double Rare",
-        "marketPrice": 0.83
+        "name": "Duskull",
+        "number": "68",
+        "rarity": "Illustration Rare",
+        "marketPrice": 52.94
       },
       {
-        "name": "Kingdra ex",
-        "number": "12",
-        "rarity": "Double Rare",
-        "marketPrice": 0.69
+        "name": "Dusclops",
+        "number": "69",
+        "rarity": "Illustration Rare",
+        "marketPrice": 48.08
       }
-    ]
+    ],
+    "cardCount": 99,
+    "setTotalSinglesValue": 824.63,
+    "top10SinglesValue": 464.13
   },
   "sv7": {
     "setId": "sv7",
     "setName": "Stellar Crown",
-    "fetchedAt": "2026-04-24T03:01:14.337Z",
+    "fetchedAt": "2026-04-24T04:54:10.955Z",
     "cards": [
       {
-        "name": "Blastoise ex",
-        "number": "30",
-        "rarity": "Double Rare",
-        "marketPrice": 2.18
+        "name": "Squirtle",
+        "number": "148",
+        "rarity": "Illustration Rare",
+        "marketPrice": 123.49
       },
       {
-        "name": "Lapras ex",
-        "number": "32",
-        "rarity": "Double Rare",
-        "marketPrice": 1.51
+        "name": "Bulbasaur",
+        "number": "143",
+        "rarity": "Illustration Rare",
+        "marketPrice": 103.46
       },
       {
-        "name": "Greninja ex",
-        "number": "41",
-        "rarity": "Double Rare",
-        "marketPrice": 1.39
+        "name": "Dachsbun ex",
+        "number": "169",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 76.67
       },
       {
-        "name": "Venusaur ex",
-        "number": "1",
-        "rarity": "Double Rare",
-        "marketPrice": 1.07
+        "name": "Terapagos ex",
+        "number": "170",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 34.33
       }
-    ]
+    ],
+    "cardCount": 175,
+    "setTotalSinglesValue": 592.83,
+    "top10SinglesValue": 435.98
   },
   "sv8": {
     "setId": "sv8",
     "setName": "Surging Sparks",
-    "fetchedAt": "2026-04-24T03:01:21.712Z",
+    "fetchedAt": "2026-04-24T04:54:17.854Z",
     "cards": [
       {
-        "name": "Ceruledge ex",
-        "number": "36",
-        "rarity": "Double Rare",
-        "marketPrice": 1.69
+        "name": "Pikachu ex",
+        "number": "238",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 305.9
       },
       {
-        "name": "Black Kyurem ex",
-        "number": "48",
-        "rarity": "Double Rare",
-        "marketPrice": 0.68
+        "name": "Latias ex",
+        "number": "239",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 177.06
       },
       {
         "name": "Milotic ex",
-        "number": "42",
-        "rarity": "Double Rare",
-        "marketPrice": 0.65
+        "number": "237",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 109.77
       },
       {
-        "name": "Scovillain ex",
-        "number": "37",
-        "rarity": "Double Rare",
-        "marketPrice": 0.58
+        "name": "Hydreigon ex",
+        "number": "240",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 38.79
       }
-    ]
+    ],
+    "cardCount": 252,
+    "setTotalSinglesValue": 1199.17,
+    "top10SinglesValue": 857.51
   },
   "sv8pt5": {
     "setId": "sv8pt5",
     "setName": "Prismatic Evolutions",
-    "fetchedAt": "2026-04-24T03:01:23.815Z",
+    "fetchedAt": "2026-04-24T04:54:22.220Z",
     "cards": [
       {
-        "name": "Flareon ex",
-        "number": "14",
-        "rarity": "Double Rare",
-        "marketPrice": 4.76
+        "name": "Umbreon ex",
+        "number": "161",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 1471.16
       },
       {
-        "name": "Leafeon ex",
-        "number": "6",
-        "rarity": "Double Rare",
-        "marketPrice": 4.28
-      },
-      {
-        "name": "Teal Mask Ogerpon ex",
-        "number": "12",
-        "rarity": "Double Rare",
-        "marketPrice": 4.23
+        "name": "Sylveon ex",
+        "number": "156",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 397.84
       },
       {
         "name": "Espeon ex",
-        "number": "34",
-        "rarity": "Double Rare",
-        "marketPrice": 3.64
+        "number": "155",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 289.88
+      },
+      {
+        "name": "Leafeon ex",
+        "number": "144",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 289.03
       }
-    ]
+    ],
+    "cardCount": 180,
+    "setTotalSinglesValue": 4664.86,
+    "top10SinglesValue": 3622.03
   },
   "sv9": {
     "setId": "sv9",
     "setName": "Journey Together",
-    "fetchedAt": "2026-04-24T03:01:26.727Z",
+    "fetchedAt": "2026-04-24T04:54:29.082Z",
     "cards": [
       {
-        "name": "Blaziken ex",
-        "number": "24",
-        "rarity": "Double Rare",
-        "marketPrice": 5.05
+        "name": "Lillie's Clefairy ex",
+        "number": "184",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 127.89
       },
       {
-        "name": "Amoonguss ex",
-        "number": "11",
-        "rarity": "Double Rare",
-        "marketPrice": 0.74
+        "name": "Salamence ex",
+        "number": "187",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 60.66
       },
       {
-        "name": "Veluza ex",
-        "number": "43",
-        "rarity": "Double Rare",
-        "marketPrice": 0.67
+        "name": "N's Zoroark ex",
+        "number": "185",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 51.35
       },
       {
-        "name": "Reshiram ex",
-        "number": "30",
-        "rarity": "Double Rare",
-        "marketPrice": 0.64
+        "name": "Iono's Bellibolt ex",
+        "number": "183",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 40.62
       }
-    ]
+    ],
+    "cardCount": 190,
+    "setTotalSinglesValue": 554.82,
+    "top10SinglesValue": 415.88
   },
   "sv10": {
     "setId": "sv10",
     "setName": "Destined Rivals",
-    "fetchedAt": "2026-04-24T03:01:28.570Z",
+    "fetchedAt": "2026-04-24T04:54:35.888Z",
     "cards": [
       {
-        "name": "Arboliva ex",
-        "number": "23",
-        "rarity": "Double Rare",
-        "marketPrice": 0.87
+        "name": "Team Rocket's Mewtwo ex",
+        "number": "231",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 526.39
       },
       {
-        "name": "Team Rocket's Moltres ex",
-        "number": "31",
-        "rarity": "Double Rare",
-        "marketPrice": 0.86
+        "name": "Cynthia's Garchomp ex",
+        "number": "232",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 232.79
       },
       {
         "name": "Ethan's Ho-Oh ex",
-        "number": "39",
-        "rarity": "Double Rare",
-        "marketPrice": 0.74
+        "number": "230",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 168.96
       },
       {
-        "name": "Shaymin",
-        "number": "10",
-        "rarity": "Uncommon",
-        "marketPrice": 0.72
+        "name": "Team Rocket's Nidoking ex",
+        "number": "233",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 99.7
       }
-    ]
+    ],
+    "cardCount": 244,
+    "setTotalSinglesValue": 1965.41,
+    "top10SinglesValue": 1386.91
   },
   "zsv10pt5": {
     "setId": "zsv10pt5",
     "setName": "Black Bolt",
-    "fetchedAt": "2026-04-24T03:01:34.922Z",
+    "fetchedAt": "2026-04-24T04:54:40.755Z",
     "cards": [
+      {
+        "name": "Victini",
+        "number": "171",
+        "rarity": "Rare",
+        "marketPrice": 496.32
+      },
       {
         "name": "Zekrom ex",
         "number": "172",
@@ -3638,128 +3995,140 @@
         "marketPrice": 454.74
       },
       {
+        "name": "Seismitoad",
+        "number": "105",
+        "rarity": "Illustration Rare",
+        "marketPrice": 173.39
+      },
+      {
         "name": "Kyurem ex",
-        "number": "28",
-        "rarity": "Double Rare",
-        "marketPrice": 2.37
-      },
-      {
-        "name": "Meloetta ex",
-        "number": "44",
-        "rarity": "Double Rare",
-        "marketPrice": 0.55
-      },
-      {
-        "name": "Excadrill ex",
-        "number": "46",
-        "rarity": "Double Rare",
-        "marketPrice": 0.51
+        "number": "165",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 68.39
       }
-    ]
+    ],
+    "cardCount": 172,
+    "setTotalSinglesValue": 2626.46,
+    "top10SinglesValue": 1678.5
   },
   "rsv10pt5": {
     "setId": "rsv10pt5",
     "setName": "White Flare",
-    "fetchedAt": "2026-04-24T03:01:36.765Z",
+    "fetchedAt": "2026-04-24T04:54:45.670Z",
     "cards": [
       {
+        "name": "Victini",
+        "number": "172",
+        "rarity": "Rare",
+        "marketPrice": 406.96
+      },
+      {
         "name": "Reshiram ex",
-        "number": "20",
-        "rarity": "Double Rare",
-        "marketPrice": 0.54
+        "number": "173",
+        "rarity": "Black White Rare",
+        "marketPrice": 392.92
       },
       {
-        "name": "Jellicent ex",
-        "number": "45",
-        "rarity": "Double Rare",
-        "marketPrice": 0.52
+        "name": "Hydreigon ex",
+        "number": "169",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 72.99
       },
       {
-        "name": "Whimsicott ex",
-        "number": "5",
-        "rarity": "Double Rare",
-        "marketPrice": 0.46
-      },
-      {
-        "name": "Keldeo ex",
-        "number": "30",
-        "rarity": "Double Rare",
-        "marketPrice": 0.42
+        "name": "Hilda",
+        "number": "171",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 54.96
       }
-    ]
+    ],
+    "cardCount": 173,
+    "setTotalSinglesValue": 2371.5,
+    "top10SinglesValue": 1374.34
   },
   "me1": {
     "setId": "me1",
     "setName": "Mega Evolution",
-    "fetchedAt": "2026-04-24T03:01:38.198Z",
+    "fetchedAt": "2026-04-24T04:54:49.559Z",
     "cards": [
       {
+        "name": "Mega Lucario ex",
+        "number": "188",
+        "rarity": "Mega Hyper Rare",
+        "marketPrice": 266.99
+      },
+      {
+        "name": "Mega Gardevoir ex",
+        "number": "187",
+        "rarity": "Mega Hyper Rare",
+        "marketPrice": 228.64
+      },
+      {
         "name": "Mega Venusaur ex",
-        "number": "3",
-        "rarity": "Double Rare",
-        "marketPrice": 0.97
+        "number": "177",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 151.71
       },
       {
-        "name": "Mega Camerupt ex",
-        "number": "22",
-        "rarity": "Double Rare",
-        "marketPrice": 0.6
-      },
-      {
-        "name": "Mega Manectric ex",
-        "number": "50",
-        "rarity": "Double Rare",
-        "marketPrice": 0.59
-      },
-      {
-        "name": "Mega Abomasnow ex",
-        "number": "36",
-        "rarity": "Double Rare",
-        "marketPrice": 0.52
+        "name": "Mega Latias ex",
+        "number": "181",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 82.64
       }
-    ]
+    ],
+    "cardCount": 188,
+    "setTotalSinglesValue": 1666.17,
+    "top10SinglesValue": 1344.16
   },
   "me2": {
     "setId": "me2",
     "setName": "Phantasmal Flames",
-    "fetchedAt": "2026-04-24T03:01:53.764Z",
+    "fetchedAt": "2026-04-24T04:54:53.551Z",
     "cards": [
       {
         "name": "Mega Charizard X ex",
-        "number": "13",
-        "rarity": "Double Rare",
-        "marketPrice": 4.9
+        "number": "125",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 851.23
       },
       {
-        "name": "Mega Diancie ex",
-        "number": "41",
-        "rarity": "Double Rare",
-        "marketPrice": 0.67
+        "name": "Dawn",
+        "number": "129",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 29.78
       },
       {
-        "name": "Mega Heracross ex",
-        "number": "4",
-        "rarity": "Double Rare",
-        "marketPrice": 0.53
+        "name": "Mega Sharpedo ex",
+        "number": "127",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 25.42
       },
       {
-        "name": "Mismagius ex",
-        "number": "36",
-        "rarity": "Double Rare",
-        "marketPrice": 0.51
+        "name": "Rotom ex",
+        "number": "126",
+        "rarity": "Special Illustration Rare",
+        "marketPrice": 20.09
       }
-    ]
+    ],
+    "cardCount": 130,
+    "setTotalSinglesValue": 1466.89,
+    "top10SinglesValue": 1374.31
   },
   "me2pt5": {
     "setId": "me2pt5",
     "setName": "Ascended Heroes",
-    "fetchedAt": "2026-04-24T03:01:55.298Z",
-    "cards": []
+    "fetchedAt": "2026-04-24T04:54:59.182Z",
+    "cards": [],
+    "cardCount": 0,
+    "setTotalSinglesValue": 0,
+    "top10SinglesValue": 0
   },
   "me3": {
     "setId": "me3",
     "setName": "Perfect Order",
-    "fetchedAt": "2026-04-24T03:02:09.226Z",
-    "cards": []
+    "fetchedAt": "2026-04-24T04:55:01.437Z",
+    "cards": [],
+    "cardCount": 0,
+    "setTotalSinglesValue": 0,
+    "top10SinglesValue": 0
   }
 }

@@ -8,6 +8,9 @@ interface TopChaseEntry {
   setName: string;
   fetchedAt?: string;
   cards?: Array<{ name: string; marketPrice?: number; rarity?: string | null }>;
+  cardCount?: number;
+  setTotalSinglesValue?: number;
+  top10SinglesValue?: number;
 }
 
 interface PullRateEra {
@@ -49,7 +52,13 @@ const TOP_CHASE_BY_NORMALIZED_NAME: Map<string, TopChaseEntry> = (() => {
 
 function lookupTopChaseCards(
   pricing: SealedPricing
-): { names: string[]; chaseCardIndex: number | null; topChasePrice: number | null } {
+): {
+  names: string[];
+  chaseCardIndex: number | null;
+  topChasePrice: number | null;
+  setTotalSinglesValue: number | null;
+  top10SinglesValue: number | null;
+} {
   // Strongest match: pokedataId of the form `local-sealed:<setId>-<productType>`
   // already encodes the TCG API setId, e.g. `local-sealed:swsh7-etb` → `swsh7`.
   const idMatch = pricing.pokedataId?.match(/^local-sealed:([a-z0-9]+(?:pt[0-9]+)?)-/i);
@@ -85,27 +94,58 @@ function lookupTopChaseCards(
       }
     }
   }
-  return { names: [], chaseCardIndex: null, topChasePrice: null };
+  return {
+    names: [],
+    chaseCardIndex: null,
+    topChasePrice: null,
+    setTotalSinglesValue: null,
+    top10SinglesValue: null,
+  };
 }
 
 function scoreChaseEntry(entry: TopChaseEntry): {
   names: string[];
   chaseCardIndex: number | null;
   topChasePrice: number | null;
+  setTotalSinglesValue: number | null;
+  top10SinglesValue: number | null;
 } {
   const cards = entry.cards ?? [];
   const names = cards.slice(0, 4).map((c) => c.name).filter(Boolean);
-  if (!names.length) return { names: [], chaseCardIndex: null, topChasePrice: null };
+  const setTotalSinglesValue =
+    typeof entry.setTotalSinglesValue === "number" && entry.setTotalSinglesValue > 0
+      ? entry.setTotalSinglesValue
+      : null;
+  const top10SinglesValue =
+    typeof entry.top10SinglesValue === "number" && entry.top10SinglesValue > 0
+      ? entry.top10SinglesValue
+      : null;
+  if (!names.length)
+    return {
+      names: [],
+      chaseCardIndex: null,
+      topChasePrice: null,
+      setTotalSinglesValue,
+      top10SinglesValue,
+    };
   const topPrice = cards[0]?.marketPrice ?? 0;
   // Map top chase price → 0..100 score on log scale.
   // $5 → 30, $25 → 50, $100 → 70, $500 → 85, $1500+ → 95+
   if (!topPrice || topPrice <= 0)
-    return { names, chaseCardIndex: 50, topChasePrice: null };
+    return {
+      names,
+      chaseCardIndex: 50,
+      topChasePrice: null,
+      setTotalSinglesValue,
+      top10SinglesValue,
+    };
   const score = 22 + 22 * Math.log10(topPrice + 1);
   return {
     names,
     chaseCardIndex: Math.max(10, Math.min(98, Math.round(score))),
     topChasePrice: topPrice,
+    setTotalSinglesValue,
+    top10SinglesValue,
   };
 }
 
@@ -401,6 +441,14 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
   );
   const chaseEvRatio =
     expectedChaseValue && price > 0 ? expectedChaseValue / price : null;
+  const setSinglesValue = topChase.setTotalSinglesValue;
+  // setSinglesValue is the sum of every single's market price for the
+  // expansion that this product opens. Divided by the sealed price it
+  // gives a coarse "set wealth ratio" — high ratios mean the secondary-
+  // market singles pool is much richer than the sealed cost, which
+  // historically correlates with sealed appreciation as supply dries up.
+  const setSinglesValueRatio =
+    setSinglesValue && price > 0 ? setSinglesValue / price : null;
 
   return {
     id: `dynamic-${pricing.pokedataId}`,
@@ -432,6 +480,8 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
       liquidityTier,
       expectedChaseValue,
       chaseEvRatio,
+      setSinglesValue,
+      setSinglesValueRatio,
     },
 
     chaseCards,

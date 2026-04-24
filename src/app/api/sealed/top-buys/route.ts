@@ -125,6 +125,12 @@ function buildCatalogSet(pricing: SealedPricing): SealedSetData {
         curatedMatch.factors.expectedChaseValue,
       chaseEvRatio:
         dynamicSet.factors.chaseEvRatio ?? curatedMatch.factors.chaseEvRatio,
+      setSinglesValue:
+        dynamicSet.factors.setSinglesValue ??
+        curatedMatch.factors.setSinglesValue,
+      setSinglesValueRatio:
+        dynamicSet.factors.setSinglesValueRatio ??
+        curatedMatch.factors.setSinglesValueRatio,
     },
   };
 }

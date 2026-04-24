@@ -41,7 +41,7 @@ const OUTPUT_PATH = path.join(
 
 const TCG_API = "https://api.pokemontcg.io/v2";
 const TOP_N = 4;
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 250;
 const REQUEST_DELAY_MS = 250;
 
 const args = process.argv.slice(2);
@@ -67,17 +67,41 @@ function bestVariantMarket(prices) {
 }
 
 async function fetchSetTopCards(setId, setName) {
-  const url = `${TCG_API}/cards?q=set.id:${setId}&pageSize=${PAGE_SIZE}&select=id,name,number,rarity,tcgplayer`;
-  const res = await fetch(url, { headers: { Accept: "application/json" } });
-  if (!res.ok) {
-    if (res.status === 404) {
-      return { setId, setName, cards: [], skipped: "not-found" };
+  // Pull every card in the set (paginated) so we can compute both the
+  // top chase list and the full set-singles total value. PokemonTCG.io
+  // caps pageSize at 250; most Pokemon sets fit in 1-2 pages.
+  const collected = [];
+  let page = 1;
+  while (true) {
+    const url =
+      `${TCG_API}/cards?q=set.id:${setId}` +
+      `&pageSize=${PAGE_SIZE}&page=${page}` +
+      `&select=id,name,number,rarity,tcgplayer`;
+    const res = await fetch(url, { headers: { Accept: "application/json" } });
+    if (!res.ok) {
+      if (res.status === 404) {
+        return {
+          setId,
+          setName,
+          fetchedAt: new Date().toISOString(),
+          cards: [],
+          cardCount: 0,
+          setTotalSinglesValue: 0,
+          skipped: "not-found",
+        };
+      }
+      throw new Error(`TCG API ${res.status} for ${setId}: ${await res.text()}`);
     }
-    throw new Error(`TCG API ${res.status} for ${setId}: ${await res.text()}`);
+    const body = await res.json();
+    const data = Array.isArray(body?.data) ? body.data : [];
+    collected.push(...data);
+    if (data.length < PAGE_SIZE) break;
+    page += 1;
+    if (page > 8) break; // safety: no Pokemon set is >2000 cards
+    await sleep(REQUEST_DELAY_MS);
   }
-  const body = await res.json();
-  const data = Array.isArray(body?.data) ? body.data : [];
-  const ranked = data
+
+  const ranked = collected
     .map((card) => ({
       name: card?.name ?? "",
       number: card?.number ?? "",
@@ -87,22 +111,33 @@ async function fetchSetTopCards(setId, setName) {
     .filter((card) => card.name && card.marketPrice > 0)
     .sort((a, b) => b.marketPrice - a.marketPrice);
 
-  // Deduplicate by card name (keep highest-priced variant)
+  const setTotalSinglesValue = ranked.reduce(
+    (sum, c) => sum + c.marketPrice,
+    0
+  );
+  const top10SinglesValue = ranked
+    .slice(0, 10)
+    .reduce((sum, c) => sum + c.marketPrice, 0);
+
+  // Deduplicate by card name for the top chase list (keep highest variant)
   const seen = new Set();
-  const unique = [];
+  const uniqueTop = [];
   for (const card of ranked) {
     const key = card.name.toLowerCase();
     if (seen.has(key)) continue;
     seen.add(key);
-    unique.push(card);
-    if (unique.length >= TOP_N) break;
+    uniqueTop.push(card);
+    if (uniqueTop.length >= TOP_N) break;
   }
 
   return {
     setId,
     setName,
     fetchedAt: new Date().toISOString(),
-    cards: unique,
+    cards: uniqueTop,
+    cardCount: ranked.length,
+    setTotalSinglesValue: Math.round(setTotalSinglesValue * 100) / 100,
+    top10SinglesValue: Math.round(top10SinglesValue * 100) / 100,
   };
 }
 
@@ -164,7 +199,8 @@ async function main() {
       !onlySetId &&
       existing[target.setId] &&
       Array.isArray(existing[target.setId].cards) &&
-      existing[target.setId].cards.length > 0
+      existing[target.setId].cards.length > 0 &&
+      typeof existing[target.setId].setTotalSinglesValue === "number"
     ) {
       skipped += 1;
       continue;

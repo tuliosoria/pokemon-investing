@@ -587,6 +587,12 @@ export function ForecastDashboard() {
                       chaseEvRatio:
                         dynamic.factors.chaseEvRatio ??
                         curatedMatch.factors.chaseEvRatio,
+                      setSinglesValue:
+                        dynamic.factors.setSinglesValue ??
+                        curatedMatch.factors.setSinglesValue,
+                      setSinglesValueRatio:
+                        dynamic.factors.setSinglesValueRatio ??
+                        curatedMatch.factors.setSinglesValueRatio,
                     },
                   };
                 })()

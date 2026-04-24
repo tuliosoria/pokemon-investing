@@ -641,21 +641,39 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
   //      means the expected chase value alone exceeds the sealed price,
   //      which is a structural demand signal that doesn't depend on
   //      Google Trends data being available for the set.
+  //   3. Set total singles value ÷ sealed price → singles-pool depth
+  //      ratio. Captures sets where the secondary chase pool (full-art
+  //      trainers, alt-arts, etc.) is rich even if no single card
+  //      dominates — historically a strong sealed-appreciation signal.
   // We still write the value into the model's `google_trends_score` slot
   // because the model artifacts are trained on that feature name; what
   // changes is *what* number we put there for products with no Trends data.
   const chaseEvRatio = set.factors.chaseEvRatio ?? null;
+  const setSinglesValueRatio = set.factors.setSinglesValueRatio ?? null;
   const liquidityTier = set.factors.liquidityTier ?? "normal";
   const evDemandScore =
     chaseEvRatio != null
       ? clamp(40 + 30 * Math.log2(chaseEvRatio + 0.5), 10, 95)
       : null;
+  // Singles-value ratio: a sealed Booster Box that opens into a $5,000
+  // singles pool when it costs $150 (ratio ≈ 33) is structurally very
+  // bullish. Mapped log-scale, similar shape to evDemandScore.
+  const singlesDepthScore =
+    setSinglesValueRatio != null && setSinglesValueRatio > 0
+      ? clamp(35 + 18 * Math.log2(setSinglesValueRatio + 1), 10, 95)
+      : null;
   const liquidityDemandScore =
     liquidityTier === "high" ? 75 : liquidityTier === "normal" ? 55 : 40;
+  // Blend the two structural EV signals when both exist (singles depth
+  // is a more complete picture than top-chase EV alone).
+  const blendedDemandScore =
+    evDemandScore != null && singlesDepthScore != null
+      ? Math.round(0.55 * singlesDepthScore + 0.45 * evDemandScore)
+      : (singlesDepthScore ?? evDemandScore);
   const rawGoogleTrendsScore =
     set.trendData?.current ??
     manifestProduct?.googleTrendsScore ??
-    evDemandScore ??
+    blendedDemandScore ??
     (liquidityTier !== "low" ? liquidityDemandScore : null) ??
     set.factors.popularity ??
     50;
@@ -665,13 +683,13 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     100
   );
   // Only count this feature as "estimated" when we truly have no real
-  // signal — Trends data, manifest score, chase EV, OR high liquidity all
-  // count as a real demand signal.
+  // signal — Trends data, manifest score, chase EV, singles-pool depth,
+  // OR high liquidity all count as a real demand signal.
   if (
     !set.trendData &&
     !manifestProduct &&
     !isCurated &&
-    evDemandScore == null &&
+    blendedDemandScore == null &&
     liquidityTier === "low"
   ) {
     estimatedFactors += 1;
