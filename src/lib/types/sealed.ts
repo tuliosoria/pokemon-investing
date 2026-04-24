@@ -93,6 +93,8 @@ export interface SealedSetData {
      * UI uses this to label the breakdown honestly.
      */
     communityScoreSource?: "blended" | "reddit-only" | "market-only" | null;
+    /** ISO timestamp of when the community-score JSON for this set was last refreshed. */
+    communityScoreUpdatedAt?: string | null;
   };
 
   chaseCards: string[];

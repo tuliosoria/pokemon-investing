@@ -156,6 +156,7 @@ export function resolveCommunityFactors(
   forumScore: number | null;
   marketActivityScore: number | null;
   source: "blended" | "reddit-only" | "market-only" | null;
+  lastUpdated: string | null;
 } {
   const entry = lookupCommunityScore(setName);
   const redditScore = entry?.redditScore ?? null;
@@ -164,6 +165,7 @@ export function resolveCommunityFactors(
   // placeholder that dragged composites toward neutral). Honoring the null
   // lets blendCommunityScore renormalize the remaining weights instead.
   const forumScore = entry?.forumScore ?? null;
+  const lastUpdated = entry?.lastUpdated ?? null;
 
   const composite = blendCommunityScore({
     reddit: redditScore,
@@ -180,6 +182,7 @@ export function resolveCommunityFactors(
       forumScore: null,
       marketActivityScore: null,
       source: null,
+      lastUpdated,
     };
   }
 
@@ -195,6 +198,7 @@ export function resolveCommunityFactors(
     forumScore,
     marketActivityScore,
     source,
+    lastUpdated,
   };
 }
 
@@ -217,6 +221,7 @@ export function mergeCommunityFactors(set: SealedSetData): SealedSetData {
       forumScore: resolved.forumScore,
       marketActivityScore: resolved.marketActivityScore,
       communityScoreSource: resolved.source,
+      communityScoreUpdatedAt: resolved.lastUpdated,
     },
   };
 }
@@ -677,6 +682,7 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
       forumScore: communityResolution.forumScore,
       marketActivityScore: communityResolution.marketActivityScore,
       communityScoreSource: communityResolution.source,
+      communityScoreUpdatedAt: communityResolution.lastUpdated,
     },
 
     chaseCards,

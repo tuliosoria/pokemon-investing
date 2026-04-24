@@ -898,16 +898,30 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     typeof set.factors?.marketActivityScore === "number" ? set.factors.marketActivityScore : null;
   const resolvedRedditScore =
     factorReddit ?? factorMarket ?? communityEntry?.redditScore ?? 50;
-  const resolvedForumScore =
+  // Forum data has no live scraper today. If the source has nothing for this set,
+  // emit NaN so XGBoost's missing-value branch handles it instead of injecting a
+  // synthetic neutral 50 that biases the consistency calculation downward.
+  const resolvedForumScore: number | null =
     typeof set.factors?.forumScore === "number"
       ? set.factors.forumScore
-      : (communityEntry?.forumScore ?? 50);
+      : typeof communityEntry?.forumScore === "number"
+        ? communityEntry.forumScore
+        : null;
   const redditScoreVal = clamp(resolvedRedditScore, 0, 100);
-  const forumScoreVal = clamp(resolvedForumScore, 0, 100);
-  const sigMean = (communityScoreVal + redditScoreVal + forumScoreVal) / 3;
-  const sigStd = Math.sqrt(
-    ((communityScoreVal - sigMean) ** 2 + (redditScoreVal - sigMean) ** 2 + (forumScoreVal - sigMean) ** 2) / 3
+  const forumScoreVal = resolvedForumScore === null ? Number.NaN : clamp(resolvedForumScore, 0, 100);
+  const consistencyParts = [communityScoreVal, redditScoreVal, forumScoreVal].filter((v) =>
+    Number.isFinite(v)
   );
+  const sigMean =
+    consistencyParts.length > 0
+      ? consistencyParts.reduce((acc, v) => acc + v, 0) / consistencyParts.length
+      : 0;
+  const sigStd =
+    consistencyParts.length > 0
+      ? Math.sqrt(
+          consistencyParts.reduce((acc, v) => acc + (v - sigMean) ** 2, 0) / consistencyParts.length
+        )
+      : 0;
   const communitySignalConsistency = clamp(1 - sigStd / (sigMean + 1e-6), -1, 1);
 
   // price_z_in_era: set to NaN; XGBoost handles missing via its missing-value branch.

@@ -232,6 +232,19 @@ export function ForecastBreakdownModal({ set, forecast, open, onClose }: Forecas
                       return base + note;
                     })()}
                   </p>
+                  {factors.communityScoreUpdatedAt ? (
+                    <p className="mt-0.5 text-[10px] text-[hsl(var(--muted-foreground))]/60">
+                      {(() => {
+                        const ts = new Date(factors.communityScoreUpdatedAt);
+                        if (isNaN(ts.getTime())) return null;
+                        const ageMs = Date.now() - ts.getTime();
+                        const days = Math.floor(ageMs / (1000 * 60 * 60 * 24));
+                        const freshness =
+                          days <= 0 ? "today" : days === 1 ? "1 day ago" : `${days} days ago`;
+                        return `Signal refreshed ${freshness}`;
+                      })()}
+                    </p>
+                  ) : null}
                 </div>
               </>
             ) : (
