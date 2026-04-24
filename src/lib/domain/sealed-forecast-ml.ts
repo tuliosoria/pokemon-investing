@@ -148,7 +148,7 @@ export interface ModelArtifact {
   /** Phase-3: present when the 5yr model uses 1yr/3yr OOF predictions as stacked features. */
   stackedFromHorizons?: string[];
   /** Per-(era_encoded)_(product_type_encoded) cohort stats [mean, std] for price_z_in_era. */
-  priceZInEraCohortStats?: Record<string, [number, number]>;
+  priceZInEraCohortStats?: Record<string, number[]>;
   bestHyperparameters?: Record<string, number | string>;
   droppedFeatures?: string[];
 }
@@ -388,6 +388,21 @@ function formatFeatureValue(feature: FeatureKey, value: number): string {
     case "product_type_encoded":
     case "era_encoded":
       return formatEncodedLabel(feature, value);
+    case "log_current_price":
+    case "log_most_expensive_card_price":
+      return `ln($${Math.round(Math.expm1(value))})`;
+    case "chase_value_share":
+      return `${round(value, 2)}`;
+    case "community_signal_consistency":
+      return `${round(value, 2)}`;
+    case "price_z_in_era":
+      return `${round(value, 2)}σ`;
+    case "momentum_consistency":
+      return value > 0 ? "aligned" : value < 0 ? "diverging" : "n/a";
+    case "oof_pred_1yr":
+      return formatCurrency(value);
+    case "oof_pred_3yr":
+      return formatCurrency(value);
     default:
       return `${Math.round(value)}/100`;
   }
