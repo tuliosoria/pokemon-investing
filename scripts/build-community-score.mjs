@@ -91,40 +91,62 @@ function cachePut(key, data) {
 
 let lastRequestTime = 0;
 async function throttledFetch(url, options = {}) {
-  const now = Date.now();
-  const wait = THROTTLE_MS - (now - lastRequestTime);
-  if (wait > 0) await new Promise(r => setTimeout(r, wait));
-  lastRequestTime = Date.now();
-
+  // Cache lookup first — cached entries skip the throttle entirely.
   const cached = cacheGet(url);
   if (cached !== null) return cached;
 
-  try {
-    const res = await fetch(url, {
-      headers: {
-        "User-Agent": REDDIT_UA,
-        "Accept": "application/json",
-        ...(options.headers ?? {}),
-      },
-      signal: AbortSignal.timeout(15_000),
-    });
+  // Retry with exponential backoff on transient failures (429 / 5xx / network).
+  // Reddit's anonymous endpoint is aggressively rate-limited; one retry pass
+  // isn't enough so we attempt up to MAX_ATTEMPTS with exponential backoff.
+  const MAX_ATTEMPTS = 4;
+  let backoffMs = 2000;
 
-    if (!res.ok) {
-      if (res.status === 429) {
-        console.warn(`  Rate-limited on ${url}, backing off 5s`);
-        await new Promise(r => setTimeout(r, 5000));
-        lastRequestTime = Date.now();
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const now = Date.now();
+    const wait = THROTTLE_MS - (now - lastRequestTime);
+    if (wait > 0) await new Promise(r => setTimeout(r, wait));
+    lastRequestTime = Date.now();
+
+    try {
+      const res = await fetch(url, {
+        headers: {
+          "User-Agent": REDDIT_UA,
+          "Accept": "application/json",
+          ...(options.headers ?? {}),
+        },
+        signal: AbortSignal.timeout(15_000),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        cachePut(url, data);
+        return data;
       }
-      return null;
-    }
 
-    const data = await res.json();
-    cachePut(url, data);
-    return data;
-  } catch (err) {
-    console.warn(`  Fetch failed for ${url}: ${err.message}`);
-    return null;
+      // Retry on transient errors. 404 means the subreddit/path doesn't
+      // exist — there's no point retrying it.
+      const transient = res.status === 429 || res.status === 403 || res.status >= 500;
+      if (!transient || attempt === MAX_ATTEMPTS) {
+        if (attempt === MAX_ATTEMPTS) {
+          console.warn(`  Giving up on ${url} after ${attempt} attempts (status ${res.status})`);
+        }
+        return null;
+      }
+      console.warn(`  Status ${res.status} on attempt ${attempt}, backing off ${backoffMs}ms`);
+      await new Promise(r => setTimeout(r, backoffMs));
+      backoffMs *= 2;
+      lastRequestTime = Date.now();
+    } catch (err) {
+      if (attempt === MAX_ATTEMPTS) {
+        console.warn(`  Fetch failed for ${url} after ${attempt} attempts: ${err.message}`);
+        return null;
+      }
+      console.warn(`  Fetch error on attempt ${attempt} (${err.message}), backing off ${backoffMs}ms`);
+      await new Promise(r => setTimeout(r, backoffMs));
+      backoffMs *= 2;
+    }
   }
+  return null;
 }
 
 // ─── Reddit fetching ──────────────────────────────────────────────────────────
@@ -280,6 +302,94 @@ async function main() {
     console.log(`posts=${totalPosts}, raw=${weightedRaw.toFixed(1)}, sentiment=${sentimentDelta.toFixed(2)}${tag}`);
   }
 
+  // ─── Second-chance pass for failed sets ───────────────────────────────────
+  // Reddit's anonymous endpoint occasionally rate-limits us early in the run
+  // when the throttle hasn't warmed up. Retry any sets that failed in the
+  // first sweep with a longer 4-second cool-down between requests so they
+  // get real data instead of falling through to the market-activity proxy.
+  const failedIndices = redditData
+    .map((r, i) => (r.redditDataMissing ? i : -1))
+    .filter(i => i >= 0);
+  if (failedIndices.length > 0) {
+    console.log(`\nSecond-chance pass for ${failedIndices.length} failed sets (4s throttle)...`);
+    const ORIGINAL_THROTTLE = THROTTLE_MS;
+    // Mutate the throttle constant in-place via the closure variable.
+    // (THROTTLE_MS is a const at module scope; we re-route through a longer
+    // sleep here.)
+    for (const idx of failedIndices) {
+      const { setId, name } = sets[idx];
+      process.stdout.write(`  retry ${name}... `);
+      // Manual cool-down before each subreddit pair (covers both subs).
+      await new Promise(r => setTimeout(r, 4000));
+      const subData = await fetchSetRedditData(name);
+
+      let weightedRaw = 0;
+      let totalPosts = 0;
+      let allPosts = [];
+      let anySuccess = false;
+      for (const [, { posts, weight }] of Object.entries(subData)) {
+        if (posts == null) continue;
+        anySuccess = true;
+        weightedRaw += computeRawRedditScore(posts) * weight;
+        totalPosts += posts.length;
+        allPosts = allPosts.concat(posts);
+      }
+      if (anySuccess) {
+        redditData[idx] = {
+          setId,
+          name,
+          weightedRaw,
+          totalPosts,
+          allPosts,
+          sentimentDelta: scoreSentiment(allPosts),
+          redditDataMissing: false,
+        };
+        console.log(`recovered (posts=${totalPosts}, raw=${weightedRaw.toFixed(1)})`);
+      } else {
+        console.log(`still missing — falling back to market-activity proxy`);
+      }
+    }
+    void ORIGINAL_THROTTLE;
+  }
+
+  // ─── Preserve good data from previous run ─────────────────────────────────
+  // If a set still failed after the second-chance pass but the previous run
+  // had real Reddit data for it, keep the previous numbers rather than
+  // overwriting with redditDataMissing=true. Without this, a single
+  // unlucky build (e.g. Reddit briefly unavailable from CI) would erase
+  // months of accumulated community data and force every set onto the
+  // market-activity fallback.
+  let previousOutput = null;
+  if (existsSync(OUTPUT_PATH)) {
+    try {
+      previousOutput = loadJson(OUTPUT_PATH);
+    } catch {
+      previousOutput = null;
+    }
+  }
+  if (previousOutput?.sets) {
+    for (let i = 0; i < redditData.length; i++) {
+      const entry = redditData[i];
+      if (!entry.redditDataMissing) continue;
+      const prev = previousOutput.sets[entry.setId];
+      if (prev && prev.redditPostCount > 0 && prev.redditDataMissing !== true) {
+        // Carry forward the prior real data (preserve raw equivalent so
+        // normalization still places this set sensibly relative to others).
+        // We can't recover the raw score directly, but we can flag the
+        // entry so the downstream composer reuses prev.redditScore as-is.
+        redditData[i] = {
+          ...entry,
+          totalPosts: prev.redditPostCount,
+          sentimentDelta: prev.redditSentiment ?? 0,
+          redditDataMissing: false,
+          carriedForward: true,
+          previousRedditScore: prev.redditScore,
+        };
+      }
+    }
+  }
+
+
   // Normalize raw Reddit scores to 0-100 over sets that actually returned
   // data. Sets where every subreddit fetch failed are excluded from the
   // normalization range and later assigned a neutral 50.
@@ -303,6 +413,8 @@ async function main() {
 
   for (let i = 0; i < sets.length; i++) {
     const { setId, name, totalPosts, sentimentDelta, redditDataMissing } = redditData[i];
+    const carriedForward = redditData[i].carriedForward === true;
+    const previousRedditScore = redditData[i].previousRedditScore;
 
     // Sub-signals
     const googleTrendsScore = trendsMap[setId] ?? 50;
@@ -310,9 +422,16 @@ async function main() {
     // Reddit score with sentiment adjustment. When Reddit data is missing
     // the base score is already neutral (50), so the sentiment multiplier
     // (which is 1 + 0 = 1 anyway, since allPosts is empty) is a no-op.
-    const baseReddit = normalizedReddit[i];
-    const sentimentMultiplier = 1 + 0.10 * sentimentDelta; // ±10% for sentiment
-    const redditScore = clamp(Math.round(baseReddit * sentimentMultiplier), 0, 100);
+    // Carried-forward entries reuse the previous run's redditScore directly
+    // since we can't reconstruct the raw engagement.
+    let redditScore;
+    if (carriedForward && typeof previousRedditScore === "number") {
+      redditScore = clamp(previousRedditScore, 0, 100);
+    } else {
+      const baseReddit = normalizedReddit[i];
+      const sentimentMultiplier = 1 + 0.10 * sentimentDelta; // ±10% for sentiment
+      redditScore = clamp(Math.round(baseReddit * sentimentMultiplier), 0, 100);
+    }
 
     // Forum placeholder (wired to 50 neutral; extend here for PokeBeach, etc.)
     const forumScore = 50;
