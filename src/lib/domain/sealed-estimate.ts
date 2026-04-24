@@ -28,6 +28,14 @@ const TOP_CHASE_BY_NORMALIZED_NAME: Map<string, TopChaseEntry> = (() => {
 function lookupTopChaseCards(
   pricing: SealedPricing
 ): { names: string[]; chaseCardIndex: number | null } {
+  // Strongest match: pokedataId of the form `local-sealed:<setId>-<productType>`
+  // already encodes the TCG API setId, e.g. `local-sealed:swsh7-etb` → `swsh7`.
+  const idMatch = pricing.pokedataId?.match(/^local-sealed:([a-z0-9]+(?:pt[0-9]+)?)-/i);
+  if (idMatch) {
+    const direct = TOP_CHASE_BY_SET_ID[idMatch[1]];
+    if (direct?.cards?.length) return scoreChaseEntry(direct);
+  }
+
   const candidates = [
     pricing.priceChartingConsoleName,
     pricing.name,
@@ -49,7 +57,7 @@ function lookupTopChaseCards(
       if (!entry.cards?.length) continue;
       if (key === normalized) continue;
       if (key.includes(normalized) || normalized.includes(key)) {
-        if (key.length >= 4) {
+        if (key.length >= 4 && normalized.length >= 4) {
           return scoreChaseEntry(entry);
         }
       }

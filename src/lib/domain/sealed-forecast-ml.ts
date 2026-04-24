@@ -933,10 +933,14 @@ function deriveFiveYearFallbackPrice(
 }
 
 function resolveConfidence(spreadPercent: number): Confidence {
-  if (spreadPercent < 15) {
+  // Calibrated against trained sealed-product model historical errors:
+  //   1yr ≈ 30%, 3yr ≈ 38%, 5yr ≈ 46%. Anything <25% is genuinely tight,
+  //   25–55% is the normal operating range, and >55% means the prediction
+  //   is essentially noise.
+  if (spreadPercent < 25) {
     return "High";
   }
-  if (spreadPercent <= 35) {
+  if (spreadPercent <= 55) {
     return "Medium";
   }
   return "Low";
@@ -1097,10 +1101,14 @@ function buildForecast(
           prediction3yr
         ),
         leafContributions: [],
+        // When the 5yr model isn't deployable we derive the 5yr price from
+        // the 1yr/3yr models. The 5yr model's own historical error is then
+        // misleading as a floor — fall back to the 3yr error which is the
+        // longest horizon we actually trained.
         spreadPercent: Math.max(
           prediction1yr.spreadPercent,
           prediction3yr.spreadPercent,
-          models.fiveYear.historicalErrorPercent ?? 0
+          models.threeYear.historicalErrorPercent ?? 0
         ),
       };
   let adjustedPredictions = applySparseLaunchGuardrails(input, {
@@ -1140,17 +1148,36 @@ function buildForecast(
 
   const signal: Signal =
     benchmarkDelta >= 10 ? "Buy" : benchmarkDelta >= 0 ? "Hold" : "Sell";
+  const fallbackHistoricalError = useDirectFiveYearModel
+    ? models.fiveYear.historicalErrorPercent ?? 0
+    : models.threeYear.historicalErrorPercent ?? 0;
   const calibratedSpreadPercent = Math.max(
     adjustedPredictions.spreadPercent,
-    models.fiveYear.historicalErrorPercent ?? 0
+    fallbackHistoricalError
   );
-  const confidence =
-    wasRoiCapped ||
-    !useDirectFiveYearModel ||
-    (allowSparseForecast &&
-      input.estimatedFactors > MAX_ESTIMATED_FACTORS_FOR_FORECAST)
-      ? "Low"
-      : resolveConfidence(calibratedSpreadPercent);
+  // Confidence is the spread-derived band, but downgraded when the inputs
+  // are weak. We *cap* (not floor) at Medium when:
+  //   * we had to derive the 5yr prediction from the 1yr/3yr fallback, OR
+  //   * the product is in the sparse-data forecast lane (allowed because
+  //     it's a core product type) and exceeds the estimated-factor budget,
+  //     OR
+  //   * the projected ROI hit the global cap (so we know our confidence in
+  //     the magnitude is limited).
+  // This lets well-behaved products earn Medium, and lets High emerge once
+  // we approve a five-year model — instead of forcing every dynamic product
+  // to "Low" regardless of signal quality.
+  const baseConfidence = resolveConfidence(calibratedSpreadPercent);
+  const capAtMedium = (value: Confidence): Confidence =>
+    value === "High" ? "Medium" : value;
+  let confidence: Confidence = baseConfidence;
+  if (!useDirectFiveYearModel) confidence = capAtMedium(confidence);
+  if (
+    allowSparseForecast &&
+    input.estimatedFactors > MAX_ESTIMATED_FACTORS_FOR_FORECAST
+  ) {
+    confidence = capAtMedium(confidence);
+  }
+  if (wasRoiCapped) confidence = capAtMedium(confidence);
   const confidenceBonus =
     confidence === "High" ? 5 : confidence === "Medium" ? 2 : 0;
   const rawScore = clamp(Math.round(50 + benchmarkDelta * 0.55 + confidenceBonus), 1, 99);
