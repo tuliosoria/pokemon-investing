@@ -51,7 +51,17 @@ export type FeatureKey =
   | "snapshot_freshness_days"
   | "liquidity_proxy_score"
   | "history_window_missing_flag"
-  | "provider_context_missing_flag";
+  | "provider_context_missing_flag"
+  // Phase-2 engineered features
+  | "log_current_price"
+  | "log_most_expensive_card_price"
+  | "chase_value_share"
+  | "community_signal_consistency"
+  | "price_z_in_era"
+  | "momentum_consistency"
+  // Phase-3 stacked meta-model features (5yr only)
+  | "oof_pred_1yr"
+  | "oof_pred_3yr";
 
 interface ManifestProduct {
   setId: string;
@@ -135,6 +145,12 @@ export interface ModelArtifact {
   validationStrategy?: string;
   deploymentApproved?: boolean;
   manualReviewReasons?: string[];
+  /** Phase-3: present when the 5yr model uses 1yr/3yr OOF predictions as stacked features. */
+  stackedFromHorizons?: string[];
+  /** Per-(era_encoded)_(product_type_encoded) cohort stats [mean, std] for price_z_in_era. */
+  priceZInEraCohortStats?: Record<string, [number, number]>;
+  bestHyperparameters?: Record<string, number | string>;
+  droppedFeatures?: string[];
 }
 
 export interface ForecastModelBundle {
@@ -822,15 +838,43 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
       ? 0
       : (setHistory?.providerContextMissingFlag ?? 1);
 
+  // Phase-2 engineered features
+  const logCurrentPrice = Math.log1p(Math.max(currentPrice, 0));
+  const logMostExpensiveCardPrice = Math.log1p(Math.max(mostExpensiveCardPrice, 0));
+  const chaseValueShare = clamp(chaseCardIndexScore / Math.max(currentPrice, 1), 0, 50);
+
+  // community_signal_consistency: 1 - std / (mean + ε) across sub-scores
+  const communityScoreVal = clamp(googleTrendsScore, 0, 100);
+  const redditScoreVal = clamp(communityEntry?.redditScore ?? 50, 0, 100);
+  const forumScoreVal = clamp(communityEntry?.forumScore ?? 50, 0, 100);
+  const sigMean = (communityScoreVal + redditScoreVal + forumScoreVal) / 3;
+  const sigStd = Math.sqrt(
+    ((communityScoreVal - sigMean) ** 2 + (redditScoreVal - sigMean) ** 2 + (forumScoreVal - sigMean) ** 2) / 3
+  );
+  const communitySignalConsistency = clamp(1 - sigStd / (sigMean + 1e-6), -1, 1);
+
+  // price_z_in_era: set to NaN; XGBoost handles missing via its missing-value branch.
+  // Cohort stats are stored in the model JSON (priceZInEraCohortStats) but inference
+  // currently leaves this as missing to avoid stale training-time statistics.
+  const priceZInEra = Number.NaN;
+
+  // momentum_consistency: +1 same sign, -1 opposite, 0 if either missing
+  const momentumConsistency =
+    !Number.isFinite(priceMomentum1mo) || !Number.isFinite(priceMomentum12mo)
+      ? 0
+      : Math.sign(priceMomentum1mo) === Math.sign(priceMomentum12mo)
+        ? 1
+        : -1;
+
   const values: Record<FeatureKey, number> = {
     current_price: currentPrice,
     most_expensive_card_price: round(mostExpensiveCardPrice, 2),
     chase_card_count: clamp(Math.round(chaseCardCount), 1, 12),
     chase_card_index_score: chaseCardIndexScore,
     set_age_years: setAgeYears,
-    community_score: clamp(googleTrendsScore, 0, 100),
-    reddit_score: clamp(communityEntry?.redditScore ?? 50, 0, 100),
-    forum_score: clamp(communityEntry?.forumScore ?? 50, 0, 100),
+    community_score: communityScoreVal,
+    reddit_score: redditScoreVal,
+    forum_score: forumScoreVal,
     print_run_type_encoded: PRINT_RUN_ENCODING[printRunType],
     price_trajectory_6mo: trajectory6mo,
     price_trajectory_24mo: trajectory24mo,
@@ -852,6 +896,16 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     liquidity_proxy_score: liquidityProxyScore,
     history_window_missing_flag: historyWindowMissingFlag,
     provider_context_missing_flag: providerContextMissingFlag,
+    // Phase-2 engineered features
+    log_current_price: logCurrentPrice,
+    log_most_expensive_card_price: logMostExpensiveCardPrice,
+    chase_value_share: chaseValueShare,
+    community_signal_consistency: communitySignalConsistency,
+    price_z_in_era: priceZInEra,
+    momentum_consistency: momentumConsistency,
+    // Phase-3 stacked features — populated in buildForecast before running 5yr model.
+    oof_pred_1yr: Number.NaN,
+    oof_pred_3yr: Number.NaN,
   };
 
   const labels = Object.fromEntries(
@@ -1227,25 +1281,59 @@ function buildForecast(
   const prediction1yr = runModel(models.oneYear, input.values);
   const prediction3yr = runModel(models.threeYear, input.values);
   const useDirectFiveYearModel = canUseFiveYearModel(models.fiveYear);
-  const prediction5yr = useDirectFiveYearModel
-    ? runModel(models.fiveYear, input.values)
-    : {
+
+  // Phase-3: when the 5yr model has stackedFromHorizons, inject 1yr/3yr predictions
+  // as features before running it. Falls back to the deterministic blend if either
+  // prediction is missing or the model isn't deployed.
+  let prediction5yr: ModelPrediction;
+  if (useDirectFiveYearModel) {
+    const fiveYearFeatures: Record<FeatureKey, number> = {
+      ...input.values,
+      oof_pred_1yr: Number.isFinite(prediction1yr.predictedPrice) && prediction1yr.predictedPrice > 0
+        ? prediction1yr.predictedPrice
+        : input.values.current_price,
+      oof_pred_3yr: Number.isFinite(prediction3yr.predictedPrice) && prediction3yr.predictedPrice > 0
+        ? prediction3yr.predictedPrice
+        : input.values.current_price,
+    };
+    const raw5yr = runModel(models.fiveYear, fiveYearFeatures);
+    // Fallback to deriveFiveYearFallbackPrice if the stacked model produced a bad result.
+    if (!Number.isFinite(raw5yr.predictedPrice) || raw5yr.predictedPrice <= 0) {
+      prediction5yr = {
         predictedPrice: deriveFiveYearFallbackPrice(
           input.values.current_price,
           prediction1yr,
           prediction3yr
         ),
         leafContributions: [],
-        // When the 5yr model isn't deployable we derive the 5yr price from
-        // the 1yr/3yr models. The 5yr model's own historical error is then
-        // misleading as a floor — fall back to the 3yr error which is the
-        // longest horizon we actually trained.
         spreadPercent: Math.max(
           prediction1yr.spreadPercent,
           prediction3yr.spreadPercent,
           models.threeYear.historicalErrorPercent ?? 0
         ),
       };
+    } else {
+      prediction5yr = raw5yr;
+    }
+  } else {
+    prediction5yr = {
+      predictedPrice: deriveFiveYearFallbackPrice(
+        input.values.current_price,
+        prediction1yr,
+        prediction3yr
+      ),
+      leafContributions: [],
+      // When the 5yr model isn't deployable we derive the 5yr price from
+      // the 1yr/3yr models. The 5yr model's own historical error is then
+      // misleading as a floor — fall back to the 3yr error which is the
+      // longest horizon we actually trained.
+      spreadPercent: Math.max(
+        prediction1yr.spreadPercent,
+        prediction3yr.spreadPercent,
+        models.threeYear.historicalErrorPercent ?? 0
+      ),
+    };
+  }
   let adjustedPredictions = applySparseLaunchGuardrails(input, {
     oneYearPrice: Math.max(prediction1yr.predictedPrice, 0),
     threeYearPrice: Math.max(prediction3yr.predictedPrice, 0),

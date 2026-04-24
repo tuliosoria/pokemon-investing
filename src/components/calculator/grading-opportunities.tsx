@@ -105,12 +105,17 @@ export function GradingOpportunities() {
 
       for (let j = 0; j < batchResults.length; j++) {
         const result = batchResults[j];
-        if (
-          result.status === "fulfilled" &&
-          result.value &&
-          result.value.expectedProfit >= 0
-        ) {
+        if (result.status === "fulfilled" && result.value) {
+          // Keep every card with valid data — the verdict/filter UI is
+          // responsible for hiding "don't grade" cards. Previously this
+          // hard-filtered expectedProfit < 0, which meant the "Don't Grade"
+          // filter could never show anything and most candidates silently
+          // disappeared from the UI.
           results.push(result.value);
+        } else if (result.status === "fulfilled" && !result.value) {
+          // gradeData was null — the upstream provider had no data for this
+          // card. Surface as a soft error so the user knows it was attempted.
+          errors.push(`${batch[j].name}: no pricing/population data available`);
         } else if (result.status === "rejected") {
           errors.push(`${batch[j].name}: ${result.reason}`);
         }
@@ -287,6 +292,30 @@ export function GradingOpportunities() {
               Show all
             </button>
           </p>
+        </div>
+      )}
+
+      {/* Empty load state — every card returned null or failed */}
+      {!isLoading && opportunities.length === 0 && (
+        <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--muted))] p-6 text-center space-y-3">
+          <AlertTriangle className="w-6 h-6 mx-auto text-yellow-500" />
+          <div>
+            <p className="text-sm font-medium">No grading data available</p>
+            <p className="text-xs text-[hsl(var(--muted-foreground))] mt-1">
+              {loading.errors.length > 0
+                ? `All ${loading.total} candidate cards failed to return pricing or population data. The PriceCharting / PokeData providers may be unavailable, rate-limited, or the API tokens (PRICECHARTING_TOKEN, POKEDATA_API_KEY) may not be configured.`
+                : "Loading hasn't started or returned any results yet."}
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              fetchedRef.current = false;
+              loadAllOpportunities();
+            }}
+            className="text-xs text-yellow-500 hover:underline"
+          >
+            Try again
+          </button>
         </div>
       )}
 

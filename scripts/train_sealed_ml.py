@@ -4,6 +4,7 @@ import csv
 import json
 import math
 import os
+import random
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -67,7 +68,32 @@ FEATURE_NAMES = [
     "liquidity_proxy_score",
     "history_window_missing_flag",
     "provider_context_missing_flag",
+    # Phase 2: engineered features
+    "log_current_price",
+    "log_most_expensive_card_price",
+    "chase_value_share",
+    "community_signal_consistency",
+    "price_z_in_era",
+    "momentum_consistency",
 ]
+
+# 5yr stacked meta-model adds OOF predictions from 1yr/3yr models.
+FEATURE_NAMES_5YR = FEATURE_NAMES + ["oof_pred_1yr", "oof_pred_3yr"]
+
+# Hyperparameter search space for random search (30 trials per horizon).
+HP_SEARCH_SPACE: dict[str, list[Any]] = {
+    "max_depth": list(range(3, 10)),
+    "learning_rate": [0.01, 0.02, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2],
+    "min_child_weight": list(range(1, 11)),
+    "reg_alpha": [0.0, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0],
+    "reg_lambda": [0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0],
+    "subsample": [0.6, 0.7, 0.75, 0.8, 0.85, 0.9, 1.0],
+    "colsample_bytree": [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 1.0],
+    "n_estimators": [50, 75, 100, 150, 200, 250, 300, 400],
+}
+
+# Features with gain below this threshold are pruned before final retraining.
+MIN_FEATURE_GAIN_THRESHOLD = 0.5
 
 TARGETS = {
     "1yr": "price_1yr_later",
@@ -239,6 +265,70 @@ def enrich_with_community_scores(
         frame.loc[mask, "forum_score"] = scores["forumScore"]
 
     return frame
+
+
+def compute_frame_derived_features(frame: pd.DataFrame) -> pd.DataFrame:
+    """Add Phase-2 engineered features to an existing training frame in-place.
+
+    These features depend on frame-level statistics (e.g. z-score within cohort)
+    so they must be computed AFTER the full training frame is assembled.
+    """
+    frame = frame.copy()
+
+    cp = frame["current_price"].astype(float).clip(lower=0)
+    mec = frame["most_expensive_card_price"].astype(float).clip(lower=0)
+    frame["log_current_price"] = np.log1p(cp)
+    frame["log_most_expensive_card_price"] = np.log1p(mec)
+
+    chase = frame["chase_card_index_score"].astype(float)
+    frame["chase_value_share"] = (chase / cp.clip(lower=1)).clip(0, 50)
+
+    # community_signal_consistency: 1 - std / (mean + eps) across available sub-scores
+    sigs = frame[["reddit_score", "community_score", "forum_score"]].astype(float)
+    sig_std = sigs.std(axis=1)
+    sig_mean = sigs.mean(axis=1)
+    frame["community_signal_consistency"] = (1.0 - sig_std / (sig_mean + 1e-6)).fillna(0.5).clip(-1, 1)
+
+    # price_z_in_era: z-score within (era_encoded, product_type_encoded) cohort, clipped to [-3,3]
+    frame["price_z_in_era"] = 0.0
+    for (era, ptype), group in frame.groupby(
+        ["era_encoded", "product_type_encoded"], observed=True
+    ):
+        prices = group["current_price"].astype(float)
+        mean_p = float(prices.mean())
+        std_p = float(prices.std())
+        if std_p > 1e-6:
+            z = (prices - mean_p) / std_p
+        else:
+            z = pd.Series(0.0, index=group.index)
+        frame.loc[group.index, "price_z_in_era"] = z.clip(-3, 3)
+
+    # momentum_consistency: +1 same sign, -1 opposite sign, 0 if either missing
+    m1 = frame["price_momentum_1mo"].astype(float)
+    m12 = frame["price_momentum_12mo"].astype(float)
+    frame["momentum_consistency"] = np.where(
+        m1.isna() | m12.isna(),
+        0.0,
+        np.where(np.sign(m1.fillna(0)) == np.sign(m12.fillna(0)), 1.0, -1.0),
+    )
+
+    return frame
+
+
+def collect_price_z_in_era_cohort_stats(frame: pd.DataFrame) -> dict[str, list[float]]:
+    """Collect (mean, std) of current_price per (era_encoded, product_type_encoded) cohort.
+
+    Stored in model JSON so inference code can compute the same z-score.
+    Key format: "{era_encoded}_{product_type_encoded}".
+    """
+    stats: dict[str, list[float]] = {}
+    for (era, ptype), group in frame.groupby(
+        ["era_encoded", "product_type_encoded"], observed=True
+    ):
+        prices = group["current_price"].astype(float)
+        key = f"{int(era)}_{int(ptype)}"
+        stats[key] = [round(float(prices.mean()), 4), round(float(prices.std()), 4)]
+    return stats
 
 
 def encode_print_run(value: str) -> int:
@@ -1219,11 +1309,102 @@ def build_forward_log_return_target(
     return values
 
 
+def make_model_with_params(params: dict[str, Any]) -> XGBRegressor:
+    """Instantiate an XGBRegressor from a hyperparameter dict (as returned by HP search)."""
+    return XGBRegressor(
+        objective="reg:squarederror",
+        random_state=42,
+        tree_method="hist",
+        missing=np.nan,
+        **params,
+    )
+
+
+def random_hp_search(
+    features: pd.DataFrame,
+    current_prices: pd.Series,
+    target_prices: pd.Series,
+    target_returns: pd.Series,
+    n_trials: int = 30,
+    random_seed: int = 42,
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Random-search hyperparameter tuning using time-series CV.
+
+    Returns (best_params, top_5_trials_by_mape).
+    Falls back to ({}, []) when there are fewer than 2 CV folds.
+    """
+    sample_count = len(features)
+    fold_count = min(5, sample_count - 1)
+    if fold_count < 2:
+        return {}, []
+
+    rng = random.Random(random_seed)
+    splitter = TimeSeriesSplit(n_splits=fold_count)
+    best_mape = float("inf")
+    best_params: dict[str, Any] = {}
+    trial_results: list[dict[str, Any]] = []
+
+    for trial_idx in range(n_trials):
+        params = {key: rng.choice(values) for key, values in HP_SEARCH_SPACE.items()}
+
+        fold_mapes: list[float] = []
+        for train_idx, test_idx in splitter.split(features):
+            model = XGBRegressor(
+                objective="reg:squarederror",
+                random_state=42,
+                tree_method="hist",
+                missing=np.nan,
+                early_stopping_rounds=20,
+                eval_metric="rmse",
+                **params,
+            )
+            x_train = features.iloc[train_idx]
+            x_test = features.iloc[test_idx]
+            y_train = target_returns.iloc[train_idx].to_numpy(dtype=float)
+            y_test = target_returns.iloc[test_idx].to_numpy(dtype=float)
+            current_test = current_prices.iloc[test_idx].to_numpy(dtype=float)
+            actual_test = target_prices.iloc[test_idx].to_numpy(dtype=float)
+
+            model.fit(
+                x_train,
+                y_train,
+                eval_set=[(x_test, y_test)],
+                verbose=False,
+            )
+            pred_return = model.predict(x_test)
+            pred = current_test * np.exp(pred_return)
+            valid = np.isfinite(actual_test) & (actual_test > 0) & np.isfinite(pred)
+            if valid.any():
+                fold_mapes.append(
+                    float(
+                        np.mean(np.abs((pred[valid] - actual_test[valid]) / actual_test[valid]))
+                        * 100.0
+                    )
+                )
+
+        if not fold_mapes:
+            continue
+
+        avg_mape = float(np.mean(fold_mapes))
+        trial_results.append({
+            **params,
+            "mape": round(avg_mape, 4),
+            "trial": trial_idx,
+        })
+        if avg_mape < best_mape:
+            best_mape = avg_mape
+            best_params = dict(params)
+
+    trial_results.sort(key=lambda r: r["mape"])
+    return best_params, trial_results[:5]
+
+
 def evaluate_cross_validation(
     features: pd.DataFrame,
     current_prices: pd.Series,
     target_prices: pd.Series,
     target_returns: pd.Series,
+    best_params: dict[str, Any] | None = None,
 ) -> dict[str, float]:
     sample_count = len(features)
     fold_count = min(5, sample_count - 1)
@@ -1245,7 +1426,7 @@ def evaluate_cross_validation(
     return_actuals: list[float] = []
 
     for train_idx, test_idx in splitter.split(features):
-        model = make_model()
+        model = make_model_with_params(best_params) if best_params else make_model()
         x_train = features.iloc[train_idx]
         x_test = features.iloc[test_idx]
         y_train = target_returns.iloc[train_idx].to_numpy(dtype=float)
@@ -1283,12 +1464,157 @@ def evaluate_cross_validation(
     }
 
 
+def compute_oof_predictions(
+    frame: pd.DataFrame,
+    horizon: str,
+    target_column: str,
+    feature_names: list[str],
+    best_params: dict[str, Any] | None = None,
+) -> pd.Series:
+    """Generate out-of-fold predictions for `horizon` on the full frame.
+
+    For rows with a valid target, OOF preds come from the held-out fold.
+    For rows without a target (or outside OOF range), the final trained model
+    infers a prediction.
+    """
+    usable = frame[
+        frame[target_column].notna() & (frame["current_price"].astype(float) > 0)
+    ].copy()
+    usable.sort_values(["snapshot_date", "name"], inplace=True)
+    features = usable[feature_names].astype(float)
+    current_prices = usable["current_price"].astype(float)
+    target_prices = usable[target_column].astype(float)
+    target_returns = build_forward_log_return_target(current_prices, target_prices)
+
+    oof_pred_prices = pd.Series(np.nan, index=usable.index)
+    sample_count = len(features)
+    fold_count = min(5, sample_count - 1)
+
+    if fold_count >= 2:
+        splitter = TimeSeriesSplit(n_splits=fold_count)
+        for train_idx, test_idx in splitter.split(features):
+            model = make_model_with_params(best_params) if best_params else make_model()
+            model.fit(
+                features.iloc[train_idx],
+                target_returns.iloc[train_idx].to_numpy(dtype=float),
+            )
+            pred_return = model.predict(features.iloc[test_idx])
+            pred_prices = (
+                current_prices.iloc[test_idx].to_numpy(dtype=float) * np.exp(pred_return)
+            )
+            oof_pred_prices.iloc[test_idx] = pred_prices
+
+    # Final model trained on all usable rows for inference on rows without targets.
+    final_model = make_model_with_params(best_params) if best_params else make_model()
+    final_model.fit(features, target_returns.to_numpy(dtype=float))
+
+    result = pd.Series(np.nan, index=frame.index)
+    result.loc[oof_pred_prices.index] = oof_pred_prices.values
+
+    no_oof_mask = result.isna()
+    if no_oof_mask.any():
+        inf_features = frame.loc[no_oof_mask, feature_names].astype(float)
+        inf_prices = frame.loc[no_oof_mask, "current_price"].astype(float)
+        pred_return = final_model.predict(inf_features)
+        result.loc[no_oof_mask] = inf_prices.to_numpy(dtype=float) * np.exp(pred_return)
+
+    return result
+
+
+def compute_per_segment_metrics(
+    features: pd.DataFrame,
+    current_prices: pd.Series,
+    target_prices: pd.Series,
+    target_returns: pd.Series,
+    usable_df: pd.DataFrame,
+    best_params: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Compute OOF MAPE broken down by era, product type, and price band."""
+    sample_count = len(features)
+    fold_count = min(5, sample_count - 1)
+    if fold_count < 2:
+        return {}
+
+    splitter = TimeSeriesSplit(n_splits=fold_count)
+    oof_preds = np.full(len(features), np.nan)
+
+    for train_idx, test_idx in splitter.split(features):
+        model = make_model_with_params(best_params) if best_params else make_model()
+        model.fit(
+            features.iloc[train_idx],
+            target_returns.iloc[train_idx].to_numpy(dtype=float),
+        )
+        pred_return = model.predict(features.iloc[test_idx])
+        oof_preds[test_idx] = (
+            current_prices.iloc[test_idx].to_numpy(dtype=float) * np.exp(pred_return)
+        )
+
+    actual = target_prices.to_numpy(dtype=float)
+    pred = oof_preds
+
+    def mape_segment(mask: np.ndarray) -> float | None:
+        if not mask.any():
+            return None
+        p, a = pred[mask], actual[mask]
+        valid = np.isfinite(p) & np.isfinite(a) & (a > 0)
+        if not valid.any():
+            return None
+        return round(float(np.mean(np.abs((p[valid] - a[valid]) / a[valid])) * 100.0), 4)
+
+    result: dict[str, Any] = {}
+
+    era_col = usable_df["era_encoded"].to_numpy()
+    for era_val in sorted(np.unique(era_col)):
+        mask = era_col == era_val
+        m = mape_segment(mask)
+        if m is not None:
+            result.setdefault("byEra", {})[str(int(era_val))] = {
+                "mape": m,
+                "rows": int(mask.sum()),
+            }
+
+    pt_col = usable_df["product_type_encoded"].to_numpy()
+    for pt_val in sorted(np.unique(pt_col)):
+        mask = pt_col == pt_val
+        m = mape_segment(mask)
+        if m is not None:
+            result.setdefault("byProductType", {})[str(int(pt_val))] = {
+                "mape": m,
+                "rows": int(mask.sum()),
+            }
+
+    prices_arr = current_prices.to_numpy(dtype=float)
+    for band_name, band_mask in [
+        ("lt50", prices_arr < 50),
+        ("50to200", (prices_arr >= 50) & (prices_arr < 200)),
+        ("200to1000", (prices_arr >= 200) & (prices_arr < 1000)),
+        ("gt1000", prices_arr >= 1000),
+    ]:
+        m = mape_segment(band_mask)
+        if m is not None:
+            result.setdefault("byPriceBand", {})[band_name] = {
+                "mape": m,
+                "rows": int(band_mask.sum()),
+            }
+
+    return result
+
+
 def train_model(
     frame: pd.DataFrame,
     horizon: str,
     target_column: str,
     output_dir: Path = DATA_DIR,
+    stacked_oof: dict[str, pd.Series] | None = None,
 ) -> dict[str, Any]:
+    """Train a single horizon model with HP search, feature pruning, and per-segment diagnostics.
+
+    `stacked_oof` — if provided (dict with "oof_pred_1yr" and "oof_pred_3yr" Series),
+    these OOF columns are added to the feature matrix and FEATURE_NAMES_5YR is used.
+    """
+    is_5yr_stacked = stacked_oof is not None
+    base_feature_names = FEATURE_NAMES_5YR if is_5yr_stacked else FEATURE_NAMES
+
     usable = frame[
         frame[target_column].notna() & (frame["current_price"].astype(float) > 0)
     ].copy()
@@ -1296,24 +1622,67 @@ def train_model(
         raise RuntimeError(f"No rows available for {horizon} model")
 
     usable.sort_values(["snapshot_date", "name"], inplace=True)
-    features = usable[FEATURE_NAMES].astype(float)
+
+    if is_5yr_stacked:
+        for col in ("oof_pred_1yr", "oof_pred_3yr"):
+            oof_series = stacked_oof[col].reindex(usable.index)
+            # Fallback for rows where OOF pred is missing: use current price (neutral)
+            usable[col] = oof_series.fillna(usable["current_price"])
+
+    features_all = usable[base_feature_names].astype(float)
     current_prices = usable["current_price"].astype(float)
     target_prices = usable[target_column].astype(float)
     target_returns = build_forward_log_return_target(current_prices, target_prices)
     if target_returns.isna().all():
         raise RuntimeError(f"No valid forward returns available for {horizon} model")
+
+    # ---- Phase 1: HP search ----
+    print(f"[{horizon}] Running HP search ({30} trials)...")
+    best_params, top_trials = random_hp_search(
+        features_all, current_prices, target_prices, target_returns, n_trials=30
+    )
+    print(f"[{horizon}] Best HP MAPE: {top_trials[0]['mape'] if top_trials else 'n/a':.4f}%")
+
+    # ---- Phase 2 (audit): probe model to identify low-gain features ----
+    probe_model = make_model_with_params(best_params) if best_params else make_model()
+    probe_model.fit(features_all, target_returns.to_numpy(dtype=float))
+    probe_raw_importance = probe_model.get_booster().get_score(importance_type="gain")
+    # Always retain at least 5 features (by gain) to avoid empty feature sets
+    # when the dataset is tiny (e.g. 5yr with 16 rows).
+    min_keep = min(5, len(base_feature_names))
+    sorted_by_gain = sorted(
+        base_feature_names,
+        key=lambda f: probe_raw_importance.get(f, 0.0),
+        reverse=True,
+    )
+    must_keep = set(sorted_by_gain[:min_keep])
+    dropped_features = [
+        f for f in base_feature_names
+        if probe_raw_importance.get(f, 0.0) < MIN_FEATURE_GAIN_THRESHOLD and f not in must_keep
+    ]
+    active_feature_names = [f for f in base_feature_names if f not in dropped_features]
+    if dropped_features:
+        print(f"[{horizon}] Dropping {len(dropped_features)} low-gain feature(s): {dropped_features}")
+    else:
+        print(f"[{horizon}] All features pass gain threshold; no pruning.")
+
+    # ---- Final training with pruned features ----
+    features = usable[active_feature_names].astype(float)
+
     cv_metrics = evaluate_cross_validation(
-        features,
-        current_prices,
-        target_prices,
-        target_returns,
+        features, current_prices, target_prices, target_returns, best_params or None
     )
 
-    model = make_model()
-    logged_target = target_returns.to_numpy(dtype=float)
-    model.fit(features, logged_target)
+    # Per-segment diagnostics (Phase 1)
+    per_segment = compute_per_segment_metrics(
+        features, current_prices, target_prices, target_returns, usable, best_params or None
+    )
 
-    booster = model.get_booster()
+    final_model = make_model_with_params(best_params) if best_params else make_model()
+    logged_target = target_returns.to_numpy(dtype=float)
+    final_model.fit(features, logged_target)
+
+    booster = final_model.get_booster()
     dump = booster.get_dump(dump_format="json", with_stats=True)
     trees = [json.loads(tree) for tree in dump]
     config = json.loads(booster.save_config())
@@ -1354,23 +1723,59 @@ def train_model(
             f"{dominant_feature['key']} accounts for {dominant_feature['influence']}% of feature importance"
         )
 
+    # 5yr stacked meta-model: require positive R² and MAPE < 45
+    if is_5yr_stacked:
+        stacked_from_horizons = ["1yr", "3yr"]
+        cv_mape = float(cv_metrics["mape"])
+
+        # Compute R² on OOF predictions (reuse segment data already in cv_metrics via predictions list)
+        # Approximate R²: 1 - SS_res / SS_tot using the CV RMSE vs variance of target prices
+        target_var = float(target_prices.var())
+        cv_rmse = float(cv_metrics["rmse"])
+        r2_approx = 1.0 - (cv_rmse ** 2 / target_var) if target_var > 0 else 0.0
+
+        if cv_mape < 45.0 and r2_approx > 0.0 and int(usable.shape[0]) > 50:
+            # Remove the row-count reason if it was only 16 rows but stacked unlocked deployment
+            manual_review_reasons = [
+                r for r in manual_review_reasons
+                if "training rows" not in r
+            ]
+            print(
+                f"[5yr] Stacked meta-model: MAPE={cv_mape:.2f}%, R²≈{r2_approx:.3f}, "
+                f"rows={usable.shape[0]} → deploymentApproved"
+            )
+        else:
+            manual_review_reasons.append(
+                f"5yr stacked model did not meet gate (MAPE={cv_mape:.2f}%, R²≈{r2_approx:.3f}, "
+                f"rows={usable.shape[0]})"
+            )
+    else:
+        stacked_from_horizons = None
+        r2_approx = None
+
+    # Cohort stats for price_z_in_era inference
+    cohort_stats = collect_price_z_in_era_cohort_stats(usable)
+
     print(f"=== {horizon.upper()} TARGET TRANSFORM ===")
     print(json.dumps(TARGET_TRANSFORM, indent=2))
     print(f"=== {horizon.upper()} FEATURE IMPORTANCE START ===")
     print(json.dumps(global_importance, indent=2))
     print(f"=== {horizon.upper()} FEATURE IMPORTANCE END ===")
 
-    artifact = {
+    artifact: dict[str, Any] = {
         "generatedAt": datetime.now(tz=timezone.utc).isoformat(),
         "horizon": horizon,
         "targetColumn": target_column,
         "targetMode": MODEL_TARGET_MODE,
-        "featureNames": FEATURE_NAMES,
+        "featureNames": active_feature_names,
         "baseScore": base_score,
         "trees": trees,
         "treeCount": len(trees),
         "trainingRows": int(usable.shape[0]),
-        "crossValidation": cv_metrics,
+        "crossValidation": {
+            **cv_metrics,
+            "perSegment": per_segment,
+        },
         "meanTargetPrice": round(mean_target_price, 4),
         "meanTargetReturnPercent": round(mean_target_return_percent, 4),
         "historicalErrorPercent": round(float(cv_metrics["mape"]), 4),
@@ -1381,7 +1786,15 @@ def train_model(
         "deploymentApproved": len(manual_review_reasons) == 0,
         "manualReviewReasons": manual_review_reasons,
         "globalImportance": global_importance,
+        "bestHyperparameters": best_params or {},
+        "hpSearchTopTrials": top_trials,
+        "droppedFeatures": dropped_features,
+        "priceZInEraCohortStats": cohort_stats,
     }
+    if stacked_from_horizons is not None:
+        artifact["stackedFromHorizons"] = stacked_from_horizons
+    if r2_approx is not None:
+        artifact["r2Approx"] = round(r2_approx, 4)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     artifact_path = output_dir / f"model-{horizon}.json"
@@ -1405,14 +1818,46 @@ def train_model(
         "deploymentApproved": len(manual_review_reasons) == 0,
         "manualReviewReasons": manual_review_reasons,
         "treeCount": len(trees),
+        "bestHyperparameters": best_params or {},
+        "droppedFeatures": dropped_features,
     }
 
 
 def train_models(frame: pd.DataFrame, output_dir: Path = DATA_DIR) -> dict[str, Any]:
-    return {
-        horizon: train_model(frame, horizon, target_column, output_dir)
-        for horizon, target_column in TARGETS.items()
+    """Train all three horizon models.
+
+    1yr and 3yr are trained first; their OOF predictions become stacked
+    features for the 5yr meta-model (Phase 3).
+    """
+    results: dict[str, Any] = {}
+    oof_by_horizon: dict[str, pd.Series] = {}
+
+    for horizon in ["1yr", "3yr"]:
+        target_column = TARGETS[horizon]
+        result = train_model(frame, horizon, target_column, output_dir)
+        results[horizon] = result
+
+        # Collect OOF predictions using the best HP found during this horizon's training.
+        best_params = result.get("bestHyperparameters") or None
+        feature_names = [
+            f for f in FEATURE_NAMES
+            if f not in (result.get("droppedFeatures") or [])
+        ]
+        print(f"[{horizon}] Computing OOF predictions for 5yr stacking...")
+        oof_by_horizon[horizon] = compute_oof_predictions(
+            frame, horizon, target_column, feature_names, best_params
+        )
+
+    # Phase 3: train 5yr stacked meta-model
+    stacked_oof = {
+        "oof_pred_1yr": oof_by_horizon["1yr"],
+        "oof_pred_3yr": oof_by_horizon["3yr"],
     }
+    results["5yr"] = train_model(
+        frame, "5yr", TARGETS["5yr"], output_dir, stacked_oof=stacked_oof
+    )
+
+    return results
 
 
 def write_training_summary(summary: dict[str, Any], output_dir: Path = DATA_DIR) -> None:
@@ -1443,6 +1888,8 @@ def main() -> None:
     summary["audit"] = audit_summary
     summary["targetMode"] = MODEL_TARGET_MODE
     summary["validationStrategy"] = VALIDATION_STRATEGY
+    # Phase 2: add engineered features to training frame before training.
+    frame = compute_frame_derived_features(frame)
     write_training_data_artifacts(frame, history_summary, output_dir)
 
     model_summary = train_models(frame, output_dir)

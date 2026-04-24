@@ -1,0 +1,566 @@
+{
+  "generatedAt": "2026-04-24T05:44:04.954874+00:00",
+  "horizon": "5yr",
+  "targetColumn": "price_5yr_later",
+  "targetMode": "forward_log_return",
+  "featureNames": [
+    "current_price",
+    "most_expensive_card_price",
+    "chase_card_count",
+    "chase_card_index_score",
+    "set_age_years",
+    "community_score",
+    "reddit_score",
+    "forum_score",
+    "print_run_type_encoded",
+    "price_trajectory_6mo",
+    "price_trajectory_24mo",
+    "collector_demand_ratio",
+    "market_cycle_score",
+    "popularity_score",
+    "product_type_encoded",
+    "era_encoded",
+    "price_momentum_1mo",
+    "price_momentum_12mo",
+    "price_volatility_6mo",
+    "price_volatility_12mo",
+    "drawdown_12mo",
+    "history_density_12mo",
+    "available_provider_count",
+    "provider_spread_pct",
+    "provider_agreement_score",
+    "snapshot_freshness_days",
+    "liquidity_proxy_score",
+    "history_window_missing_flag",
+    "provider_context_missing_flag"
+  ],
+  "baseScore": 0.58359545,
+  "trees": [
+    {
+      "nodeid": 0,
+      "leaf": 0.00168467092,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00109587226,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 15
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 9
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.000944478088,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000286899769,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 15
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000601898879,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000222951174,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00411755685,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 9
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": -8.69752839e-05,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00104678876,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.00302151567,
+      "cover": 9
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000346005225,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000544499606,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000310512085,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.0014647874,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000482988544,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.000661914935,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 8
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.00175160321,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00129411498,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000264886621,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.00170444266,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00336104003,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 15
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 8
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000747118378,
+      "cover": 9
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.00182607991,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 9
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 15
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00262053357,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00176311505,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000595066405,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.00190054905,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000467397476,
+      "cover": 12
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0.0013204267,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00337253767,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00148786569,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.00276798359,
+      "cover": 11
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 9
+    },
+    {
+      "nodeid": 0,
+      "leaf": -0.000622476568,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 14
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 13
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 10
+    },
+    {
+      "nodeid": 0,
+      "leaf": 0,
+      "cover": 10
+    }
+  ],
+  "treeCount": 100,
+  "trainingRows": 16,
+  "crossValidation": {
+    "folds": 5.0,
+    "rmse": 6285.1419,
+    "mae": 4079.1782,
+    "mape": 45.7779,
+    "returnRmse": 0.504898,
+    "returnMae": 0.400151,
+    "strategy": "time_series_split"
+  },
+  "meanTargetPrice": 11315.3125,
+  "meanTargetReturnPercent": 97.2172,
+  "historicalErrorPercent": 45.7779,
+  "maeShareOfMeanTarget": 0.3605,
+  "targetTransform": {
+    "train": "np.log",
+    "inference": "np.exp"
+  },
+  "validationStrategy": "time_series_split",
+  "minimumTrainingRowsForApproval": 24,
+  "deploymentApproved": false,
+  "manualReviewReasons": [
+    "Only 16 training rows available; minimum approval threshold is 24"
+  ],
+  "globalImportance": []
+}
