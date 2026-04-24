@@ -53,18 +53,27 @@ function roundPrice(value: number | null | undefined): number | null {
 
 function resolveStoredSnapshotBestPrice(
   snapshot: Awaited<ReturnType<typeof getLatestStoredSealedPriceSnapshot>>
-): number | null {
+): { price: number | null; provider: "pricecharting" | "fallback" | null } {
   if (!snapshot) {
-    return null;
+    return { price: null, provider: null };
   }
 
-  return (
-    roundPrice(snapshot.bestPrice) ??
-    roundPrice(snapshot.priceChartingPrice) ??
-    roundPrice(snapshot.pokedataPrice) ??
+  const pcPrice =
+    roundPrice(snapshot.priceChartingPrice) ?? roundPrice(snapshot.bestPrice);
+  if (pcPrice !== null && snapshot.priceChartingPrice) {
+    return { price: pcPrice, provider: "pricecharting" };
+  }
+
+  const fallbackPrice =
     roundPrice(snapshot.tcgplayerPrice) ??
-    roundPrice(snapshot.ebayPrice)
-  );
+    roundPrice(snapshot.ebayPrice) ??
+    roundPrice(snapshot.pokedataPrice) ??
+    roundPrice(snapshot.bestPrice);
+  if (fallbackPrice !== null) {
+    return { price: fallbackPrice, provider: "fallback" };
+  }
+
+  return { price: null, provider: null };
 }
 
 function buildSealedImageAsset(input: {
@@ -143,7 +152,8 @@ function buildStoredSnapshotPricing(
     return null;
   }
 
-  const bestPrice = resolveStoredSnapshotBestPrice(snapshot);
+  const { price: bestPrice, provider: bestProvider } =
+    resolveStoredSnapshotBestPrice(snapshot);
   if (bestPrice === null) {
     return null;
   }
@@ -157,6 +167,9 @@ function buildStoredSnapshotPricing(
     meta,
   });
 
+  const pokedataSnapshotPrice = roundPrice(snapshot.pokedataPrice);
+  const priceChartingSnapshotPrice = roundPrice(snapshot.priceChartingPrice);
+
   return {
     pokedataId: id,
     name,
@@ -166,14 +179,17 @@ function buildStoredSnapshotPricing(
     priceChartingId: meta?.priceChartingId ?? undefined,
     priceChartingProductName: meta?.priceChartingProductName ?? null,
     priceChartingConsoleName: meta?.priceChartingConsoleName ?? null,
-    priceChartingPrice: roundPrice(snapshot.priceChartingPrice),
+    priceChartingPrice: priceChartingSnapshotPrice,
     tcgplayerPrice: roundPrice(snapshot.tcgplayerPrice),
     ebayPrice: roundPrice(snapshot.ebayPrice),
-    pokedataPrice: roundPrice(snapshot.pokedataPrice),
+    // Never surface pokedata price as the primary value; expose only as
+    // a clearly-labeled legacy fallback below.
+    pokedataPrice: null,
+    fallbackPokedataPrice: pokedataSnapshotPrice,
     bestPrice,
-    primaryProvider:
-      snapshot.primaryProvider ??
-      (snapshot.priceChartingPrice ? "pricecharting" : "pokedata"),
+    primaryProvider: priceChartingSnapshotPrice
+      ? "pricecharting"
+      : bestProvider ?? "fallback",
     snapshotDate,
   };
 }
@@ -205,7 +221,9 @@ function buildSyncedPriceChartingPricing(
     priceChartingPrice: syncedPrice,
     tcgplayerPrice: roundPrice(storedSnapshot?.tcgplayerPrice),
     ebayPrice: roundPrice(storedSnapshot?.ebayPrice),
-    pokedataPrice: roundPrice(storedSnapshot?.pokedataPrice),
+    // PriceCharting is primary; do not surface pokedata as a sibling price.
+    pokedataPrice: null,
+    fallbackPokedataPrice: roundPrice(storedSnapshot?.pokedataPrice),
     bestPrice: syncedPrice,
     primaryProvider: "pricecharting",
     snapshotDate: syncedEntry.capturedAt.slice(0, 10),
@@ -273,9 +291,11 @@ export async function GET(request: NextRequest) {
       priceChartingPrice,
       tcgplayerPrice: null,
       ebayPrice: null,
-      pokedataPrice: localPrice,
+      // Never surface curated/manual fallback price as PokeData; only PC is primary.
+      pokedataPrice: null,
+      fallbackPokedataPrice: priceChartingPrice ? null : localPrice,
       bestPrice: priceChartingPrice ?? localPrice,
-      primaryProvider: priceChartingPrice ? "pricecharting" : "pokedata",
+      primaryProvider: priceChartingPrice ? "pricecharting" : "fallback",
       snapshotDate: null,
       salesVolume: syncedEntry?.salesVolume ?? null,
       manualOnlyPrice: syncedEntry?.manualOnlyPrice ?? null,
@@ -463,7 +483,8 @@ export async function GET(request: NextRequest) {
           priceChartingPrice: officialPrice,
           tcgplayerPrice: roundPrice(latestSnapshot?.tcgplayerPrice),
           ebayPrice: roundPrice(latestSnapshot?.ebayPrice),
-          pokedataPrice: roundPrice(latestSnapshot?.pokedataPrice),
+          pokedataPrice: null,
+          fallbackPokedataPrice: roundPrice(latestSnapshot?.pokedataPrice),
           bestPrice: officialPrice,
           primaryProvider: "pricecharting",
           snapshotDate,

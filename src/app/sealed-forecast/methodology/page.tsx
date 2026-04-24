@@ -6,7 +6,7 @@ const VARIABLES = [
   {
     name: "Current price",
     source:
-      "Synced official PriceCharting sealed price when available, with PokeData / TCGPlayer / eBay fallback for gaps.",
+      "PriceCharting is the single primary source for sealed prices. PokeData / TCGPlayer / eBay snapshots are kept only as legacy fallbacks for products PriceCharting cannot price.",
     purpose: "Anchors every projection and ROI calculation to the current market.",
   },
   {

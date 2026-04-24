@@ -1,3 +1,8 @@
+// NOTE: `pokedataId` throughout this file is purely an internal stable
+// identifier for sealed products. It does NOT imply a runtime call to
+// pokedata.io — PriceCharting is the primary data source and PokeData is
+// only reached as a fallback for data PriceCharting cannot provide
+// (e.g. PSA population counts).
 import type { ResolvedImageAsset } from "@/lib/domain/image-assets";
 
 export type ProductType = "Booster Box" | "ETB" | "Booster Bundle" | "UPC" | "Special Collection" | "Case" | "Booster Pack" | "Tin" | "Collection Box" | "Unknown";
@@ -46,7 +51,7 @@ export interface SealedSetData {
     ebayPrice?: number | null;
     pokedataPrice?: number | null;
     bestPrice?: number | null;
-    primaryProvider?: "pricecharting" | "pokedata";
+    primaryProvider?: "pricecharting" | "pokedata" | "fallback";
     snapshotDate?: string | null;
     salesVolume?: number | null;
     manualOnlyPrice?: number | null;
@@ -105,10 +110,12 @@ export interface SealedPricing {
   ebayPrice: number | null;
   pokedataPrice: number | null;
   bestPrice: number | null;
-  primaryProvider?: "pricecharting" | "pokedata";
+  primaryProvider?: "pricecharting" | "pokedata" | "fallback";
   snapshotDate?: string | null;
   salesVolume?: number | null;
   manualOnlyPrice?: number | null;
+  /** PokeData snapshot price exposed only as a clearly-labeled legacy fallback. */
+  fallbackPokedataPrice?: number | null;
 }
 
 export interface ProjectionPoint {

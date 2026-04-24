@@ -20,6 +20,10 @@ export const STATIC_DATA_VERSION = 1;
 // Default max age before prices are considered stale
 export const PRICE_MAX_AGE_MS = 60 * 60 * 1000; // 1 hour
 
+// Population (PSA pop) data changes slowly — keep it for a week before
+// re-hitting PokeData to minimize calls to that fallback source.
+export const POPULATION_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------

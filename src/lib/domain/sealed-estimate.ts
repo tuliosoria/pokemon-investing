@@ -143,7 +143,9 @@ export function countEstimatedFactors(curated: boolean): number {
 }
 
 /**
- * Build a SealedSetData from PokeData API results.
+ * Build a SealedSetData from a runtime pricing payload.
+ * PriceCharting is the primary source; PokeData metadata is only used
+ * as fallback when PriceCharting cannot supply the field.
  * Only setAge, marketValue, and priceTrajectory are estimated from real data.
  * Other factors default to 50 (neutral).
  */
@@ -185,6 +187,6 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
     printRunLabel: relatedCuratedSet?.printRunLabel ?? "Standard",
     notes:
       relatedCuratedSet?.notes ??
-      `Live data from PokeData.io. ${productType !== "Unknown" ? productType : "Product"} released ${releaseYear}.`,
+      `Live data from PriceCharting. ${productType !== "Unknown" ? productType : "Product"} released ${releaseYear}.`,
   };
 }

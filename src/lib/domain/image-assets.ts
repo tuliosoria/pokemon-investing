@@ -78,11 +78,12 @@ export function inferImageMirrorProvider(
   try {
     const hostname = new URL(trimmed).hostname.toLowerCase();
 
+    // PriceCharting first — primary owned/external image source.
     if (
-      hostname.includes("pokemonproductimages.pokedata.io") ||
-      hostname.includes("pokedata.io")
+      hostname.includes("pricecharting.com") ||
+      hostname.includes("images.pricecharting.com")
     ) {
-      return "pokedata";
+      return "pricecharting";
     }
 
     if (
@@ -96,8 +97,14 @@ export function inferImageMirrorProvider(
       return "tcgapi";
     }
 
-    if (hostname.includes("pricecharting.com")) {
-      return "pricecharting";
+    // Deprecated: pokedata.io image host. Kept only to recognise legacy
+    // mirror sources stored in DynamoDB. New requests should never resolve
+    // to a pokedata.io URL — those are mirrored locally under public/sealed/.
+    if (
+      hostname.includes("pokemonproductimages.pokedata.io") ||
+      hostname.includes("pokedata.io")
+    ) {
+      return "pokedata";
     }
   } catch {
     return null;

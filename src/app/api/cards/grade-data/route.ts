@@ -6,6 +6,7 @@ import {
   putCardGradeData,
   setPokedataId,
   shouldRefreshPrices,
+  POPULATION_MAX_AGE_MS,
   type CardGradeData,
   type CardMeta,
 } from "@/lib/db/card-cache";
@@ -368,7 +369,19 @@ async function loadPopulationLayer(input: {
   let psa10Probability =
     input.cachedGrade?.psa10Probability ?? calculatePsa10Probability(population);
 
-  if (!input.apiKey) {
+  // Cache-first: if we already have non-empty population from the owned
+  // grade cache and it isn't due for refresh, skip the PokeData call
+  // entirely. PokeData is a fallback-only data source and we want to
+  // minimize request-time hits.
+  const hasFreshCachedPopulation =
+    Object.keys(population).length > 0 &&
+    input.cachedGrade?.lastGradeFetched &&
+    !shouldRefreshPrices(
+      input.cachedGrade.lastGradeFetched,
+      POPULATION_MAX_AGE_MS
+    );
+
+  if (!input.apiKey || hasFreshCachedPopulation) {
     return {
       pokedataId: resolvedPokedataId,
       name: resolvedName,
