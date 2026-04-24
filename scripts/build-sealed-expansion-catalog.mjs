@@ -99,30 +99,6 @@ function releaseYear(value) {
   return Number.isFinite(year) ? year : null;
 }
 
-function loadExistingCatalogEntries(rawCatalog) {
-  return new Set(
-    rawCatalog.flatMap((entry) => {
-      const normalizedName = normalize(entry.name);
-      const normalizedDisplayName = normalize(entry.displayName);
-      const releaseDate = toIsoDate(entry.releaseDate);
-      const productType = String(entry.productType || "").trim();
-      const keys = [];
-
-      if (normalizedName && productType) {
-        keys.push(`name:${normalizedName}|${productType}`);
-      }
-      if (normalizedDisplayName && productType) {
-        keys.push(`name:${normalizedDisplayName}|${productType}`);
-      }
-      if (releaseDate && productType) {
-        keys.push(`date:${releaseDate}|${productType}`);
-      }
-
-      return keys;
-    })
-  );
-}
-
 function shouldExcludeSet(name) {
   return GLOBAL_EXCLUDE_PATTERNS.some((pattern) => pattern.test(name));
 }
@@ -179,6 +155,7 @@ function buildEntry(set, productType) {
     name,
     productType,
     releaseDate,
+    imageUrl: set?.images?.logo || set?.images?.symbol || null,
     catalogSource: "pokemon-tcg-api-set-universe",
     mappingConfidence: "candidate",
     notes:
@@ -206,12 +183,10 @@ async function fetchSets() {
 }
 
 async function main() {
-  const [existingCatalogRaw, sets] = await Promise.all([
+  const [, sets] = await Promise.all([
     readFile(EXISTING_CATALOG_PATH, "utf8").then((contents) => JSON.parse(contents)),
     fetchSets(),
   ]);
-
-  const existingCatalogKeys = loadExistingCatalogEntries(existingCatalogRaw);
   const expansionEntries = [];
 
   for (const set of sets) {
@@ -231,14 +206,6 @@ async function main() {
       }
 
       const entry = buildEntry(set, productType);
-      const normalizedName = normalize(entry.name);
-      const exactNameKey = `name:${normalizedName}|${productType}`;
-      const dateKey = `date:${releaseDate}|${productType}`;
-
-      if (existingCatalogKeys.has(exactNameKey) || existingCatalogKeys.has(dateKey)) {
-        continue;
-      }
-
       expansionEntries.push(entry);
     }
   }

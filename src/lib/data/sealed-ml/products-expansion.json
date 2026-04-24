@@ -1,10 +1,66 @@
 [
   {
+    "catalogId": "base1-booster-box",
+    "setId": "base1",
+    "name": "Base Set Unlimited",
+    "productType": "Booster Box",
+    "releaseDate": "1999-01-09",
+    "imageUrl": "https://images.pokemontcg.io/base1/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "base2-booster-box",
+    "setId": "base2",
+    "name": "Jungle",
+    "productType": "Booster Box",
+    "releaseDate": "1999-06-16",
+    "imageUrl": "https://images.pokemontcg.io/base2/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "base3-booster-box",
+    "setId": "base3",
+    "name": "Fossil",
+    "productType": "Booster Box",
+    "releaseDate": "1999-10-10",
+    "imageUrl": "https://images.pokemontcg.io/base3/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "base4-booster-box",
+    "setId": "base4",
+    "name": "Base Set 2",
+    "productType": "Booster Box",
+    "releaseDate": "2000-02-24",
+    "imageUrl": "https://images.pokemontcg.io/base4/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "base5-booster-box",
+    "setId": "base5",
+    "name": "Team Rocket",
+    "productType": "Booster Box",
+    "releaseDate": "2000-04-24",
+    "imageUrl": "https://images.pokemontcg.io/base5/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
     "catalogId": "gym1-booster-box",
     "setId": "gym1",
     "name": "Gym Heroes",
     "productType": "Booster Box",
     "releaseDate": "2000-08-14",
+    "imageUrl": "https://images.pokemontcg.io/gym1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -15,6 +71,18 @@
     "name": "Gym Challenge",
     "productType": "Booster Box",
     "releaseDate": "2000-10-16",
+    "imageUrl": "https://images.pokemontcg.io/gym2/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "neo1-booster-box",
+    "setId": "neo1",
+    "name": "Neo Genesis",
+    "productType": "Booster Box",
+    "releaseDate": "2000-12-16",
+    "imageUrl": "https://images.pokemontcg.io/neo1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -25,6 +93,7 @@
     "name": "Neo Discovery",
     "productType": "Booster Box",
     "releaseDate": "2001-06-01",
+    "imageUrl": "https://images.pokemontcg.io/neo2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -35,6 +104,7 @@
     "name": "Neo Revelation",
     "productType": "Booster Box",
     "releaseDate": "2001-09-21",
+    "imageUrl": "https://images.pokemontcg.io/neo3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -45,6 +115,7 @@
     "name": "Neo Destiny",
     "productType": "Booster Box",
     "releaseDate": "2002-02-28",
+    "imageUrl": "https://images.pokemontcg.io/neo4/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -55,6 +126,7 @@
     "name": "Legendary Collection",
     "productType": "Booster Box",
     "releaseDate": "2002-05-24",
+    "imageUrl": "https://images.pokemontcg.io/base6/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -65,6 +137,7 @@
     "name": "Expedition Base Set",
     "productType": "Booster Box",
     "releaseDate": "2002-09-15",
+    "imageUrl": "https://images.pokemontcg.io/ecard1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -75,6 +148,7 @@
     "name": "Aquapolis",
     "productType": "Booster Box",
     "releaseDate": "2003-01-15",
+    "imageUrl": "https://images.pokemontcg.io/ecard2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -85,6 +159,7 @@
     "name": "Skyridge",
     "productType": "Booster Box",
     "releaseDate": "2003-05-12",
+    "imageUrl": "https://images.pokemontcg.io/ecard3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -95,6 +170,7 @@
     "name": "Ruby & Sapphire",
     "productType": "Booster Box",
     "releaseDate": "2003-07-01",
+    "imageUrl": "https://images.pokemontcg.io/ex1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -105,6 +181,7 @@
     "name": "Sandstorm",
     "productType": "Booster Box",
     "releaseDate": "2003-09-18",
+    "imageUrl": "https://images.pokemontcg.io/ex2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -115,6 +192,7 @@
     "name": "Dragon",
     "productType": "Booster Box",
     "releaseDate": "2003-11-24",
+    "imageUrl": "https://images.pokemontcg.io/ex3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -125,6 +203,7 @@
     "name": "Team Magma vs Team Aqua",
     "productType": "Booster Box",
     "releaseDate": "2004-03-01",
+    "imageUrl": "https://images.pokemontcg.io/ex4/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -135,6 +214,7 @@
     "name": "Hidden Legends",
     "productType": "Booster Box",
     "releaseDate": "2004-06-01",
+    "imageUrl": "https://images.pokemontcg.io/ex5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -145,6 +225,7 @@
     "name": "FireRed & LeafGreen",
     "productType": "Booster Box",
     "releaseDate": "2004-09-01",
+    "imageUrl": "https://images.pokemontcg.io/ex6/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -155,6 +236,7 @@
     "name": "Team Rocket Returns",
     "productType": "Booster Box",
     "releaseDate": "2004-11-01",
+    "imageUrl": "https://images.pokemontcg.io/ex7/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -165,6 +247,7 @@
     "name": "Deoxys",
     "productType": "Booster Box",
     "releaseDate": "2005-02-01",
+    "imageUrl": "https://images.pokemontcg.io/ex8/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -175,6 +258,7 @@
     "name": "Emerald",
     "productType": "Booster Box",
     "releaseDate": "2005-05-01",
+    "imageUrl": "https://images.pokemontcg.io/ex9/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -185,6 +269,7 @@
     "name": "Unseen Forces",
     "productType": "Booster Box",
     "releaseDate": "2005-08-01",
+    "imageUrl": "https://images.pokemontcg.io/ex10/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -195,6 +280,7 @@
     "name": "Delta Species",
     "productType": "Booster Box",
     "releaseDate": "2005-10-31",
+    "imageUrl": "https://images.pokemontcg.io/ex11/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -205,6 +291,7 @@
     "name": "Legend Maker",
     "productType": "Booster Box",
     "releaseDate": "2006-02-01",
+    "imageUrl": "https://images.pokemontcg.io/ex12/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -215,6 +302,7 @@
     "name": "Holon Phantoms",
     "productType": "Booster Box",
     "releaseDate": "2006-05-01",
+    "imageUrl": "https://images.pokemontcg.io/ex13/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -225,6 +313,7 @@
     "name": "Crystal Guardians",
     "productType": "Booster Box",
     "releaseDate": "2006-08-01",
+    "imageUrl": "https://images.pokemontcg.io/ex14/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -235,6 +324,7 @@
     "name": "Dragon Frontiers",
     "productType": "Booster Box",
     "releaseDate": "2006-11-01",
+    "imageUrl": "https://images.pokemontcg.io/ex15/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -245,6 +335,7 @@
     "name": "Power Keepers",
     "productType": "Booster Box",
     "releaseDate": "2007-02-02",
+    "imageUrl": "https://images.pokemontcg.io/ex16/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -255,6 +346,7 @@
     "name": "Diamond & Pearl",
     "productType": "Booster Box",
     "releaseDate": "2007-05-01",
+    "imageUrl": "https://images.pokemontcg.io/dp1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -265,6 +357,7 @@
     "name": "Mysterious Treasures",
     "productType": "Booster Box",
     "releaseDate": "2007-08-01",
+    "imageUrl": "https://images.pokemontcg.io/dp2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -275,6 +368,7 @@
     "name": "Secret Wonders",
     "productType": "Booster Box",
     "releaseDate": "2007-11-01",
+    "imageUrl": "https://images.pokemontcg.io/dp3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -285,6 +379,7 @@
     "name": "Great Encounters",
     "productType": "Booster Box",
     "releaseDate": "2008-02-01",
+    "imageUrl": "https://images.pokemontcg.io/dp4/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -295,6 +390,7 @@
     "name": "Majestic Dawn",
     "productType": "Booster Box",
     "releaseDate": "2008-05-01",
+    "imageUrl": "https://images.pokemontcg.io/dp5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -305,6 +401,7 @@
     "name": "Legends Awakened",
     "productType": "Booster Box",
     "releaseDate": "2008-08-01",
+    "imageUrl": "https://images.pokemontcg.io/dp6/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -315,6 +412,7 @@
     "name": "Stormfront",
     "productType": "Booster Box",
     "releaseDate": "2008-11-01",
+    "imageUrl": "https://images.pokemontcg.io/dp7/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -325,6 +423,7 @@
     "name": "Platinum",
     "productType": "Booster Box",
     "releaseDate": "2009-02-11",
+    "imageUrl": "https://images.pokemontcg.io/pl1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -335,6 +434,7 @@
     "name": "Rising Rivals",
     "productType": "Booster Box",
     "releaseDate": "2009-05-16",
+    "imageUrl": "https://images.pokemontcg.io/pl2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -345,6 +445,7 @@
     "name": "Supreme Victors",
     "productType": "Booster Box",
     "releaseDate": "2009-08-19",
+    "imageUrl": "https://images.pokemontcg.io/pl3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -355,6 +456,7 @@
     "name": "Arceus",
     "productType": "Booster Box",
     "releaseDate": "2009-11-04",
+    "imageUrl": "https://images.pokemontcg.io/pl4/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -365,6 +467,7 @@
     "name": "HeartGold & SoulSilver",
     "productType": "Booster Box",
     "releaseDate": "2010-02-10",
+    "imageUrl": "https://images.pokemontcg.io/hgss1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -375,6 +478,7 @@
     "name": "HS—Unleashed",
     "productType": "Booster Box",
     "releaseDate": "2010-05-12",
+    "imageUrl": "https://images.pokemontcg.io/hgss2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -385,6 +489,7 @@
     "name": "HS—Undaunted",
     "productType": "Booster Box",
     "releaseDate": "2010-08-18",
+    "imageUrl": "https://images.pokemontcg.io/hgss3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -395,6 +500,7 @@
     "name": "HS—Triumphant",
     "productType": "Booster Box",
     "releaseDate": "2010-11-03",
+    "imageUrl": "https://images.pokemontcg.io/hgss4/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -405,6 +511,7 @@
     "name": "Black & White",
     "productType": "Booster Box",
     "releaseDate": "2011-04-25",
+    "imageUrl": "https://images.pokemontcg.io/bw1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -415,6 +522,7 @@
     "name": "Emerging Powers",
     "productType": "Booster Box",
     "releaseDate": "2011-08-31",
+    "imageUrl": "https://images.pokemontcg.io/bw2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -425,6 +533,7 @@
     "name": "Noble Victories",
     "productType": "Booster Box",
     "releaseDate": "2011-11-16",
+    "imageUrl": "https://images.pokemontcg.io/bw3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -435,6 +544,7 @@
     "name": "Next Destinies",
     "productType": "Booster Box",
     "releaseDate": "2012-02-08",
+    "imageUrl": "https://images.pokemontcg.io/bw4/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -445,6 +555,7 @@
     "name": "Dark Explorers",
     "productType": "Booster Box",
     "releaseDate": "2012-05-09",
+    "imageUrl": "https://images.pokemontcg.io/bw5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -455,6 +566,7 @@
     "name": "Dragons Exalted",
     "productType": "Booster Box",
     "releaseDate": "2012-08-15",
+    "imageUrl": "https://images.pokemontcg.io/bw6/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -465,6 +577,7 @@
     "name": "Boundaries Crossed",
     "productType": "Booster Box",
     "releaseDate": "2012-11-07",
+    "imageUrl": "https://images.pokemontcg.io/bw7/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -475,6 +588,7 @@
     "name": "Plasma Storm",
     "productType": "Booster Box",
     "releaseDate": "2013-02-06",
+    "imageUrl": "https://images.pokemontcg.io/bw8/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -485,6 +599,7 @@
     "name": "Plasma Freeze",
     "productType": "Booster Box",
     "releaseDate": "2013-05-08",
+    "imageUrl": "https://images.pokemontcg.io/bw9/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -495,6 +610,7 @@
     "name": "Plasma Blast",
     "productType": "Booster Box",
     "releaseDate": "2013-08-14",
+    "imageUrl": "https://images.pokemontcg.io/bw10/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -505,6 +621,7 @@
     "name": "Legendary Treasures",
     "productType": "Booster Box",
     "releaseDate": "2013-11-06",
+    "imageUrl": "https://images.pokemontcg.io/bw11/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -515,6 +632,7 @@
     "name": "XY",
     "productType": "Booster Box",
     "releaseDate": "2014-02-05",
+    "imageUrl": "https://images.pokemontcg.io/xy1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -525,6 +643,7 @@
     "name": "XY",
     "productType": "ETB",
     "releaseDate": "2014-02-05",
+    "imageUrl": "https://images.pokemontcg.io/xy1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -535,6 +654,7 @@
     "name": "Flashfire",
     "productType": "Booster Box",
     "releaseDate": "2014-05-07",
+    "imageUrl": "https://images.pokemontcg.io/xy2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -545,6 +665,7 @@
     "name": "Flashfire",
     "productType": "ETB",
     "releaseDate": "2014-05-07",
+    "imageUrl": "https://images.pokemontcg.io/xy2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -555,6 +676,7 @@
     "name": "Furious Fists",
     "productType": "Booster Box",
     "releaseDate": "2014-08-13",
+    "imageUrl": "https://images.pokemontcg.io/xy3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -565,6 +687,7 @@
     "name": "Furious Fists",
     "productType": "ETB",
     "releaseDate": "2014-08-13",
+    "imageUrl": "https://images.pokemontcg.io/xy3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -575,6 +698,7 @@
     "name": "Phantom Forces",
     "productType": "Booster Box",
     "releaseDate": "2014-11-05",
+    "imageUrl": "https://images.pokemontcg.io/xy4/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -585,6 +709,7 @@
     "name": "Phantom Forces",
     "productType": "ETB",
     "releaseDate": "2014-11-05",
+    "imageUrl": "https://images.pokemontcg.io/xy4/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -595,6 +720,7 @@
     "name": "Primal Clash",
     "productType": "Booster Box",
     "releaseDate": "2015-02-04",
+    "imageUrl": "https://images.pokemontcg.io/xy5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -605,6 +731,7 @@
     "name": "Primal Clash",
     "productType": "ETB",
     "releaseDate": "2015-02-04",
+    "imageUrl": "https://images.pokemontcg.io/xy5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -615,6 +742,7 @@
     "name": "Roaring Skies",
     "productType": "Booster Box",
     "releaseDate": "2015-05-06",
+    "imageUrl": "https://images.pokemontcg.io/xy6/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -625,6 +753,7 @@
     "name": "Roaring Skies",
     "productType": "ETB",
     "releaseDate": "2015-05-06",
+    "imageUrl": "https://images.pokemontcg.io/xy6/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -635,6 +764,7 @@
     "name": "Ancient Origins",
     "productType": "Booster Box",
     "releaseDate": "2015-08-12",
+    "imageUrl": "https://images.pokemontcg.io/xy7/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -645,6 +775,7 @@
     "name": "Ancient Origins",
     "productType": "ETB",
     "releaseDate": "2015-08-12",
+    "imageUrl": "https://images.pokemontcg.io/xy7/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -655,6 +786,7 @@
     "name": "BREAKthrough",
     "productType": "Booster Box",
     "releaseDate": "2015-11-04",
+    "imageUrl": "https://images.pokemontcg.io/xy8/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -665,6 +797,7 @@
     "name": "BREAKthrough",
     "productType": "ETB",
     "releaseDate": "2015-11-04",
+    "imageUrl": "https://images.pokemontcg.io/xy8/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -675,6 +808,7 @@
     "name": "BREAKpoint",
     "productType": "Booster Box",
     "releaseDate": "2016-02-03",
+    "imageUrl": "https://images.pokemontcg.io/xy9/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -685,6 +819,7 @@
     "name": "BREAKpoint",
     "productType": "ETB",
     "releaseDate": "2016-02-03",
+    "imageUrl": "https://images.pokemontcg.io/xy9/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -695,6 +830,7 @@
     "name": "Generations",
     "productType": "ETB",
     "releaseDate": "2016-02-22",
+    "imageUrl": "https://images.pokemontcg.io/g1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -705,6 +841,7 @@
     "name": "Fates Collide",
     "productType": "Booster Box",
     "releaseDate": "2016-05-02",
+    "imageUrl": "https://images.pokemontcg.io/xy10/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -715,6 +852,7 @@
     "name": "Fates Collide",
     "productType": "ETB",
     "releaseDate": "2016-05-02",
+    "imageUrl": "https://images.pokemontcg.io/xy10/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -725,6 +863,7 @@
     "name": "Steam Siege",
     "productType": "Booster Box",
     "releaseDate": "2016-08-03",
+    "imageUrl": "https://images.pokemontcg.io/xy11/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -735,6 +874,18 @@
     "name": "Steam Siege",
     "productType": "ETB",
     "releaseDate": "2016-08-03",
+    "imageUrl": "https://images.pokemontcg.io/xy11/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "xy12-booster-box",
+    "setId": "xy12",
+    "name": "Evolutions",
+    "productType": "Booster Box",
+    "releaseDate": "2016-11-02",
+    "imageUrl": "https://images.pokemontcg.io/xy12/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -745,6 +896,7 @@
     "name": "Evolutions",
     "productType": "ETB",
     "releaseDate": "2016-11-02",
+    "imageUrl": "https://images.pokemontcg.io/xy12/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -755,6 +907,7 @@
     "name": "Sun & Moon",
     "productType": "Booster Box",
     "releaseDate": "2017-02-03",
+    "imageUrl": "https://images.pokemontcg.io/sm1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -765,6 +918,7 @@
     "name": "Sun & Moon",
     "productType": "ETB",
     "releaseDate": "2017-02-03",
+    "imageUrl": "https://images.pokemontcg.io/sm1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -775,6 +929,7 @@
     "name": "Guardians Rising",
     "productType": "Booster Box",
     "releaseDate": "2017-05-05",
+    "imageUrl": "https://images.pokemontcg.io/sm2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -785,6 +940,7 @@
     "name": "Guardians Rising",
     "productType": "ETB",
     "releaseDate": "2017-05-05",
+    "imageUrl": "https://images.pokemontcg.io/sm2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -795,6 +951,7 @@
     "name": "Burning Shadows",
     "productType": "Booster Box",
     "releaseDate": "2017-08-05",
+    "imageUrl": "https://images.pokemontcg.io/sm3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -805,6 +962,7 @@
     "name": "Burning Shadows",
     "productType": "ETB",
     "releaseDate": "2017-08-05",
+    "imageUrl": "https://images.pokemontcg.io/sm3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -815,6 +973,7 @@
     "name": "Shining Legends",
     "productType": "Booster Box",
     "releaseDate": "2017-10-06",
+    "imageUrl": "https://images.pokemontcg.io/sm35/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -825,6 +984,7 @@
     "name": "Shining Legends",
     "productType": "ETB",
     "releaseDate": "2017-10-06",
+    "imageUrl": "https://images.pokemontcg.io/sm35/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -835,6 +995,7 @@
     "name": "Crimson Invasion",
     "productType": "Booster Box",
     "releaseDate": "2017-11-03",
+    "imageUrl": "https://images.pokemontcg.io/sm4/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -845,6 +1006,7 @@
     "name": "Crimson Invasion",
     "productType": "ETB",
     "releaseDate": "2017-11-03",
+    "imageUrl": "https://images.pokemontcg.io/sm4/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -855,6 +1017,7 @@
     "name": "Ultra Prism",
     "productType": "Booster Box",
     "releaseDate": "2018-02-02",
+    "imageUrl": "https://images.pokemontcg.io/sm5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -865,6 +1028,7 @@
     "name": "Ultra Prism",
     "productType": "ETB",
     "releaseDate": "2018-02-02",
+    "imageUrl": "https://images.pokemontcg.io/sm5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -875,6 +1039,7 @@
     "name": "Forbidden Light",
     "productType": "Booster Box",
     "releaseDate": "2018-05-04",
+    "imageUrl": "https://images.pokemontcg.io/sm6/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -885,6 +1050,7 @@
     "name": "Forbidden Light",
     "productType": "ETB",
     "releaseDate": "2018-05-04",
+    "imageUrl": "https://images.pokemontcg.io/sm6/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -895,6 +1061,7 @@
     "name": "Celestial Storm",
     "productType": "Booster Box",
     "releaseDate": "2018-08-03",
+    "imageUrl": "https://images.pokemontcg.io/sm7/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -905,6 +1072,7 @@
     "name": "Celestial Storm",
     "productType": "ETB",
     "releaseDate": "2018-08-03",
+    "imageUrl": "https://images.pokemontcg.io/sm7/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -915,6 +1083,7 @@
     "name": "Dragon Majesty",
     "productType": "Booster Box",
     "releaseDate": "2018-09-07",
+    "imageUrl": "https://images.pokemontcg.io/sm75/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -925,6 +1094,7 @@
     "name": "Dragon Majesty",
     "productType": "ETB",
     "releaseDate": "2018-09-07",
+    "imageUrl": "https://images.pokemontcg.io/sm75/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -935,6 +1105,7 @@
     "name": "Lost Thunder",
     "productType": "Booster Box",
     "releaseDate": "2018-11-02",
+    "imageUrl": "https://images.pokemontcg.io/sm8/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -945,6 +1116,18 @@
     "name": "Lost Thunder",
     "productType": "ETB",
     "releaseDate": "2018-11-02",
+    "imageUrl": "https://images.pokemontcg.io/sm8/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "sm9-booster-box",
+    "setId": "sm9",
+    "name": "Team Up",
+    "productType": "Booster Box",
+    "releaseDate": "2019-02-01",
+    "imageUrl": "https://images.pokemontcg.io/sm9/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -955,6 +1138,7 @@
     "name": "Team Up",
     "productType": "ETB",
     "releaseDate": "2019-02-01",
+    "imageUrl": "https://images.pokemontcg.io/sm9/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -965,6 +1149,7 @@
     "name": "Unbroken Bonds",
     "productType": "Booster Box",
     "releaseDate": "2019-05-03",
+    "imageUrl": "https://images.pokemontcg.io/sm10/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -975,6 +1160,7 @@
     "name": "Unbroken Bonds",
     "productType": "ETB",
     "releaseDate": "2019-05-03",
+    "imageUrl": "https://images.pokemontcg.io/sm10/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -985,6 +1171,7 @@
     "name": "Unified Minds",
     "productType": "Booster Box",
     "releaseDate": "2019-08-02",
+    "imageUrl": "https://images.pokemontcg.io/sm11/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -995,6 +1182,18 @@
     "name": "Unified Minds",
     "productType": "ETB",
     "releaseDate": "2019-08-02",
+    "imageUrl": "https://images.pokemontcg.io/sm11/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "sm115-etb",
+    "setId": "sm115",
+    "name": "Hidden Fates",
+    "productType": "ETB",
+    "releaseDate": "2019-08-23",
+    "imageUrl": "https://images.pokemontcg.io/sm115/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1005,6 +1204,29 @@
     "name": "Hidden Fates Shiny Vault",
     "productType": "Booster Box",
     "releaseDate": "2019-08-23",
+    "imageUrl": "https://images.pokemontcg.io/sma/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "sma-etb",
+    "setId": "sma",
+    "name": "Hidden Fates Shiny Vault",
+    "productType": "ETB",
+    "releaseDate": "2019-08-23",
+    "imageUrl": "https://images.pokemontcg.io/sma/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "sm12-booster-box",
+    "setId": "sm12",
+    "name": "Cosmic Eclipse",
+    "productType": "Booster Box",
+    "releaseDate": "2019-11-01",
+    "imageUrl": "https://images.pokemontcg.io/sm12/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1015,6 +1237,7 @@
     "name": "Cosmic Eclipse",
     "productType": "ETB",
     "releaseDate": "2019-11-01",
+    "imageUrl": "https://images.pokemontcg.io/sm12/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1025,6 +1248,7 @@
     "name": "Sword & Shield",
     "productType": "Booster Box",
     "releaseDate": "2020-02-07",
+    "imageUrl": "https://images.pokemontcg.io/swsh1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1035,6 +1259,7 @@
     "name": "Sword & Shield",
     "productType": "ETB",
     "releaseDate": "2020-02-07",
+    "imageUrl": "https://images.pokemontcg.io/swsh1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1045,6 +1270,7 @@
     "name": "Rebel Clash",
     "productType": "Booster Box",
     "releaseDate": "2020-05-01",
+    "imageUrl": "https://images.pokemontcg.io/swsh2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1055,6 +1281,7 @@
     "name": "Rebel Clash",
     "productType": "ETB",
     "releaseDate": "2020-05-01",
+    "imageUrl": "https://images.pokemontcg.io/swsh2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1065,6 +1292,7 @@
     "name": "Darkness Ablaze",
     "productType": "Booster Box",
     "releaseDate": "2020-08-14",
+    "imageUrl": "https://images.pokemontcg.io/swsh3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1075,6 +1303,7 @@
     "name": "Darkness Ablaze",
     "productType": "ETB",
     "releaseDate": "2020-08-14",
+    "imageUrl": "https://images.pokemontcg.io/swsh3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1085,6 +1314,18 @@
     "name": "Champion's Path",
     "productType": "Booster Box",
     "releaseDate": "2020-09-25",
+    "imageUrl": "https://images.pokemontcg.io/swsh35/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "swsh35-etb",
+    "setId": "swsh35",
+    "name": "Champion's Path",
+    "productType": "ETB",
+    "releaseDate": "2020-09-25",
+    "imageUrl": "https://images.pokemontcg.io/swsh35/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1095,6 +1336,7 @@
     "name": "Vivid Voltage",
     "productType": "Booster Box",
     "releaseDate": "2020-11-13",
+    "imageUrl": "https://images.pokemontcg.io/swsh4/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1105,6 +1347,18 @@
     "name": "Vivid Voltage",
     "productType": "ETB",
     "releaseDate": "2020-11-13",
+    "imageUrl": "https://images.pokemontcg.io/swsh4/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "swsh45-etb",
+    "setId": "swsh45",
+    "name": "Shining Fates",
+    "productType": "ETB",
+    "releaseDate": "2021-02-19",
+    "imageUrl": "https://images.pokemontcg.io/swsh45/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1115,6 +1369,18 @@
     "name": "Shining Fates Shiny Vault",
     "productType": "Booster Box",
     "releaseDate": "2021-02-19",
+    "imageUrl": "https://images.pokemontcg.io/swsh45sv/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "swsh45sv-etb",
+    "setId": "swsh45sv",
+    "name": "Shining Fates Shiny Vault",
+    "productType": "ETB",
+    "releaseDate": "2021-02-19",
+    "imageUrl": "https://images.pokemontcg.io/swsh45sv/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1125,6 +1391,7 @@
     "name": "Battle Styles",
     "productType": "Booster Box",
     "releaseDate": "2021-03-19",
+    "imageUrl": "https://images.pokemontcg.io/swsh5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1135,6 +1402,7 @@
     "name": "Battle Styles",
     "productType": "ETB",
     "releaseDate": "2021-03-19",
+    "imageUrl": "https://images.pokemontcg.io/swsh5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1145,6 +1413,7 @@
     "name": "Chilling Reign",
     "productType": "Booster Box",
     "releaseDate": "2021-06-18",
+    "imageUrl": "https://images.pokemontcg.io/swsh6/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1155,6 +1424,18 @@
     "name": "Chilling Reign",
     "productType": "ETB",
     "releaseDate": "2021-06-18",
+    "imageUrl": "https://images.pokemontcg.io/swsh6/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "swsh7-booster-box",
+    "setId": "swsh7",
+    "name": "Evolving Skies",
+    "productType": "Booster Box",
+    "releaseDate": "2021-08-27",
+    "imageUrl": "https://images.pokemontcg.io/swsh7/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1165,6 +1446,18 @@
     "name": "Evolving Skies",
     "productType": "ETB",
     "releaseDate": "2021-08-27",
+    "imageUrl": "https://images.pokemontcg.io/swsh7/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "swsh8-booster-box",
+    "setId": "swsh8",
+    "name": "Fusion Strike",
+    "productType": "Booster Box",
+    "releaseDate": "2021-11-12",
+    "imageUrl": "https://images.pokemontcg.io/swsh8/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1175,6 +1468,18 @@
     "name": "Fusion Strike",
     "productType": "ETB",
     "releaseDate": "2021-11-12",
+    "imageUrl": "https://images.pokemontcg.io/swsh8/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "swsh9-booster-box",
+    "setId": "swsh9",
+    "name": "Brilliant Stars",
+    "productType": "Booster Box",
+    "releaseDate": "2022-02-25",
+    "imageUrl": "https://images.pokemontcg.io/swsh9/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1185,6 +1490,7 @@
     "name": "Brilliant Stars",
     "productType": "ETB",
     "releaseDate": "2022-02-25",
+    "imageUrl": "https://images.pokemontcg.io/swsh9/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1195,6 +1501,7 @@
     "name": "Astral Radiance",
     "productType": "Booster Box",
     "releaseDate": "2022-05-27",
+    "imageUrl": "https://images.pokemontcg.io/swsh10/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1205,6 +1512,7 @@
     "name": "Astral Radiance",
     "productType": "ETB",
     "releaseDate": "2022-05-27",
+    "imageUrl": "https://images.pokemontcg.io/swsh10/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1215,6 +1523,18 @@
     "name": "Pokémon GO",
     "productType": "ETB",
     "releaseDate": "2022-07-01",
+    "imageUrl": "https://images.pokemontcg.io/pgo/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "swsh11-booster-box",
+    "setId": "swsh11",
+    "name": "Lost Origin",
+    "productType": "Booster Box",
+    "releaseDate": "2022-09-09",
+    "imageUrl": "https://images.pokemontcg.io/swsh11/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1225,6 +1545,7 @@
     "name": "Lost Origin",
     "productType": "ETB",
     "releaseDate": "2022-09-09",
+    "imageUrl": "https://images.pokemontcg.io/swsh11/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1235,6 +1556,7 @@
     "name": "Silver Tempest",
     "productType": "Booster Box",
     "releaseDate": "2022-11-11",
+    "imageUrl": "https://images.pokemontcg.io/swsh12/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1245,6 +1567,29 @@
     "name": "Silver Tempest",
     "productType": "ETB",
     "releaseDate": "2022-11-11",
+    "imageUrl": "https://images.pokemontcg.io/swsh12/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "swsh12pt5-etb",
+    "setId": "swsh12pt5",
+    "name": "Crown Zenith",
+    "productType": "ETB",
+    "releaseDate": "2023-01-20",
+    "imageUrl": "https://images.pokemontcg.io/swsh12pt5/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "sv1-booster-box",
+    "setId": "sv1",
+    "name": "Scarlet & Violet Base",
+    "productType": "Booster Box",
+    "releaseDate": "2023-03-31",
+    "imageUrl": "https://images.pokemontcg.io/sv1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1255,6 +1600,18 @@
     "name": "Scarlet & Violet Base",
     "productType": "ETB",
     "releaseDate": "2023-03-31",
+    "imageUrl": "https://images.pokemontcg.io/sv1/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "sv2-booster-box",
+    "setId": "sv2",
+    "name": "Paldea Evolved",
+    "productType": "Booster Box",
+    "releaseDate": "2023-06-09",
+    "imageUrl": "https://images.pokemontcg.io/sv2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1265,6 +1622,18 @@
     "name": "Paldea Evolved",
     "productType": "ETB",
     "releaseDate": "2023-06-09",
+    "imageUrl": "https://images.pokemontcg.io/sv2/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "sv3-booster-box",
+    "setId": "sv3",
+    "name": "Obsidian Flames",
+    "productType": "Booster Box",
+    "releaseDate": "2023-08-11",
+    "imageUrl": "https://images.pokemontcg.io/sv3/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1275,6 +1644,18 @@
     "name": "Obsidian Flames",
     "productType": "ETB",
     "releaseDate": "2023-08-11",
+    "imageUrl": "https://images.pokemontcg.io/sv3/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "sv3pt5-etb",
+    "setId": "sv3pt5",
+    "name": "Pokémon 151",
+    "productType": "ETB",
+    "releaseDate": "2023-09-22",
+    "imageUrl": "https://images.pokemontcg.io/sv3pt5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1285,6 +1666,7 @@
     "name": "Paradox Rift",
     "productType": "Booster Box",
     "releaseDate": "2023-11-03",
+    "imageUrl": "https://images.pokemontcg.io/sv4/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1295,6 +1677,7 @@
     "name": "Paradox Rift",
     "productType": "ETB",
     "releaseDate": "2023-11-03",
+    "imageUrl": "https://images.pokemontcg.io/sv4/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1305,6 +1688,7 @@
     "name": "Paldean Fates",
     "productType": "ETB",
     "releaseDate": "2024-01-26",
+    "imageUrl": "https://images.pokemontcg.io/sv4pt5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1315,6 +1699,7 @@
     "name": "Temporal Forces",
     "productType": "Booster Box",
     "releaseDate": "2024-03-22",
+    "imageUrl": "https://images.pokemontcg.io/sv5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1325,6 +1710,7 @@
     "name": "Temporal Forces",
     "productType": "ETB",
     "releaseDate": "2024-03-22",
+    "imageUrl": "https://images.pokemontcg.io/sv5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1335,6 +1721,7 @@
     "name": "Twilight Masquerade",
     "productType": "Booster Box",
     "releaseDate": "2024-05-24",
+    "imageUrl": "https://images.pokemontcg.io/sv6/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1345,6 +1732,7 @@
     "name": "Twilight Masquerade",
     "productType": "ETB",
     "releaseDate": "2024-05-24",
+    "imageUrl": "https://images.pokemontcg.io/sv6/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1355,6 +1743,7 @@
     "name": "Shrouded Fable",
     "productType": "ETB",
     "releaseDate": "2024-08-02",
+    "imageUrl": "https://images.pokemontcg.io/sv6pt5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1365,6 +1754,7 @@
     "name": "Stellar Crown",
     "productType": "Booster Box",
     "releaseDate": "2024-09-13",
+    "imageUrl": "https://images.pokemontcg.io/sv7/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1375,6 +1765,18 @@
     "name": "Stellar Crown",
     "productType": "ETB",
     "releaseDate": "2024-09-13",
+    "imageUrl": "https://images.pokemontcg.io/sv7/logo.png",
+    "catalogSource": "pokemon-tcg-api-set-universe",
+    "mappingConfidence": "candidate",
+    "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
+  },
+  {
+    "catalogId": "sv8-booster-box",
+    "setId": "sv8",
+    "name": "Surging Sparks",
+    "productType": "Booster Box",
+    "releaseDate": "2024-11-08",
+    "imageUrl": "https://images.pokemontcg.io/sv8/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1385,6 +1787,7 @@
     "name": "Surging Sparks",
     "productType": "ETB",
     "releaseDate": "2024-11-08",
+    "imageUrl": "https://images.pokemontcg.io/sv8/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1395,6 +1798,7 @@
     "name": "Prismatic Evolutions",
     "productType": "ETB",
     "releaseDate": "2025-01-17",
+    "imageUrl": "https://images.pokemontcg.io/sv8pt5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1405,6 +1809,7 @@
     "name": "Journey Together",
     "productType": "Booster Box",
     "releaseDate": "2025-03-28",
+    "imageUrl": "https://images.pokemontcg.io/sv9/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1415,6 +1820,7 @@
     "name": "Journey Together",
     "productType": "ETB",
     "releaseDate": "2025-03-28",
+    "imageUrl": "https://images.pokemontcg.io/sv9/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1425,6 +1831,7 @@
     "name": "Destined Rivals",
     "productType": "Booster Box",
     "releaseDate": "2025-05-30",
+    "imageUrl": "https://images.pokemontcg.io/sv10/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1435,6 +1842,7 @@
     "name": "Destined Rivals",
     "productType": "ETB",
     "releaseDate": "2025-05-30",
+    "imageUrl": "https://images.pokemontcg.io/sv10/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1445,6 +1853,7 @@
     "name": "Black Bolt",
     "productType": "Booster Box",
     "releaseDate": "2025-07-18",
+    "imageUrl": "https://images.pokemontcg.io/zsv10pt5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1455,6 +1864,7 @@
     "name": "Black Bolt",
     "productType": "ETB",
     "releaseDate": "2025-07-18",
+    "imageUrl": "https://images.pokemontcg.io/zsv10pt5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1465,6 +1875,7 @@
     "name": "White Flare",
     "productType": "Booster Box",
     "releaseDate": "2025-07-18",
+    "imageUrl": "https://images.pokemontcg.io/rsv10pt5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1475,6 +1886,7 @@
     "name": "White Flare",
     "productType": "ETB",
     "releaseDate": "2025-07-18",
+    "imageUrl": "https://images.pokemontcg.io/rsv10pt5/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1485,6 +1897,7 @@
     "name": "Mega Evolution",
     "productType": "Booster Box",
     "releaseDate": "2025-09-26",
+    "imageUrl": "https://images.pokemontcg.io/me1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1495,6 +1908,7 @@
     "name": "Mega Evolution",
     "productType": "ETB",
     "releaseDate": "2025-09-26",
+    "imageUrl": "https://images.pokemontcg.io/me1/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1505,6 +1919,7 @@
     "name": "Phantasmal Flames",
     "productType": "Booster Box",
     "releaseDate": "2025-11-14",
+    "imageUrl": "https://images.pokemontcg.io/me2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1515,6 +1930,7 @@
     "name": "Phantasmal Flames",
     "productType": "ETB",
     "releaseDate": "2025-11-14",
+    "imageUrl": "https://images.pokemontcg.io/me2/logo.png",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1525,6 +1941,7 @@
     "name": "Ascended Heroes",
     "productType": "Booster Box",
     "releaseDate": "2026-01-30",
+    "imageUrl": "https://images.scrydex.com/pokemon/me2pt5-logo/logo",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1535,6 +1952,7 @@
     "name": "Ascended Heroes",
     "productType": "ETB",
     "releaseDate": "2026-01-30",
+    "imageUrl": "https://images.scrydex.com/pokemon/me2pt5-logo/logo",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1545,6 +1963,7 @@
     "name": "Perfect Order",
     "productType": "Booster Box",
     "releaseDate": "2026-03-27",
+    "imageUrl": "https://images.scrydex.com/pokemon/me3-logo/logo",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."
@@ -1555,6 +1974,7 @@
     "name": "Perfect Order",
     "productType": "ETB",
     "releaseDate": "2026-03-27",
+    "imageUrl": "https://images.scrydex.com/pokemon/me3-logo/logo",
     "catalogSource": "pokemon-tcg-api-set-universe",
     "mappingConfidence": "candidate",
     "notes": "Owned expansion candidate from the public Pokemon TCG set universe. Confirm with PriceCharting sync when a token is configured."

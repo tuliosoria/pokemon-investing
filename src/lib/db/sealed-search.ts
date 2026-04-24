@@ -45,6 +45,7 @@ interface OwnedSearchCatalogArtifactEntry {
   displayName: string;
   productType: ProductType;
   releaseDate?: string | null;
+  imageUrl?: string | null;
   pokedataId?: string | null;
   priceChartingId?: string | null;
   searchAliases?: string[];
@@ -57,6 +58,7 @@ interface ReviewedCatalogEntry {
   name: string;
   productType: ProductType;
   releaseDate?: string | null;
+  imageUrl?: string | null;
   priceChartingId?: string | null;
   pokedataId?: string | null;
 }
@@ -132,6 +134,7 @@ function buildBundledCatalogEntry(input: {
   displayName?: string | null;
   productType: ProductType;
   releaseDate?: string | null;
+  imageUrl?: string | null;
   priceChartingId?: string | null;
   searchAliases?: string[] | null;
   searchText?: string | null;
@@ -167,7 +170,7 @@ function buildBundledCatalogEntry(input: {
     releaseDate:
       input.releaseDate ??
       (Number.isFinite(setData?.releaseYear) ? `${setData?.releaseYear}-01-01` : null),
-    imageUrl: pickProductImageUrl(setData?.imageUrl),
+    imageUrl: pickProductImageUrl(input.imageUrl ?? null, setData?.imageUrl),
     currentPrice:
       typeof setData?.currentPrice === "number" && Number.isFinite(setData.currentPrice)
         ? setData.currentPrice
@@ -231,12 +234,13 @@ const bundledSearchCatalog = (searchCatalog as OwnedSearchCatalogArtifactEntry[]
       runtimeId: entry.runtimeId,
       name: entry.name,
       displayName: entry.displayName,
-      productType: entry.productType,
-      releaseDate: entry.releaseDate ?? null,
-      priceChartingId: entry.priceChartingId ?? null,
-      searchAliases: entry.searchAliases ?? null,
-      searchText: entry.searchText ?? null,
-    })
+    productType: entry.productType,
+    releaseDate: entry.releaseDate ?? null,
+    imageUrl: entry.imageUrl ?? null,
+    priceChartingId: entry.priceChartingId ?? null,
+    searchAliases: entry.searchAliases ?? null,
+    searchText: entry.searchText ?? null,
+  })
 );
 
 const optionalExpansionCatalog = loadOptionalExpansionCatalog().map((entry) =>
@@ -246,6 +250,7 @@ const optionalExpansionCatalog = loadOptionalExpansionCatalog().map((entry) =>
     name: entry.name,
     productType: entry.productType,
     releaseDate: entry.releaseDate ?? null,
+    imageUrl: entry.imageUrl ?? null,
     priceChartingId: entry.priceChartingId ?? null,
   })
 );

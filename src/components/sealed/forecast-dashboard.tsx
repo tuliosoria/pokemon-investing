@@ -501,6 +501,7 @@ export function ForecastDashboard() {
               if (product.priceChartingId) {
                 pricingUrl.searchParams.set("priceChartingId", product.priceChartingId);
               }
+              pricingUrl.searchParams.set("allowLiveOfficial", "1");
 
               const res = await fetch(
                 `${pricingUrl.pathname}${pricingUrl.search}`,

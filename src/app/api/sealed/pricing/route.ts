@@ -186,7 +186,10 @@ function buildSyncedPriceChartingPricing(
   syncedEntry: ReturnType<typeof getSyncedPriceChartingEntryById>,
   storedSnapshot: Awaited<ReturnType<typeof getLatestStoredSealedPriceSnapshot>>
 ): SealedPricing | null {
-  if (!syncedEntry || !syncedEntry.newPrice) {
+  const syncedPrice = roundPrice(
+    syncedEntry?.newPrice ?? syncedEntry?.manualOnlyPrice ?? null
+  );
+  if (!syncedEntry || !syncedPrice) {
     return null;
   }
 
@@ -199,11 +202,11 @@ function buildSyncedPriceChartingPricing(
     priceChartingId: syncedEntry.priceChartingId,
     priceChartingProductName: syncedEntry.productName,
     priceChartingConsoleName: syncedEntry.consoleName,
-    priceChartingPrice: roundPrice(syncedEntry.newPrice),
+    priceChartingPrice: syncedPrice,
     tcgplayerPrice: roundPrice(storedSnapshot?.tcgplayerPrice),
     ebayPrice: roundPrice(storedSnapshot?.ebayPrice),
     pokedataPrice: roundPrice(storedSnapshot?.pokedataPrice),
-    bestPrice: roundPrice(syncedEntry.newPrice),
+    bestPrice: syncedPrice,
     primaryProvider: "pricecharting",
     snapshotDate: syncedEntry.capturedAt.slice(0, 10),
     salesVolume: syncedEntry.salesVolume,
@@ -246,7 +249,9 @@ export async function GET(request: NextRequest) {
         name: localCatalogEntry.name,
         releaseDate: localCatalogEntry.releaseDate,
       });
-    const priceChartingPrice = roundPrice(syncedEntry?.newPrice ?? null);
+    const priceChartingPrice = roundPrice(
+      syncedEntry?.newPrice ?? syncedEntry?.manualOnlyPrice ?? null
+    );
     const localPrice = roundPrice(localCatalogEntry.currentPrice);
     const imageAsset = buildSealedImageAsset({
       pokedataId: localCatalogEntry.pokedataId,

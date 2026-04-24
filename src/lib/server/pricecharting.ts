@@ -155,7 +155,10 @@ export async function searchPriceChartingProducts(
 export function getPriceChartingSealedPrice(
   product: PriceChartingProductResponse | null | undefined
 ): number | null {
-  return parsePennies(product?.["new-price"]);
+  return (
+    parsePennies(product?.["new-price"]) ??
+    parsePennies(product?.["manual-only-price"])
+  );
 }
 
 export function getPriceChartingLoosePrice(
