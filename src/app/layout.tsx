@@ -4,11 +4,28 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { FirstVisitDisclaimer } from "@/components/layout/first-visit-disclaimer";
 
+const SITE_NAME = "PokeAlpha";
+const SITE_DESCRIPTION =
+  "Data-driven Pokémon TCG investing toolkit. Forecast sealed-product ROI with ML-backed Buy / Hold / Sell signals, stress-test under Pessimist · Moderate · Optimist scenarios, and run grade-or-don't-grade EV math on individual cards.";
+
 export const metadata: Metadata = {
-  applicationName: "PokeAlpha",
-  title: "PokeAlpha — Should You Grade That Card?",
-  description:
-    "Calculate the expected value of grading any Pokémon card. Get a clear Grade or Don't Grade decision backed by real math.",
+  applicationName: SITE_NAME,
+  title: {
+    default: `${SITE_NAME} — Sealed Forecasts & Grading EV for Pokémon TCG`,
+    template: `%s · ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — Sealed Forecasts & Grading EV for Pokémon TCG`,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — Sealed Forecasts & Grading EV for Pokémon TCG`,
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({
