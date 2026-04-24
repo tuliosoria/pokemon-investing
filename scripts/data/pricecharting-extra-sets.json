@@ -1,0 +1,21 @@
+[
+  { "setId": "neo1-booster-box", "consoleSlug": "pokemon-neo-genesis", "productSlug": "booster-box" },
+  { "setId": "sm9-booster-box", "consoleSlug": "pokemon-team-up", "productSlug": "booster-box" },
+  { "setId": "sm115-elite-trainer-box", "consoleSlug": "pokemon-hidden-fates", "productSlug": "elite-trainer-box" },
+  { "setId": "sm12-booster-box", "consoleSlug": "pokemon-cosmic-eclipse", "productSlug": "booster-box" },
+  { "setId": "swsh1-booster-box", "consoleSlug": "pokemon-sword-shield", "productSlug": "booster-box-base-set" },
+  { "setId": "swsh1-elite-trainer-box", "consoleSlug": "pokemon-sword-shield", "productSlug": "elite-trainer-box-zacian" },
+  { "setId": "swsh35-elite-trainer-box", "consoleSlug": "pokemon-champions-path", "productSlug": "elite-trainer-box" },
+  { "setId": "swsh7-booster-box", "consoleSlug": "pokemon-evolving-skies", "productSlug": "booster-box" },
+  { "setId": "swsh8-booster-box", "consoleSlug": "pokemon-fusion-strike", "productSlug": "booster-box" },
+  { "setId": "swsh9-booster-box", "consoleSlug": "pokemon-brilliant-stars", "productSlug": "booster-box" },
+  { "setId": "swsh11-booster-box", "consoleSlug": "pokemon-lost-origin", "productSlug": "booster-box" },
+  { "setId": "sv2-booster-box", "consoleSlug": "pokemon-paldea-evolved", "productSlug": "booster-box" },
+  { "setId": "sm35-booster-box", "consoleSlug": "pokemon-shining-legends", "productSlug": "elite-trainer-box" },
+  { "setId": "sm75-booster-box", "consoleSlug": "pokemon-dragon-majesty", "productSlug": "elite-trainer-box" },
+  { "setId": "swsh6-elite-trainer-box", "consoleSlug": "pokemon-chilling-reign", "productSlug": "elite-trainer-box-blaziken" },
+  { "setId": "sv7-elite-trainer-box", "consoleSlug": "pokemon-stellar-crown", "productSlug": "elite-trainer-box" },
+  { "setId": "base-set-unlimited-booster-box", "consoleSlug": "pokemon-base-set", "productSlug": "booster-box-unlimited" },
+  { "setId": "zsv10pt5-booster-box", "consoleSlug": "pokemon-black-bolt", "productSlug": "booster-box" },
+  { "setId": "rsv10pt5-booster-box", "consoleSlug": "pokemon-white-flare", "productSlug": "booster-box" }
+]

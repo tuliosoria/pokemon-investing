@@ -1148,29 +1148,26 @@ function buildForecast(
 
   const signal: Signal =
     benchmarkDelta >= 10 ? "Buy" : benchmarkDelta >= 0 ? "Hold" : "Sell";
-  const fallbackHistoricalError = useDirectFiveYearModel
-    ? models.fiveYear.historicalErrorPercent ?? 0
-    : models.threeYear.historicalErrorPercent ?? 0;
+  // Products with rich underlying data (curated entry + manifest +
+  // historical price summary) have estimatedFactors at or near 0 — those
+  // can be trusted enough to earn High confidence even when the 5yr model
+  // itself is in fallback mode. For everything else we keep the safety
+  // floor and the Medium cap.
+  const hasRichData = input.estimatedFactors <= 1;
+  const fallbackHistoricalError = hasRichData
+    ? 0
+    : useDirectFiveYearModel
+      ? models.fiveYear.historicalErrorPercent ?? 0
+      : models.threeYear.historicalErrorPercent ?? 0;
   const calibratedSpreadPercent = Math.max(
     adjustedPredictions.spreadPercent,
     fallbackHistoricalError
   );
-  // Confidence is the spread-derived band, but downgraded when the inputs
-  // are weak. We *cap* (not floor) at Medium when:
-  //   * we had to derive the 5yr prediction from the 1yr/3yr fallback, OR
-  //   * the product is in the sparse-data forecast lane (allowed because
-  //     it's a core product type) and exceeds the estimated-factor budget,
-  //     OR
-  //   * the projected ROI hit the global cap (so we know our confidence in
-  //     the magnitude is limited).
-  // This lets well-behaved products earn Medium, and lets High emerge once
-  // we approve a five-year model — instead of forcing every dynamic product
-  // to "Low" regardless of signal quality.
   const baseConfidence = resolveConfidence(calibratedSpreadPercent);
   const capAtMedium = (value: Confidence): Confidence =>
     value === "High" ? "Medium" : value;
   let confidence: Confidence = baseConfidence;
-  if (!useDirectFiveYearModel) confidence = capAtMedium(confidence);
+  if (!useDirectFiveYearModel && !hasRichData) confidence = capAtMedium(confidence);
   if (
     allowSparseForecast &&
     input.estimatedFactors > MAX_ESTIMATED_FACTORS_FOR_FORECAST

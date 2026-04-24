@@ -1,5 +1,11 @@
 import type { ImageMirrorProvider, ResolvedImageAsset } from "./image-assets";
 import { buildImageMirrorSource, resolveImageAsset } from "./image-assets";
+import PRICECHARTING_IMAGES_BY_SETID from "@/lib/data/sealed-ml/pricecharting-product-images-by-setid.json";
+
+const PRICECHARTING_IMAGE_MAP = PRICECHARTING_IMAGES_BY_SETID as Record<
+  string,
+  string
+>;
 
 const KNOWN_SEALED_OWNED_IMAGE_PATHS: Record<string, string> = {
   "crown-zenith": "/sealed/crown-zenith-etb.webp",
@@ -46,6 +52,17 @@ export function getKnownSealedOwnedImagePath(input: {
     const match = KNOWN_SEALED_OWNED_IMAGE_PATHS[id];
     if (match) {
       return match;
+    }
+  }
+
+  // PriceCharting product-photo mirror keyed by catalog setId
+  // (e.g. "swsh12pt5gg-elite-trainer-box"). This is the broadest source —
+  // 125+ entries — and gives users an actual product photo instead of the
+  // generic Pokemon TCG API set logo.
+  for (const id of ids) {
+    const pcMatch = PRICECHARTING_IMAGE_MAP[id];
+    if (pcMatch) {
+      return pcMatch;
     }
   }
 
