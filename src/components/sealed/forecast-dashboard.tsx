@@ -25,7 +25,7 @@ import { ForecastBreakdownModal } from "./forecast-breakdown-modal";
 
 const SCROLL_BATCH = 6;
 const MIN_LOADING_MS = 400;
-const SEARCH_TIMEOUT_MS = 8000;
+const SEARCH_TIMEOUT_MS = 20000;
 const IMAGE_PRELOAD_TIMEOUT_MS = 2000;
 const SEARCH_ANIMATION_STAGGER_MS = 50;
 const TOP_BUYS_LIMIT = 100;
@@ -504,7 +504,13 @@ export function ForecastDashboard() {
               if (product.priceChartingId) {
                 pricingUrl.searchParams.set("priceChartingId", product.priceChartingId);
               }
-              pricingUrl.searchParams.set("allowLiveOfficial", "1");
+              // Only request live PriceCharting on narrow result sets — broad
+              // queries (e.g. "boosters") fan out 20 pricing calls and the live
+              // path is slow enough that the outer 20s timeout fires for the
+              // whole search. With many results we use the synced/snapshot path.
+              if (products.length <= 8) {
+                pricingUrl.searchParams.set("allowLiveOfficial", "1");
+              }
 
               const res = await fetch(
                 `${pricingUrl.pathname}${pricingUrl.search}`,
@@ -696,10 +702,9 @@ export function ForecastDashboard() {
       if (abortRef.current !== controller) return;
 
       if (didTimeout) {
-        setSearchError("Search timed out. Try again.");
-        setApiResults([]);
-        setSearchCuratedResults([]);
-        setSearchUnavailableCards([]);
+        setSearchError(
+          "Search took too long — showing partial results if available. Try a more specific query."
+        );
         setSearchComplete(true);
         setIsSearching(false);
         return;
