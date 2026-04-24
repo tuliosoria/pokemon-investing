@@ -991,9 +991,9 @@ export function ForecastDashboard() {
     <>
     <div className="space-y-6">
       {/* Controls */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        {/* Search */}
-        <div className="flex-1 space-y-2">
+      <div className="space-y-3">
+        {/* Search row */}
+        <div className="space-y-2">
           <div className="relative">
             <input
               ref={searchInputRef}
@@ -1042,68 +1042,58 @@ export function ForecastDashboard() {
           </div>
         </div>
 
-        {/* Signal filter */}
-        <div className="flex rounded-md border border-[hsl(var(--input))] overflow-hidden text-xs">
-          {(["All", "Buy", "Hold", "Sell"] as FilterSignal[]).map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => {
+        {/* Filter dropdowns: Recommendation + Scenario */}
+        <div className="flex flex-wrap items-center gap-3 text-xs">
+          <label className="flex items-center gap-2">
+            <span className="text-[hsl(var(--muted-foreground))] uppercase tracking-wider text-[10px]">
+              Recommendation
+            </span>
+            <select
+              value={filter}
+              onChange={(e) => {
                 resetVisibleCards();
-                setFilter(s);
+                setFilter(e.target.value as FilterSignal);
                 if (!hasInteracted) {
                   setHasInteracted(true);
                   setShowingTopBuys(false);
                 }
               }}
-              className={`px-3 py-2 font-medium transition-colors ${
-                filter === s
-                  ? s === "Buy"
-                    ? "bg-green-500/20 text-green-400"
-                    : s === "Hold"
-                      ? "bg-yellow-500/20 text-yellow-400"
-                      : s === "Sell"
-                        ? "bg-red-500/20 text-red-400"
-                        : "bg-[hsl(var(--muted))] text-[hsl(var(--foreground))]"
-                  : "text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
-              }`}
+              className="h-9 rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-2.5 pr-8 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
             >
-              {s}
-            </button>
-          ))}
-        </div>
+              {(["All", "Buy", "Hold", "Sell"] as FilterSignal[]).map((s) => (
+                <option key={s} value={s}>
+                  {s === "All" ? "All recommendations" : s}
+                </option>
+              ))}
+            </select>
+          </label>
 
-        {/* Scenario selector — pessimist/moderate/optimist outlooks */}
-        <div
-          className="flex rounded-md border border-[hsl(var(--input))] overflow-hidden text-xs"
-          title={SCENARIO_DESCRIPTIONS[scenario].description}
-        >
-          {(["pessimist", "moderate", "optimist"] as ForecastScenario[]).map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => {
+          <label
+            className="flex items-center gap-2"
+            title={SCENARIO_DESCRIPTIONS[scenario].description}
+          >
+            <span className="text-[hsl(var(--muted-foreground))] uppercase tracking-wider text-[10px]">
+              Scenario
+            </span>
+            <select
+              value={scenario}
+              onChange={(e) => {
                 resetVisibleCards();
-                setScenario(s);
+                setScenario(e.target.value as ForecastScenario);
                 if (!hasInteracted) {
                   setHasInteracted(true);
                   setShowingTopBuys(false);
                 }
               }}
-              title={SCENARIO_DESCRIPTIONS[s].description}
-              className={`px-3 py-2 font-medium transition-colors ${
-                scenario === s
-                  ? s === "pessimist"
-                    ? "bg-red-500/20 text-red-400"
-                    : s === "optimist"
-                      ? "bg-emerald-500/20 text-emerald-400"
-                      : "bg-[hsl(var(--muted))] text-[hsl(var(--foreground))]"
-                  : "text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
-              }`}
+              className="h-9 rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-2.5 pr-8 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
             >
-              {SCENARIO_DESCRIPTIONS[s].label}
-            </button>
-          ))}
+              {(["pessimist", "moderate", "optimist"] as ForecastScenario[]).map((s) => (
+                <option key={s} value={s}>
+                  {SCENARIO_DESCRIPTIONS[s].label} · {SCENARIO_DESCRIPTIONS[s].short}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       </div>
 
