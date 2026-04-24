@@ -568,6 +568,7 @@ export function ForecastDashboard() {
             const nextSet = curatedMatch
               ? (() => {
                   usedCuratedIds.add(curatedMatch.id);
+                  const dynamic = buildDynamicSetData(pricing);
                   return {
                     ...curatedMatch,
                     currentPrice: pricing.bestPrice ?? curatedMatch.currentPrice,
@@ -575,6 +576,18 @@ export function ForecastDashboard() {
                     priceChartingId: pricing.priceChartingId ?? curatedMatch.priceChartingId,
                     imageUrl: pricing.imageUrl ?? curatedMatch.imageUrl,
                     pricingContext: buildPricingContext(pricing),
+                    factors: {
+                      ...curatedMatch.factors,
+                      liquidityTier:
+                        dynamic.factors.liquidityTier ??
+                        curatedMatch.factors.liquidityTier,
+                      expectedChaseValue:
+                        dynamic.factors.expectedChaseValue ??
+                        curatedMatch.factors.expectedChaseValue,
+                      chaseEvRatio:
+                        dynamic.factors.chaseEvRatio ??
+                        curatedMatch.factors.chaseEvRatio,
+                    },
                   };
                 })()
               : buildDynamicSetData(pricing);

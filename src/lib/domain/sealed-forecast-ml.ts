@@ -143,6 +143,7 @@ interface FeatureInput {
   values: Record<FeatureKey, number>;
   labels: Record<FeatureKey, string>;
   estimatedFactors: number;
+  liquidityTier: "low" | "normal" | "high";
 }
 
 export interface ForecastFeatureSnapshot {
@@ -632,9 +633,30 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     estimatedFactors += 1;
   }
 
+  // Replace the legacy Google-Trends fallback with two real signals when
+  // available:
+  //   1. PriceCharting sales-volume (already drives popularity / demand)
+  //      — already baked into set.factors.popularity.
+  //   2. Pull-rate × top-chase market price → chase EV ratio. A ratio > 1
+  //      means the expected chase value alone exceeds the sealed price,
+  //      which is a structural demand signal that doesn't depend on
+  //      Google Trends data being available for the set.
+  // We still write the value into the model's `google_trends_score` slot
+  // because the model artifacts are trained on that feature name; what
+  // changes is *what* number we put there for products with no Trends data.
+  const chaseEvRatio = set.factors.chaseEvRatio ?? null;
+  const liquidityTier = set.factors.liquidityTier ?? "normal";
+  const evDemandScore =
+    chaseEvRatio != null
+      ? clamp(40 + 30 * Math.log2(chaseEvRatio + 0.5), 10, 95)
+      : null;
+  const liquidityDemandScore =
+    liquidityTier === "high" ? 75 : liquidityTier === "normal" ? 55 : 40;
   const rawGoogleTrendsScore =
     set.trendData?.current ??
     manifestProduct?.googleTrendsScore ??
+    evDemandScore ??
+    (liquidityTier !== "low" ? liquidityDemandScore : null) ??
     set.factors.popularity ??
     50;
   const googleTrendsScore = clamp(
@@ -642,7 +664,16 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     0,
     100
   );
-  if (!set.trendData && !manifestProduct && !isCurated) {
+  // Only count this feature as "estimated" when we truly have no real
+  // signal — Trends data, manifest score, chase EV, OR high liquidity all
+  // count as a real demand signal.
+  if (
+    !set.trendData &&
+    !manifestProduct &&
+    !isCurated &&
+    evDemandScore == null &&
+    liquidityTier === "low"
+  ) {
     estimatedFactors += 1;
   }
 
@@ -780,6 +811,7 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     values,
     labels,
     estimatedFactors,
+    liquidityTier,
   };
 }
 
@@ -932,12 +964,20 @@ function deriveFiveYearFallbackPrice(
   return round(currentPrice * Math.pow(1 + boundedAnnualRate, 5), 2);
 }
 
-function resolveConfidence(spreadPercent: number): Confidence {
+function resolveConfidence(
+  spreadPercent: number,
+  options?: { trustedSignal?: boolean }
+): Confidence {
   // Calibrated against trained sealed-product model historical errors:
   //   1yr ≈ 30%, 3yr ≈ 38%, 5yr ≈ 46%. Anything <25% is genuinely tight,
   //   25–55% is the normal operating range, and >55% means the prediction
   //   is essentially noise.
-  if (spreadPercent < 25) {
+  // For products with a trusted underlying signal (rich data or
+  // high transactional liquidity), we widen the "High" band because
+  // the price quote itself is reliable enough that wider model spread
+  // doesn't translate to wider real-world uncertainty.
+  const highCutoff = options?.trustedSignal ? 38 : 25;
+  if (spreadPercent < highCutoff) {
     return "High";
   }
   if (spreadPercent <= 55) {
@@ -1151,10 +1191,13 @@ function buildForecast(
   // Products with rich underlying data (curated entry + manifest +
   // historical price summary) have estimatedFactors at or near 0 — those
   // can be trusted enough to earn High confidence even when the 5yr model
-  // itself is in fallback mode. For everything else we keep the safety
-  // floor and the Medium cap.
+  // itself is in fallback mode. High-liquidity products (frequent
+  // transactions per PriceCharting sales-volume) similarly have tight,
+  // reliable price quotes — we relax the floor for those too.
   const hasRichData = input.estimatedFactors <= 1;
-  const fallbackHistoricalError = hasRichData
+  const hasHighLiquidity = input.liquidityTier === "high";
+  const trustedSignal = hasRichData || hasHighLiquidity;
+  const fallbackHistoricalError = trustedSignal
     ? 0
     : useDirectFiveYearModel
       ? models.fiveYear.historicalErrorPercent ?? 0
@@ -1163,11 +1206,13 @@ function buildForecast(
     adjustedPredictions.spreadPercent,
     fallbackHistoricalError
   );
-  const baseConfidence = resolveConfidence(calibratedSpreadPercent);
+  const baseConfidence = resolveConfidence(calibratedSpreadPercent, {
+    trustedSignal,
+  });
   const capAtMedium = (value: Confidence): Confidence =>
     value === "High" ? "Medium" : value;
   let confidence: Confidence = baseConfidence;
-  if (!useDirectFiveYearModel && !hasRichData) confidence = capAtMedium(confidence);
+  if (!useDirectFiveYearModel && !trustedSignal) confidence = capAtMedium(confidence);
   if (
     allowSparseForecast &&
     input.estimatedFactors > MAX_ESTIMATED_FACTORS_FOR_FORECAST

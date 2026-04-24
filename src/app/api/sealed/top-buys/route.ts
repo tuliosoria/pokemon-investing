@@ -114,6 +114,18 @@ function buildCatalogSet(pricing: SealedPricing): SealedSetData {
     imageUrl: pricing.imageUrl ?? curatedMatch.imageUrl,
     imageAsset: pricing.imageAsset ?? curatedMatch.imageAsset,
     pricingContext: buildPricingContext(pricing),
+    // Merge dynamically-computed live signals (liquidity tier, chase EV)
+    // onto the curated factors so the forecast model can use them.
+    factors: {
+      ...curatedMatch.factors,
+      liquidityTier:
+        dynamicSet.factors.liquidityTier ?? curatedMatch.factors.liquidityTier,
+      expectedChaseValue:
+        dynamicSet.factors.expectedChaseValue ??
+        curatedMatch.factors.expectedChaseValue,
+      chaseEvRatio:
+        dynamicSet.factors.chaseEvRatio ?? curatedMatch.factors.chaseEvRatio,
+    },
   };
 }
 

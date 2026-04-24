@@ -1,5 +1,6 @@
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
 import topChaseCardsData from "@/lib/data/sealed-ml/top-chase-cards.json";
+import pullRatesData from "@/lib/data/sealed-ml/pull-rates.json";
 import type { SealedSetData, ProductType, SealedPricing } from "@/lib/types/sealed";
 
 interface TopChaseEntry {
@@ -8,6 +9,27 @@ interface TopChaseEntry {
   fetchedAt?: string;
   cards?: Array<{ name: string; marketPrice?: number; rarity?: string | null }>;
 }
+
+interface PullRateEra {
+  yearStart?: number;
+  yearEnd?: number;
+  packsPerBoosterBox?: number;
+  packsPerEtb?: number;
+  packsPerBoosterBundle?: number;
+  topChaseExpectedPerBox?: number;
+  topChaseExpectedPerEtb?: number;
+  topChaseExpectedPerBundle?: number;
+  secondaryChaseMultiplier?: number;
+  notes?: string;
+}
+
+interface PullRatesData {
+  version: number;
+  eras: Record<string, PullRateEra>;
+  productTypeMultipliers: Record<string, string | null>;
+}
+
+const PULL_RATES = pullRatesData as unknown as PullRatesData;
 
 const TOP_CHASE_BY_SET_ID: Record<string, TopChaseEntry> =
   topChaseCardsData as Record<string, TopChaseEntry>;
@@ -27,7 +49,7 @@ const TOP_CHASE_BY_NORMALIZED_NAME: Map<string, TopChaseEntry> = (() => {
 
 function lookupTopChaseCards(
   pricing: SealedPricing
-): { names: string[]; chaseCardIndex: number | null } {
+): { names: string[]; chaseCardIndex: number | null; topChasePrice: number | null } {
   // Strongest match: pokedataId of the form `local-sealed:<setId>-<productType>`
   // already encodes the TCG API setId, e.g. `local-sealed:swsh7-etb` → `swsh7`.
   const idMatch = pricing.pokedataId?.match(/^local-sealed:([a-z0-9]+(?:pt[0-9]+)?)-/i);
@@ -63,22 +85,28 @@ function lookupTopChaseCards(
       }
     }
   }
-  return { names: [], chaseCardIndex: null };
+  return { names: [], chaseCardIndex: null, topChasePrice: null };
 }
 
 function scoreChaseEntry(entry: TopChaseEntry): {
   names: string[];
   chaseCardIndex: number | null;
+  topChasePrice: number | null;
 } {
   const cards = entry.cards ?? [];
   const names = cards.slice(0, 4).map((c) => c.name).filter(Boolean);
-  if (!names.length) return { names: [], chaseCardIndex: null };
+  if (!names.length) return { names: [], chaseCardIndex: null, topChasePrice: null };
   const topPrice = cards[0]?.marketPrice ?? 0;
   // Map top chase price → 0..100 score on log scale.
   // $5 → 30, $25 → 50, $100 → 70, $500 → 85, $1500+ → 95+
-  if (!topPrice || topPrice <= 0) return { names, chaseCardIndex: 50 };
+  if (!topPrice || topPrice <= 0)
+    return { names, chaseCardIndex: 50, topChasePrice: null };
   const score = 22 + 22 * Math.log10(topPrice + 1);
-  return { names, chaseCardIndex: Math.max(10, Math.min(98, Math.round(score))) };
+  return {
+    names,
+    chaseCardIndex: Math.max(10, Math.min(98, Math.round(score))),
+    topChasePrice: topPrice,
+  };
 }
 
 const PRODUCT_TYPE_PATTERNS: [RegExp, ProductType][] = [
@@ -262,6 +290,69 @@ function computeDemandRatio(
 }
 
 /**
+ * Map raw PriceCharting trailing-30-day sales volume to a coarse
+ * liquidity tier per product type. "high" indicates a tight, frequently
+ * transacted price — we trust the price quotes more and can earn higher
+ * confidence even without a curated history record.
+ */
+export function computeLiquidityTier(
+  salesVolume: number | null | undefined,
+  productType: ProductType
+): "low" | "normal" | "high" {
+  if (!salesVolume || salesVolume <= 0) return "low";
+  const baseline = TYPICAL_SALES_VOLUME[productType] ?? 50;
+  const ratio = salesVolume / baseline;
+  if (ratio >= 1.0 || salesVolume >= 30) return "high";
+  if (ratio >= 0.4 || salesVolume >= 10) return "normal";
+  return "low";
+}
+
+function pickEra(releaseYear: number): PullRateEra | null {
+  const eras = Object.values(PULL_RATES.eras ?? {});
+  for (const era of eras) {
+    const start = era.yearStart ?? -Infinity;
+    const end = era.yearEnd ?? Infinity;
+    if (releaseYear >= start && releaseYear <= end) return era;
+  }
+  return null;
+}
+
+function expectedPullsPerProduct(
+  era: PullRateEra,
+  productType: ProductType
+): number | null {
+  const fieldName = PULL_RATES.productTypeMultipliers?.[productType];
+  if (!fieldName) return null;
+  const value = (era as unknown as Record<string, unknown>)[fieldName];
+  return typeof value === "number" && value > 0 ? value : null;
+}
+
+/**
+ * Estimated dollar value of the top chase cards expected to be pulled
+ * from one unit of the product. Combines per-era pull rates with the
+ * top chase market price + a secondary-chase multiplier (since most
+ * boxes also yield secondary alt-arts, full-art trainers, etc.).
+ *
+ * Returns null when we lack pull-rate data, a chase price, or the
+ * product type isn't pull-bearing (e.g. UPCs sometimes are, sealed Tin
+ * usually isn't).
+ */
+export function computeChaseEv(
+  productType: ProductType,
+  releaseYear: number,
+  topChaseMarketPrice: number | null
+): number | null {
+  if (!topChaseMarketPrice || topChaseMarketPrice <= 0) return null;
+  const era = pickEra(releaseYear);
+  if (!era) return null;
+  const expected = expectedPullsPerProduct(era, productType);
+  if (expected == null) return null;
+  const secondaryMultiplier = era.secondaryChaseMultiplier ?? 1;
+  // Top chase × expected pulls × secondary-chase blend factor.
+  return topChaseMarketPrice * expected * secondaryMultiplier;
+}
+
+/**
  * How many of the 8 factors are reliably estimated (vs defaulting to 50).
  * Curated entries hand-tune all 8.
  * Dynamic entries always compute setAge, marketValue, priceTrajectory,
@@ -299,12 +390,23 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
       : relatedCuratedSet?.chaseCards ?? [];
   const chaseCardIndex =
     topChase.chaseCardIndex ?? relatedCuratedSet?.factors.chaseCardIndex ?? 50;
+  const liquidityTier = computeLiquidityTier(salesVolume, productType);
+  const safeReleaseYear = isNaN(releaseYear)
+    ? new Date().getFullYear()
+    : releaseYear;
+  const expectedChaseValue = computeChaseEv(
+    productType,
+    safeReleaseYear,
+    topChase.topChasePrice
+  );
+  const chaseEvRatio =
+    expectedChaseValue && price > 0 ? expectedChaseValue / price : null;
 
   return {
     id: `dynamic-${pricing.pokedataId}`,
     name: pricing.name,
     productType,
-    releaseYear: isNaN(releaseYear) ? new Date().getFullYear() : releaseYear,
+    releaseYear: safeReleaseYear,
     currentPrice: price,
     gradient: GRADIENTS[productType],
     pokedataId: pricing.pokedataId,
@@ -323,12 +425,13 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
       popularity: hasSalesVolume
         ? computePopularity(salesVolume)
         : relatedCuratedSet?.factors.popularity ?? 50,
-      marketCycle: computeMarketCycle(
-        isNaN(releaseYear) ? new Date().getFullYear() : releaseYear
-      ),
+      marketCycle: computeMarketCycle(safeReleaseYear),
       demandRatio: hasSalesVolume
         ? computeDemandRatio(salesVolume, productType)
         : relatedCuratedSet?.factors.demandRatio ?? 50,
+      liquidityTier,
+      expectedChaseValue,
+      chaseEvRatio,
     },
 
     chaseCards,

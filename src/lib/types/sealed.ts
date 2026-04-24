@@ -26,6 +26,23 @@ export interface SealedSetData {
     popularity: number;
     marketCycle: number;
     demandRatio: number;
+    /**
+     * Liquidity tier derived from PriceCharting trailing-30-day sales
+     * volume normalised against per-product-type baselines. Acts as a
+     * confidence booster: high-liquidity products have tight, frequent
+     * transaction prices so the historical-error spread floor can be
+     * relaxed and they may earn High confidence even without a curated
+     * history record.
+     */
+    liquidityTier?: "low" | "normal" | "high";
+    /**
+     * Expected dollar value of chase cards pulled from one unit of the
+     * product, derived from per-era pull rates × top chase market price.
+     * `chaseEvRatio` = expectedChaseValue / currentPrice (>1.0 means the
+     * chase EV alone exceeds the sealed price).
+     */
+    expectedChaseValue?: number | null;
+    chaseEvRatio?: number | null;
   };
 
   chaseCards: string[];

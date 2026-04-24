@@ -1,0 +1,63 @@
+{
+  "$comment": "Pull-rate constants for sealed Pokemon products, by era. Sourced from community pull-rate trackers (Just In Basements, r/PokeInvesting megathreads, official set spec sheets). Used to compute expected chase-card value per box / ETB / bundle. Multipliers are 'how many of the chase card you expect from one product on average'. Tune as new sets release.",
+  "version": 1,
+  "eras": {
+    "scarlet-violet": {
+      "yearStart": 2023,
+      "packsPerBoosterBox": 36,
+      "packsPerEtb": 9,
+      "packsPerBoosterBundle": 6,
+      "topChaseExpectedPerBox": 0.7,
+      "topChaseExpectedPerEtb": 0.18,
+      "topChaseExpectedPerBundle": 0.12,
+      "secondaryChaseMultiplier": 1.6,
+      "notes": "SAR/SIR ~1:36 per pack, hyper-rare ~1:90. Top-chase per box ~0.7 expected hits across SAR+SIR pool."
+    },
+    "sword-shield": {
+      "yearStart": 2020,
+      "yearEnd": 2022,
+      "packsPerBoosterBox": 36,
+      "packsPerEtb": 8,
+      "packsPerBoosterBundle": 6,
+      "topChaseExpectedPerBox": 0.5,
+      "topChaseExpectedPerEtb": 0.11,
+      "topChaseExpectedPerBundle": 0.08,
+      "secondaryChaseMultiplier": 1.8,
+      "notes": "Alt-art VMAX/V ~1:72, full-art trainer ~1:36. Lower chase density than SV era."
+    },
+    "sun-moon": {
+      "yearStart": 2017,
+      "yearEnd": 2019,
+      "packsPerBoosterBox": 36,
+      "packsPerEtb": 8,
+      "packsPerBoosterBundle": 6,
+      "topChaseExpectedPerBox": 0.4,
+      "topChaseExpectedPerEtb": 0.09,
+      "topChaseExpectedPerBundle": 0.07,
+      "secondaryChaseMultiplier": 1.5
+    },
+    "xy-and-earlier": {
+      "yearEnd": 2016,
+      "packsPerBoosterBox": 36,
+      "packsPerEtb": 8,
+      "packsPerBoosterBundle": 6,
+      "topChaseExpectedPerBox": 0.3,
+      "topChaseExpectedPerEtb": 0.07,
+      "topChaseExpectedPerBundle": 0.05,
+      "secondaryChaseMultiplier": 1.3,
+      "notes": "Older sets have looser pull-rate data. Values are approximate; sealed value here is driven more by scarcity than EV."
+    }
+  },
+  "productTypeMultipliers": {
+    "Booster Box": "topChaseExpectedPerBox",
+    "ETB": "topChaseExpectedPerEtb",
+    "Booster Bundle": "topChaseExpectedPerBundle",
+    "UPC": "topChaseExpectedPerEtb",
+    "Special Collection": "topChaseExpectedPerBundle",
+    "Booster Pack": null,
+    "Tin": null,
+    "Collection Box": null,
+    "Case": "topChaseExpectedPerBox",
+    "Unknown": null
+  }
+}
