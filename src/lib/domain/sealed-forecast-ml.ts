@@ -16,8 +16,10 @@ import type {
   Confidence,
   CommunityScoreFile,
   Forecast,
+  ForecastScenario,
   ForecastStatus,
   ProductType,
+  ScenarioOutlook,
   SealedSetData,
   Signal,
 } from "@/lib/types/sealed";
@@ -1271,6 +1273,106 @@ function buildBlockedForecast(
   };
 }
 
+/**
+ * Per-scenario knobs applied on top of the model's baseline (moderate)
+ * projection. The pessimist preset is meaningful — it bakes in a 3 %/yr
+ * "reprint drag" and shrinks net gains, allowing the projection to fall
+ * meaningfully below the current price for products with weak signals.
+ * The optimist preset compounds a 2 %/yr nostalgia tailwind and amplifies
+ * net gains. Both presets respect the same ROI cap as the moderate model
+ * (defense-in-depth against unrealistic projections).
+ */
+const SCENARIO_CONFIG: Record<
+  ForecastScenario,
+  {
+    /** Multiplicative drag (or tailwind) compounded annually. */
+    annualPriceMultiplier: number;
+    /** Multiplier applied to net gain (predictedPrice − currentPrice). */
+    gainMultiplier: number;
+    /** Minimum net change as a fraction of current price (negative = loss). */
+    minNetChangeFraction: number;
+    /** Maximum ROI fraction (capped against current price). */
+    maxRoiFraction: number;
+  }
+> = {
+  pessimist: {
+    annualPriceMultiplier: 0.97,
+    gainMultiplier: 0.45,
+    minNetChangeFraction: -0.35,
+    maxRoiFraction: 0.6,
+  },
+  moderate: {
+    annualPriceMultiplier: 1.0,
+    gainMultiplier: 1.0,
+    minNetChangeFraction: -0.5,
+    maxRoiFraction: MAX_FORECAST_ROI_PERCENT / 100,
+  },
+  optimist: {
+    annualPriceMultiplier: 1.02,
+    gainMultiplier: 1.35,
+    minNetChangeFraction: -0.1,
+    maxRoiFraction: MAX_FORECAST_ROI_PERCENT / 100,
+  },
+};
+
+function applyScenarioToHorizon(
+  predictedPrice: number,
+  currentPrice: number,
+  horizonYears: number,
+  scenario: ForecastScenario
+): number {
+  if (currentPrice <= 0) return Math.max(predictedPrice, 0);
+  const cfg = SCENARIO_CONFIG[scenario];
+  const dragged = predictedPrice * Math.pow(cfg.annualPriceMultiplier, horizonYears);
+  const scaledGain = (dragged - currentPrice) * cfg.gainMultiplier;
+  const minGain = currentPrice * cfg.minNetChangeFraction;
+  const maxGain = currentPrice * cfg.maxRoiFraction;
+  const clampedGain = Math.min(Math.max(scaledGain, minGain), maxGain);
+  return Math.max(currentPrice + clampedGain, 0);
+}
+
+function buildScenarioOutlook(
+  scenario: ForecastScenario,
+  baseline: {
+    oneYearPrice: number;
+    threeYearPrice: number;
+    fiveYearPrice: number;
+  },
+  currentPrice: number,
+  spRoi: number
+): ScenarioOutlook {
+  const oneYear = applyScenarioToHorizon(baseline.oneYearPrice, currentPrice, 1, scenario);
+  const threeYear = applyScenarioToHorizon(baseline.threeYearPrice, currentPrice, 3, scenario);
+  const fiveYear = applyScenarioToHorizon(baseline.fiveYearPrice, currentPrice, 5, scenario);
+
+  const projectedValue = Math.round(fiveYear);
+  const dollarGain = round(fiveYear - currentPrice, 2);
+  const roiPercent =
+    currentPrice > 0
+      ? Math.round(((fiveYear - currentPrice) / currentPrice) * 100)
+      : 0;
+  const benchmarkDelta = roiPercent - spRoi;
+  const signal: Signal =
+    benchmarkDelta >= 10 ? "Buy" : benchmarkDelta >= 0 ? "Hold" : "Sell";
+  const annualRate =
+    currentPrice > 0 && fiveYear > 0
+      ? Math.pow(fiveYear / currentPrice, 1 / 5) - 1
+      : 0;
+
+  return {
+    projectedValue,
+    dollarGain,
+    roiPercent,
+    signal,
+    annualRate: round(annualRate, 3),
+    horizonPredictions: {
+      oneYear: Math.max(Math.round(oneYear), 0),
+      threeYear: Math.max(Math.round(threeYear), 0),
+      fiveYear: projectedValue,
+    },
+  };
+}
+
 function buildForecast(
   set: SealedSetData,
   input: FeatureInput,
@@ -1481,6 +1583,31 @@ function buildForecast(
       ? Math.pow(predictedFiveYearPrice / currentPrice, 1 / 5) - 1
       : 0;
 
+  // Compute pessimist / optimist outlooks from the same baseline horizon
+  // predictions so users can stress-test the model. The moderate outlook
+  // mirrors the top-level fields exactly to keep client logic uniform.
+  const baselineHorizonPrices = {
+    oneYearPrice: adjustedPredictions.oneYearPrice,
+    threeYearPrice: adjustedPredictions.threeYearPrice,
+    fiveYearPrice: adjustedPredictions.fiveYearPrice,
+  };
+  const scenarios: Record<ForecastScenario, ScenarioOutlook> = {
+    pessimist: buildScenarioOutlook("pessimist", baselineHorizonPrices, currentPrice, spRoi),
+    moderate: {
+      projectedValue,
+      dollarGain,
+      roiPercent,
+      signal,
+      annualRate: round(annualRate, 3),
+      horizonPredictions: {
+        oneYear: Math.max(Math.round(adjustedPredictions.oneYearPrice), 0),
+        threeYear: Math.max(Math.round(adjustedPredictions.threeYearPrice), 0),
+        fiveYear: projectedValue,
+      },
+    },
+    optimist: buildScenarioOutlook("optimist", baselineHorizonPrices, currentPrice, spRoi),
+  };
+
   return {
     compositeScore,
     signal,
@@ -1499,6 +1626,7 @@ function buildForecast(
     },
     status: "ready",
     statusMessage: null,
+    scenarios,
   };
 }
 

@@ -103,6 +103,28 @@ export type Signal = "Buy" | "Hold" | "Sell";
 export type Confidence = "Low" | "Medium" | "High";
 export type ForecastStatus = "ready" | "too_new" | "insufficient_data";
 
+/**
+ * Risk posture applied to the model's baseline projection.
+ * - `pessimist` bakes in reprint pressure, declining demand, and broader
+ *   Pokemon-market softening; can produce negative ROI.
+ * - `moderate` is the model's default output (no adjustment).
+ * - `optimist` assumes a continued nostalgia tailwind and minimal reprints.
+ */
+export type ForecastScenario = "pessimist" | "moderate" | "optimist";
+
+export interface ScenarioOutlook {
+  projectedValue: number;
+  dollarGain: number;
+  roiPercent: number;
+  signal: Signal;
+  annualRate: number;
+  horizonPredictions: {
+    oneYear: number;
+    threeYear: number;
+    fiveYear: number;
+  };
+}
+
 export interface Forecast {
   compositeScore: number;
   signal: Signal;
@@ -122,6 +144,9 @@ export interface Forecast {
   };
   status: ForecastStatus;
   statusMessage: string | null;
+  /** Scenario-adjusted projections. The `moderate` outlook mirrors the
+   *  top-level fields above. Always populated for `status === "ready"`. */
+  scenarios?: Record<ForecastScenario, ScenarioOutlook>;
 }
 
 /** Product returned from PokeData sealed search */

@@ -12,6 +12,7 @@ import {
 } from "@/lib/domain/sealed-estimate";
 import type {
   Forecast,
+  ForecastScenario,
   SortField,
   FilterSignal,
   SealedSetData,
@@ -22,6 +23,10 @@ import { SetForecastCard } from "./set-forecast-card";
 import { SkeletonForecastCard } from "./skeleton-forecast-card";
 import { useSealedTcgplayerUrl } from "./use-sealed-tcgplayer-url";
 import { ForecastBreakdownModal } from "./forecast-breakdown-modal";
+import {
+  applyForecastScenario,
+  SCENARIO_DESCRIPTIONS,
+} from "@/lib/domain/sealed-forecast";
 
 const SCROLL_BATCH = 6;
 const MIN_LOADING_MS = 400;
@@ -310,6 +315,7 @@ export function ForecastDashboard() {
   const [sortBy, setSortBy] = useState<SortField>("roi");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [filter, setFilter] = useState<FilterSignal>("All");
+  const [scenario, setScenario] = useState<ForecastScenario>("moderate");
   const [search, setSearch] = useState("");
   const [apiQuery, setApiQuery] = useState("");
   const [apiResults, setApiResults] = useState<SetWithForecast[]>([]);
@@ -860,7 +866,12 @@ export function ForecastDashboard() {
   }, [curatedForecasts, apiResults, apiQuery, showCurated, searchCuratedResults, hasInteracted, showingTopBuys, topBuyResults]);
 
   const filtered = useMemo(() => {
-    let result = allSets;
+    // Apply the chosen scenario first so the signal filter, sort order, and
+    // any downstream displays all see the scenario-adjusted values.
+    let result = allSets.map((r) => ({
+      ...r,
+      forecast: applyForecastScenario(r.forecast, scenario),
+    }));
 
     if (filter !== "All") {
       result = result.filter((r) => r.forecast.signal === filter);
@@ -893,7 +904,7 @@ export function ForecastDashboard() {
     });
 
     return result;
-  }, [allSets, filter, sortBy, sortDir]);
+  }, [allSets, filter, scenario, sortBy, sortDir]);
 
   // Determine mode: is this a search result view or a curated/list view?
   const isSearchMode = apiQuery.length >= 2;
@@ -1058,6 +1069,39 @@ export function ForecastDashboard() {
               }`}
             >
               {s}
+            </button>
+          ))}
+        </div>
+
+        {/* Scenario selector — pessimist/moderate/optimist outlooks */}
+        <div
+          className="flex rounded-md border border-[hsl(var(--input))] overflow-hidden text-xs"
+          title={SCENARIO_DESCRIPTIONS[scenario].description}
+        >
+          {(["pessimist", "moderate", "optimist"] as ForecastScenario[]).map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => {
+                resetVisibleCards();
+                setScenario(s);
+                if (!hasInteracted) {
+                  setHasInteracted(true);
+                  setShowingTopBuys(false);
+                }
+              }}
+              title={SCENARIO_DESCRIPTIONS[s].description}
+              className={`px-3 py-2 font-medium transition-colors ${
+                scenario === s
+                  ? s === "pessimist"
+                    ? "bg-red-500/20 text-red-400"
+                    : s === "optimist"
+                      ? "bg-emerald-500/20 text-emerald-400"
+                      : "bg-[hsl(var(--muted))] text-[hsl(var(--foreground))]"
+                  : "text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
+              }`}
+            >
+              {SCENARIO_DESCRIPTIONS[s].label}
             </button>
           ))}
         </div>
@@ -1444,10 +1488,13 @@ export function ForecastDashboard() {
       const allResults = [...curatedForecasts, ...topBuyResults, ...apiResults, ...searchCuratedResults];
       const matched = allResults.find((r) => r.set.id === learnMoreId);
       if (!matched) return null;
+      // Show the breakdown using the user's currently selected scenario so
+      // the modal's projected value / ROI line up with what they see on the card.
+      const scenarioForecast = applyForecastScenario(matched.forecast, scenario);
       return (
         <ForecastBreakdownModal
           set={matched.set}
-          forecast={matched.forecast}
+          forecast={scenarioForecast}
           open={learnMoreId !== null}
           onClose={() => setLearnMoreId(null)}
         />
