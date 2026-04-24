@@ -8,6 +8,7 @@ import {
   buildDynamicSetData,
   buildPricingContext,
   inferProductType,
+  mergeCommunityFactors,
 } from "@/lib/domain/sealed-estimate";
 import type {
   Forecast,
@@ -569,7 +570,7 @@ export function ForecastDashboard() {
               ? (() => {
                   usedCuratedIds.add(curatedMatch.id);
                   const dynamic = buildDynamicSetData(pricing);
-                  return {
+                  return mergeCommunityFactors({
                     ...curatedMatch,
                     currentPrice: pricing.bestPrice ?? curatedMatch.currentPrice,
                     pokedataId: pricing.pokedataId,
@@ -593,8 +594,20 @@ export function ForecastDashboard() {
                       setSinglesValueRatio:
                         dynamic.factors.setSinglesValueRatio ??
                         curatedMatch.factors.setSinglesValueRatio,
+                      communityScore:
+                        dynamic.factors.communityScore ??
+                        curatedMatch.factors.communityScore,
+                      redditScore:
+                        dynamic.factors.redditScore ??
+                        curatedMatch.factors.redditScore,
+                      googleTrendsScore:
+                        dynamic.factors.googleTrendsScore ??
+                        curatedMatch.factors.googleTrendsScore,
+                      forumScore:
+                        dynamic.factors.forumScore ??
+                        curatedMatch.factors.forumScore,
                     },
-                  };
+                  });
                 })()
               : buildDynamicSetData(pricing);
 
@@ -719,7 +732,8 @@ export function ForecastDashboard() {
 
         const trendedSets = SEALED_SETS.map((set) => {
           const trend = trendMap.get(set.id);
-          return trend ? applyTrendToSet(set, trend) : set;
+          const withTrend = trend ? applyTrendToSet(set, trend) : set;
+          return mergeCommunityFactors(withTrend);
         });
 
           const results = await requestForecasts(trendedSets, controller.signal);

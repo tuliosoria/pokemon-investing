@@ -5,6 +5,7 @@ import historySummaryData from "@/lib/data/sealed-ml/product-history-summary.jso
 import model1yrData from "@/lib/data/sealed-ml/model-1yr.json";
 import model3yrData from "@/lib/data/sealed-ml/model-3yr.json";
 import model5yrData from "@/lib/data/sealed-ml/model-5yr.json";
+import communityScoreData from "@/lib/data/sealed-ml/community-score.json";
 import {
   findSyncedPriceChartingEntry,
   getSyncedPriceChartingEntryById,
@@ -13,6 +14,7 @@ import {
 import { SP500_ANNUAL_RETURN } from "@/lib/domain/sealed-forecast";
 import type {
   Confidence,
+  CommunityScoreFile,
   Forecast,
   ForecastStatus,
   ProductType,
@@ -243,6 +245,9 @@ export const fallbackForecastModelBundle: ForecastModelBundle = {
   threeYear: model3yr,
   fiveYear: model5yr,
 };
+
+/** Lookup map for community scores keyed by setId. */
+const communityScoreMap = (communityScoreData as unknown as CommunityScoreFile).sets;
 
 const manifestById = new Map(manifestProducts.map((product) => [product.setId, product]));
 const manifestByKey = new Map(
@@ -546,6 +551,34 @@ function estimateChaseCardCount(set: SealedSetData, popularityScore: number): nu
   return clamp(Math.round(baseline + popularityScore / 45), 1, 8);
 }
 
+/**
+ * Look up community score data for a set. Tries the manifest setId first,
+ * then falls back to a name-normalized match across community score entries.
+ */
+function getCommunityScoreEntry(set: SealedSetData, manifestProduct?: ManifestProduct) {
+  if (manifestProduct?.setId) {
+    const entry = communityScoreMap[manifestProduct.setId];
+    if (entry) return entry;
+  }
+
+  // Name-based fallback: strip product type suffixes and variant labels, compare
+  const stripVariants = (s: string) =>
+    s.toLowerCase()
+      .replace(/\b(shiny\s*vault|booster\s*box|booster\s*bundle|booster\s*pack|elite\s*trainer\s*box|etb|upc|ultra\s*premium|tin|case|collection\s*box|collection|special\s*collection)\b/g, "")
+      .replace(/[^a-z0-9]+/g, "");
+  const normalizedName = stripVariants(set.name);
+  // Exact match
+  for (const [, entry] of Object.entries(communityScoreMap)) {
+    if (stripVariants(entry.setName) === normalizedName) return entry;
+  }
+  // Prefix match for variant products
+  for (const [, entry] of Object.entries(communityScoreMap)) {
+    const entryNorm = stripVariants(entry.setName);
+    if (entryNorm.length >= 4 && normalizedName.startsWith(entryNorm)) return entry;
+  }
+  return null;
+}
+
 function getManifestProduct(set: SealedSetData): ManifestProduct | undefined {
   const byId = manifestById.get(set.id);
   if (byId) {
@@ -633,21 +666,14 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     estimatedFactors += 1;
   }
 
-  // Replace the legacy Google-Trends fallback with two real signals when
-  // available:
-  //   1. PriceCharting sales-volume (already drives popularity / demand)
-  //      — already baked into set.factors.popularity.
-  //   2. Pull-rate × top-chase market price → chase EV ratio. A ratio > 1
-  //      means the expected chase value alone exceeds the sealed price,
-  //      which is a structural demand signal that doesn't depend on
-  //      Google Trends data being available for the set.
-  //   3. Set total singles value ÷ sealed price → singles-pool depth
-  //      ratio. Captures sets where the secondary chase pool (full-art
-  //      trainers, alt-arts, etc.) is rich even if no single card
-  //      dominates — historically a strong sealed-appreciation signal.
+  // Replace the legacy Google-Trends fallback with a composite communityScore
+  // that blends Reddit engagement (0.45), Google Trends (0.35), and a forum
+  // placeholder (0.20). The structural EV signals (singlesDepthScore,
+  // evDemandScore) are still computed for display in the "Learn More" UI but
+  // no longer drive the google_trends_score slot on their own.
   // We still write the value into the model's `google_trends_score` slot
   // because the model artifacts are trained on that feature name; what
-  // changes is *what* number we put there for products with no Trends data.
+  // changes is *what* number we put there.
   const chaseEvRatio = set.factors.chaseEvRatio ?? null;
   const setSinglesValueRatio = set.factors.setSinglesValueRatio ?? null;
   const liquidityTier = set.factors.liquidityTier ?? "normal";
@@ -664,13 +690,20 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
       : null;
   const liquidityDemandScore =
     liquidityTier === "high" ? 75 : liquidityTier === "normal" ? 55 : 40;
-  // Blend the two structural EV signals when both exist (singles depth
-  // is a more complete picture than top-chase EV alone).
+
+  // Look up the composite community score. When available it replaces the
+  // old blendedDemandScore as the primary demand-signal driver.
+  const communityEntry = getCommunityScoreEntry(set, manifestProduct);
+  const resolvedCommunityScore = communityEntry?.communityScore ?? null;
+
+  // Structural EV blend (still computed; kept as a fallback and for the UI).
   const blendedDemandScore =
     evDemandScore != null && singlesDepthScore != null
       ? Math.round(0.55 * singlesDepthScore + 0.45 * evDemandScore)
       : (singlesDepthScore ?? evDemandScore);
+
   const rawGoogleTrendsScore =
+    resolvedCommunityScore ??
     set.trendData?.current ??
     manifestProduct?.googleTrendsScore ??
     blendedDemandScore ??
@@ -682,10 +715,9 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     0,
     100
   );
-  // Only count this feature as "estimated" when we truly have no real
-  // signal — Trends data, manifest score, chase EV, singles-pool depth,
-  // OR high liquidity all count as a real demand signal.
+  // Only count this feature as "estimated" when we truly have no real signal.
   if (
+    !resolvedCommunityScore &&
     !set.trendData &&
     !manifestProduct &&
     !isCurated &&

@@ -1,0 +1,1570 @@
+{
+  "generatedAt": "2026-04-24T05:29:12.509Z",
+  "weights": {
+    "reddit": 0.45,
+    "googleTrends": 0.35,
+    "forum": 0.2
+  },
+  "sets": {
+    "base-set-unlimited": {
+      "setName": "Base Set Unlimited",
+      "communityScore": 50,
+      "redditScore": 20,
+      "googleTrendsScore": 88,
+      "forumScore": 50,
+      "redditPostCount": 100,
+      "redditSentiment": 0.846,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "jungle": {
+      "setName": "Jungle",
+      "communityScore": 59,
+      "redditScore": 60,
+      "googleTrendsScore": 63,
+      "forumScore": 50,
+      "redditPostCount": 100,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "fossil": {
+      "setName": "Fossil",
+      "communityScore": 49,
+      "redditScore": 39,
+      "googleTrendsScore": 60,
+      "forumScore": 50,
+      "redditPostCount": 77,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "base-set-2": {
+      "setName": "Base Set 2",
+      "communityScore": 45,
+      "redditScore": 33,
+      "googleTrendsScore": 58,
+      "forumScore": 50,
+      "redditPostCount": 100,
+      "redditSentiment": 0.667,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "team-rocket": {
+      "setName": "Team Rocket",
+      "communityScore": 80,
+      "redditScore": 100,
+      "googleTrendsScore": 72,
+      "forumScore": 50,
+      "redditPostCount": 100,
+      "redditSentiment": 0.714,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "gym1-booster-box": {
+      "setName": "Gym Heroes",
+      "communityScore": 34,
+      "redditScore": 14,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 58,
+      "redditSentiment": 0.545,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "gym2-booster-box": {
+      "setName": "Gym Challenge",
+      "communityScore": 32,
+      "redditScore": 9,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 76,
+      "redditSentiment": 0.826,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "neo-genesis": {
+      "setName": "Neo Genesis",
+      "communityScore": 39,
+      "redditScore": 12,
+      "googleTrendsScore": 66,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "neo2-booster-box": {
+      "setName": "Neo Discovery",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 53,
+      "redditSentiment": 0.75,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "neo3-booster-box": {
+      "setName": "Neo Revelation",
+      "communityScore": 33,
+      "redditScore": 13,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 51,
+      "redditSentiment": 0.909,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "neo4-booster-box": {
+      "setName": "Neo Destiny",
+      "communityScore": 37,
+      "redditScore": 20,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 53,
+      "redditSentiment": 0.778,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "base6-booster-box": {
+      "setName": "Legendary Collection",
+      "communityScore": 35,
+      "redditScore": 16,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 0.474,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "ecard2-booster-box": {
+      "setName": "Aquapolis",
+      "communityScore": 35,
+      "redditScore": 17,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 51,
+      "redditSentiment": 0.692,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "ecard3-booster-box": {
+      "setName": "Skyridge",
+      "communityScore": 30,
+      "redditScore": 5,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 0.6,
+      "lastUpdated": "2026-04-24T05:29:12.509Z"
+    },
+    "ex1-booster-box": {
+      "setName": "Ruby & Sapphire",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 54,
+      "redditSentiment": 0.889,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "ex5-booster-box": {
+      "setName": "Hidden Legends",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 39,
+      "redditSentiment": 0.647,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "ex-firered-leafgreen": {
+      "setName": "EX FireRed & LeafGreen",
+      "communityScore": 36,
+      "redditScore": 4,
+      "googleTrendsScore": 70,
+      "forumScore": 50,
+      "redditPostCount": 41,
+      "redditSentiment": 0.84,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "ex7-booster-box": {
+      "setName": "Team Rocket Returns",
+      "communityScore": 36,
+      "redditScore": 19,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 100,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "ex8-booster-box": {
+      "setName": "Deoxys",
+      "communityScore": 30,
+      "redditScore": 5,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 55,
+      "redditSentiment": 0.5,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "ex9-booster-box": {
+      "setName": "Emerald",
+      "communityScore": 34,
+      "redditScore": 14,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "ex10-booster-box": {
+      "setName": "Unseen Forces",
+      "communityScore": 29,
+      "redditScore": 4,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 43,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "ex11-booster-box": {
+      "setName": "Delta Species",
+      "communityScore": 31,
+      "redditScore": 7,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 53,
+      "redditSentiment": 0.8,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "ex12-booster-box": {
+      "setName": "Legend Maker",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 25,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "ex13-booster-box": {
+      "setName": "Holon Phantoms",
+      "communityScore": 29,
+      "redditScore": 4,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 30,
+      "redditSentiment": 0.765,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "ex14-booster-box": {
+      "setName": "Crystal Guardians",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 51,
+      "redditSentiment": 0.818,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "ex15-booster-box": {
+      "setName": "Dragon Frontiers",
+      "communityScore": 29,
+      "redditScore": 4,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 50,
+      "redditSentiment": 0.524,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "ex16-booster-box": {
+      "setName": "Power Keepers",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 38,
+      "redditSentiment": 0.778,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "dp1-booster-box": {
+      "setName": "Diamond & Pearl",
+      "communityScore": 29,
+      "redditScore": 4,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 53,
+      "redditSentiment": 0.515,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "dp2-booster-box": {
+      "setName": "Mysterious Treasures",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 29,
+      "redditSentiment": 0.548,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "dp3-booster-box": {
+      "setName": "Secret Wonders",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 71,
+      "redditSentiment": 0.765,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "dp4-booster-box": {
+      "setName": "Great Encounters",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 34,
+      "redditSentiment": 0.674,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "dp5-booster-box": {
+      "setName": "Majestic Dawn",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 19,
+      "redditSentiment": 0.75,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "dp6-booster-box": {
+      "setName": "Legends Awakened",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 29,
+      "redditSentiment": 0.429,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "dp7-booster-box": {
+      "setName": "Stormfront",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 24,
+      "redditSentiment": 0.636,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "pl1-booster-box": {
+      "setName": "Platinum",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 51,
+      "redditSentiment": 0.111,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "pl2-booster-box": {
+      "setName": "Rising Rivals",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 32,
+      "redditSentiment": 0.538,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "pl3-booster-box": {
+      "setName": "Supreme Victors",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 33,
+      "redditSentiment": 0.615,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "pl4-booster-box": {
+      "setName": "Arceus",
+      "communityScore": 30,
+      "redditScore": 6,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 68,
+      "redditSentiment": 0.667,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "hgss1-booster-box": {
+      "setName": "HeartGold & SoulSilver",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 0.263,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "bw1-booster-box": {
+      "setName": "Black & White",
+      "communityScore": 36,
+      "redditScore": 18,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 100,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "bw2-booster-box": {
+      "setName": "Emerging Powers",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 27,
+      "redditSentiment": 0.385,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "bw3-booster-box": {
+      "setName": "Noble Victories",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 12,
+      "redditSentiment": 0.636,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "bw4-booster-box": {
+      "setName": "Next Destinies",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 38,
+      "redditSentiment": 0.714,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "bw5-booster-box": {
+      "setName": "Dark Explorers",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 53,
+      "redditSentiment": 0.652,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "bw6-booster-box": {
+      "setName": "Dragons Exalted",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 27,
+      "redditSentiment": 0.474,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "bw7-booster-box": {
+      "setName": "Boundaries Crossed",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 21,
+      "redditSentiment": 0.68,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "bw8-booster-box": {
+      "setName": "Plasma Storm",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 45,
+      "redditSentiment": 0.652,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "bw9-booster-box": {
+      "setName": "Plasma Freeze",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 38,
+      "redditSentiment": 0.438,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "bw10-booster-box": {
+      "setName": "Plasma Blast",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 42,
+      "redditSentiment": 0.667,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "bw11-booster-box": {
+      "setName": "Legendary Treasures",
+      "communityScore": 34,
+      "redditScore": 14,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 50,
+      "redditSentiment": 0.882,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy1-booster-box": {
+      "setName": "XY",
+      "communityScore": 38,
+      "redditScore": 23,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 85,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy1-etb": {
+      "setName": "XY",
+      "communityScore": 38,
+      "redditScore": 23,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 85,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy2-booster-box": {
+      "setName": "Flashfire",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 37,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy3-booster-box": {
+      "setName": "Furious Fists",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 24,
+      "redditSentiment": 0.667,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy3-etb": {
+      "setName": "Furious Fists",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 24,
+      "redditSentiment": 0.667,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy4-booster-box": {
+      "setName": "Phantom Forces",
+      "communityScore": 29,
+      "redditScore": 4,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 49,
+      "redditSentiment": 0.778,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy4-etb": {
+      "setName": "Phantom Forces",
+      "communityScore": 29,
+      "redditScore": 4,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 49,
+      "redditSentiment": 0.778,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy5-booster-box": {
+      "setName": "Primal Clash",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 25,
+      "redditSentiment": 0.778,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy5-etb": {
+      "setName": "Primal Clash",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 25,
+      "redditSentiment": 0.778,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy6-booster-box": {
+      "setName": "Roaring Skies",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 47,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy6-etb": {
+      "setName": "Roaring Skies",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 47,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy7-booster-box": {
+      "setName": "Ancient Origins",
+      "communityScore": 30,
+      "redditScore": 5,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 0.7,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy7-etb": {
+      "setName": "Ancient Origins",
+      "communityScore": 30,
+      "redditScore": 5,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 0.7,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy8-booster-box": {
+      "setName": "BREAKthrough",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 0.867,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy8-etb": {
+      "setName": "BREAKthrough",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 0.867,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy9-booster-box": {
+      "setName": "BREAKpoint",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 39,
+      "redditSentiment": 0.6,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy9-etb": {
+      "setName": "BREAKpoint",
+      "communityScore": 28,
+      "redditScore": 2,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 39,
+      "redditSentiment": 0.6,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "g1-etb": {
+      "setName": "Generations",
+      "communityScore": 37,
+      "redditScore": 22,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 98,
+      "redditSentiment": 0.5,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy10-booster-box": {
+      "setName": "Fates Collide",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 44,
+      "redditSentiment": 0.692,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy10-etb": {
+      "setName": "Fates Collide",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 44,
+      "redditSentiment": 0.692,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy11-booster-box": {
+      "setName": "Steam Siege",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 45,
+      "redditSentiment": 0.545,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy11-etb": {
+      "setName": "Steam Siege",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 45,
+      "redditSentiment": 0.545,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "xy-evolutions": {
+      "setName": "XY Evolutions",
+      "communityScore": 40,
+      "redditScore": 7,
+      "googleTrendsScore": 76,
+      "forumScore": 50,
+      "redditPostCount": 59,
+      "redditSentiment": 0.667,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm2-booster-box": {
+      "setName": "Guardians Rising",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 22,
+      "redditSentiment": 0.647,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm2-etb": {
+      "setName": "Guardians Rising",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 22,
+      "redditSentiment": 0.647,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm3-booster-box": {
+      "setName": "Burning Shadows",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 53,
+      "redditSentiment": 0.556,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm3-etb": {
+      "setName": "Burning Shadows",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 53,
+      "redditSentiment": 0.556,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm35-etb": {
+      "setName": "Shining Legends",
+      "communityScore": 31,
+      "redditScore": 7,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 51,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm4-booster-box": {
+      "setName": "Crimson Invasion",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 32,
+      "redditSentiment": 0.545,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm4-etb": {
+      "setName": "Crimson Invasion",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 32,
+      "redditSentiment": 0.545,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm5-booster-box": {
+      "setName": "Ultra Prism",
+      "communityScore": 33,
+      "redditScore": 13,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 71,
+      "redditSentiment": 0.75,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm5-etb": {
+      "setName": "Ultra Prism",
+      "communityScore": 33,
+      "redditScore": 13,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 71,
+      "redditSentiment": 0.75,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm6-booster-box": {
+      "setName": "Forbidden Light",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 12,
+      "redditSentiment": 0.5,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm6-etb": {
+      "setName": "Forbidden Light",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 12,
+      "redditSentiment": 0.5,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm7-booster-box": {
+      "setName": "Celestial Storm",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 27,
+      "redditSentiment": 0.6,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm7-etb": {
+      "setName": "Celestial Storm",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 27,
+      "redditSentiment": 0.6,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm75-etb": {
+      "setName": "Dragon Majesty",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 11,
+      "redditSentiment": 0.571,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm8-booster-box": {
+      "setName": "Lost Thunder",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 53,
+      "redditSentiment": 0.9,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm8-etb": {
+      "setName": "Lost Thunder",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 53,
+      "redditSentiment": 0.9,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "team-up": {
+      "setName": "Team Up",
+      "communityScore": 84,
+      "redditScore": 100,
+      "googleTrendsScore": 84,
+      "forumScore": 50,
+      "redditPostCount": 100,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm9-etb": {
+      "setName": "Team Up",
+      "communityScore": 73,
+      "redditScore": 100,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 100,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm10-booster-box": {
+      "setName": "Unbroken Bonds",
+      "communityScore": 33,
+      "redditScore": 12,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 0.684,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm10-etb": {
+      "setName": "Unbroken Bonds",
+      "communityScore": 33,
+      "redditScore": 12,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 0.684,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm11-booster-box": {
+      "setName": "Unified Minds",
+      "communityScore": 31,
+      "redditScore": 8,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 0.583,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm11-etb": {
+      "setName": "Unified Minds",
+      "communityScore": 31,
+      "redditScore": 8,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 0.583,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "hidden-fates": {
+      "setName": "Hidden Fates",
+      "communityScore": 42,
+      "redditScore": 10,
+      "googleTrendsScore": 79,
+      "forumScore": 50,
+      "redditPostCount": 50,
+      "redditSentiment": 0.636,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "cosmic-eclipse": {
+      "setName": "Cosmic Eclipse",
+      "communityScore": 49,
+      "redditScore": 25,
+      "googleTrendsScore": 80,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "sm12-etb": {
+      "setName": "Cosmic Eclipse",
+      "communityScore": 39,
+      "redditScore": 25,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh1-booster-box": {
+      "setName": "Sword & Shield",
+      "communityScore": 33,
+      "redditScore": 12,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 74,
+      "redditSentiment": 0.875,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh1-etb": {
+      "setName": "Sword & Shield",
+      "communityScore": 33,
+      "redditScore": 12,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 74,
+      "redditSentiment": 0.875,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh2-booster-box": {
+      "setName": "Rebel Clash",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 39,
+      "redditSentiment": 0.56,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh2-etb": {
+      "setName": "Rebel Clash",
+      "communityScore": 28,
+      "redditScore": 1,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 39,
+      "redditSentiment": 0.56,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh3-booster-box": {
+      "setName": "Darkness Ablaze",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 50,
+      "redditSentiment": 0.652,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh3-etb": {
+      "setName": "Darkness Ablaze",
+      "communityScore": 29,
+      "redditScore": 3,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 50,
+      "redditSentiment": 0.652,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "champions-path": {
+      "setName": "Champion's Path",
+      "communityScore": 32,
+      "redditScore": 7,
+      "googleTrendsScore": 54,
+      "forumScore": 50,
+      "redditPostCount": 44,
+      "redditSentiment": 0.75,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh4-booster-box": {
+      "setName": "Vivid Voltage",
+      "communityScore": 31,
+      "redditScore": 8,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 55,
+      "redditSentiment": 0.7,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh4-etb": {
+      "setName": "Vivid Voltage",
+      "communityScore": 31,
+      "redditScore": 8,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 55,
+      "redditSentiment": 0.7,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "shining-fates": {
+      "setName": "Shining Fates",
+      "communityScore": 35,
+      "redditScore": 4,
+      "googleTrendsScore": 67,
+      "forumScore": 50,
+      "redditPostCount": 52,
+      "redditSentiment": 0.429,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh5-booster-box": {
+      "setName": "Battle Styles",
+      "communityScore": 31,
+      "redditScore": 8,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 58,
+      "redditSentiment": 0.517,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh5-etb": {
+      "setName": "Battle Styles",
+      "communityScore": 31,
+      "redditScore": 8,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 58,
+      "redditSentiment": 0.517,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh6-booster-box": {
+      "setName": "Chilling Reign",
+      "communityScore": 32,
+      "redditScore": 9,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 53,
+      "redditSentiment": 0.474,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "evolving-skies": {
+      "setName": "Evolving Skies",
+      "communityScore": 60,
+      "redditScore": 39,
+      "googleTrendsScore": 94,
+      "forumScore": 50,
+      "redditPostCount": 53,
+      "redditSentiment": 0.429,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh7-etb": {
+      "setName": "Evolving Skies",
+      "communityScore": 45,
+      "redditScore": 39,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 53,
+      "redditSentiment": 0.429,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "celebrations": {
+      "setName": "Celebrations",
+      "communityScore": 74,
+      "redditScore": 77,
+      "googleTrendsScore": 84,
+      "forumScore": 50,
+      "redditPostCount": 61,
+      "redditSentiment": 0.818,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "fusion-strike": {
+      "setName": "Fusion Strike",
+      "communityScore": 41,
+      "redditScore": 15,
+      "googleTrendsScore": 69,
+      "forumScore": 50,
+      "redditPostCount": 57,
+      "redditSentiment": 0.692,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh8-etb": {
+      "setName": "Fusion Strike",
+      "communityScore": 34,
+      "redditScore": 15,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 57,
+      "redditSentiment": 0.692,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "brilliant-stars": {
+      "setName": "Brilliant Stars",
+      "communityScore": 37,
+      "redditScore": 8,
+      "googleTrendsScore": 66,
+      "forumScore": 50,
+      "redditPostCount": 56,
+      "redditSentiment": -0.2,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh9-etb": {
+      "setName": "Brilliant Stars",
+      "communityScore": 31,
+      "redditScore": 8,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 56,
+      "redditSentiment": -0.2,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh10-booster-box": {
+      "setName": "Astral Radiance",
+      "communityScore": 30,
+      "redditScore": 6,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 51,
+      "redditSentiment": 0.667,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh10-etb": {
+      "setName": "Astral Radiance",
+      "communityScore": 30,
+      "redditScore": 6,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 51,
+      "redditSentiment": 0.667,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "lost-origin": {
+      "setName": "Lost Origin",
+      "communityScore": 54,
+      "redditScore": 42,
+      "googleTrendsScore": 72,
+      "forumScore": 50,
+      "redditPostCount": 55,
+      "redditSentiment": 0.429,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh11-etb": {
+      "setName": "Lost Origin",
+      "communityScore": 46,
+      "redditScore": 42,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 55,
+      "redditSentiment": 0.429,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh12-booster-box": {
+      "setName": "Silver Tempest",
+      "communityScore": 38,
+      "redditScore": 23,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 54,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "swsh12-etb": {
+      "setName": "Silver Tempest",
+      "communityScore": 38,
+      "redditScore": 23,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 54,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "crown-zenith": {
+      "setName": "Crown Zenith",
+      "communityScore": 51,
+      "redditScore": 42,
+      "googleTrendsScore": 63,
+      "forumScore": 50,
+      "redditPostCount": 54,
+      "redditSentiment": 0.833,
+      "lastUpdated": "2026-04-24T05:29:12.510Z"
+    },
+    "scarlet-violet-base": {
+      "setName": "Scarlet & Violet Base",
+      "communityScore": 27,
+      "redditScore": 4,
+      "googleTrendsScore": 42,
+      "forumScore": 50,
+      "redditPostCount": 67,
+      "redditSentiment": 0.852,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "paldea-evolved": {
+      "setName": "Paldea Evolved",
+      "communityScore": 44,
+      "redditScore": 31,
+      "googleTrendsScore": 56,
+      "forumScore": 50,
+      "redditPostCount": 62,
+      "redditSentiment": 0.75,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv2-etb": {
+      "setName": "Paldea Evolved",
+      "communityScore": 41,
+      "redditScore": 31,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 62,
+      "redditSentiment": 0.75,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "obsidian-flames": {
+      "setName": "Obsidian Flames",
+      "communityScore": 35,
+      "redditScore": 20,
+      "googleTrendsScore": 46,
+      "forumScore": 50,
+      "redditPostCount": 64,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv3-etb": {
+      "setName": "Obsidian Flames",
+      "communityScore": 37,
+      "redditScore": 20,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 64,
+      "redditSentiment": 1,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "pokemon-151": {
+      "setName": "Pokémon 151",
+      "communityScore": 42,
+      "redditScore": 0,
+      "googleTrendsScore": 92,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv4-booster-box": {
+      "setName": "Paradox Rift",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv4-etb": {
+      "setName": "Paradox Rift",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv4pt5-etb": {
+      "setName": "Paldean Fates",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv5-booster-box": {
+      "setName": "Temporal Forces",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv5-etb": {
+      "setName": "Temporal Forces",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv6-booster-box": {
+      "setName": "Twilight Masquerade",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv6-etb": {
+      "setName": "Twilight Masquerade",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv6pt5-etb": {
+      "setName": "Shrouded Fable",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv7-booster-box": {
+      "setName": "Stellar Crown",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "surging-sparks": {
+      "setName": "Surging Sparks",
+      "communityScore": 37,
+      "redditScore": 0,
+      "googleTrendsScore": 76,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv8-etb": {
+      "setName": "Surging Sparks",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "prismatic-evolutions": {
+      "setName": "Prismatic Evolutions",
+      "communityScore": 41,
+      "redditScore": 0,
+      "googleTrendsScore": 89,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv8pt5-etb": {
+      "setName": "Prismatic Evolutions",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv9-booster-box": {
+      "setName": "Journey Together",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv9-etb": {
+      "setName": "Journey Together",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv10-booster-box": {
+      "setName": "Destined Rivals",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "sv10-etb": {
+      "setName": "Destined Rivals",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "zsv10pt5-etb": {
+      "setName": "Black Bolt",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "rsv10pt5-etb": {
+      "setName": "White Flare",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "me1-booster-box": {
+      "setName": "Mega Evolution",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "me1-etb": {
+      "setName": "Mega Evolution",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "me2-booster-box": {
+      "setName": "Phantasmal Flames",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "me2-etb": {
+      "setName": "Phantasmal Flames",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "me2pt5-etb": {
+      "setName": "Ascended Heroes",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    },
+    "me3-booster-box": {
+      "setName": "Perfect Order",
+      "communityScore": 28,
+      "redditScore": 0,
+      "googleTrendsScore": 50,
+      "forumScore": 50,
+      "redditPostCount": 0,
+      "redditSentiment": 0,
+      "lastUpdated": "2026-04-24T05:29:12.511Z"
+    }
+  }
+}

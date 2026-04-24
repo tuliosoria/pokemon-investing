@@ -19,7 +19,50 @@ import {
 } from "@/lib/domain/pricecharting-catalog";
 import { resolveSealedProductImageAsset } from "@/lib/domain/sealed-image";
 import { getTopBuyOpportunities } from "@/lib/domain/top-buys";
-import type { ProductType, SealedSetData, SealedPricing } from "@/lib/types/sealed";
+import communityScoreData from "@/lib/data/sealed-ml/community-score.json";
+import type { ProductType, SealedSetData, SealedPricing, CommunityScoreFile } from "@/lib/types/sealed";
+
+const communityScoreMap = (communityScoreData as unknown as CommunityScoreFile).sets;
+
+/** Merge community score sub-signals into factors for any SealedSetData. */
+function mergeCommunityScoreFactors(set: SealedSetData): SealedSetData {
+  if (
+    set.factors.communityScore != null &&
+    set.factors.redditScore != null
+  ) {
+    return set; // already populated by buildDynamicSetData
+  }
+
+  // Name-based lookup with variant-stripping and prefix matching
+  const norm = (s: string) =>
+    s.toLowerCase()
+      .replace(/\b(shiny\s*vault|booster\s*box|booster\s*bundle|booster\s*pack|elite\s*trainer\s*box|etb|upc|ultra\s*premium|tin|case|collection\s*box|collection|special\s*collection)\b/g, "")
+      .replace(/[^a-z0-9]+/g, "");
+  const normalized = norm(set.name);
+  let entry: CommunityScoreFile["sets"][string] | undefined;
+  for (const e of Object.values(communityScoreMap)) {
+    if (norm(e.setName) === normalized) { entry = e; break; }
+  }
+  if (!entry) {
+    // Prefix match for variants (e.g. "Hidden Fates Shiny Vault" → "Hidden Fates")
+    for (const e of Object.values(communityScoreMap)) {
+      const entryNorm = norm(e.setName);
+      if (entryNorm.length >= 4 && normalized.startsWith(entryNorm)) { entry = e; break; }
+    }
+  }
+  if (!entry) return set;
+
+  return {
+    ...set,
+    factors: {
+      ...set.factors,
+      communityScore: entry.communityScore,
+      redditScore: entry.redditScore,
+      googleTrendsScore: entry.googleTrendsScore,
+      forumScore: entry.forumScore,
+    },
+  };
+}
 
 const CACHE_TTL = 30 * 60;
 const VARIANT_WORDS = ["costco", "walmart", "target", "pokemon center", "display"];
@@ -106,7 +149,7 @@ function buildCatalogSet(pricing: SealedPricing): SealedSetData {
     return dynamicSet;
   }
 
-  return {
+  return mergeCommunityScoreFactors({
     ...curatedMatch,
     currentPrice: pricing.bestPrice ?? curatedMatch.currentPrice,
     pokedataId: pricing.pokedataId,
@@ -131,8 +174,16 @@ function buildCatalogSet(pricing: SealedPricing): SealedSetData {
       setSinglesValueRatio:
         dynamicSet.factors.setSinglesValueRatio ??
         curatedMatch.factors.setSinglesValueRatio,
+      communityScore:
+        dynamicSet.factors.communityScore ?? curatedMatch.factors.communityScore,
+      redditScore:
+        dynamicSet.factors.redditScore ?? curatedMatch.factors.redditScore,
+      googleTrendsScore:
+        dynamicSet.factors.googleTrendsScore ?? curatedMatch.factors.googleTrendsScore,
+      forumScore:
+        dynamicSet.factors.forumScore ?? curatedMatch.factors.forumScore,
     },
-  };
+  });
 }
 
 function withOwnedCatalogNote(set: SealedSetData): SealedSetData {
@@ -159,7 +210,7 @@ function mergeTopBuySets(dynamicSets: SealedSetData[]): SealedSetData[] {
     const existing = merged.get(key);
 
     if (!existing) {
-      merged.set(key, set);
+      merged.set(key, mergeCommunityScoreFactors(set));
       continue;
     }
 
@@ -167,7 +218,7 @@ function mergeTopBuySets(dynamicSets: SealedSetData[]): SealedSetData[] {
       continue;
     }
 
-    merged.set(key, {
+    merged.set(key, mergeCommunityScoreFactors({
       ...set,
       currentPrice: existing.currentPrice > 0 ? existing.currentPrice : set.currentPrice,
       imageUrl: existing.imageUrl ?? set.imageUrl,
@@ -177,7 +228,7 @@ function mergeTopBuySets(dynamicSets: SealedSetData[]): SealedSetData[] {
       tcgplayerUrl: existing.tcgplayerUrl ?? set.tcgplayerUrl,
       trendData: existing.trendData ?? set.trendData,
       pricingContext: existing.pricingContext ?? set.pricingContext,
-    });
+    }));
   }
 
   return [...merged.values()];

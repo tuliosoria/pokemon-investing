@@ -1,7 +1,8 @@
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
 import topChaseCardsData from "@/lib/data/sealed-ml/top-chase-cards.json";
 import pullRatesData from "@/lib/data/sealed-ml/pull-rates.json";
-import type { SealedSetData, ProductType, SealedPricing } from "@/lib/types/sealed";
+import communityScoreData from "@/lib/data/sealed-ml/community-score.json";
+import type { SealedSetData, ProductType, SealedPricing, CommunityScoreFile } from "@/lib/types/sealed";
 
 interface TopChaseEntry {
   setId: string;
@@ -36,6 +37,46 @@ const PULL_RATES = pullRatesData as unknown as PullRatesData;
 
 const TOP_CHASE_BY_SET_ID: Record<string, TopChaseEntry> =
   topChaseCardsData as Record<string, TopChaseEntry>;
+
+const COMMUNITY_SCORE_MAP = (communityScoreData as unknown as CommunityScoreFile).sets;
+
+/** Look up community score entry by set name (normalized). */
+export function lookupCommunityScore(name: string) {
+  // Normalize: strip product type suffixes and variant labels, lowercase, alphanum only
+  const norm = (s: string) =>
+    s.toLowerCase()
+      .replace(/\b(shiny\s*vault|booster\s*box|booster\s*bundle|booster\s*pack|elite\s*trainer\s*box|etb|upc|ultra\s*premium|tin|case|collection\s*box|collection|special\s*collection)\b/g, "")
+      .replace(/[^a-z0-9]+/g, "");
+  const normalized = norm(name);
+  // Exact match first
+  for (const entry of Object.values(COMMUNITY_SCORE_MAP)) {
+    if (norm(entry.setName) === normalized) return entry;
+  }
+  // Prefix match: if the community score set name is a prefix of the product name
+  // (handles variants like "Hidden Fates Shiny Vault Booster Box" → "Hidden Fates")
+  for (const entry of Object.values(COMMUNITY_SCORE_MAP)) {
+    const entryNorm = norm(entry.setName);
+    if (entryNorm.length >= 4 && normalized.startsWith(entryNorm)) return entry;
+  }
+  return null;
+}
+
+/** Merge community sub-signals into an existing SealedSetData factors object. */
+export function mergeCommunityFactors(set: SealedSetData): SealedSetData {
+  if (set.factors.communityScore != null) return set;
+  const entry = lookupCommunityScore(set.name);
+  if (!entry) return set;
+  return {
+    ...set,
+    factors: {
+      ...set.factors,
+      communityScore: entry.communityScore,
+      redditScore: entry.redditScore,
+      googleTrendsScore: entry.googleTrendsScore,
+      forumScore: entry.forumScore,
+    },
+  };
+}
 
 const TOP_CHASE_BY_NORMALIZED_NAME: Map<string, TopChaseEntry> = (() => {
   const map = new Map<string, TopChaseEntry>();
@@ -450,6 +491,8 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
   const setSinglesValueRatio =
     setSinglesValue && price > 0 ? setSinglesValue / price : null;
 
+  const communityEntry = lookupCommunityScore(pricing.name);
+
   return {
     id: `dynamic-${pricing.pokedataId}`,
     name: pricing.name,
@@ -482,6 +525,10 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
       chaseEvRatio,
       setSinglesValue,
       setSinglesValueRatio,
+      communityScore: communityEntry?.communityScore ?? null,
+      redditScore: communityEntry?.redditScore ?? null,
+      googleTrendsScore: communityEntry?.googleTrendsScore ?? null,
+      forumScore: communityEntry?.forumScore ?? null,
     },
 
     chaseCards,

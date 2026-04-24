@@ -53,6 +53,19 @@ export interface SealedSetData {
      */
     setSinglesValue?: number | null;
     setSinglesValueRatio?: number | null;
+    /**
+     * Composite community-demand score (0–100) built from Reddit engagement,
+     * Google Trends, and a forum-presence placeholder.
+     * Weights: reddit 0.45 · googleTrends 0.35 · forum 0.20.
+     * This drives the model's `google_trends_score` input slot.
+     */
+    communityScore?: number | null;
+    /** Reddit sub-score (0–100) derived from post count + engagement. */
+    redditScore?: number | null;
+    /** Google Trends sub-score (0–100) from the manifest or neutral 50. */
+    googleTrendsScore?: number | null;
+    /** Forum presence sub-score (0–100) — currently a neutral placeholder. */
+    forumScore?: number | null;
   };
 
   chaseCards: string[];
@@ -150,6 +163,29 @@ export interface ProjectionPoint {
   month: number;
   setValue: number;
   sp500: number;
+}
+
+/** Sub-signals making up the composite CommunityScore. */
+export interface CommunityScoreSubsignals {
+  redditScore: number;
+  googleTrendsScore: number;
+  forumScore: number;
+  redditPostCount: number;
+  redditSentiment: number;
+  lastUpdated: string;
+}
+
+/** Per-set community score entry from community-score.json. */
+export interface CommunityScore extends CommunityScoreSubsignals {
+  setName: string;
+  communityScore: number;
+}
+
+/** Shape of community-score.json. */
+export interface CommunityScoreFile {
+  generatedAt: string;
+  weights: { reddit: number; googleTrends: number; forum: number };
+  sets: Record<string, CommunityScore>;
 }
 
 export type SortField = "roi" | "price" | "signal" | "age" | "score";
