@@ -1,0 +1,71 @@
+{
+  "generatedAt": "2026-04-24T05:17:00.160Z",
+  "totalCatalogEntries": 156,
+  "tcgIdsFound": 0,
+  "totalChecked": 0,
+  "mismatchCount": 0,
+  "globallyBlocked": false,
+  "mismatches": [],
+  "tcgResults": [],
+  "skipped": [
+    {
+      "reason": "NO_TCG_IDS",
+      "detail": "sealed-catalog.json contains no tcgPlayerProductId / tcgPlayerUrl / tcgPlayerSlug fields. TCGPlayer cross-check cannot run without product identifiers.",
+      "entriesAffected": 156
+    }
+  ],
+  "pcInternalConsistency": {
+    "totalFlagged": 4,
+    "flags": [
+      {
+        "setId": "celebrations",
+        "name": "Celebrations",
+        "productType": "ETB",
+        "priceChartingId": "3345755",
+        "flag": "MANUAL_PRICE_HIGH",
+        "newPrice": 335,
+        "loosePrice": 335,
+        "manualOnlyPrice": 868,
+        "spreadPct": 159.1,
+        "detail": "manualOnlyPrice (868) is 159.1% above newPrice (335)"
+      },
+      {
+        "setId": "sv4pt5-etb",
+        "name": "Paldean Fates",
+        "productType": "ETB",
+        "priceChartingId": "6276912",
+        "flag": "MANUAL_PRICE_LOW",
+        "newPrice": 368.98,
+        "loosePrice": 368.98,
+        "manualOnlyPrice": 75,
+        "spreadPct": 79.67,
+        "detail": "manualOnlyPrice (75) is 79.7% below newPrice (368.98)"
+      },
+      {
+        "setId": "champions-path",
+        "name": "Champion's Path",
+        "productType": "ETB",
+        "priceChartingId": "3346511",
+        "flag": "MANUAL_PRICE_LOW",
+        "newPrice": 158.95,
+        "loosePrice": 158.95,
+        "manualOnlyPrice": 62.5,
+        "spreadPct": 60.68,
+        "detail": "manualOnlyPrice (62.5) is 60.7% below newPrice (158.95)"
+      },
+      {
+        "setId": "pokemon-151",
+        "name": "Pokémon 151",
+        "productType": "ETB",
+        "priceChartingId": "5826208",
+        "flag": "MANUAL_PRICE_LOW",
+        "newPrice": 600,
+        "loosePrice": 600,
+        "manualOnlyPrice": 244.5,
+        "spreadPct": 59.25,
+        "detail": "manualOnlyPrice (244.5) is 59.3% below newPrice (600)"
+      }
+    ],
+    "note": "PC newPrice equals loosePrice for all 156 entries (PriceCharting does not distinguish new vs loose for sealed products). manualOnlyPrice flags below indicate entries where a manual override differs materially from the market price."
+  }
+}
