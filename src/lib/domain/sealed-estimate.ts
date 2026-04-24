@@ -46,9 +46,9 @@ const COMMUNITY_SCORE_MAP = (communityScoreData as unknown as CommunityScoreFile
  * an entry as a low score (~28) would unfairly penalize popular modern
  * sets via demand dampening and confidence capping, so we skip it.
  */
-function communityEntryHasRealSignal(entry: { redditPostCount: number; googleTrendsScore: number; redditDataMissing?: boolean }): boolean {
+function communityEntryHasRealSignal(entry: { redditPostCount: number; googleTrendsScore: number | null; redditDataMissing?: boolean }): boolean {
   const redditUsable = !entry.redditDataMissing && entry.redditPostCount > 0;
-  const trendsUsable = entry.googleTrendsScore !== 50;
+  const trendsUsable = typeof entry.googleTrendsScore === "number" && entry.googleTrendsScore !== 50;
   return redditUsable || trendsUsable;
 }
 
@@ -160,7 +160,10 @@ export function resolveCommunityFactors(
   const entry = lookupCommunityScore(setName);
   const redditScore = entry?.redditScore ?? null;
   const googleTrendsScore = entry?.googleTrendsScore ?? null;
-  const forumScore = entry?.forumScore ?? 50; // forum is a neutral placeholder today
+  // Forum is now null in the data when unavailable (it used to be a flat 50
+  // placeholder that dragged composites toward neutral). Honoring the null
+  // lets blendCommunityScore renormalize the remaining weights instead.
+  const forumScore = entry?.forumScore ?? null;
 
   const composite = blendCommunityScore({
     reddit: redditScore,

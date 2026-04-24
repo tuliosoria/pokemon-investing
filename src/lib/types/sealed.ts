@@ -220,8 +220,18 @@ export interface ProjectionPoint {
 /** Sub-signals making up the composite CommunityScore. */
 export interface CommunityScoreSubsignals {
   redditScore: number;
-  googleTrendsScore: number;
-  forumScore: number;
+  /**
+   * Google Trends score for the set, or null when no trends data exists in
+   * the manifest. Null means "unknown" — the runtime composer renormalizes
+   * the blend across the signals it does have rather than treating
+   * missing trends as a neutral 50.
+   */
+  googleTrendsScore: number | null;
+  /**
+   * Forum sub-signal — null today (placeholder until PokeBeach / Limitless
+   * scrapers exist). The composer treats null as "skip this signal".
+   */
+  forumScore: number | null;
   redditPostCount: number;
   redditSentiment: number;
   /**

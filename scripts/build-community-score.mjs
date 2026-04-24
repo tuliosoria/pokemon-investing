@@ -206,7 +206,9 @@ async function fetchSetRedditData(setName) {
 
 // ─── Load existing google trends signal ───────────────────────────────────────
 function loadGoogleTrendsMap() {
-  // Try to load from manifest products.json (has googleTrendsScore per setId)
+  // Try to load from manifest products.json (has googleTrendsScore per setId).
+  // Sets without entries here have NO trends data — we leave them null in the
+  // map so the composer can write null instead of a misleading neutral 50.
   const map = {};
   if (existsSync(PRODUCTS_PATH)) {
     const products = loadJson(PRODUCTS_PATH);
@@ -390,18 +392,33 @@ async function main() {
   }
 
 
-  // Normalize raw Reddit scores to 0-100 over sets that actually returned
-  // data. Sets where every subreddit fetch failed are excluded from the
-  // normalization range and later assigned a neutral 50.
+  // Normalize raw Reddit scores to 0-100 using PERCENTILE RANK instead of
+  // min-max. Min-max was extremely punitive: a couple of grail sets with
+  // 30-year accumulated nostalgia (Team Up, Journey Together) would push
+  // raw values to 30000+ while the median set sits at ~500, compressing
+  // every modern hot release into the bottom third even when they had
+  // 100 posts of strong sentiment. Percentile rank says "where does this
+  // set sit relative to the population?" — a set with the 85th-percentile
+  // raw engagement gets redditScore=85, regardless of how absurd the top
+  // outlier happens to be.
   const liveScores = redditData
     .filter(r => !r.redditDataMissing)
-    .map(r => r.weightedRaw);
-  const liveMin = liveScores.length ? Math.min(...liveScores) : 0;
-  const liveMax = liveScores.length ? Math.max(...liveScores) : 0;
+    .map(r => r.weightedRaw)
+    .sort((a, b) => a - b);
+  const percentileRank = (val) => {
+    if (liveScores.length === 0) return 50;
+    // Count of values strictly below `val` plus half the count equal to
+    // `val` (handles ties without bias). Returns 0..100.
+    let below = 0, equal = 0;
+    for (const v of liveScores) {
+      if (v < val) below++;
+      else if (v === val) equal++;
+    }
+    return Math.round(((below + equal / 2) / liveScores.length) * 100);
+  };
   const normalizedReddit = redditData.map(r => {
     if (r.redditDataMissing) return 50;
-    if (liveMax === liveMin) return 50;
-    return ((r.weightedRaw - liveMin) / (liveMax - liveMin)) * 100;
+    return percentileRank(r.weightedRaw);
   });
 
   // ─── Compose final scores ──────────────────────────────────────────────────
@@ -416,8 +433,11 @@ async function main() {
     const carriedForward = redditData[i].carriedForward === true;
     const previousRedditScore = redditData[i].previousRedditScore;
 
-    // Sub-signals
-    const googleTrendsScore = trendsMap[setId] ?? 50;
+    // Sub-signals. Use null (not 50) when data is genuinely unavailable so
+    // the runtime resolver can renormalize the blend across only the
+    // signals it actually has, instead of treating "missing" as "neutral"
+    // and dragging composites toward 50 for sets with sparse manifests.
+    const googleTrendsScore = trendsMap[setId] ?? null;
 
     // Reddit score with sentiment adjustment. When Reddit data is missing
     // the base score is already neutral (50), so the sentiment multiplier
@@ -433,21 +453,34 @@ async function main() {
       redditScore = clamp(Math.round(baseReddit * sentimentMultiplier), 0, 100);
     }
 
-    // Forum placeholder (wired to 50 neutral; extend here for PokeBeach, etc.)
-    const forumScore = 50;
+    // Forum sub-signal — null today (placeholder) until we wire PokeBeach /
+    // Limitless. Writing null instead of 50 means the blend renormalizes
+    // around the signals we DO have.
+    const forumScore = null;
 
-    // Composite
-    const communityScore = Math.round(
-      WEIGHTS.reddit * redditScore +
-      WEIGHTS.googleTrends * googleTrendsScore +
-      WEIGHTS.forum * forumScore
-    );
+    // Composite. We re-blend at runtime in resolveCommunityFactors using
+    // these four sub-signals + market activity, so the value written here
+    // is informational only — the source of truth for the displayed score
+    // is the runtime blend.
+    const present = [
+      { v: redditScore, w: 0.45 },
+      { v: googleTrendsScore, w: 0.35 },
+      { v: forumScore, w: 0.20 },
+    ].filter(p => typeof p.v === "number");
+    let communityScore;
+    if (present.length === 0) {
+      communityScore = null;
+    } else {
+      const totalW = present.reduce((s, p) => s + p.w, 0);
+      const weightedSum = present.reduce((s, p) => s + p.w * p.v, 0);
+      communityScore = Math.round(weightedSum / totalW);
+    }
 
     output.sets[setId] = {
       setName: name,
-      communityScore: clamp(communityScore, 0, 100),
+      communityScore: communityScore == null ? null : clamp(communityScore, 0, 100),
       redditScore: clamp(redditScore, 0, 100),
-      googleTrendsScore: clamp(googleTrendsScore, 0, 100),
+      googleTrendsScore: googleTrendsScore == null ? null : clamp(googleTrendsScore, 0, 100),
       forumScore,
       redditPostCount: totalPosts,
       redditSentiment: parseFloat(sentimentDelta.toFixed(3)),

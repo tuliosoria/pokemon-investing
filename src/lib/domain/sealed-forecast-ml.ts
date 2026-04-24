@@ -595,9 +595,9 @@ function estimateChaseCardCount(set: SealedSetData, popularityScore: number): nu
  * capping. In that case we'd rather pretend the entry doesn't exist so the
  * caller uses the model's trained defaults.
  */
-function entryHasRealSignal(entry: { redditPostCount: number; googleTrendsScore: number; redditDataMissing?: boolean }): boolean {
+function entryHasRealSignal(entry: { redditPostCount: number; googleTrendsScore: number | null; redditDataMissing?: boolean }): boolean {
   const redditUsable = !entry.redditDataMissing && entry.redditPostCount > 0;
-  const trendsUsable = entry.googleTrendsScore !== 50; // 50 is the neutral default
+  const trendsUsable = typeof entry.googleTrendsScore === "number" && entry.googleTrendsScore !== 50;
   return redditUsable || trendsUsable;
 }
 
