@@ -53,6 +53,10 @@ export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardP
     typeof set.factors?.redditScore === "number"
       ? Math.round(set.factors.redditScore)
       : null;
+  const marketActivityScore =
+    typeof set.factors?.marketActivityScore === "number"
+      ? Math.round(set.factors.marketActivityScore)
+      : null;
   const googleTrendsScore =
     typeof set.factors?.googleTrendsScore === "number"
       ? Math.round(set.factors.googleTrendsScore)
@@ -61,9 +65,15 @@ export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardP
     typeof set.factors?.forumScore === "number"
       ? Math.round(set.factors.forumScore)
       : null;
-  const communityScoreSource =
-    set.factors?.communityScoreSource === "market" ? "market" : "reddit";
-  const subSignalLabel = communityScoreSource === "market" ? "Market" : "Reddit";
+  // Build a compact "Reddit X · Market Y · Trends Z" line that omits any
+  // signal that's missing rather than printing "Reddit —". We drop forum
+  // from the card line because it's a placeholder neutral 50 today and
+  // would just be noise.
+  const subSignalParts: string[] = [];
+  if (redditScore != null) subSignalParts.push(`Reddit ${redditScore}`);
+  if (marketActivityScore != null) subSignalParts.push(`Market ${marketActivityScore}`);
+  if (googleTrendsScore != null) subSignalParts.push(`Trends ${googleTrendsScore}`);
+  const subSignalLine = subSignalParts.join(" · ");
   const communityLabel =
     communityScore == null
       ? null
@@ -232,7 +242,7 @@ export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardP
                   {communityLabel.text}
                 </span>
                 <span className="text-[hsl(var(--muted-foreground))]">
-                  {subSignalLabel} {redditScore ?? "—"} · Trends {googleTrendsScore ?? "—"} · Forums {forumScore ?? "—"}
+                  {subSignalLine || `Forums ${forumScore ?? "—"}`}
                 </span>
               </div>
             ) : (

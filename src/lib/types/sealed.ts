@@ -76,15 +76,23 @@ export interface SealedSetData {
      * When `redditScore` is missing or unreliable, this score substitutes
      * for it in the composite communityScore.
      */
+    /**
+     * PriceCharting trailing-30-day sales volume mapped to a 0-100 score
+     * — including modern releases where Reddit search is rate-limited.
+     * Always blended into the composite communityScore alongside Reddit
+     * (rather than only as a fallback) so we capture both hype and
+     * revealed preference.
+     */
     marketActivityScore?: number | null;
     /**
-     * Indicates which sub-signal currently drives `redditScore` /
-     * `communityScore`. "reddit" means actual Reddit engagement,
-     * "market" means we substituted PriceCharting sales-volume activity
-     * because Reddit data was missing. UI uses this to label the
-     * sub-signal honestly.
+     * Describes which sub-signals contributed to the composite
+     * `communityScore`:
+     *   "blended"     — Reddit + Market both present (best case)
+     *   "reddit-only" — Reddit available, no market data
+     *   "market-only" — Reddit unavailable, market data carries the score
+     * UI uses this to label the breakdown honestly.
      */
-    communityScoreSource?: "reddit" | "market" | null;
+    communityScoreSource?: "blended" | "reddit-only" | "market-only" | null;
   };
 
   chaseCards: string[];

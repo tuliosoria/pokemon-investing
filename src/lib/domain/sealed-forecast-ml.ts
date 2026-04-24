@@ -887,13 +887,17 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
 
   // community_signal_consistency: 1 - std / (mean + ε) across sub-scores.
   // Prefer the resolved set.factors values (which incorporate the
-  // market-activity fallback) over the raw lookup so the model sees the
-  // same numbers the UI displays.
+  // market-activity blend) over the raw lookup so the model sees the
+  // same numbers the UI displays. When Reddit is unavailable we fall
+  // back to the market-activity score for the redditScore feature
+  // (preserving the trained model's expectation of a "demand-side"
+  // signal in this slot).
   const communityScoreVal = clamp(googleTrendsScore, 0, 100);
+  const factorReddit = typeof set.factors?.redditScore === "number" ? set.factors.redditScore : null;
+  const factorMarket =
+    typeof set.factors?.marketActivityScore === "number" ? set.factors.marketActivityScore : null;
   const resolvedRedditScore =
-    typeof set.factors?.redditScore === "number"
-      ? set.factors.redditScore
-      : (communityEntry?.redditScore ?? 50);
+    factorReddit ?? factorMarket ?? communityEntry?.redditScore ?? 50;
   const resolvedForumScore =
     typeof set.factors?.forumScore === "number"
       ? set.factors.forumScore

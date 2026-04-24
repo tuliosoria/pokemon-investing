@@ -94,14 +94,57 @@ export function computeMarketActivityScore(salesVolume: number | null | undefine
 }
 
 /**
- * Merge a community-score entry with a market-activity fallback.
- * When the entry is missing or has no real Reddit/Trends signal, we
- * substitute redditScore with marketActivityScore (the market's
- * revealed preference is a strong demand proxy) and recompose the
- * communityScore using the same weights.
+ * Compose a community score from up-to-four sub-signals.
  *
- * Returns the resolved sub-signals plus a `source` tag so callers can
- * label the UI honestly ("Market 67" vs "Reddit 67").
+ * Reddit chatter and PriceCharting sales volume are *complementary*
+ * demand proxies — Reddit captures hype and discussion, market activity
+ * captures revealed preference (people spending real money). Using both
+ * is more robust than picking one, so we blend them with equal weight
+ * whenever both are available.
+ *
+ * Weights:
+ *   reddit       0.30
+ *   market       0.30   (PriceCharting trailing-30d sales volume)
+ *   trends       0.25   (Google Trends)
+ *   forum        0.15   (placeholder — neutral 50 today)
+ *
+ * When any sub-signal is unavailable its weight is redistributed
+ * proportionally across the signals that *are* available, so a missing
+ * signal doesn't drag the composite toward neutrality.
+ *
+ * Returns null if no signals are available at all.
+ */
+function blendCommunityScore(parts: {
+  reddit: number | null;
+  market: number | null;
+  trends: number | null;
+  forum: number | null;
+}): number | null {
+  const baseWeights = { reddit: 0.30, market: 0.30, trends: 0.25, forum: 0.15 };
+  let totalWeight = 0;
+  let weightedSum = 0;
+  for (const key of Object.keys(baseWeights) as Array<keyof typeof baseWeights>) {
+    const value = parts[key];
+    if (typeof value !== "number" || !isFinite(value)) continue;
+    totalWeight += baseWeights[key];
+    weightedSum += baseWeights[key] * value;
+  }
+  if (totalWeight === 0) return null;
+  return Math.round(weightedSum / totalWeight);
+}
+/**
+ * Resolve all four community sub-signals (Reddit, Market, Trends, Forum)
+ * for a set and compose them into a blended communityScore.
+ *
+ * Reddit + Market are kept as independent signals: Reddit captures hype,
+ * Market captures revealed preference (sales volume). They reinforce
+ * each other when present and fill in for each other when absent.
+ *
+ * The returned `source` tag describes which signals contributed:
+ *   "blended"     — both Reddit and Market are present (best case)
+ *   "reddit-only" — Reddit available, no market data
+ *   "market-only" — Reddit unavailable, market data carries the score
+ *   null          — nothing usable, caller should treat as missing
  */
 export function resolveCommunityFactors(
   setName: string,
@@ -112,40 +155,43 @@ export function resolveCommunityFactors(
   googleTrendsScore: number | null;
   forumScore: number | null;
   marketActivityScore: number | null;
-  source: "reddit" | "market" | null;
+  source: "blended" | "reddit-only" | "market-only" | null;
 } {
   const entry = lookupCommunityScore(setName);
-  if (entry) {
+  const redditScore = entry?.redditScore ?? null;
+  const googleTrendsScore = entry?.googleTrendsScore ?? null;
+  const forumScore = entry?.forumScore ?? 50; // forum is a neutral placeholder today
+
+  const composite = blendCommunityScore({
+    reddit: redditScore,
+    market: marketActivityScore,
+    trends: googleTrendsScore,
+    forum: forumScore,
+  });
+
+  if (composite == null) {
     return {
-      communityScore: entry.communityScore,
-      redditScore: entry.redditScore,
-      googleTrendsScore: entry.googleTrendsScore,
-      forumScore: entry.forumScore,
-      marketActivityScore,
-      source: "reddit",
+      communityScore: null,
+      redditScore: null,
+      googleTrendsScore: null,
+      forumScore: null,
+      marketActivityScore: null,
+      source: null,
     };
   }
-  // No real Reddit/Trends signal — fall back to market activity if available.
-  if (marketActivityScore != null) {
-    const googleTrendsScore = 50;
-    const forumScore = 50;
-    const composite = Math.round(0.45 * marketActivityScore + 0.35 * googleTrendsScore + 0.20 * forumScore);
-    return {
-      communityScore: composite,
-      redditScore: marketActivityScore, // exposed in factors so the model still gets a number
-      googleTrendsScore,
-      forumScore,
-      marketActivityScore,
-      source: "market",
-    };
-  }
+
+  let source: "blended" | "reddit-only" | "market-only";
+  if (redditScore != null && marketActivityScore != null) source = "blended";
+  else if (redditScore != null) source = "reddit-only";
+  else source = "market-only";
+
   return {
-    communityScore: null,
-    redditScore: null,
-    googleTrendsScore: null,
-    forumScore: null,
-    marketActivityScore: null,
-    source: null,
+    communityScore: composite,
+    redditScore,
+    googleTrendsScore,
+    forumScore,
+    marketActivityScore,
+    source,
   };
 }
 
