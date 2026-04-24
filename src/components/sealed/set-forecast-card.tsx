@@ -30,9 +30,10 @@ function PlaceholderArtwork() {
 interface SetForecastCardProps {
   set: SealedSetData;
   forecast: Forecast;
+  onLearnMore?: () => void;
 }
 
-export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
+export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardProps) {
   const [showChart, setShowChart] = useState(false);
   const projectionData = getProjectionData(set, forecast);
   const isForecastBlocked = forecast.status !== "ready";
@@ -270,6 +271,18 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
         </div>
 
         <div className="mt-auto space-y-3 pt-5">
+          {onLearnMore && (
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={onLearnMore}
+                aria-label={`Learn more about ${set.name}`}
+                className="text-[11px] font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--poke-yellow))] transition-colors"
+              >
+                Learn more →
+              </button>
+            </div>
+          )}
           {tcgplayerUrl ? (
             <a
               href={tcgplayerUrl}

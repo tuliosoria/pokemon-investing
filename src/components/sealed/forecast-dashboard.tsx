@@ -21,6 +21,7 @@ import type {
 import { SetForecastCard } from "./set-forecast-card";
 import { SkeletonForecastCard } from "./skeleton-forecast-card";
 import { useSealedTcgplayerUrl } from "./use-sealed-tcgplayer-url";
+import { ForecastBreakdownModal } from "./forecast-breakdown-modal";
 
 const SCROLL_BATCH = 6;
 const MIN_LOADING_MS = 400;
@@ -327,6 +328,7 @@ export function ForecastDashboard() {
   const [topBuysError, setTopBuysError] = useState<string | null>(null);
   const [curatedForecasts, setCuratedForecasts] = useState<SetWithForecast[]>([]);
   const [isLoadingCuratedForecasts, setIsLoadingCuratedForecasts] = useState(true);
+  const [learnMoreId, setLearnMoreId] = useState<string | null>(null);
 
   // Search: accumulates results, only rendered once complete
   const [searchComplete, setSearchComplete] = useState(false);
@@ -969,6 +971,7 @@ export function ForecastDashboard() {
     isLoadingCuratedForecasts;
 
   return (
+    <>
     <div className="space-y-6">
       {/* Controls */}
       <div className="flex flex-col sm:flex-row gap-3">
@@ -1266,7 +1269,11 @@ export function ForecastDashboard() {
               style={{ animationDelay: `${index * SEARCH_ANIMATION_STAGGER_MS}ms` }}
             >
               {item.kind === "ready" ? (
-                <SetForecastCard set={item.result.set} forecast={item.result.forecast} />
+                <SetForecastCard
+                  set={item.result.set}
+                  forecast={item.result.forecast}
+                  onLearnMore={() => setLearnMoreId(item.result.set.id)}
+                />
               ) : (
                 <SearchUnavailableCard card={item.card} />
               )}
@@ -1284,7 +1291,11 @@ export function ForecastDashboard() {
                 key={set.id}
                 className="animate-fade-in-up"
               >
-                <SetForecastCard set={set} forecast={forecast} />
+                <SetForecastCard
+                  set={set}
+                  forecast={forecast}
+                  onLearnMore={() => setLearnMoreId(set.id)}
+                />
               </div>
             ))}
           </div>
@@ -1421,5 +1432,21 @@ export function ForecastDashboard() {
         </div>
       </div>
     </div>
+
+    {/* Learn More breakdown modal */}
+    {(() => {
+      const allResults = [...curatedForecasts, ...topBuyResults, ...apiResults, ...searchCuratedResults];
+      const matched = allResults.find((r) => r.set.id === learnMoreId);
+      if (!matched) return null;
+      return (
+        <ForecastBreakdownModal
+          set={matched.set}
+          forecast={matched.forecast}
+          open={learnMoreId !== null}
+          onClose={() => setLearnMoreId(null)}
+        />
+      );
+    })()}
+    </>
   );
 }
