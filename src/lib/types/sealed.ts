@@ -198,6 +198,13 @@ export interface CommunityScoreSubsignals {
   forumScore: number;
   redditPostCount: number;
   redditSentiment: number;
+  /**
+   * True when every Reddit subreddit fetch failed during the last build
+   * (rate-limit, 403, network). Consumers should treat such entries as
+   * "no community signal" rather than as low-popularity, since the
+   * underlying Reddit data is missing — not negative.
+   */
+  redditDataMissing?: boolean;
   lastUpdated: string;
 }
 

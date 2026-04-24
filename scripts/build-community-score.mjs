@@ -132,8 +132,13 @@ async function fetchRedditSearch(subreddit, setName) {
   const q = encodeURIComponent(setName);
   const url = `https://www.reddit.com/r/${subreddit}/search.json?q=${q}&restrict_sr=on&sort=relevance&t=year&limit=${REDDIT_LIMIT}`;
   const data = await throttledFetch(url);
-  if (!data?.data?.children) return null;
-  return data.data.children.map(c => c.data);
+  // Distinguish "fetch failed" (null) from "fetch succeeded with no posts" ([]).
+  // Without this, anonymous Reddit 403/429 responses would look identical to
+  // "this set is unpopular" and tank the composite community score.
+  if (data == null) return null;
+  const children = data?.data?.children;
+  if (!Array.isArray(children)) return null;
+  return children.map(c => c.data);
 }
 
 function scoreSentiment(posts) {
@@ -170,7 +175,9 @@ async function fetchSetRedditData(setName) {
   const results = {};
   for (const { name: sub, weight } of SUBREDDITS) {
     const posts = await fetchRedditSearch(sub, setName);
-    results[sub] = { posts: posts ?? [], weight };
+    // posts === null means the request failed (rate-limit / 403 / network).
+    // posts === [] means the request succeeded but Reddit returned no matches.
+    results[sub] = { posts, weight };
   }
   return results;
 }
@@ -231,7 +238,12 @@ async function main() {
   const trendsMap = loadGoogleTrendsMap();
 
   // ─── Fetch Reddit for all sets ─────────────────────────────────────────────
-  const rawRedditScores = [];
+  // For each set we capture both the raw weighted engagement (used for
+  // min-max normalization across the population) and a `redditDataMissing`
+  // flag — true when ALL subreddit fetches failed. Sets with missing data
+  // are excluded from normalization and assigned a neutral redditScore=50,
+  // so a transient Reddit outage during the build can't poison popular
+  // modern sets with redditScore=0 → communityScore=28.
   const redditData = [];
 
   console.log("Fetching Reddit data (1 req/s, cached)...");
@@ -244,22 +256,43 @@ async function main() {
     let weightedRaw = 0;
     let totalPosts = 0;
     let allPosts = [];
+    let anySuccess = false;
     for (const [, { posts, weight }] of Object.entries(subData)) {
+      if (posts == null) continue;
+      anySuccess = true;
       weightedRaw += computeRawRedditScore(posts) * weight;
       totalPosts += posts.length;
       allPosts = allPosts.concat(posts);
     }
     const sentimentDelta = scoreSentiment(allPosts);
+    const redditDataMissing = !anySuccess;
 
-    rawRedditScores.push(weightedRaw);
-    redditData.push({ setId, name, weightedRaw, totalPosts, allPosts, sentimentDelta });
-    console.log(`posts=${totalPosts}, raw=${weightedRaw.toFixed(1)}, sentiment=${sentimentDelta.toFixed(2)}`);
+    redditData.push({
+      setId,
+      name,
+      weightedRaw,
+      totalPosts,
+      allPosts,
+      sentimentDelta,
+      redditDataMissing,
+    });
+    const tag = redditDataMissing ? " [MISSING — fetch failed]" : "";
+    console.log(`posts=${totalPosts}, raw=${weightedRaw.toFixed(1)}, sentiment=${sentimentDelta.toFixed(2)}${tag}`);
   }
 
-  // Normalize raw Reddit scores to 0-100
-  const normalizedReddit = rawRedditScores.some(v => v > 0)
-    ? minMaxNormalize(rawRedditScores)
-    : rawRedditScores.map(() => 50);
+  // Normalize raw Reddit scores to 0-100 over sets that actually returned
+  // data. Sets where every subreddit fetch failed are excluded from the
+  // normalization range and later assigned a neutral 50.
+  const liveScores = redditData
+    .filter(r => !r.redditDataMissing)
+    .map(r => r.weightedRaw);
+  const liveMin = liveScores.length ? Math.min(...liveScores) : 0;
+  const liveMax = liveScores.length ? Math.max(...liveScores) : 0;
+  const normalizedReddit = redditData.map(r => {
+    if (r.redditDataMissing) return 50;
+    if (liveMax === liveMin) return 50;
+    return ((r.weightedRaw - liveMin) / (liveMax - liveMin)) * 100;
+  });
 
   // ─── Compose final scores ──────────────────────────────────────────────────
   const output = {
@@ -269,12 +302,14 @@ async function main() {
   };
 
   for (let i = 0; i < sets.length; i++) {
-    const { setId, name, totalPosts, sentimentDelta } = redditData[i];
+    const { setId, name, totalPosts, sentimentDelta, redditDataMissing } = redditData[i];
 
     // Sub-signals
     const googleTrendsScore = trendsMap[setId] ?? 50;
 
-    // Reddit score with sentiment adjustment
+    // Reddit score with sentiment adjustment. When Reddit data is missing
+    // the base score is already neutral (50), so the sentiment multiplier
+    // (which is 1 + 0 = 1 anyway, since allPosts is empty) is a no-op.
     const baseReddit = normalizedReddit[i];
     const sentimentMultiplier = 1 + 0.10 * sentimentDelta; // ±10% for sentiment
     const redditScore = clamp(Math.round(baseReddit * sentimentMultiplier), 0, 100);
@@ -297,6 +332,7 @@ async function main() {
       forumScore,
       redditPostCount: totalPosts,
       redditSentiment: parseFloat(sentimentDelta.toFixed(3)),
+      redditDataMissing,
       lastUpdated: new Date().toISOString(),
     };
   }

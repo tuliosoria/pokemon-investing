@@ -40,6 +40,18 @@ const TOP_CHASE_BY_SET_ID: Record<string, TopChaseEntry> =
 
 const COMMUNITY_SCORE_MAP = (communityScoreData as unknown as CommunityScoreFile).sets;
 
+/**
+ * An entry has "no real signal" when its Reddit fetch failed or returned
+ * 0 posts AND Google Trends is just the neutral 50 default. Treating such
+ * an entry as a low score (~28) would unfairly penalize popular modern
+ * sets via demand dampening and confidence capping, so we skip it.
+ */
+function communityEntryHasRealSignal(entry: { redditPostCount: number; googleTrendsScore: number; redditDataMissing?: boolean }): boolean {
+  const redditUsable = !entry.redditDataMissing && entry.redditPostCount > 0;
+  const trendsUsable = entry.googleTrendsScore !== 50;
+  return redditUsable || trendsUsable;
+}
+
 /** Look up community score entry by set name (normalized). */
 export function lookupCommunityScore(name: string) {
   // Normalize: strip product type suffixes and variant labels, lowercase, alphanum only
@@ -50,13 +62,13 @@ export function lookupCommunityScore(name: string) {
   const normalized = norm(name);
   // Exact match first
   for (const entry of Object.values(COMMUNITY_SCORE_MAP)) {
-    if (norm(entry.setName) === normalized) return entry;
+    if (norm(entry.setName) === normalized && communityEntryHasRealSignal(entry)) return entry;
   }
   // Prefix match: if the community score set name is a prefix of the product name
   // (handles variants like "Hidden Fates Shiny Vault Booster Box" → "Hidden Fates")
   for (const entry of Object.values(COMMUNITY_SCORE_MAP)) {
     const entryNorm = norm(entry.setName);
-    if (entryNorm.length >= 4 && normalized.startsWith(entryNorm)) return entry;
+    if (entryNorm.length >= 4 && normalized.startsWith(entryNorm) && communityEntryHasRealSignal(entry)) return entry;
   }
   return null;
 }

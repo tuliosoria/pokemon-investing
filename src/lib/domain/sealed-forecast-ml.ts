@@ -587,13 +587,30 @@ function estimateChaseCardCount(set: SealedSetData, popularityScore: number): nu
 }
 
 /**
+ * An entry "has no real community signal" when its Reddit fetch failed or
+ * returned 0 posts AND the Google Trends signal is just the neutral 50
+ * default. Returning such an entry would make the composite score collapse
+ * to ~28 (= 0.45·0 + 0.35·50 + 0.20·50), which then unfairly penalizes
+ * popular modern sets via the ML feature, demand dampening, and confidence
+ * capping. In that case we'd rather pretend the entry doesn't exist so the
+ * caller uses the model's trained defaults.
+ */
+function entryHasRealSignal(entry: { redditPostCount: number; googleTrendsScore: number; redditDataMissing?: boolean }): boolean {
+  const redditUsable = !entry.redditDataMissing && entry.redditPostCount > 0;
+  const trendsUsable = entry.googleTrendsScore !== 50; // 50 is the neutral default
+  return redditUsable || trendsUsable;
+}
+
+/**
  * Look up community score data for a set. Tries the manifest setId first,
  * then falls back to a name-normalized match across community score entries.
+ * Entries with no real signal are skipped so a transient Reddit outage in
+ * the build pipeline can't poison popular sets.
  */
 function getCommunityScoreEntry(set: SealedSetData, manifestProduct?: ManifestProduct) {
   if (manifestProduct?.setId) {
     const entry = communityScoreMap[manifestProduct.setId];
-    if (entry) return entry;
+    if (entry && entryHasRealSignal(entry)) return entry;
   }
 
   // Name-based fallback: strip product type suffixes and variant labels, compare
@@ -604,12 +621,12 @@ function getCommunityScoreEntry(set: SealedSetData, manifestProduct?: ManifestPr
   const normalizedName = stripVariants(set.name);
   // Exact match
   for (const [, entry] of Object.entries(communityScoreMap)) {
-    if (stripVariants(entry.setName) === normalizedName) return entry;
+    if (stripVariants(entry.setName) === normalizedName && entryHasRealSignal(entry)) return entry;
   }
   // Prefix match for variant products
   for (const [, entry] of Object.entries(communityScoreMap)) {
     const entryNorm = stripVariants(entry.setName);
-    if (entryNorm.length >= 4 && normalizedName.startsWith(entryNorm)) return entry;
+    if (entryNorm.length >= 4 && normalizedName.startsWith(entryNorm) && entryHasRealSignal(entry)) return entry;
   }
   return null;
 }
