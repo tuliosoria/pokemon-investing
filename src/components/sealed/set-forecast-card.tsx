@@ -61,6 +61,9 @@ export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardP
     typeof set.factors?.forumScore === "number"
       ? Math.round(set.factors.forumScore)
       : null;
+  const communityScoreSource =
+    set.factors?.communityScoreSource === "market" ? "market" : "reddit";
+  const subSignalLabel = communityScoreSource === "market" ? "Market" : "Reddit";
   const communityLabel =
     communityScore == null
       ? null
@@ -229,7 +232,7 @@ export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardP
                   {communityLabel.text}
                 </span>
                 <span className="text-[hsl(var(--muted-foreground))]">
-                  Reddit {redditScore ?? "—"} · Trends {googleTrendsScore ?? "—"} · Forums {forumScore ?? "—"}
+                  {subSignalLabel} {redditScore ?? "—"} · Trends {googleTrendsScore ?? "—"} · Forums {forumScore ?? "—"}
                 </span>
               </div>
             ) : (

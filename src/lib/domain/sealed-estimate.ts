@@ -73,19 +73,101 @@ export function lookupCommunityScore(name: string) {
   return null;
 }
 
-/** Merge community sub-signals into an existing SealedSetData factors object. */
-export function mergeCommunityFactors(set: SealedSetData): SealedSetData {
-  if (set.factors.communityScore != null) return set;
-  const entry = lookupCommunityScore(set.name);
-  if (!entry) return set;
-  return {
-    ...set,
-    factors: {
-      ...set.factors,
+/**
+ * Map PriceCharting trailing-30-day sales volume to a 0–100 demand score
+ * via a log scale calibrated to the live distribution (median≈64,
+ * P90≈400, max≈3413). High volume = active market = high real-world
+ * community demand, regardless of how loud Reddit happens to be.
+ *
+ * Calibration points:
+ *   vol=10   → ~30    (very thin market)
+ *   vol=64   → 51     (median set)
+ *   vol=235  → 67     (Destined Rivals BB)
+ *   vol=400  → 74     (top-decile set)
+ *   vol=3413 → 100    (Mega Evolution BB)
+ */
+export function computeMarketActivityScore(salesVolume: number | null | undefined): number | null {
+  if (typeof salesVolume !== "number" || !isFinite(salesVolume) || salesVolume <= 0) return null;
+  // log(1 + 3413) ≈ 8.135 → use 8.135 as the denominator so vol=3413 → 100.
+  const score = (Math.log(1 + salesVolume) / 8.135) * 100;
+  return Math.max(0, Math.min(100, Math.round(score)));
+}
+
+/**
+ * Merge a community-score entry with a market-activity fallback.
+ * When the entry is missing or has no real Reddit/Trends signal, we
+ * substitute redditScore with marketActivityScore (the market's
+ * revealed preference is a strong demand proxy) and recompose the
+ * communityScore using the same weights.
+ *
+ * Returns the resolved sub-signals plus a `source` tag so callers can
+ * label the UI honestly ("Market 67" vs "Reddit 67").
+ */
+export function resolveCommunityFactors(
+  setName: string,
+  marketActivityScore: number | null
+): {
+  communityScore: number | null;
+  redditScore: number | null;
+  googleTrendsScore: number | null;
+  forumScore: number | null;
+  marketActivityScore: number | null;
+  source: "reddit" | "market" | null;
+} {
+  const entry = lookupCommunityScore(setName);
+  if (entry) {
+    return {
       communityScore: entry.communityScore,
       redditScore: entry.redditScore,
       googleTrendsScore: entry.googleTrendsScore,
       forumScore: entry.forumScore,
+      marketActivityScore,
+      source: "reddit",
+    };
+  }
+  // No real Reddit/Trends signal — fall back to market activity if available.
+  if (marketActivityScore != null) {
+    const googleTrendsScore = 50;
+    const forumScore = 50;
+    const composite = Math.round(0.45 * marketActivityScore + 0.35 * googleTrendsScore + 0.20 * forumScore);
+    return {
+      communityScore: composite,
+      redditScore: marketActivityScore, // exposed in factors so the model still gets a number
+      googleTrendsScore,
+      forumScore,
+      marketActivityScore,
+      source: "market",
+    };
+  }
+  return {
+    communityScore: null,
+    redditScore: null,
+    googleTrendsScore: null,
+    forumScore: null,
+    marketActivityScore: null,
+    source: null,
+  };
+}
+
+/** Merge community sub-signals into an existing SealedSetData factors object. */
+export function mergeCommunityFactors(set: SealedSetData): SealedSetData {
+  if (set.factors.communityScore != null) return set;
+  // Curated sets carry a `popularity` factor that's already log-scaled
+  // sales volume, so we re-use it as the market activity proxy when the
+  // raw volume isn't carried on the SealedSetData.
+  const market = typeof set.factors.popularity === "number" ? set.factors.popularity : null;
+  const resolved = resolveCommunityFactors(set.name, market);
+  if (resolved.communityScore == null) return set;
+  return {
+    ...set,
+    factors: {
+      ...set.factors,
+      communityScore: resolved.communityScore,
+      redditScore: resolved.redditScore,
+      googleTrendsScore: resolved.googleTrendsScore,
+      forumScore: resolved.forumScore,
+      marketActivityScore: resolved.marketActivityScore,
+      communityScoreSource: resolved.source,
     },
   };
 }
@@ -503,7 +585,10 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
   const setSinglesValueRatio =
     setSinglesValue && price > 0 ? setSinglesValue / price : null;
 
-  const communityEntry = lookupCommunityScore(pricing.name);
+  const communityResolution = resolveCommunityFactors(
+    pricing.name,
+    computeMarketActivityScore(salesVolume)
+  );
 
   return {
     id: `dynamic-${pricing.pokedataId}`,
@@ -537,10 +622,12 @@ export function buildDynamicSetData(pricing: SealedPricing): SealedSetData {
       chaseEvRatio,
       setSinglesValue,
       setSinglesValueRatio,
-      communityScore: communityEntry?.communityScore ?? null,
-      redditScore: communityEntry?.redditScore ?? null,
-      googleTrendsScore: communityEntry?.googleTrendsScore ?? null,
-      forumScore: communityEntry?.forumScore ?? null,
+      communityScore: communityResolution.communityScore,
+      redditScore: communityResolution.redditScore,
+      googleTrendsScore: communityResolution.googleTrendsScore,
+      forumScore: communityResolution.forumScore,
+      marketActivityScore: communityResolution.marketActivityScore,
+      communityScoreSource: communityResolution.source,
     },
 
     chaseCards,

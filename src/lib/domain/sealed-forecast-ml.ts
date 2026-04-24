@@ -744,9 +744,17 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
     liquidityTier === "high" ? 75 : liquidityTier === "normal" ? 55 : 40;
 
   // Look up the composite community score. When available it replaces the
-  // old blendedDemandScore as the primary demand-signal driver.
+  // old blendedDemandScore as the primary demand-signal driver. We prefer
+  // the value already attached to `set.factors.communityScore` because
+  // the upstream resolver (resolveCommunityFactors) has already applied
+  // the PriceCharting market-activity fallback for sets where Reddit data
+  // is missing — without it, modern sets would all collapse to the
+  // raw-Reddit `redditScore=0 → communityScore=28` floor.
   const communityEntry = getCommunityScoreEntry(set, manifestProduct);
-  const resolvedCommunityScore = communityEntry?.communityScore ?? null;
+  const resolvedCommunityScore =
+    (typeof set.factors?.communityScore === "number" ? set.factors.communityScore : null) ??
+    communityEntry?.communityScore ??
+    null;
 
   // Structural EV blend (still computed; kept as a fallback and for the UI).
   const blendedDemandScore =
@@ -877,10 +885,21 @@ function buildFeatureInput(set: SealedSetData): FeatureInput {
   const logMostExpensiveCardPrice = Math.log1p(Math.max(mostExpensiveCardPrice, 0));
   const chaseValueShare = clamp(chaseCardIndexScore / Math.max(currentPrice, 1), 0, 50);
 
-  // community_signal_consistency: 1 - std / (mean + ε) across sub-scores
+  // community_signal_consistency: 1 - std / (mean + ε) across sub-scores.
+  // Prefer the resolved set.factors values (which incorporate the
+  // market-activity fallback) over the raw lookup so the model sees the
+  // same numbers the UI displays.
   const communityScoreVal = clamp(googleTrendsScore, 0, 100);
-  const redditScoreVal = clamp(communityEntry?.redditScore ?? 50, 0, 100);
-  const forumScoreVal = clamp(communityEntry?.forumScore ?? 50, 0, 100);
+  const resolvedRedditScore =
+    typeof set.factors?.redditScore === "number"
+      ? set.factors.redditScore
+      : (communityEntry?.redditScore ?? 50);
+  const resolvedForumScore =
+    typeof set.factors?.forumScore === "number"
+      ? set.factors.forumScore
+      : (communityEntry?.forumScore ?? 50);
+  const redditScoreVal = clamp(resolvedRedditScore, 0, 100);
+  const forumScoreVal = clamp(resolvedForumScore, 0, 100);
   const sigMean = (communityScoreVal + redditScoreVal + forumScoreVal) / 3;
   const sigStd = Math.sqrt(
     ((communityScoreVal - sigMean) ** 2 + (redditScoreVal - sigMean) ** 2 + (forumScoreVal - sigMean) ** 2) / 3

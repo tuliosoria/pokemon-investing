@@ -211,11 +211,16 @@ export function ForecastBreakdownModal({ set, forecast, open, onClose }: Forecas
                 </p>
 
                 <div className="space-y-2 rounded-xl border border-white/10 bg-white/[0.03] p-3">
-                  <SubScoreBar label="Reddit" value={factors.redditScore} />
+                  <SubScoreBar
+                    label={factors.communityScoreSource === "market" ? "Market Activity" : "Reddit"}
+                    value={factors.redditScore}
+                  />
                   <SubScoreBar label="Google Trends" value={factors.googleTrendsScore} />
                   <SubScoreBar label="Forums" value={factors.forumScore} />
                   <p className="mt-1 text-[10px] text-[hsl(var(--muted-foreground))]/70">
-                    Reddit 45% · Google Trends 35% · Forums 20%
+                    {factors.communityScoreSource === "market"
+                      ? "Market Activity 45% · Google Trends 35% · Forums 20% (Reddit unavailable — using PriceCharting sales-volume proxy)"
+                      : "Reddit 45% · Google Trends 35% · Forums 20%"}
                   </p>
                 </div>
               </>

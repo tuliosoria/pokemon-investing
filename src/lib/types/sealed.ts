@@ -67,6 +67,24 @@ export interface SealedSetData {
     googleTrendsScore?: number | null;
     /** Forum presence sub-score (0–100) — currently a neutral placeholder. */
     forumScore?: number | null;
+    /**
+     * Market activity sub-score (0–100) derived from log-scaled
+     * PriceCharting trailing-30-day sales volume. Acts as a "revealed
+     * preference" demand signal that's much harder to fake than Reddit
+     * post counts and is available for every set with PriceCharting data
+     * — including modern releases where Reddit search is rate-limited.
+     * When `redditScore` is missing or unreliable, this score substitutes
+     * for it in the composite communityScore.
+     */
+    marketActivityScore?: number | null;
+    /**
+     * Indicates which sub-signal currently drives `redditScore` /
+     * `communityScore`. "reddit" means actual Reddit engagement,
+     * "market" means we substituted PriceCharting sales-volume activity
+     * because Reddit data was missing. UI uses this to label the
+     * sub-signal honestly.
+     */
+    communityScoreSource?: "reddit" | "market" | null;
   };
 
   chaseCards: string[];
