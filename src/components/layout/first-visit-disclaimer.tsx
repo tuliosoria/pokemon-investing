@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react";
 import { AlertTriangle } from "lucide-react";
 
-const STORAGE_KEY = "pokealpha:disclaimer-acknowledged:v1";
+// Bump the version to re-show the disclaimer to all returning visitors
+// (e.g. after material wording or risk-language updates). Each bump is a
+// one-time re-prompt; users who acknowledge the new version won't see it
+// again until the next bump.
+const STORAGE_KEY = "pokealpha:disclaimer-acknowledged:v2";
 
 export function FirstVisitDisclaimer() {
   // Start hidden so the dialog never flashes for returning visitors and the

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getLegalConfig } from "@/lib/legal-config";
+import { ShowDisclaimerButton } from "@/components/layout/show-disclaimer-button";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -54,6 +55,7 @@ export function Footer() {
               <Link href="/contact" className="text-xs text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--poke-red))] transition-colors">
                 Contact &amp; Legal Notices
               </Link>
+              <ShowDisclaimerButton />
             </nav>
           </div>
         </div>
