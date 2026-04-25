@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { createPortal } from "react-dom";
 import type { SealedSetData, Forecast } from "@/lib/types/sealed";
 import { getConfidenceBg } from "@/lib/domain/sealed-forecast";
@@ -62,6 +62,7 @@ function communityLabel(score: number | null | undefined): string {
 export function ForecastBreakdownModal({ set, forecast, open, onClose }: ForecastBreakdownModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const headingId = `breakdown-heading-${set.id}`;
+  const [nowMs] = useState(() => Date.now());
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -237,7 +238,7 @@ export function ForecastBreakdownModal({ set, forecast, open, onClose }: Forecas
                       {(() => {
                         const ts = new Date(factors.communityScoreUpdatedAt);
                         if (isNaN(ts.getTime())) return null;
-                        const ageMs = Date.now() - ts.getTime();
+                        const ageMs = nowMs - ts.getTime();
                         const days = Math.floor(ageMs / (1000 * 60 * 60 * 24));
                         const freshness =
                           days <= 0 ? "today" : days === 1 ? "1 day ago" : `${days} days ago`;
