@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ForecastDashboard } from "@/components/sealed/forecast-dashboard";
 
 export const metadata = {
-  title: "Sealed Set Forecasting — PokeAlpha",
+  title: "Sealed Set Forecasting — PokeFuture",
   description:
     "ML-powered forecasting for Pokémon TCG sealed products. Get Buy, Hold, or Sell signals with S&P 500 comparisons for booster boxes and ETBs.",
 };

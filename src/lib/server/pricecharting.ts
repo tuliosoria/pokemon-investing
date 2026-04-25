@@ -91,7 +91,7 @@ async function requestPriceCharting<
     cache: "no-store",
     headers: {
       Accept: "application/json",
-      "User-Agent": "PokeAlpha/1.0 PriceCharting integration",
+      "User-Agent": "PokeFuture/1.0 PriceCharting integration",
     },
   });
 

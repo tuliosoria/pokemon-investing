@@ -94,7 +94,7 @@ export default function PrivacyPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">6. Children&apos;s Privacy</h2>
             <p>
-              PokeAlpha is not directed at children under 13 years of age. We do not knowingly
+              PokeFuture is not directed at children under 13 years of age. We do not knowingly
               collect personal information from children.
             </p>
           </section>

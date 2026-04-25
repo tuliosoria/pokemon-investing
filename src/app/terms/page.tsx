@@ -19,7 +19,7 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">1. Acceptance of Terms</h2>
             <p>
-              By accessing and using PokeAlpha (&quot;the Service&quot;), you accept and agree to be bound
+              By accessing and using PokeFuture (&quot;the Service&quot;), you accept and agree to be bound
               by these Terms and Conditions. If you do not agree, you may not use the Service.
             </p>
           </section>
@@ -69,7 +69,7 @@ export default function TermsPage() {
             <h2 className="text-lg font-semibold text-[hsl(var(--foreground))]">6. Intellectual property</h2>
             <p>
               Pokémon is a trademark of Nintendo / Creatures Inc. / GAME FREAK inc.
-              PokeAlpha is not affiliated with, endorsed by, or sponsored by The Pokémon Company,
+              PokeFuture is not affiliated with, endorsed by, or sponsored by The Pokémon Company,
               Nintendo, or any related entities. Third-party marks, images, and
               data remain the property of their respective owners.
             </p>

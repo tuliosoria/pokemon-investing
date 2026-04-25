@@ -19,13 +19,14 @@ export function Footer() {
               </div>
               <span className="font-bold">
                 <span className="text-[hsl(var(--poke-red))]">Poke</span>
-                <span className="text-[hsl(var(--poke-yellow))]">Alpha</span>
+                <span className="text-[hsl(var(--poke-yellow))]">Future</span>
               </span>
             </div>
             <p className="text-xs text-[hsl(var(--muted-foreground))] leading-relaxed">
-              Educational research tools for Pokémon collectors and investors.
-              Not financial, legal, or tax advice. Market data may be delayed,
-              incomplete, estimated, or sourced from third parties.
+              Tools for collectors thinking about the future of the Pokémon
+              market. Educational only — not financial, legal, or tax advice.
+              Market data may be delayed, incomplete, estimated, or sourced
+              from third parties.
             </p>
           </div>
 
@@ -62,7 +63,7 @@ export function Footer() {
 
         <div className="mt-8 pt-6 border-t border-[hsl(var(--border))] flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-xs text-[hsl(var(--muted-foreground))]">
-            © {year} PokeAlpha. All rights reserved.
+            © {year} PokeFuture. All rights reserved.
           </p>
           <div className="space-y-1 text-center sm:text-right">
             <p className="text-xs text-[hsl(var(--muted-foreground))]">

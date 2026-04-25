@@ -20,7 +20,7 @@ export function getLegalConfig(): LegalConfig {
     normalize(process.env.PRIVACY_REQUEST_EMAIL) ?? contactEmail;
 
   return {
-    operatorName: normalize(process.env.LEGAL_OPERATOR_NAME) ?? "PokeAlpha",
+    operatorName: normalize(process.env.LEGAL_OPERATOR_NAME) ?? "PokeFuture",
     contactEmail,
     privacyEmail,
     businessAddress: normalize(process.env.LEGAL_BUSINESS_ADDRESS),

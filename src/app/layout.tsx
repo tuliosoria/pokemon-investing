@@ -4,9 +4,9 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { FirstVisitDisclaimer } from "@/components/layout/first-visit-disclaimer";
 
-const SITE_NAME = "PokeAlpha";
+const SITE_NAME = "PokeFuture";
 const SITE_DESCRIPTION =
-  "Data-driven Pokémon TCG investing toolkit. Forecast sealed-product ROI with ML-backed Buy / Hold / Sell signals, stress-test under Pessimist · Moderate · Optimist scenarios, and run grade-or-don't-grade EV math on individual cards.";
+  "Invest in the future of the Pokémon market. PokeFuture pairs ML-backed sealed-product forecasts with scenario stress-tests and grade-or-don't-grade EV math so collectors can spot where the next decade of demand is heading.";
 
 export const metadata: Metadata = {
   applicationName: SITE_NAME,

@@ -100,9 +100,9 @@ const CONCEPTS = [
 ];
 
 export const metadata: Metadata = {
-  title: "Sealed Forecast Methodology — PokeAlpha",
+  title: "Sealed Forecast Methodology — PokeFuture",
   description:
-    "Learn how PokeAlpha calculates sealed Pokémon forecast scores, model inputs, guardrails, and statistical concepts.",
+    "Learn how PokeFuture calculates sealed Pokémon forecast scores, model inputs, guardrails, and statistical concepts.",
 };
 
 export default function SealedForecastMethodologyPage() {
@@ -129,7 +129,7 @@ export default function SealedForecastMethodologyPage() {
             <span className="text-[hsl(var(--poke-yellow))]">is calculated</span>
           </h1>
           <p className="max-w-3xl text-sm leading-relaxed text-[hsl(var(--muted-foreground))] md:text-base">
-            PokeAlpha forecasts 1-year, 3-year, and 5-year sealed prices with
+            PokeFuture forecasts 1-year, 3-year, and 5-year sealed prices with
             gradient-boosted tree models trained on historical sealed-product snapshots.
             The system blends live market pricing, set metadata, demand signals, and
             market context, then applies guardrails so sparse or brand-new products do

@@ -23,18 +23,18 @@ export default function HomePage() {
           </div>
 
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-[1.1] animate-fade-in-up delay-100">
-            <span className="text-white">Smarter Pok&eacute;mon</span>
+            <span className="text-white">Invest in the future of</span>
             <br />
             <span className="text-[hsl(var(--poke-yellow))] drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">
-              investing decisions
+              the Pok&eacute;mon market
             </span>
           </h1>
 
           <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-200">
-            Research tools for graded cards and sealed products. Expected value
-            calculators, price forecasting, and market analysis to help you
-            evaluate collecting decisions &mdash; not personalized investment
-            advice.
+            ML-backed forecasts for sealed product, scenario stress-tests, and
+            grade-or-don&rsquo;t-grade EV math &mdash; built to help you see
+            where the next decade of demand is heading. Educational tools, not
+            personalized investment advice.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-300">
@@ -281,7 +281,7 @@ export default function HomePage() {
               </Link>
             </div>
             <div className="mt-8 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-5 py-4 text-left text-xs leading-relaxed text-[hsl(var(--muted-foreground))]">
-              PokeAlpha provides educational market-analysis tools. It does not
+              PokeFuture provides educational market-analysis tools. It does not
               provide personalized financial, investment, tax, or legal advice.
               Review our{" "}
               <Link href="/terms" className="text-[hsl(var(--poke-red))] hover:underline">

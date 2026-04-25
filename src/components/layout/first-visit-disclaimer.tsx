@@ -7,7 +7,7 @@ import { AlertTriangle } from "lucide-react";
 // (e.g. after material wording or risk-language updates). Each bump is a
 // one-time re-prompt; users who acknowledge the new version won't see it
 // again until the next bump.
-const STORAGE_KEY = "pokealpha:disclaimer-acknowledged:v2";
+const STORAGE_KEY = "pokefuture:disclaimer-acknowledged:v2";
 
 export function FirstVisitDisclaimer() {
   // Start hidden so the dialog never flashes for returning visitors and the
@@ -73,7 +73,7 @@ export function FirstVisitDisclaimer() {
 
         <div className="space-y-3 px-5 py-4 text-sm leading-relaxed text-[hsl(var(--foreground))]/90">
           <p>
-            <strong>PokeAlpha is not a financial advisor.</strong> Nothing here
+            <strong>PokeFuture is not a financial advisor.</strong> Nothing here
             is investment advice, a recommendation to buy or sell, or a
             guarantee of any kind.
           </p>

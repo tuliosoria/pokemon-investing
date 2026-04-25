@@ -29,7 +29,7 @@ export function Header() {
             </div>
             <span className="text-lg font-bold tracking-tight">
               <span className="text-[hsl(var(--poke-red))]">Poke</span>
-              <span className="text-[hsl(var(--poke-yellow))]">Alpha</span>
+              <span className="text-[hsl(var(--poke-yellow))]">Future</span>
             </span>
           </Link>
 

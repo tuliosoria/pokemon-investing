@@ -1,6 +1,6 @@
 "use client";
 
-const STORAGE_KEY = "pokealpha:disclaimer-acknowledged:v2";
+const STORAGE_KEY = "pokefuture:disclaimer-acknowledged:v2";
 
 export function ShowDisclaimerButton() {
   const handleClick = () => {
