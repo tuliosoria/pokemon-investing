@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { SealedSetData, Forecast } from "@/lib/types/sealed";
 import { getProjectionData } from "@/lib/domain/sealed-forecast";
 import { SignalBadge, ConfidenceBadge } from "./signal-badge";
@@ -296,15 +297,24 @@ export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardP
         </div>
 
         <div className="mt-auto space-y-3 pt-5">
+          <div className="flex justify-end">
+            <Link
+              href={`/sealed-forecast/${set.id}`}
+              aria-label={`View forecast details for ${set.name}`}
+              className="text-[11px] font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--poke-yellow))] transition-colors"
+            >
+              View details →
+            </Link>
+          </div>
           {onLearnMore && (
             <div className="flex justify-end">
               <button
                 type="button"
                 onClick={onLearnMore}
-                aria-label={`Learn more about ${set.name}`}
+                aria-label={`Quick view for ${set.name}`}
                 className="text-[11px] font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--poke-yellow))] transition-colors"
               >
-                Learn more →
+                Quick view ↗
               </button>
             </div>
           )}

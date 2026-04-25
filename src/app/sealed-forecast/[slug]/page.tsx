@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { SEALED_SETS, getSealedSetById } from "@/lib/data/sealed-sets";
+import { loadSealedSetBySlug } from "@/lib/server/load-sealed-set";
 import { computeForecast } from "@/lib/domain/sealed-forecast-ml";
 import { deriveRecommendation } from "@/lib/domain/recommendation";
 import { buildDescription } from "@/lib/domain/sealed-description";
@@ -66,7 +67,7 @@ function Stat({
 
 export default async function SealedProductDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const set = getSealedSetById(slug);
+  const set = await loadSealedSetBySlug(slug);
   if (!set) notFound();
 
   const forecast = computeForecast(set);
