@@ -20,12 +20,12 @@ REGION="${AWS_REGION:-us-east-1}"
 echo "→ Checking AWS identity…"
 aws sts get-caller-identity --output table
 
-echo "→ Inspecting app $APP_ID in $REGION…"
+echo "→ Inspecting app ${APP_ID} in ${REGION}…"
 aws amplify get-branch --app-id "$APP_ID" --branch-name "$BRANCH" --region "$REGION" \
   --query 'branch.{stage:stage,enableAutoBuild:enableAutoBuild,activeJobId:activeJobId}' \
   --output table
 
-echo "→ Triggering RELEASE job on $BRANCH…"
+echo "→ Triggering RELEASE job on ${BRANCH}…"
 JOB_ID=$(aws amplify start-job \
   --app-id "$APP_ID" \
   --branch-name "$BRANCH" \
@@ -33,7 +33,7 @@ JOB_ID=$(aws amplify start-job \
   --region "$REGION" \
   --query 'jobSummary.jobId' --output text)
 
-echo "→ Job started: $JOB_ID"
+echo "→ Job started: ${JOB_ID}"
 echo "→ Watching status (Ctrl+C to stop polling — build still runs)…"
 while true; do
   STATUS=$(aws amplify get-job --app-id "$APP_ID" --branch-name "$BRANCH" --job-id "$JOB_ID" \
