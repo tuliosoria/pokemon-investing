@@ -107,7 +107,7 @@ export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardP
               key={set.imageUrl}
               src={set.imageUrl}
               alt={set.name}
-              className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300"
+              className="absolute inset-0 h-full w-full object-contain p-3 transition-opacity duration-300"
               onError={(event) => {
                 event.currentTarget.onerror = null;
                 event.currentTarget.style.opacity = "0";
