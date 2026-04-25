@@ -17,12 +17,23 @@ import {
   HelpCircle,
   ChevronDown,
   Info,
+  Users,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CardSearch } from "./card-search";
-import { useState, useRef, useEffect } from "react";
+import { ConditionWizard } from "./condition-wizard";
+import { useState, useRef, useEffect, useCallback } from "react";
 import type { CardSearchResult, GradeData } from "@/lib/types/card";
+
+interface UserGradeStats {
+  cardId: string;
+  count: number;
+  psa10: { mean: number; std: number };
+  psa9: { mean: number; std: number };
+  psa8: { mean: number; std: number };
+  lastSubmittedAt: string | null;
+}
 
 const DEFAULT_FORM_VALUES: DefaultValues<GradeEvFormValues> = {
   rawCardValue: undefined,
@@ -30,9 +41,9 @@ const DEFAULT_FORM_VALUES: DefaultValues<GradeEvFormValues> = {
   psa10Value: undefined,
   psa9Value: undefined,
   psa8Value: 0,
-  probabilityPsa10: 20,
-  probabilityPsa9: 50,
-  probabilityPsa8: 25,
+  probabilityPsa10: 0,
+  probabilityPsa9: 0,
+  probabilityPsa8: 0,
   marketplaceFeePct: 13.25,
   shippingCost: 5,
   insuranceCost: 0,
@@ -40,12 +51,14 @@ const DEFAULT_FORM_VALUES: DefaultValues<GradeEvFormValues> = {
 };
 
 const PSA_PROBABILITY_TOOLTIP =
-  "Historical PSA 10 gem rate for this exact card based on source population data. It reflects all previously graded copies, not the odds for a fresh raw copy today.";
+  "Estimate the odds your specific copy hits each grade. Population data doesn't matter if your card has scratches, whitening, or off-centering — PSA grades the worst sub-grade. Use the condition wizard above for a starting point.";
 
 export function GradingCalculator() {
   const [result, setResult] = useState<GradeEvResult | null>(null);
   const [isEstimated, setIsEstimated] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+  const [stats, setStats] = useState<UserGradeStats | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -53,16 +66,36 @@ export function GradingCalculator() {
     handleSubmit,
     setValue,
     reset,
+    watch,
     formState: { errors },
   } = useForm<GradeEvFormValues>({
     resolver: zodResolver(gradeEvSchema),
     defaultValues: DEFAULT_FORM_VALUES,
   });
 
-  const handleCardSelect = (_card: CardSearchResult, rawPrice: number) => {
+  const userPsa10 = watch("probabilityPsa10");
+  const userPsa9 = watch("probabilityPsa9");
+
+  const fetchStats = useCallback(async (cardId: string) => {
+    try {
+      const res = await fetch(
+        `/api/cards/grade-submissions?cardId=${encodeURIComponent(cardId)}`
+      );
+      if (!res.ok) return;
+      const body = await res.json();
+      setStats(body.stats ?? null);
+    } catch {
+      // soft fail — density warning is optional
+    }
+  }, []);
+
+  const handleCardSelect = (card: CardSearchResult, rawPrice: number) => {
+    setSelectedCardId(card.id);
+    setStats(null);
+    if (card.id) fetchStats(card.id);
+
     if (rawPrice > 0) {
       setValue("rawCardValue", rawPrice);
-      // Set heuristic estimates until PokeData loads
       const est = estimateGradedValues(rawPrice);
       setValue("psa10Value", est.psa10);
       setValue("psa9Value", est.psa9);
@@ -73,7 +106,9 @@ export function GradingCalculator() {
   };
 
   const handleGradeDataLoaded = (gradeData: GradeData) => {
-    // Only update PSA grading values — never touch raw price
+    // Only update PSA price values from PriceCharting comps — never
+    // touch raw price and never auto-fill probabilities (those are now
+    // user-supplied via the condition wizard).
     const psa10 = gradeData.gradedPrices["PSA 10.0"] ?? 0;
     const psa9 = gradeData.gradedPrices["PSA 9.0"] ?? 0;
     const psa8 = gradeData.gradedPrices["PSA 8.0"] ?? 0;
@@ -81,13 +116,6 @@ export function GradingCalculator() {
     if (psa10 > 0) setValue("psa10Value", Math.round(psa10 * 100) / 100);
     if (psa9 > 0) setValue("psa9Value", Math.round(psa9 * 100) / 100);
     if (psa8 > 0) setValue("psa8Value", Math.round(psa8 * 100) / 100);
-
-    if (gradeData.psa10Probability !== null) {
-      setValue("probabilityPsa10", gradeData.psa10Probability);
-      const remaining = 100 - gradeData.psa10Probability;
-      setValue("probabilityPsa9", Math.round(remaining * 0.5));
-      setValue("probabilityPsa8", Math.round(remaining * 0.3));
-    }
 
     setIsEstimated(false);
     setResult(null);
@@ -97,6 +125,18 @@ export function GradingCalculator() {
     reset(DEFAULT_FORM_VALUES);
     setIsEstimated(false);
     setResult(null);
+    setSelectedCardId(null);
+    setStats(null);
+  };
+
+  const applyWizardSuggestion = (p: {
+    psa10: number;
+    psa9: number;
+    psa8: number;
+  }) => {
+    setValue("probabilityPsa10", p.psa10);
+    setValue("probabilityPsa9", p.psa9);
+    setValue("probabilityPsa8", p.psa8);
   };
 
   const onSubmit = (data: GradeEvFormValues) => {
@@ -106,6 +146,26 @@ export function GradingCalculator() {
       psa8Value: data.psa8Value > 0 ? data.psa8Value : estimated.psa8,
     });
     setResult(res);
+
+    // Fire-and-forget: record this estimate to crowd-density store.
+    if (selectedCardId) {
+      fetch("/api/cards/grade-submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cardId: selectedCardId,
+          psa10Pct: data.probabilityPsa10,
+          psa9Pct: data.probabilityPsa9,
+          psa8Pct: data.probabilityPsa8,
+        }),
+      })
+        .then(async (r) => {
+          if (!r.ok) return;
+          const body = await r.json();
+          if (body.stats) setStats(body.stats);
+        })
+        .catch(() => {});
+    }
   };
 
   // Scroll to result on mobile
@@ -114,6 +174,8 @@ export function GradingCalculator() {
       resultRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [result]);
+
+  const densityWarning = buildDensityWarning(stats, userPsa10, userPsa9);
 
   return (
     <div className="space-y-5">
@@ -172,11 +234,14 @@ export function GradingCalculator() {
           )}
         </div>
 
+        {/* Condition wizard — collapsed by default */}
+        <ConditionWizard onApply={applyWizardSuggestion} />
+
         {/* Probabilities */}
         <div className="space-y-3">
           <div className="flex items-center gap-1.5">
             <h4 className="text-xs font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
-              Grade probability (%)
+              Grade probability (%) — your call
             </h4>
             <span
               title={PSA_PROBABILITY_TOOLTIP}
@@ -214,6 +279,7 @@ export function GradingCalculator() {
               {...register("probabilityPsa9")}
             />
           </div>
+          {densityWarning && <DensityNotice {...densityWarning} />}
         </div>
 
         {/* Advanced toggle */}
@@ -290,6 +356,90 @@ export function GradingCalculator() {
 
       {/* Result — verdict panel */}
       {result && <GradeDecision result={result} ref={resultRef} />}
+    </div>
+  );
+}
+
+/* ─── Crowd-density helpers ────────────────────────────── */
+
+interface DensityNotice {
+  tone: "info" | "warning";
+  count: number;
+  message: string;
+}
+
+function buildDensityWarning(
+  stats: UserGradeStats | null,
+  userPsa10: number | undefined,
+  userPsa9: number | undefined
+): DensityNotice | null {
+  if (!stats || stats.count === 0) return null;
+
+  if (stats.count < 5) {
+    return {
+      tone: "info",
+      count: stats.count,
+      message: `Limited community data (${stats.count} estimate${stats.count === 1 ? "" : "s"} so far). Your input helps calibrate future warnings.`,
+    };
+  }
+
+  const checks: { label: string; user: number; mean: number; std: number }[] =
+    [];
+  if (typeof userPsa10 === "number" && userPsa10 > 0) {
+    checks.push({
+      label: "PSA 10",
+      user: userPsa10,
+      mean: stats.psa10.mean,
+      std: stats.psa10.std,
+    });
+  }
+  if (typeof userPsa9 === "number" && userPsa9 > 0) {
+    checks.push({
+      label: "PSA 9",
+      user: userPsa9,
+      mean: stats.psa9.mean,
+      std: stats.psa9.std,
+    });
+  }
+
+  for (const c of checks) {
+    const diff = c.user - c.mean;
+    const absDiff = Math.abs(diff);
+    const triggered =
+      absDiff >= 15 || (c.std > 1 && absDiff >= c.std * 1.5);
+    if (triggered) {
+      const direction = diff > 0 ? "above" : "below";
+      return {
+        tone: "warning",
+        count: stats.count,
+        message: `Your ${c.label} estimate (${Math.round(c.user)}%) is ${direction} the community average of ${Math.round(c.mean)}% across ${stats.count} estimates. Re-check the condition wizard if you haven't.`,
+      };
+    }
+  }
+
+  return {
+    tone: "info",
+    count: stats.count,
+    message: `In line with the community: ${stats.count} estimates, avg PSA 10 ${Math.round(stats.psa10.mean)}% / PSA 9 ${Math.round(stats.psa9.mean)}%.`,
+  };
+}
+
+function DensityNotice({ tone, message }: DensityNotice) {
+  const isWarning = tone === "warning";
+  return (
+    <div
+      className={`flex items-start gap-2 rounded-lg border px-3 py-2 text-xs ${
+        isWarning
+          ? "border-yellow-500/40 bg-yellow-500/10 text-yellow-200"
+          : "border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40 text-[hsl(var(--muted-foreground))]"
+      }`}
+    >
+      {isWarning ? (
+        <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
+      ) : (
+        <Users className="h-3.5 w-3.5 shrink-0 mt-0.5" />
+      )}
+      <span className="leading-snug">{message}</span>
     </div>
   );
 }

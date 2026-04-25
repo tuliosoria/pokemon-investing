@@ -17,7 +17,6 @@ export async function GET() {
         region: sealedMl.awsRegion,
       },
       monthlyIngestion: {
-        pokedataConfigured: Boolean(process.env.POKEDATA_API_KEY?.trim()),
         priceChartingConfigured: hasPriceChartingToken(),
         trendSnapshotStorageConfigured: sealedMl.dynamoConfigured,
       },

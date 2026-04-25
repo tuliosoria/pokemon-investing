@@ -43,7 +43,7 @@ function buildTcgplayerProductUrl(tcgplayerId: string): string {
 
 /**
  * Build a {@link GradeData} object from a candidate's static baseline pricing.
- * Used so the page renders zero-config when the live PriceCharting / PokeData
+ * Used so the page renders zero-config when the live PriceCharting
  * APIs are unavailable. Population data is intentionally left empty — the
  * downstream {@link computeGradingOpportunity} call only requires graded prices
  * and a raw price to produce a recommendation.
@@ -364,7 +364,7 @@ export function GradingOpportunities() {
             <p className="text-sm font-medium">No grading data available</p>
             <p className="text-xs text-[hsl(var(--muted-foreground))] mt-1">
               {loading.errors.length > 0
-                ? `All ${loading.total} candidate cards failed to return pricing or population data. The PriceCharting / PokeData providers may be unavailable, rate-limited, or the API tokens (PRICECHARTING_TOKEN, POKEDATA_API_KEY) may not be configured.`
+                ? `All ${loading.total} candidate cards failed to return pricing data. PriceCharting may be unavailable, rate-limited, or the API token (PRICECHARTING_API_TOKEN) may not be configured.`
                 : "Loading hasn't started or returned any results yet."}
             </p>
           </div>
