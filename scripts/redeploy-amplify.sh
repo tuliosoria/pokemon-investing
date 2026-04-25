@@ -17,6 +17,12 @@ APP_ID="${AMPLIFY_APP_ID:-d16gvb6c6e6eir}"
 BRANCH="${AMPLIFY_BRANCH:-main}"
 REGION="${AWS_REGION:-us-east-1}"
 
+if [[ -z "$APP_ID" || -z "$BRANCH" || -z "$REGION" ]]; then
+  echo "❌ APP_ID, BRANCH, and REGION must all be non-empty." >&2
+  echo "   Got: APP_ID='$APP_ID' BRANCH='$BRANCH' REGION='$REGION'" >&2
+  exit 1
+fi
+
 echo "→ Checking AWS identity…"
 aws sts get-caller-identity --output table
 
@@ -46,9 +52,11 @@ while true; do
   sleep 15
 done
 
-echo "→ Verifying live forecast for Destined Rivals…"
+echo "→ Smoke-testing live forecast endpoint (returns 200 + non-trivial ROI)…"
+echo "  Note: this is a smoke test — community-score factors are loaded server-side"
+echo "  from the catalogue, so we send minimal client factors here."
 sleep 10
 curl -s -X POST "https://main.${APP_ID}.amplifyapp.com/api/sealed/forecast" \
   -H "content-type: application/json" \
   -d '{"sets":[{"id":"x","name":"Destined Rivals Booster Box","productType":"Booster Box","releaseYear":2025,"currentPrice":560.99,"gradient":["#000","#fff"],"factors":{"marketValue":75,"chaseCardIndex":82,"printRun":50,"setAge":50,"priceTrajectory":50,"popularity":77,"marketCycle":55,"demandRatio":91,"liquidityTier":"high","expectedChaseValue":null,"chaseEvRatio":null,"setSinglesValue":null,"setSinglesValueRatio":null},"chaseCards":[],"printRunLabel":"Standard","notes":""}]}' \
-  | python3 -c "import json,sys; f=json.load(sys.stdin)['results'][0]['forecast']; print(f'  ROI: {f[\"roiPercent\"]}%  signal: {f[\"signal\"]}  5y: \${f[\"horizonPredictions\"][\"fiveYear\"]}')"
+  | python3 -c "import json,sys; f=json.load(sys.stdin)['results'][0]['forecast']; print(f'  ROI: {f[\"roiPercent\"]}%  signal: {f[\"signal\"]}  5y: \${f[\"horizonPredictions\"][\"fiveYear\"]}  cs: {f.get(\"compositeScore\")}')"
