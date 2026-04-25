@@ -19,7 +19,7 @@ import type {
   SealedSearchResult,
   SealedPricing,
 } from "@/lib/types/sealed";
-import { SetForecastCard } from "./set-forecast-card";
+import { ProductForecastCard } from "./product-forecast-card";
 import { SkeletonForecastCard } from "./skeleton-forecast-card";
 import { useSealedTcgplayerUrl } from "./use-sealed-tcgplayer-url";
 import { ForecastBreakdownModal } from "./forecast-breakdown-modal";
@@ -1309,10 +1309,9 @@ export function ForecastDashboard() {
               style={{ animationDelay: `${index * SEARCH_ANIMATION_STAGGER_MS}ms` }}
             >
               {item.kind === "ready" ? (
-                <SetForecastCard
+                <ProductForecastCard
                   set={item.result.set}
                   forecast={item.result.forecast}
-                  onLearnMore={() => setLearnMoreId(item.result.set.id)}
                 />
               ) : (
                 <SearchUnavailableCard card={item.card} />
@@ -1331,10 +1330,9 @@ export function ForecastDashboard() {
                 key={set.id}
                 className="animate-fade-in-up"
               >
-                <SetForecastCard
+                <ProductForecastCard
                   set={set}
                   forecast={forecast}
-                  onLearnMore={() => setLearnMoreId(set.id)}
                 />
               </div>
             ))}

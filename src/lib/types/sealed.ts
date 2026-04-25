@@ -129,6 +129,7 @@ export interface SealedSetData {
 
 export type Signal = "Buy" | "Hold" | "Sell";
 export type Confidence = "Low" | "Medium" | "High";
+export type Recommendation = "Buy" | "Hold" | "Watch" | "Avoid";
 export type ForecastStatus = "ready" | "too_new" | "insufficient_data";
 
 /**

@@ -351,3 +351,7 @@ export const SEALED_SETS: SealedSetData[] = [
     curated: true,
   },
 ];
+
+export function getSealedSetById(id: string): SealedSetData | undefined {
+  return SEALED_SETS.find((s) => s.id === id);
+}
