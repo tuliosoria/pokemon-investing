@@ -1,11 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import type { SealedSetData, Forecast } from "@/lib/types/sealed";
-import { getProjectionData } from "@/lib/domain/sealed-forecast";
 import { SignalBadge, ConfidenceBadge } from "./signal-badge";
-import { RoiChart } from "./roi-chart";
 import { useSealedTcgplayerUrl } from "./use-sealed-tcgplayer-url";
 import { encodeSealedSlug } from "@/lib/domain/sealed-slug";
 import { deriveDisplayConfidence } from "@/lib/domain/confidence-display";
@@ -36,8 +33,6 @@ interface SetForecastCardProps {
 }
 
 export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
-  const [showChart, setShowChart] = useState(false);
-  const projectionData = getProjectionData(set, forecast);
   const isForecastBlocked = forecast.status !== "ready";
   const outperforms = forecast.roiPercent > forecast.spRoi;
   const matchesBenchmark = forecast.roiPercent === forecast.spRoi;
@@ -323,34 +318,6 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
               Finding TCGPlayer listing…
             </p>
           ) : null}
-
-          {!isForecastBlocked && (
-            <>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowChart(!showChart);
-                }}
-                className="relative z-10 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[rgba(255,203,5,0.4)] bg-transparent px-4 py-2.5 text-sm font-semibold text-[hsl(var(--poke-yellow))] transition hover:border-[hsl(var(--poke-yellow))] hover:bg-[rgba(255,203,5,0.1)]"
-              >
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                  <path d="M4 16l5-5 4 4 7-7" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M20 8v5h-5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                {showChart ? "Hide" : "Show"} $1,000 Investment Chart
-              </button>
-
-              {showChart && (
-                <div className="mt-3 animate-fade-in">
-                  <RoiChart data={projectionData} setName={set.name} />
-                  <p className="text-[10px] text-[hsl(var(--muted-foreground))] text-center mt-1">
-                    Projected growth of $1,000 invested today over 5 years
-                  </p>
-                </div>
-              )}
-            </>
-          )}
         </div>
       </div>
 
