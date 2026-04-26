@@ -30,9 +30,53 @@ import {
 const SCROLL_BATCH = 6;
 const MIN_LOADING_MS = 400;
 const SEARCH_TIMEOUT_MS = 20000;
+const CATEGORY_SEARCH_TIMEOUT_MS = 45000;
 const IMAGE_PRELOAD_TIMEOUT_MS = 2000;
 const SEARCH_ANIMATION_STAGGER_MS = 50;
 const TOP_BUYS_LIMIT = 100;
+
+const CATEGORY_QUERY_KEYWORDS = new Set([
+  "etb",
+  "etbs",
+  "elite trainer box",
+  "elite trainer boxes",
+  "upc",
+  "upcs",
+  "ultra premium collection",
+  "ultra premium collections",
+  "booster",
+  "boosters",
+  "booster box",
+  "booster boxes",
+  "booster bundle",
+  "booster bundles",
+  "build and battle",
+  "build and battle box",
+  "build and battle boxes",
+  "collection",
+  "collections",
+  "collection box",
+  "collection boxes",
+  "premium collection",
+  "premium collections",
+  "bundle",
+  "bundles",
+  "tin",
+  "tins",
+]);
+
+function isCategoryQuery(query: string): boolean {
+  const normalized = query
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[''`]/g, "")
+    .replace(/&/g, "and")
+    .toLowerCase()
+    .trim()
+    .replace(/^all\s+/, "")
+    .trim();
+  return CATEGORY_QUERY_KEYWORDS.has(normalized);
+}
 
 interface SetWithForecast {
   set: SealedSetData;
@@ -635,7 +679,11 @@ export function ForecastDashboard() {
           );
 
           const combinedSets = [...liveSets, ...curatedResults];
-          const trendMap = await fetchTrendSnapshots(combinedSets, controller.signal);
+          // Skip trend snapshots for broad category browses — fan-out is slow
+          // and per-product trend popularity tweaks aren't meaningful at scale.
+          const trendMap = isCategoryQuery(trimmedQuery)
+            ? new Map<string, TrendSnapshot>()
+            : await fetchTrendSnapshots(combinedSets, controller.signal);
 
           if (controller.signal.aborted) {
             throw new DOMException("Search aborted", "AbortError");
@@ -663,7 +711,27 @@ export function ForecastDashboard() {
             controller.signal,
             "search"
           );
+          const isCategoryBrowse = isCategoryQuery(trimmedQuery);
           const visibleForecastedResults = forecastedResults.filter(isVisibleForecastResult);
+
+          if (isCategoryBrowse) {
+            // For category browses (e.g. "All ETBs", "Booster Boxes") surface
+            // every catalog hit — even ones the ML model can't yet forecast —
+            // so the count matches the user's mental model.
+            const visibleIds = new Set(
+              visibleForecastedResults.map((result) => result.set.id)
+            );
+            for (const result of forecastedResults) {
+              if (visibleIds.has(result.set.id)) continue;
+              unavailableCards.push({
+                id: `unavailable-${result.set.id}`,
+                name: result.set.name,
+                productType: result.set.productType,
+                releaseYear: result.set.releaseYear,
+                imageUrl: result.set.imageUrl ?? null,
+              });
+            }
+          }
 
           const withFallbackImages = unavailableCards.map((card) => ({
             ...card,
@@ -686,7 +754,7 @@ export function ForecastDashboard() {
             didTimeout = true;
             controller.abort();
             reject(new Error("Search timed out"));
-          }, SEARCH_TIMEOUT_MS);
+          }, isCategoryQuery(trimmedQuery) ? CATEGORY_SEARCH_TIMEOUT_MS : SEARCH_TIMEOUT_MS);
         }),
       ]);
 
