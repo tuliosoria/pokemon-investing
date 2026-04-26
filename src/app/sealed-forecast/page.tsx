@@ -24,7 +24,7 @@ export default function SealedForecastPage() {
               href="/sealed-forecast/methodology"
               className="inline-flex items-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1 text-xs font-semibold text-[hsl(var(--foreground))] transition-colors hover:border-[hsl(var(--poke-yellow))]/60 hover:text-[hsl(var(--poke-yellow))]"
             >
-              Learn how it is calculated
+              Methodology
             </Link>
           </div>
           <p className="text-[hsl(var(--muted-foreground))] max-w-2xl">

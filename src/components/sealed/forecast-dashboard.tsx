@@ -1367,18 +1367,12 @@ export function ForecastDashboard() {
             the variables it uses, the statistical concepts behind confidence and
             signals, and the guardrails that suppress weak-data products.
           </p>
-          <p>
-            Quick summary: forecasts use live pricing, chase-card strength, print-run
-            context, set age, trajectories, demand proxies, product type, era, and
-            market-cycle inputs. Brand-new and sparse-data products are blocked instead
-            of forced into a projection.
-          </p>
           <div>
             <Link
               href="/sealed-forecast/methodology"
               className="inline-flex items-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1.5 text-xs font-semibold text-[hsl(var(--foreground))] transition-colors hover:border-[hsl(var(--poke-yellow))]/60 hover:text-[hsl(var(--poke-yellow))]"
             >
-              Learn how it is calculated
+              Methodology
             </Link>
           </div>
         </div>
