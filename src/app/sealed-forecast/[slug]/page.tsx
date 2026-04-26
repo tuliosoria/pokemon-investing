@@ -9,12 +9,12 @@ import { computeForecast } from "@/lib/domain/sealed-forecast-ml";
 import { deriveRecommendation } from "@/lib/domain/recommendation";
 import { buildDescription } from "@/lib/domain/sealed-description";
 import { buildProjectionSeries } from "@/lib/domain/projection-series";
-import { getSealedPriceHistory } from "@/lib/server/sealed-history";
+import { getHistoricalPriceSeriesForSet } from "@/lib/server/sealed-history";
 import { ForecastChart } from "@/components/sealed/forecast-chart";
 import { ModelDetails } from "@/components/sealed/model-details";
 import { deriveDisplayConfidence } from "@/lib/domain/confidence-display";
 import { buildRatingExplanation } from "@/lib/domain/rating-explanation";
-import { buildForecastQuality } from "@/lib/domain/forecast-quality";
+import { buildKeyDrivers } from "@/lib/domain/key-drivers";
 import { buildScenarios, type Scenario } from "@/lib/domain/scenarios";
 import { findComparables, describeComparable } from "@/lib/domain/comparables";
 import type { Confidence, Recommendation, SealedSetData } from "@/lib/types/sealed";
@@ -45,13 +45,11 @@ const recommendationStyle: Record<Recommendation, string> = {
   Avoid: "bg-rose-500/15 text-rose-400 border-rose-500/30",
 };
 
-const gradeStyle: Record<"Low" | "Medium" | "High", string> = {
+const confidenceStyle: Record<Confidence, string> = {
   High: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
   Medium: "bg-amber-500/15 text-amber-300 border-amber-500/30",
   Low: "bg-rose-500/15 text-rose-400 border-rose-500/30",
 };
-
-const confidenceStyle: Record<Confidence, string> = gradeStyle;
 
 const usd = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -112,22 +110,6 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
     <h2 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[hsl(var(--muted-foreground))]">
       {children}
     </h2>
-  );
-}
-
-function Badge({
-  level,
-  children,
-}: {
-  level: "Low" | "Medium" | "High";
-  children: React.ReactNode;
-}) {
-  return (
-    <span
-      className={`inline-block rounded-full border px-2 py-0.5 text-[11px] font-semibold ${gradeStyle[level]}`}
-    >
-      {children}
-    </span>
   );
 }
 
@@ -237,9 +219,7 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
     annualRate: forecast.annualRate,
     todayIso,
   }).map((p) => ({ date: p.date, value: p.value }));
-  const history = set.pokedataId
-    ? await getSealedPriceHistory(set.pokedataId, 24)
-    : [];
+  const history = await getHistoricalPriceSeriesForSet(set);
 
   const ageYears = new Date().getFullYear() - set.releaseYear;
   const reprintRisk: "Low" | "Moderate" | "High" =
@@ -252,10 +232,9 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
   const comparables = findComparables(set, SEALED_SETS);
 
   const displayConfidence = deriveDisplayConfidence({
-    rawConfidence: forecast.confidence,
-    historyPoints: history.length,
-    comparables,
     forecast,
+    set,
+    comparables,
   });
 
   const recommendation = deriveRecommendation({
@@ -266,13 +245,7 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
   });
 
   const rating = buildRatingExplanation({ recommendation, forecast, set });
-  const quality = buildForecastQuality({
-    history,
-    set,
-    forecast,
-    comparables,
-    reprintRisk,
-  });
+  const keyDrivers = buildKeyDrivers({ set, forecast, comparables });
   const scenarios = buildScenarios({
     currentPrice: set.currentPrice,
     projectedValue: forecast.projectedValue,
@@ -423,31 +396,6 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
         </section>
 
         <section className="mb-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
-          <div className="mb-3 flex items-baseline justify-between gap-3">
-            <SectionLabel>Forecast quality</SectionLabel>
-            <span className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
-              Overall <Badge level={quality.overall}>{quality.overall}</Badge>
-            </span>
-          </div>
-          <ul className="divide-y divide-[hsl(var(--border))]">
-            {quality.rows.map((row) => (
-              <li
-                key={row.label}
-                className="flex items-center justify-between gap-3 py-2"
-              >
-                <div className="min-w-0">
-                  <p className="text-sm font-medium">{row.label}</p>
-                  <p className="text-[11px] text-[hsl(var(--muted-foreground))]">
-                    {row.detail}
-                  </p>
-                </div>
-                <Badge level={row.grade}>{row.grade}</Badge>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="mb-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
           <SectionLabel>About this product</SectionLabel>
           <p className="mt-3 text-sm leading-relaxed text-[hsl(var(--foreground))]">
             {description.text}
@@ -548,9 +496,9 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
         <ModelDetails
           set={set}
           forecast={forecast}
-          modelVersion="sealed-forecast v1"
           lastUpdated={new Date().toISOString().slice(0, 10)}
           historicalDataPoints={history.length}
+          keyDrivers={keyDrivers}
         />
       </div>
     </div>

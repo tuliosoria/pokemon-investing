@@ -3,6 +3,7 @@ import Image from "next/image";
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 import type { Forecast, Recommendation, SealedSetData } from "@/lib/types/sealed";
 import { deriveRecommendation } from "@/lib/domain/recommendation";
+import { deriveDisplayConfidence } from "@/lib/domain/confidence-display";
 
 interface ProductForecastCardProps {
   set: SealedSetData;
@@ -29,9 +30,10 @@ const recommendationStyle: Record<Recommendation, string> = {
 };
 
 export function ProductForecastCard({ set, forecast }: ProductForecastCardProps) {
+  const displayConfidence = deriveDisplayConfidence({ forecast, set }).confidence;
   const recommendation = deriveRecommendation({
     signal: forecast.signal,
-    confidence: forecast.confidence,
+    confidence: displayConfidence,
     roiPercent: forecast.roiPercent,
     releaseYear: set.releaseYear,
   });
@@ -119,7 +121,7 @@ export function ProductForecastCard({ set, forecast }: ProductForecastCardProps)
           <span>
             Confidence:{" "}
             <span className="font-medium text-[hsl(var(--foreground))]">
-              {forecast.confidence}
+              {displayConfidence}
             </span>
           </span>
           {typeof community === "number" && <span>Community {community}/100</span>}

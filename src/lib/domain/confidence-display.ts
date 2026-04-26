@@ -1,10 +1,9 @@
 import type { Confidence, Forecast, SealedSetData } from "@/lib/types/sealed";
 
 export interface DisplayConfidenceInput {
-  rawConfidence: Confidence;
-  historyPoints: number;
-  comparables: SealedSetData[];
   forecast: Forecast;
+  set: SealedSetData;
+  comparables?: SealedSetData[];
 }
 
 export interface DisplayConfidenceResult {
@@ -13,52 +12,78 @@ export interface DisplayConfidenceResult {
 }
 
 const ORDER: Record<Confidence, number> = { Low: 0, Medium: 1, High: 2 };
+const FROM_RANK: Confidence[] = ["Low", "Medium", "High"];
 
-function cap(raw: Confidence, ceiling: Confidence): Confidence {
-  return ORDER[raw] <= ORDER[ceiling] ? raw : ceiling;
+function clampRank(rank: number): Confidence {
+  if (rank < 0) return "Low";
+  if (rank > 2) return "High";
+  return FROM_RANK[rank];
 }
 
 /**
- * Down-rank the model's stated confidence when the supporting evidence
- * is too thin for the report to honestly defend it.
+ * Adjust the model's stated confidence based on signals that are stable
+ * across listing surfaces (no dependence on per-page history loading).
+ *
+ * Inputs considered:
+ *   - rawConfidence: forecast.confidence
+ *   - forecast.estimatedFactors (heuristic count → downgrade)
+ *   - forecast.predictionSpreadPercent (wide spread → downgrade)
+ *   - comparables.length (more comparables → support raw confidence)
+ *   - set.factors.communityScore (very low → mild downgrade)
  */
 export function deriveDisplayConfidence(
   input: DisplayConfidenceInput,
 ): DisplayConfidenceResult {
-  const { rawConfidence, historyPoints, comparables, forecast } = input;
-  const strongComparables = comparables.length;
+  const { forecast, set, comparables = [] } = input;
+  const rawConfidence = forecast.confidence;
 
-  if (historyPoints === 0) {
-    return {
-      confidence: "Low",
-      explanation:
-        "No measured price history is available for this product, so the projection relies entirely on heuristics and catalog-level signals.",
-    };
+  let rank = ORDER[rawConfidence];
+  const reasons: string[] = [];
+
+  if (forecast.estimatedFactors >= 4) {
+    rank -= 1;
+    reasons.push(
+      `${forecast.estimatedFactors} model inputs were heuristic estimates`,
+    );
+  } else if (forecast.estimatedFactors >= 2) {
+    reasons.push(
+      `${forecast.estimatedFactors} model inputs were heuristic estimates`,
+    );
   }
 
-  if (historyPoints < 3) {
-    if (strongComparables >= 3) {
-      return {
-        confidence: cap(rawConfidence, "Medium"),
-        explanation: `Only ${historyPoints} measured price point${historyPoints === 1 ? "" : "s"} for this product, but ${strongComparables} comparable sealed products in the catalog support a directional read.`,
-      };
-    }
-    return {
-      confidence: "Low",
-      explanation: `Only ${historyPoints} measured price point${historyPoints === 1 ? "" : "s"} and few close comparables — confidence is capped at Low until more history accumulates.`,
-    };
+  if (forecast.predictionSpreadPercent > 35) {
+    rank -= 1;
+    reasons.push(
+      `wide ±${forecast.predictionSpreadPercent.toFixed(1)}% prediction spread`,
+    );
+  } else if (forecast.predictionSpreadPercent > 25) {
+    reasons.push(
+      `elevated ±${forecast.predictionSpreadPercent.toFixed(1)}% prediction spread`,
+    );
   }
 
-  if (historyPoints < 12) {
-    const capped = cap(rawConfidence, "Medium");
-    return {
-      confidence: capped,
-      explanation: `${historyPoints} months of price history is enough for a directional read, but the model needs ~12 points to defend High confidence. Spread is ±${forecast.predictionSpreadPercent.toFixed(1)}%.`,
-    };
+  const community = set.factors.communityScore;
+  if (typeof community === "number" && community < 30) {
+    rank -= 1;
+    reasons.push(`very low community score (${community.toFixed(0)}/100)`);
   }
 
-  return {
-    confidence: rawConfidence,
-    explanation: `${historyPoints} months of price history plus ${strongComparables} catalog comparable${strongComparables === 1 ? "" : "s"} support the model's ${rawConfidence} confidence read.`,
-  };
+  if (comparables.length >= 3) {
+    rank += 1;
+    reasons.push(
+      `${comparables.length} catalog comparables support a directional read`,
+    );
+  }
+
+  // Never push above the model's own raw confidence — comparables can only
+  // restore lost ground, not invent confidence the model didn't claim.
+  if (rank > ORDER[rawConfidence]) rank = ORDER[rawConfidence];
+
+  const confidence = clampRank(rank);
+  const explanation =
+    reasons.length === 0
+      ? `Model reports ${rawConfidence} confidence and the supporting signals (heuristic factors, prediction spread, comparables) are consistent.`
+      : `Adjusted from model's ${rawConfidence} read based on: ${reasons.join("; ")}.`;
+
+  return { confidence, explanation };
 }

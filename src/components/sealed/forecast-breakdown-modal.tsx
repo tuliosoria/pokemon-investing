@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import type { SealedSetData, Forecast } from "@/lib/types/sealed";
 import { getConfidenceBg } from "@/lib/domain/sealed-forecast";
 import { pickKeyDrivers } from "@/lib/domain/forecast-breakdown";
+import { deriveDisplayConfidence } from "@/lib/domain/confidence-display";
 
 interface ForecastBreakdownModalProps {
   set: SealedSetData;
@@ -93,6 +94,7 @@ export function ForecastBreakdownModal({ set, forecast, open, onClose }: Forecas
 
   const { factors } = set;
   const drivers = pickKeyDrivers(factors);
+  const displayConfidence = deriveDisplayConfidence({ forecast, set }).confidence;
 
   const modalContent = (
     <div
@@ -136,9 +138,9 @@ export function ForecastBreakdownModal({ set, forecast, open, onClose }: Forecas
                 {set.name}
               </h2>
               <span
-                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] ${getConfidenceBg(forecast.confidence)}`}
+                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] ${getConfidenceBg(displayConfidence)}`}
               >
-                {forecast.confidence} confidence
+                {displayConfidence} confidence
               </span>
             </div>
             <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[hsl(var(--muted-foreground))]">

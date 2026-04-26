@@ -8,6 +8,7 @@ import { SignalBadge, ConfidenceBadge } from "./signal-badge";
 import { RoiChart } from "./roi-chart";
 import { useSealedTcgplayerUrl } from "./use-sealed-tcgplayer-url";
 import { encodeSealedSlug } from "@/lib/domain/sealed-slug";
+import { deriveDisplayConfidence } from "@/lib/domain/confidence-display";
 
 const CARD_HEADER_OVERLAY =
   "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(10,15,30,0.92) 100%)";
@@ -209,7 +210,9 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
                 </span>
               </div>
               <div>
-                <ConfidenceBadge confidence={forecast.confidence} />
+                <ConfidenceBadge
+                  confidence={deriveDisplayConfidence({ forecast, set }).confidence}
+                />
               </div>
             </div>
           )}

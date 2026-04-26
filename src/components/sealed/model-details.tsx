@@ -1,42 +1,39 @@
 import type { Forecast, SealedSetData } from "@/lib/types/sealed";
+import type { KeyDriver } from "@/lib/domain/key-drivers";
 
 interface ModelDetailsProps {
   set: SealedSetData;
   forecast: Forecast;
-  modelVersion: string;
   lastUpdated: string;
   historicalDataPoints: number;
+  keyDrivers: KeyDriver[];
 }
 
-const KEY_DRIVERS = [
-  "Historical price trend",
-  "Volatility / prediction spread",
-  "Age since release",
-  "Print run / supply tier",
-  "Community demand (Reddit + Google Trends + market activity)",
-  "Chase-card expected value",
-  "Set singles secondary value",
-  "Comparable sealed products",
-];
+const ARROW: Record<KeyDriver["impact"], string> = {
+  positive: "↑",
+  negative: "↓",
+  neutral: "→",
+};
+
+const ARROW_COLOR: Record<KeyDriver["impact"], string> = {
+  positive: "text-emerald-400",
+  negative: "text-rose-400",
+  neutral: "text-zinc-400",
+};
 
 export function ModelDetails({
   set,
   forecast,
-  modelVersion,
   lastUpdated,
   historicalDataPoints,
+  keyDrivers,
 }: ModelDetailsProps) {
   const rows: [string, string][] = [
-    ["Model version", modelVersion],
     ["Last updated", lastUpdated],
     ["Historical data source", "PriceCharting (sealed) + community signals"],
     ["Historical data points", String(historicalDataPoints)],
     ["Forecast horizon", "5 years"],
     ["Confidence", forecast.confidence],
-    [
-      "Heuristic factors",
-      `${forecast.estimatedFactors} of model inputs were heuristic`,
-    ],
     ["Prediction spread", `±${forecast.predictionSpreadPercent.toFixed(1)}%`],
     ["Set", set.name],
     ["Product type", set.productType],
@@ -53,20 +50,30 @@ export function ModelDetails({
             className="flex justify-between gap-4 border-b border-[hsl(var(--border))]/40 py-1"
           >
             <dt className="text-[hsl(var(--muted-foreground))]">{k}</dt>
-            <dd className="text-right font-medium">{v}</dd>
+            <dd className="text-right font-medium tabular-nums">{v}</dd>
           </div>
         ))}
       </dl>
 
-      <div className="mt-4">
-        <p className="mb-1 text-xs font-semibold uppercase text-[hsl(var(--muted-foreground))]">
+      <div className="mt-5">
+        <p className="mb-2 text-xs font-semibold uppercase text-[hsl(var(--muted-foreground))]">
           Key drivers
         </p>
-        <ul className="grid grid-cols-1 gap-1 text-sm sm:grid-cols-2">
-          {KEY_DRIVERS.map((d) => (
-            <li key={d} className="flex items-start gap-2">
-              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[hsl(var(--poke-yellow))]" />
-              {d}
+        <ul className="flex flex-col gap-3">
+          {keyDrivers.map((d) => (
+            <li key={d.label} className="flex items-start gap-3">
+              <span
+                className={`mt-0.5 shrink-0 text-base font-bold ${ARROW_COLOR[d.impact]}`}
+                aria-hidden
+              >
+                {ARROW[d.impact]}
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold">{d.label}</p>
+                <p className="text-xs leading-snug text-[hsl(var(--muted-foreground))]">
+                  {d.explanation}
+                </p>
+              </div>
             </li>
           ))}
         </ul>
