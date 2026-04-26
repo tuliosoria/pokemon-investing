@@ -33,10 +33,6 @@ const SEARCH_TIMEOUT_MS = 20000;
 const IMAGE_PRELOAD_TIMEOUT_MS = 2000;
 const SEARCH_ANIMATION_STAGGER_MS = 50;
 const TOP_BUYS_LIMIT = 100;
-const QUICK_SEARCHES = [
-  { label: "All Booster Boxes", query: "Booster Box" },
-  { label: "All ETBs", query: "ETB" },
-] as const;
 
 interface SetWithForecast {
   set: SealedSetData;
@@ -315,6 +311,7 @@ export function ForecastDashboard() {
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [filter, setFilter] = useState<FilterSignal>("All");
   const [scenario, setScenario] = useState<ForecastScenario>("moderate");
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [apiQuery, setApiQuery] = useState("");
   const [apiResults, setApiResults] = useState<SetWithForecast[]>([]);
@@ -806,25 +803,6 @@ export function ForecastDashboard() {
     searchInputRef.current?.focus();
   }, [exitSearchMode]);
 
-  const applyQuickSearch = useCallback(
-    (query: string) => {
-      const trimmed = query.trim();
-      if (!trimmed) return;
-
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-      abortRef.current?.abort();
-
-      resetVisibleCards();
-      setSearch(trimmed);
-      setHasInteracted(true);
-      setShowingTopBuys(false);
-      setApiQuery(trimmed);
-      searchApi(trimmed, { includeAllMatches: true });
-      searchInputRef.current?.focus();
-    },
-    [resetVisibleCards, searchApi]
-  );
-
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -986,6 +964,12 @@ export function ForecastDashboard() {
     !isSearchMode &&
     isLoadingCuratedForecasts;
 
+  const activeFilterCount =
+    (filter !== "All" ? 1 : 0) +
+    (scenario !== "moderate" ? 1 : 0) +
+    (sortBy !== "roi" || sortDir !== "desc" ? 1 : 0) +
+    (apiQuery.length >= 2 && !showCurated ? 1 : 0);
+
   return (
     <>
     <div className="space-y-6">
@@ -1018,128 +1002,110 @@ export function ForecastDashboard() {
               </div>
             )}
           </div>
+        </div>
 
-          <div className="flex flex-wrap gap-2">
-            {QUICK_SEARCHES.map(({ label, query }) => {
-              const isActive = search.trim().toLowerCase() === query.toLowerCase();
+        {/* Collapsible filters: Recommendation + Scenario + Sort + Curated */}
+        {filtersOpen && (
+          <div className="space-y-3 rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/30 p-3 animate-fade-in">
+            <div className="flex flex-wrap items-center gap-3 text-xs">
+              <label className="flex items-center gap-2">
+                <span className="text-[hsl(var(--muted-foreground))] uppercase tracking-wider text-[10px]">
+                  Recommendation
+                </span>
+                <select
+                  value={filter}
+                  onChange={(e) => {
+                    resetVisibleCards();
+                    setFilter(e.target.value as FilterSignal);
+                    if (!hasInteracted) {
+                      setHasInteracted(true);
+                      setShowingTopBuys(false);
+                    }
+                  }}
+                  className="h-9 rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-2.5 pr-8 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
+                >
+                  {(["All", "Buy", "Hold", "Sell"] as FilterSignal[]).map((s) => (
+                    <option key={s} value={s}>
+                      {s === "All" ? "All recommendations" : s}
+                    </option>
+                  ))}
+                </select>
+              </label>
 
-              return (
+              <label
+                className="flex items-center gap-2"
+                title={SCENARIO_DESCRIPTIONS[scenario].description}
+              >
+                <span className="text-[hsl(var(--muted-foreground))] uppercase tracking-wider text-[10px]">
+                  Scenario
+                </span>
+                <select
+                  value={scenario}
+                  onChange={(e) => {
+                    resetVisibleCards();
+                    setScenario(e.target.value as ForecastScenario);
+                    if (!hasInteracted) {
+                      setHasInteracted(true);
+                      setShowingTopBuys(false);
+                    }
+                  }}
+                  className="h-9 rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-2.5 pr-8 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
+                >
+                  {(["pessimist", "moderate", "optimist"] as ForecastScenario[]).map((s) => (
+                    <option key={s} value={s}>
+                      {SCENARIO_DESCRIPTIONS[s].label} · {SCENARIO_DESCRIPTIONS[s].short}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
+            <div className="flex flex-wrap gap-2 text-[11px]">
+              <span className="text-[hsl(var(--muted-foreground))] py-1">Sort by:</span>
+              {(
+                [
+                  ["roi", "Projected ROI"],
+                  ["price", "Current Price"],
+                  ["signal", "Recommendation"],
+                  ["age", "Set Age"],
+                  ["score", "Model Score"],
+                ] as [SortField, string][]
+              ).map(([field, label]) => (
                 <button
-                  key={query}
+                  key={field}
                   type="button"
-                  onClick={() => applyQuickSearch(query)}
-                  className={`rounded-full px-3 py-1.5 text-[11px] font-medium transition-colors ${
-                    isActive
+                  onClick={() => toggleSort(field)}
+                  className={`rounded-full px-3 py-1 font-medium transition-colors ${
+                    sortBy === field
                       ? "bg-[hsl(var(--poke-yellow))] text-[hsl(var(--poke-blue))]"
                       : "bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
                   }`}
                 >
                   {label}
+                  {sortBy === field && (
+                    <span className="ml-1">{sortDir === "desc" ? "↓" : "↑"}</span>
+                  )}
                 </button>
-              );
-            })}
+              ))}
+
+              {apiQuery.length >= 2 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    resetVisibleCards();
+                    setShowCurated((v) => !v);
+                  }}
+                  className={`rounded-full px-3 py-1 font-medium transition-colors ml-auto ${
+                    showCurated
+                      ? "bg-[hsl(var(--poke-yellow))]/20 text-[hsl(var(--poke-yellow))]"
+                      : "bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))]"
+                  }`}
+                >
+                  {showCurated ? "★ Curated included" : "★ Show curated"}
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-
-        {/* Filter dropdowns: Recommendation + Scenario */}
-        <div className="flex flex-wrap items-center gap-3 text-xs">
-          <label className="flex items-center gap-2">
-            <span className="text-[hsl(var(--muted-foreground))] uppercase tracking-wider text-[10px]">
-              Recommendation
-            </span>
-            <select
-              value={filter}
-              onChange={(e) => {
-                resetVisibleCards();
-                setFilter(e.target.value as FilterSignal);
-                if (!hasInteracted) {
-                  setHasInteracted(true);
-                  setShowingTopBuys(false);
-                }
-              }}
-              className="h-9 rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-2.5 pr-8 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
-            >
-              {(["All", "Buy", "Hold", "Sell"] as FilterSignal[]).map((s) => (
-                <option key={s} value={s}>
-                  {s === "All" ? "All recommendations" : s}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label
-            className="flex items-center gap-2"
-            title={SCENARIO_DESCRIPTIONS[scenario].description}
-          >
-            <span className="text-[hsl(var(--muted-foreground))] uppercase tracking-wider text-[10px]">
-              Scenario
-            </span>
-            <select
-              value={scenario}
-              onChange={(e) => {
-                resetVisibleCards();
-                setScenario(e.target.value as ForecastScenario);
-                if (!hasInteracted) {
-                  setHasInteracted(true);
-                  setShowingTopBuys(false);
-                }
-              }}
-              className="h-9 rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-2.5 pr-8 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
-            >
-              {(["pessimist", "moderate", "optimist"] as ForecastScenario[]).map((s) => (
-                <option key={s} value={s}>
-                  {SCENARIO_DESCRIPTIONS[s].label} · {SCENARIO_DESCRIPTIONS[s].short}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-      </div>
-
-      {/* Sort controls */}
-      <div className="flex flex-wrap gap-2 text-[11px]">
-        <span className="text-[hsl(var(--muted-foreground))] py-1">Sort by:</span>
-        {(
-          [
-            ["roi", "Projected ROI"],
-            ["price", "Current Price"],
-            ["signal", "Recommendation"],
-            ["age", "Set Age"],
-            ["score", "Model Score"],
-          ] as [SortField, string][]
-        ).map(([field, label]) => (
-          <button
-            key={field}
-            type="button"
-            onClick={() => toggleSort(field)}
-            className={`rounded-full px-3 py-1 font-medium transition-colors ${
-              sortBy === field
-                ? "bg-[hsl(var(--poke-yellow))] text-[hsl(var(--poke-blue))]"
-                : "bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
-            }`}
-          >
-            {label}
-            {sortBy === field && (
-              <span className="ml-1">{sortDir === "desc" ? "↓" : "↑"}</span>
-            )}
-          </button>
-        ))}
-
-        {apiQuery.length >= 2 && (
-          <button
-            type="button"
-            onClick={() => {
-              resetVisibleCards();
-              setShowCurated((v) => !v);
-            }}
-            className={`rounded-full px-3 py-1 font-medium transition-colors ml-auto ${
-              showCurated
-                ? "bg-[hsl(var(--poke-yellow))]/20 text-[hsl(var(--poke-yellow))]"
-                : "bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))]"
-            }`}
-          >
-            {showCurated ? "★ Curated included" : "★ Show curated"}
-          </button>
         )}
       </div>
 
@@ -1171,6 +1137,19 @@ export function ForecastDashboard() {
           {searchError && (
             <p className="text-xs text-red-400">{searchError}</p>
           )}
+          <button
+            type="button"
+            onClick={() => setFiltersOpen((v) => !v)}
+            aria-expanded={filtersOpen}
+            className="ml-auto inline-flex items-center gap-1.5 rounded-md border border-[hsl(var(--border))] bg-[hsl(var(--background))] px-2.5 py-1 text-xs font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:border-[hsl(var(--poke-yellow))]/40 transition-colors"
+          >
+            <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="4" y1="6" x2="20" y2="6" />
+              <line x1="7" y1="12" x2="17" y2="12" />
+              <line x1="10" y1="18" x2="14" y2="18" />
+            </svg>
+            Filters{activeFilterCount > 0 ? ` · ${activeFilterCount}` : ""}
+          </button>
         </div>
       )}
 
