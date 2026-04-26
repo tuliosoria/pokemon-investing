@@ -1143,22 +1143,6 @@ export function ForecastDashboard() {
         )}
       </div>
 
-      <div className="flex flex-wrap items-center gap-2 text-[11px] text-[hsl(var(--muted-foreground))]">
-        <span className="font-medium text-[hsl(var(--foreground))]">Signal legend:</span>
-        <span className="rounded-full bg-green-500/10 px-2 py-1 text-green-400">
-          BUY = S&amp;P +10% over 5yr
-        </span>
-        <span
-          className="rounded-full bg-yellow-500/10 px-2 py-1 text-yellow-400"
-          title="HOLD means it may grow, but not meaningfully better than just putting your money in the S&P 500."
-        >
-          HOLD = roughly S&amp;P, neutral
-        </span>
-        <span className="rounded-full bg-red-500/10 px-2 py-1 text-red-400">
-          SELL = below S&amp;P
-        </span>
-      </div>
-
       {/* Results count */}
       {hasInteracted && !isSearching && !isLoadingCuratedMode && !(showingTopBuys && isLoadingTopBuys) && (
         <div className="flex items-center gap-3">
