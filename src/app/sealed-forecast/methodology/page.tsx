@@ -182,7 +182,7 @@ export default function MethodologyPage() {
                 </HeroBadge>
                 <HeroBadge tone="accent">
                   <FlaskConical className="h-3.5 w-3.5" />
-                  Live ML + market signals
+                  Machine learning + market signals
                 </HeroBadge>
               </div>
 
@@ -190,10 +190,11 @@ export default function MethodologyPage() {
                 How PokeFuture builds a sealed forecast
               </h1>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/72 md:text-base">
-                The short version: we blend price history, comparable sealed
-                products, demand signals, and ML projections into a directional
-                view of risk and upside. It is built for judgment, not false
-                precision.
+                Each forecast combines historical pricing, comparable sealed
+                products, demand signals, and machine-learning projections to
+                produce a directional view of risk and upside. The framework
+                is designed to support investment judgment, not to imply
+                precision the underlying data cannot support.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
@@ -250,99 +251,101 @@ export default function MethodologyPage() {
         <section className="mt-8 rounded-[28px] border border-[hsl(var(--border))] bg-[hsl(var(--card))]/88 p-6 shadow-[0_20px_70px_-40px_rgba(0,0,0,0.5)] md:p-8">
           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
-              <SectionLabel>How this works (30 seconds)</SectionLabel>
+              <SectionLabel>Process</SectionLabel>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-                Five fast steps, no jargon
+                How a forecast is built
               </h2>
             </div>
             <p className="max-w-xl text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">
-              If you only spend half a minute here, this is the part to read.
+              Every product moves through the same five stages before a
+              projection is published.
             </p>
           </div>
 
           <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
             <QuickStep
               icon={BarChart3}
-              title="1. Read the history"
-              copy="We anchor the forecast to real sealed price movement over time."
+              title="1. Historical pricing"
+              copy="The forecast is anchored to observed sealed price movement over time."
             />
             <QuickStep
               icon={Layers3}
-              title="2. Find comparables"
-              copy="We compare the product with similar boxes from the same era and supply profile."
+              title="2. Comparable products"
+              copy="The product is benchmarked against peers from a similar era and supply profile."
             />
             <QuickStep
               icon={TrendingUp}
-              title="3. Measure demand"
-              copy="We incorporate search activity, community interest, and broader market momentum."
+              title="3. Demand signals"
+              copy="Search activity, community engagement, and broader market momentum are factored in."
             />
             <QuickStep
               icon={BrainCircuit}
-              title="4. Project forward"
-              copy="The ML model estimates where price and return patterns can plausibly go next."
+              title="4. Model projection"
+              copy="Trained models project plausible price and return paths across each horizon."
             />
             <QuickStep
               icon={ShieldAlert}
-              title="5. Stress test it"
-              copy="We widen downside scenarios when reprints or thin data make the setup shakier."
+              title="5. Downside review"
+              copy="Bear scenarios are widened where reprint risk or limited data warrant additional caution."
             />
           </div>
         </section>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <section className="rounded-[28px] border border-[hsl(var(--border))] bg-[hsl(var(--card))]/88 p-6 md:p-8">
-            <SectionLabel>Signals</SectionLabel>
+            <SectionLabel>Inputs</SectionLabel>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-              What the model actually looks at
+              What the model evaluates
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">
-              We do not just extrapolate a line. Forecasts blend price action,
-              supply context, demand proxies, and peer behavior.
+              Forecasts draw on four families of inputs: price action, supply
+              context, demand proxies, and peer-group behavior.
             </p>
 
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               <SignalCard
                 icon={BarChart3}
                 title="Historical pricing"
-                copy="Trajectories, momentum, volatility, drawdowns, and how dense the price history actually is."
+                copy="Trajectories, momentum, volatility, drawdowns, and the density of available price history."
               />
               <SignalCard
                 icon={Layers3}
                 title="Comparable products"
-                copy="Peer boxes from similar eras, product types, and print-run environments."
+                copy="Peer products from similar eras, product types, and print-run environments."
                 accentClassName="bg-emerald-500/12 text-emerald-400"
               />
               <SignalCard
                 icon={Search}
                 title="Demand signals"
-                copy="Search interest, Reddit activity, forum chatter, and other community heat proxies."
+                copy="Search interest, community engagement, and other indicators of collector activity."
                 accentClassName="bg-sky-500/12 text-sky-400"
               />
               <SignalCard
                 icon={Database}
                 title="Market context"
-                copy="Provider agreement, liquidity proxies, and missing-data flags that affect trust."
+                copy="Provider agreement, liquidity proxies, and explicit flags for any missing data."
                 accentClassName="bg-violet-500/12 text-violet-400"
               />
             </div>
           </section>
 
           <section className="rounded-[28px] border border-amber-500/25 bg-[linear-gradient(180deg,rgba(120,53,15,0.20),rgba(120,53,15,0.08))] p-6 md:p-8">
-            <SectionLabel>Caution</SectionLabel>
+            <SectionLabel>Limitations</SectionLabel>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight text-amber-100">
-              When forecasts get shaky
+              Where forecasts are less reliable
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-amber-50/80">
-              The page is most useful for ranking setups and framing scenarios.
-              It is least reliable when the market itself is still foggy.
+              The framework is most useful for ranking opportunities and
+              framing scenarios. It is least reliable when the underlying
+              market signal is weak.
             </p>
 
             <div className="mt-6 space-y-3">
               {[
-                "Very new products with limited price history.",
-                "Sets with sparse comparables or odd supply behavior.",
-                "High reprint risk that can abruptly change sealed supply.",
-                "Thin liquidity, where exit prices can gap below quoted prices.",
+                "Recently released products with limited price history.",
+                "Sets with sparse comparables or atypical supply behavior.",
+                "Products exposed to elevated reprint risk.",
+                "Thin-liquidity products where realized exit prices may diverge from quoted prices.",
               ].map((item) => (
                 <div
                   key={item}
@@ -360,12 +363,12 @@ export default function MethodologyPage() {
 
             <div className="mt-6 rounded-2xl border border-amber-400/15 bg-black/10 p-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-200/70">
-                Best use
+                Intended use
               </p>
               <p className="mt-2 text-sm leading-relaxed text-amber-50/85">
-                Use the forecast as an investment framework: compare products,
-                pressure-test upside, and sanity-check downside before you size
-                conviction.
+                Forecasts are intended as one input within a broader research
+                process — used to compare products, evaluate upside, and
+                stress-test downside before sizing a position.
               </p>
             </div>
           </section>
@@ -374,14 +377,14 @@ export default function MethodologyPage() {
         <section className="mt-8 overflow-hidden rounded-[32px] border border-white/10 bg-[linear-gradient(135deg,rgba(10,16,32,0.95),rgba(18,28,45,0.92),rgba(31,52,94,0.88))] p-6 shadow-[0_30px_120px_-40px_rgba(0,0,0,0.8)] md:p-8">
           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
-              <SectionLabel>Under the hood</SectionLabel>
+              <SectionLabel>Technical detail</SectionLabel>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">
-                The nerd-facts section
+                Model and dataset
               </h2>
             </div>
             <p className="max-w-2xl text-sm leading-relaxed text-white/68">
-              If you want the model, dataset, and validation details, this is
-              the real plumbing behind the page.
+              Full transparency on the model architecture, training dataset,
+              and validation procedure behind every projection.
             </p>
           </div>
 
@@ -394,17 +397,17 @@ export default function MethodologyPage() {
             <StatTile
               label="Horizons"
               value="1y · 3y · 5y"
-              sublabel="Separate regressors plus a stacked 5-year setup"
+              sublabel="Independent regressors with a stacked 5-year model"
             />
             <StatTile
               label="Training rows"
               value={summary.rows.toLocaleString()}
-              sublabel={`${summary.panelRows.toLocaleString()} panel rows in the monthly history panel`}
+              sublabel={`${summary.panelRows.toLocaleString()} rows in the monthly history panel`}
             />
             <StatTile
               label="Feature set"
-              value="35 signals"
-              sublabel="Price history, demand, comparables, provider agreement"
+              value="35 features"
+              sublabel="Price history, demand, comparables, and provider agreement"
             />
           </div>
 
@@ -418,20 +421,20 @@ export default function MethodologyPage() {
               ]}
             />
             <NerdCard
-              title="Validation + tuning"
+              title="Validation and tuning"
               bullets={[
                 `${m1.crossValidation.folds}-fold time-series cross-validation prevents lookahead leakage.`,
-                `1-year tuning landed at max_depth ${m1.bestHyperparameters.max_depth} and learning_rate ${m1.bestHyperparameters.learning_rate.toFixed(2)}.`,
-                `3-year tuning landed at max_depth ${m3.bestHyperparameters.max_depth} and learning_rate ${m3.bestHyperparameters.learning_rate.toFixed(2)}.`,
-                `5-year tuning landed at max_depth ${m5.bestHyperparameters.max_depth} and learning_rate ${m5.bestHyperparameters.learning_rate.toFixed(2)}.`,
+                `1-year tuning: max_depth ${m1.bestHyperparameters.max_depth}, learning_rate ${m1.bestHyperparameters.learning_rate.toFixed(2)}.`,
+                `3-year tuning: max_depth ${m3.bestHyperparameters.max_depth}, learning_rate ${m3.bestHyperparameters.learning_rate.toFixed(2)}.`,
+                `5-year tuning: max_depth ${m5.bestHyperparameters.max_depth}, learning_rate ${m5.bestHyperparameters.learning_rate.toFixed(2)}.`,
               ]}
             />
             <NerdCard
               title="Guardrails"
               bullets={[
-                "Targets are trained on forward log-returns instead of raw prices.",
-                "Missing-data and provider-context flags are explicit model inputs, not hidden assumptions.",
-                "Bear scenarios apply an asymmetric reprint-shock haircut, so downside can be meaningfully worse for reprint-prone products.",
+                "Models are trained on forward log-returns rather than raw prices.",
+                "Missing-data and provider-context flags are explicit model inputs.",
+                "Bear scenarios apply an asymmetric reprint-shock haircut, allowing meaningful downside for reprint-prone products.",
               ]}
             />
           </div>
@@ -439,13 +442,13 @@ export default function MethodologyPage() {
 
         <section className="mt-8 flex flex-col gap-5 rounded-[28px] border border-[hsl(var(--border))] bg-[hsl(var(--card))]/90 p-6 md:flex-row md:items-center md:justify-between md:p-8">
           <div>
-            <SectionLabel>Use the tool</SectionLabel>
+            <SectionLabel>Get started</SectionLabel>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-              Ready to compare sealed products?
+              Explore sealed product forecasts
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">
-              Open the forecast view to sort setups, inspect downside cases, and
-              compare projected outcomes across products.
+              Open the forecast view to compare products, review downside
+              scenarios, and evaluate projected outcomes across the catalog.
             </p>
           </div>
 
