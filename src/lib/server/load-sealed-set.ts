@@ -6,6 +6,7 @@ import {
 import {
   getLocalSealedCatalogEntry,
   isLocalSealedProductId,
+  loadSealedSearchCatalog,
 } from "@/lib/db/sealed-search";
 import {
   findSyncedPriceChartingEntry,
@@ -14,7 +15,11 @@ import {
 } from "@/lib/domain/pricecharting-catalog";
 import { buildDynamicSetData } from "@/lib/domain/sealed-estimate";
 import { getSealedSetById } from "@/lib/data/sealed-sets";
-import type { SealedPricing, SealedSetData } from "@/lib/types/sealed";
+import type {
+  SealedPricing,
+  SealedSetData,
+} from "@/lib/types/sealed";
+import type { SealedSearchCatalogEntry } from "@/lib/db/sealed-search";
 
 const DYNAMIC_PREFIX = "dynamic-";
 
@@ -42,13 +47,50 @@ function roundPrice(value: number | null | undefined): number | null {
   return Math.round(value * 100) / 100;
 }
 
+function pricingFromCatalogEntry(
+  entry: SealedSearchCatalogEntry
+): SealedPricing {
+  const synced =
+    getSyncedPriceChartingEntryBySetId(entry.catalogId) ??
+    (entry.priceChartingId
+      ? getSyncedPriceChartingEntryById(entry.priceChartingId)
+      : null) ??
+    findSyncedPriceChartingEntry({
+      name: entry.name,
+      productType: entry.productType,
+      releaseDate: entry.releaseDate,
+    });
+  const bestPrice =
+    roundPrice(synced?.newPrice ?? synced?.manualOnlyPrice ?? null) ??
+    roundPrice(entry.currentPrice);
+  return {
+    pokedataId: entry.pokedataId,
+    name: entry.name,
+    releaseDate: entry.releaseDate,
+    imageUrl: entry.imageUrl ?? null,
+    priceChartingId: synced?.priceChartingId ?? entry.priceChartingId,
+    priceChartingProductName: synced?.productName ?? null,
+    priceChartingConsoleName: synced?.consoleName ?? null,
+    priceChartingPrice: roundPrice(synced?.newPrice ?? null),
+    tcgplayerPrice: null,
+    ebayPrice: null,
+    pokedataPrice: null,
+    bestPrice,
+    primaryProvider: synced ? "pricecharting" : "fallback",
+    snapshotDate: null,
+    salesVolume: synced?.salesVolume ?? null,
+    manualOnlyPrice: synced?.manualOnlyPrice ?? null,
+  };
+}
+
 /**
  * Resolve a `/sealed-forecast/[slug]` slug to a SealedSetData.
  *
  * Supports three slug shapes:
  *   - `<curated-id>` (e.g. `evolving-skies`) — looked up in SEALED_SETS
- *   - `dynamic-local-sealed:<setId>` — built from the bundled local
- *     catalog (top-buys + offline products) plus PriceCharting sync data
+ *   - `dynamic-local-sealed:<setId>` — bundled local catalog (top-buys etc.)
+ *     enriched with PriceCharting sync data; falls back to combined
+ *     local+stored search catalog if the runtime map misses
  *   - `dynamic-<pokedataId>` — built on demand from DynamoDB pricing
  *     meta + latest snapshot via buildDynamicSetData()
  *
@@ -64,43 +106,34 @@ export async function loadSealedSetBySlug(
   const pokedataId = slug.slice(DYNAMIC_PREFIX.length);
   if (!pokedataId) return null;
 
+  const isLocal = isLocalSealedProductId(pokedataId);
+  console.log(
+    `[loadSealedSetBySlug] slug=${slug} pokedataId=${pokedataId} isLocal=${isLocal}`
+  );
+
   // 1) Local bundled catalog (top-buys, offline data) — works without DB
-  if (isLocalSealedProductId(pokedataId)) {
+  if (isLocal) {
     const local = getLocalSealedCatalogEntry(pokedataId);
     if (local) {
-      const synced =
-        getSyncedPriceChartingEntryBySetId(local.catalogId) ??
-        (local.priceChartingId
-          ? getSyncedPriceChartingEntryById(local.priceChartingId)
-          : null) ??
-        findSyncedPriceChartingEntry({
-          name: local.name,
-          productType: local.productType,
-          releaseDate: local.releaseDate,
-        });
-      const bestPrice =
-        roundPrice(synced?.newPrice ?? synced?.manualOnlyPrice ?? null) ??
-        roundPrice(local.currentPrice);
-      const pricing: SealedPricing = {
-        pokedataId: local.pokedataId,
-        name: local.name,
-        releaseDate: local.releaseDate,
-        imageUrl: local.imageUrl ?? null,
-        priceChartingId: synced?.priceChartingId ?? local.priceChartingId,
-        priceChartingProductName: synced?.productName ?? null,
-        priceChartingConsoleName: synced?.consoleName ?? null,
-        priceChartingPrice: roundPrice(synced?.newPrice ?? null),
-        tcgplayerPrice: null,
-        ebayPrice: null,
-        pokedataPrice: null,
-        bestPrice,
-        primaryProvider: synced ? "pricecharting" : "fallback",
-        snapshotDate: null,
-        salesVolume: synced?.salesVolume ?? null,
-        manualOnlyPrice: synced?.manualOnlyPrice ?? null,
-      };
-      return buildDynamicSetData(pricing);
+      return buildDynamicSetData(pricingFromCatalogEntry(local));
     }
+    // Fallback: search the combined local+stored catalog (covers entries
+    // added to DynamoDB but not yet in the static module map).
+    try {
+      const fullCatalog = await loadSealedSearchCatalog();
+      const match = fullCatalog.find((e) => e.pokedataId === pokedataId);
+      if (match) {
+        console.log(
+          `[loadSealedSetBySlug] resolved via full catalog: ${match.name}`
+        );
+        return buildDynamicSetData(pricingFromCatalogEntry(match));
+      }
+    } catch (err) {
+      console.error("[loadSealedSetBySlug] full catalog lookup failed", err);
+    }
+    console.warn(
+      `[loadSealedSetBySlug] local-sealed slug not found in any catalog: ${pokedataId}`
+    );
   }
 
   // 2) DynamoDB-stored product (live PokeData / PriceCharting snapshots)
@@ -109,7 +142,12 @@ export async function loadSealedSetBySlug(
     getLatestStoredSealedPriceSnapshot(pokedataId),
   ]);
 
-  if (!meta && !snapshot) return null;
+  if (!meta && !snapshot) {
+    console.warn(
+      `[loadSealedSetBySlug] no curated, local, or DynamoDB record for ${slug}`
+    );
+    return null;
+  }
 
   const bestPrice = pickBestPrice(snapshot);
 
