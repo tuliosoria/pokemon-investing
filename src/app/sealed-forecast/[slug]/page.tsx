@@ -78,10 +78,12 @@ function Stat({
   label,
   value,
   accent,
+  primary = false,
 }: {
   label: string;
   value: string;
   accent?: number;
+  primary?: boolean;
 }) {
   const color =
     accent === undefined
@@ -92,12 +94,24 @@ function Stat({
           ? "text-rose-400"
           : "text-zinc-400";
   return (
-    <div className="rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--background))]/40 p-2">
-      <p className="text-[10px] uppercase text-[hsl(var(--muted-foreground))]">
+    <div className="flex flex-col gap-1 border-l border-[hsl(var(--border))] pl-3 first:border-l-0 first:pl-0">
+      <p className="text-[10px] uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
         {label}
       </p>
-      <p className={`text-base font-semibold ${color}`}>{value}</p>
+      <p
+        className={`tabular-nums ${primary ? "text-2xl md:text-3xl" : "text-lg md:text-xl"} font-semibold leading-none ${color}`}
+      >
+        {value}
+      </p>
     </div>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[hsl(var(--muted-foreground))]">
+      {children}
+    </h2>
   );
 }
 
@@ -138,7 +152,7 @@ function ComparableCard({
       href={`/sealed-forecast/${encodeSealedSlug(comp.id)}`}
       className="group flex flex-col gap-2 rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--background))]/40 p-3 transition hover:border-[hsl(var(--poke-yellow))]/60"
     >
-      <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-[hsl(var(--muted))]">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-white">
         {comp.imageUrl ? (
           <Image
             src={comp.imageUrl}
@@ -158,7 +172,7 @@ function ComparableCard({
         </span>
       </div>
       <div className="flex items-center justify-between text-xs text-[hsl(var(--muted-foreground))]">
-        <span>{formatCurrency(comp.currentPrice)}</span>
+        <span className="tabular-nums">{formatCurrency(comp.currentPrice)}</span>
         <span>
           {ageYears} year{ageYears === 1 ? "" : "s"} old
         </span>
@@ -191,14 +205,14 @@ function ScenarioCard({
         : "text-sky-400";
   return (
     <div className={`rounded-lg border ${toneClass} bg-[hsl(var(--background))]/40 p-4`}>
-      <p className={`text-xs font-semibold uppercase tracking-wide ${labelClass}`}>
+      <p className={`text-xs font-semibold uppercase tracking-wider ${labelClass}`}>
         {scenario.name} case
       </p>
-      <p className="mt-2 text-xl font-semibold">
+      <p className="mt-2 text-xl font-semibold tabular-nums">
         {formatCurrency(scenario.projectedValue)}
       </p>
       <p
-        className={`text-xs ${scenario.roiPercent >= 0 ? "text-emerald-400" : "text-rose-400"}`}
+        className={`text-xs tabular-nums ${scenario.roiPercent >= 0 ? "text-emerald-400" : "text-rose-400"}`}
       >
         {formatSignedPercent(scenario.roiPercent)} vs current
       </p>
@@ -275,54 +289,76 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
           ← All forecasts
         </Link>
 
-        <header className="mb-6 grid gap-6 md:grid-cols-[260px_1fr]">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--muted))]">
+        <header className="mb-8 grid gap-6 md:grid-cols-[280px_1fr]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-[hsl(var(--border))] bg-white">
             {set.imageUrl ? (
               <Image
                 src={set.imageUrl}
                 alt={set.name}
                 fill
-                className="object-contain p-4"
-                sizes="260px"
+                className="object-contain p-3"
+                sizes="280px"
                 priority
               />
             ) : null}
           </div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[hsl(var(--muted-foreground))]">
+                {set.productType} · {set.releaseYear} · {ageYears} year
+                {ageYears === 1 ? "" : "s"} old
+              </p>
+              <h1 className="mt-1 text-2xl font-bold leading-tight md:text-3xl">
+                {set.name}
+              </h1>
+            </div>
+
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-2xl font-bold md:text-3xl">{set.name}</h1>
               <span
-                className={`rounded-full border px-2 py-0.5 text-xs font-semibold ${recommendationStyle[recommendation]}`}
+                className={`rounded-md border px-2.5 py-1 text-xs font-bold uppercase tracking-wide ${recommendationStyle[recommendation]}`}
               >
                 {recommendation}
               </span>
               <span
-                className={`rounded-full border px-2 py-0.5 text-[11px] font-semibold ${confidenceStyle[displayConfidence.confidence]}`}
+                className={`rounded-md border px-2.5 py-1 text-[11px] font-semibold ${confidenceStyle[displayConfidence.confidence]}`}
                 title={displayConfidence.explanation}
               >
                 {displayConfidence.confidence} confidence
               </span>
+              {set.tcgplayerUrl && (
+                <a
+                  href={set.tcgplayerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-auto rounded-md border border-[hsl(var(--poke-yellow))]/40 bg-[hsl(var(--poke-yellow))]/10 px-3 py-1 text-xs font-semibold text-[hsl(var(--poke-yellow))] hover:bg-[hsl(var(--poke-yellow))]/20"
+                >
+                  Buy on TCGplayer ↗
+                </a>
+              )}
             </div>
-            <p className="text-sm text-[hsl(var(--muted-foreground))]">
-              {set.productType} · {set.releaseYear} · {ageYears} year
-              {ageYears === 1 ? "" : "s"} old
-            </p>
 
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <Stat label="Current" value={formatCurrency(set.currentPrice)} />
+            <div className="grid grid-cols-2 gap-x-4 gap-y-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-4 sm:grid-cols-4">
+              <Stat
+                label="Current"
+                value={formatCurrency(set.currentPrice)}
+                primary
+              />
               <Stat
                 label="5y Projection"
                 value={formatCurrency(forecast.projectedValue)}
+                primary
               />
               <Stat
-                label="ROI"
+                label="ROI (5y)"
                 value={formatSignedPercent(forecast.roiPercent)}
                 accent={forecast.roiPercent}
+                primary
               />
               <Stat
                 label="Gain"
                 value={formatSignedCurrency(forecast.dollarGain)}
                 accent={forecast.dollarGain}
+                primary
               />
             </div>
 
@@ -331,30 +367,17 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
               Actual returns may be lower after fees, taxes, shipping, and
               liquidity constraints.
             </p>
-
-            {set.tcgplayerUrl && (
-              <a
-                href={set.tcgplayerUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="self-start rounded-md border border-[hsl(var(--border))] px-3 py-1.5 text-xs hover:border-[hsl(var(--poke-yellow))]/60"
-              >
-                Buy on TCGplayer ↗
-              </a>
-            )}
           </div>
         </header>
 
-        <section className="mb-6 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
-          <div className="mb-2 flex items-baseline justify-between gap-3">
-            <h2 className="text-base font-semibold">
-              Why this rating? — {recommendation}
-            </h2>
-            <span className="text-[11px] uppercase tracking-wide text-[hsl(var(--muted-foreground))]">
+        <section className="mb-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
+          <div className="mb-3 flex items-baseline justify-between gap-3">
+            <SectionLabel>Why this rating — {recommendation}</SectionLabel>
+            <span className="text-[10px] uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
               Analyst view
             </span>
           </div>
-          <p className="mb-3 text-sm text-[hsl(var(--foreground))]">
+          <p className="mb-3 text-sm leading-relaxed text-[hsl(var(--foreground))]">
             {rating.headline}
           </p>
           <ul className="list-disc space-y-1 pl-5 text-sm text-[hsl(var(--foreground))]">
@@ -368,15 +391,15 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
           </p>
         </section>
 
-        <section className="mb-6 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
-          <h2 className="mb-3 text-lg font-semibold">
-            Price history & 5-year projection
-          </h2>
-          {history.length < 3 && (
-            <p className="mb-2 inline-block rounded-md bg-amber-500/15 px-2 py-0.5 text-[11px] text-amber-300">
-              Limited history available — chart shows projection-heavy view.
-            </p>
-          )}
+        <section className="mb-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
+          <div className="mb-3 flex items-baseline justify-between gap-3">
+            <SectionLabel>Price history & 5-year projection</SectionLabel>
+            {history.length < 3 && (
+              <span className="rounded-md bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-300">
+                Limited history
+              </span>
+            )}
+          </div>
           <ForecastChart
             history={history}
             projection={projection}
@@ -385,9 +408,9 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
           />
         </section>
 
-        <section className="mb-6 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
-          <h2 className="mb-3 text-base font-semibold">Scenario analysis</h2>
-          <div className="grid gap-3 sm:grid-cols-3">
+        <section className="mb-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
+          <SectionLabel>Scenario analysis</SectionLabel>
+          <div className="mt-3 grid gap-3 sm:grid-cols-3">
             <ScenarioCard scenario={scenarios[0]} tone="bear" />
             <ScenarioCard scenario={scenarios[1]} tone="base" />
             <ScenarioCard scenario={scenarios[2]} tone="bull" />
@@ -399,10 +422,10 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
           </p>
         </section>
 
-        <section className="mb-6 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
+        <section className="mb-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
           <div className="mb-3 flex items-baseline justify-between gap-3">
-            <h2 className="text-base font-semibold">Forecast quality</h2>
-            <span className="flex items-center gap-2 text-[11px] text-[hsl(var(--muted-foreground))]">
+            <SectionLabel>Forecast quality</SectionLabel>
+            <span className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
               Overall <Badge level={quality.overall}>{quality.overall}</Badge>
             </span>
           </div>
@@ -424,14 +447,14 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
           </ul>
         </section>
 
-        <section className="mb-6 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
-          <h2 className="mb-2 text-base font-semibold">About this product</h2>
-          <p className="text-sm leading-relaxed text-[hsl(var(--foreground))]">
+        <section className="mb-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
+          <SectionLabel>About this product</SectionLabel>
+          <p className="mt-3 text-sm leading-relaxed text-[hsl(var(--foreground))]">
             {description.text}
           </p>
           {set.chaseCards?.length ? (
             <div className="mt-3">
-              <p className="mb-1 text-xs font-semibold uppercase text-[hsl(var(--muted-foreground))]">
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
                 Key chase cards
               </p>
               <ul className="flex flex-wrap gap-2 text-xs">
@@ -448,24 +471,26 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
           ) : null}
         </section>
 
-        <section className="mb-6 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
-          <h2 className="mb-3 text-base font-semibold">Comparable products</h2>
-          {comparables.length === 0 ? (
-            <p className="text-sm text-[hsl(var(--muted-foreground))]">
-              No close comparables in catalog yet.
-            </p>
-          ) : (
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {comparables.map((comp) => (
-                <ComparableCard key={comp.id} target={set} comp={comp} />
-              ))}
-            </div>
-          )}
+        <section className="mb-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
+          <SectionLabel>Comparable products</SectionLabel>
+          <div className="mt-3">
+            {comparables.length === 0 ? (
+              <p className="text-sm text-[hsl(var(--muted-foreground))]">
+                No close comparables in catalog yet.
+              </p>
+            ) : (
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {comparables.map((comp) => (
+                  <ComparableCard key={comp.id} target={set} comp={comp} />
+                ))}
+              </div>
+            )}
+          </div>
         </section>
 
-        <section className="mb-6 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
-          <h2 className="mb-2 text-base font-semibold">Risk factors</h2>
-          <ul className="list-disc space-y-1 pl-5 text-sm">
+        <section className="mb-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
+          <SectionLabel>Risk factors</SectionLabel>
+          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
             <li>Reprint risk: {reprintRisk}</li>
             <li>Liquidity tier: {set.factors.liquidityTier ?? "normal"}</li>
             <li>
@@ -485,11 +510,9 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
           </ul>
         </section>
 
-        <section className="mb-6 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
-          <h2 className="mb-2 text-base font-semibold">
-            What could make this wrong?
-          </h2>
-          <ul className="list-disc space-y-1 pl-5 text-sm">
+        <section className="mb-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
+          <SectionLabel>What could make this wrong?</SectionLabel>
+          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
             <li>
               Unexpected reprints or re-releases (current reprint posture:{" "}
               {reprintRisk}).
