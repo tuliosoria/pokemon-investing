@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { SEALED_SETS, getSealedSetById } from "@/lib/data/sealed-sets";
 import { loadSealedSetBySlug } from "@/lib/server/load-sealed-set";
+import { decodeSealedSlug, encodeSealedSlug } from "@/lib/domain/sealed-slug";
 import { computeForecast } from "@/lib/domain/sealed-forecast-ml";
 import { deriveRecommendation } from "@/lib/domain/recommendation";
 import { buildDescription } from "@/lib/domain/sealed-description";
@@ -18,11 +19,12 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return SEALED_SETS.map((s) => ({ slug: s.id }));
+  return SEALED_SETS.map((s) => ({ slug: encodeSealedSlug(s.id) }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeSealedSlug(rawSlug);
   const set = getSealedSetById(slug);
   if (!set) return { title: "Product not found — PokeFuture" };
   return {
@@ -66,7 +68,8 @@ function Stat({
 }
 
 export default async function SealedProductDetailPage({ params }: PageProps) {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeSealedSlug(rawSlug);
   const set = await loadSealedSetBySlug(slug);
   if (!set) notFound();
 

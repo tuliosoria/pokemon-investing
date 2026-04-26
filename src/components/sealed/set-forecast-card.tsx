@@ -7,6 +7,7 @@ import { getProjectionData } from "@/lib/domain/sealed-forecast";
 import { SignalBadge, ConfidenceBadge } from "./signal-badge";
 import { RoiChart } from "./roi-chart";
 import { useSealedTcgplayerUrl } from "./use-sealed-tcgplayer-url";
+import { encodeSealedSlug } from "@/lib/domain/sealed-slug";
 
 const CARD_HEADER_OVERLAY =
   "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(10,15,30,0.92) 100%)";
@@ -95,7 +96,7 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
   return (
     <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[hsl(var(--card))] hover-lift shadow-[0_18px_50px_rgba(0,0,0,0.24)] transition-colors hover:border-[hsl(var(--poke-yellow))]/40">
       <Link
-        href={`/sealed-forecast/${set.id}`}
+        href={`/sealed-forecast/${encodeSealedSlug(set.id)}`}
         aria-label={`View forecast details for ${set.name}`}
         className="absolute inset-0 z-[1] focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--poke-yellow))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--card))]"
       >
