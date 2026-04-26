@@ -967,8 +967,7 @@ export function ForecastDashboard() {
   const activeFilterCount =
     (filter !== "All" ? 1 : 0) +
     (scenario !== "moderate" ? 1 : 0) +
-    (sortBy !== "roi" || sortDir !== "desc" ? 1 : 0) +
-    (apiQuery.length >= 2 && !showCurated ? 1 : 0);
+    (sortBy !== "roi" || sortDir !== "desc" ? 1 : 0);
 
   return (
     <>
@@ -1087,23 +1086,6 @@ export function ForecastDashboard() {
                   )}
                 </button>
               ))}
-
-              {apiQuery.length >= 2 && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    resetVisibleCards();
-                    setShowCurated((v) => !v);
-                  }}
-                  className={`rounded-full px-3 py-1 font-medium transition-colors ml-auto ${
-                    showCurated
-                      ? "bg-[hsl(var(--poke-yellow))]/20 text-[hsl(var(--poke-yellow))]"
-                      : "bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))]"
-                  }`}
-                >
-                  {showCurated ? "★ Curated included" : "★ Show curated"}
-                </button>
-              )}
             </div>
           </div>
         )}
