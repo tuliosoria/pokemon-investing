@@ -451,27 +451,6 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
           </div>
         </section>
 
-        <section className="mb-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
-          <SectionLabel>Risk factors</SectionLabel>
-          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-            <li>Reprint risk: {reprintRisk}</li>
-            <li>Liquidity tier: {set.factors.liquidityTier ?? "normal"}</li>
-            <li>
-              Set age: {ageYears} year{ageYears === 1 ? "" : "s"}
-              {ageYears < 2 ? " (younger sets are more volatile)" : ""}
-            </li>
-            <li>
-              Prediction spread: ±{forecast.predictionSpreadPercent.toFixed(1)}%
-              (wider = lower confidence)
-            </li>
-            {forecast.estimatedFactors > 2 && (
-              <li>
-                {forecast.estimatedFactors} model inputs were heuristic
-                estimates rather than measured values.
-              </li>
-            )}
-          </ul>
-        </section>
 
         <section className="mb-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
           <SectionLabel>What could make this wrong?</SectionLabel>
