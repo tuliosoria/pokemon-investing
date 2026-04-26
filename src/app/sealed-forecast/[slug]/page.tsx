@@ -15,7 +15,7 @@ import { ModelDetails } from "@/components/sealed/model-details";
 import { deriveDisplayConfidence } from "@/lib/domain/confidence-display";
 import { buildRatingExplanation } from "@/lib/domain/rating-explanation";
 import { buildKeyDrivers } from "@/lib/domain/key-drivers";
-import { buildScenarios, type Scenario } from "@/lib/domain/scenarios";
+import { buildScenarios, type Scenario, type ReprintRiskTier } from "@/lib/domain/scenarios";
 import { findComparables, describeComparable } from "@/lib/domain/comparables";
 import type { Confidence, Recommendation, SealedSetData } from "@/lib/types/sealed";
 
@@ -222,10 +222,22 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
   const history = await getHistoricalPriceSeriesForSet(set);
 
   const ageYears = new Date().getFullYear() - set.releaseYear;
-  const reprintRisk: "Low" | "Moderate" | "High" =
-    set.printRunLabel === "Limited"
-      ? "Low"
+  const reprintRiskTier: ReprintRiskTier =
+    set.printRunLabel === "Limited" || ageYears >= 15
+      ? "Minimal"
       : set.printRunLabel === "Overprinted"
+        ? ageYears <= 3
+          ? "Severe"
+          : ageYears <= 7
+            ? "High"
+            : "Moderate"
+        : ageYears <= 5
+          ? "Moderate"
+          : "Low";
+  const reprintRisk: "Low" | "Moderate" | "High" =
+    reprintRiskTier === "Minimal" || reprintRiskTier === "Low"
+      ? "Low"
+      : reprintRiskTier === "Severe" || reprintRiskTier === "High"
         ? "High"
         : "Moderate";
 
@@ -250,6 +262,7 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
     currentPrice: set.currentPrice,
     projectedValue: forecast.projectedValue,
     spreadPercent: forecast.predictionSpreadPercent,
+    reprintRisk: reprintRiskTier,
   });
 
   return (
@@ -389,9 +402,11 @@ export default async function SealedProductDetailPage({ params }: PageProps) {
             <ScenarioCard scenario={scenarios[2]} tone="bull" />
           </div>
           <p className="mt-3 text-[11px] text-[hsl(var(--muted-foreground))]">
-            Bear/Bull bands derived from the model&apos;s prediction spread of
-            ±{forecast.predictionSpreadPercent.toFixed(1)}% around the 5-year
-            base case.
+            Bull case applies the model&apos;s ±{forecast.predictionSpreadPercent.toFixed(1)}%
+            spread upward. Bear case applies the same spread downward and adds a
+            reprint-shock haircut sized by this product&apos;s reprint risk
+            ({reprintRiskTier.toLowerCase()}), so vulnerable modern sealed can
+            show a clearly negative downside.
           </p>
         </section>
 
