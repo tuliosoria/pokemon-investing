@@ -14,26 +14,11 @@ import {
   Sparkles,
   TrendingUp,
 } from "lucide-react";
-import trainingSummary from "@/lib/data/sealed-ml/training-summary.json";
 
 export const metadata: Metadata = {
   title: "Methodology — PokeFuture Sealed Forecast",
   description:
-    "How PokeFuture forecasts sealed Pokemon product values — the signals, the model, and the training data behind every projection.",
-};
-
-type TrainingSummary = {
-  rows: number;
-  panelRows: number;
-  models: Record<
-    string,
-    {
-      trainingRows: number;
-      treeCount: number;
-      crossValidation: { folds: number; mape: number };
-      bestHyperparameters: { max_depth: number; learning_rate: number };
-    }
-  >;
+    "How PokeFuture forecasts sealed Pokemon product values — the signals, the model, and the data sources behind every projection.",
 };
 
 type IconCardProps = {
@@ -127,34 +112,7 @@ function StatTile({
   );
 }
 
-function NerdCard({
-  title,
-  bullets,
-}: {
-  title: string;
-  bullets: string[];
-}) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-[hsl(var(--background))]/40 p-5">
-      <h3 className="text-sm font-semibold text-white">{title}</h3>
-      <ul className="mt-3 space-y-2 text-sm leading-relaxed text-white/75">
-        {bullets.map((bullet) => (
-          <li key={bullet} className="flex gap-2">
-            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[hsl(var(--poke-yellow))]" />
-            <span>{bullet}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 export default function MethodologyPage() {
-  const summary = trainingSummary as TrainingSummary;
-  const m1 = summary.models["1yr"];
-  const m3 = summary.models["3yr"];
-  const m5 = summary.models["5yr"];
-
   return (
     <div className="relative min-h-screen overflow-hidden bg-[hsl(var(--background))]">
       <div className="pointer-events-none absolute inset-0">
@@ -216,32 +174,27 @@ export default function MethodologyPage() {
               <div className="mt-4 space-y-4">
                 <div className="rounded-2xl border border-white/8 bg-black/10 p-4">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/45">
-                    Model family
+                    Approach
                   </p>
                   <p className="mt-2 text-lg font-semibold text-white">
-                    XGBoost regressors
+                    Machine-learning forecasts
                   </p>
                   <p className="mt-1 text-sm leading-relaxed text-white/65">
-                    Separate models for 1-year, 3-year, and 5-year horizons.
+                    Independent projections across 1-year, 3-year, and 5-year
+                    horizons.
                   </p>
                 </div>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-white/8 bg-black/10 p-4">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/45">
-                      Validation
-                    </p>
-                    <p className="mt-2 text-lg font-semibold text-white">
-                      {m1.crossValidation.folds}-fold time-series CV
-                    </p>
-                  </div>
-                  <div className="rounded-2xl border border-white/8 bg-black/10 p-4">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/45">
-                      Dataset
-                    </p>
-                    <p className="mt-2 text-lg font-semibold text-white">
-                      {summary.rows.toLocaleString()} training rows
-                    </p>
-                  </div>
+                <div className="rounded-2xl border border-white/8 bg-black/10 p-4">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/45">
+                    Data sources
+                  </p>
+                  <p className="mt-2 text-lg font-semibold text-white">
+                    PriceCharting, TCGplayer, community signals
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-white/65">
+                    Multi-provider pricing combined with demand and engagement
+                    signals.
+                  </p>
                 </div>
               </div>
             </div>
@@ -377,65 +330,37 @@ export default function MethodologyPage() {
         <section className="mt-8 overflow-hidden rounded-[32px] border border-white/10 bg-[linear-gradient(135deg,rgba(10,16,32,0.95),rgba(18,28,45,0.92),rgba(31,52,94,0.88))] p-6 shadow-[0_30px_120px_-40px_rgba(0,0,0,0.8)] md:p-8">
           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
-              <SectionLabel>Technical detail</SectionLabel>
+              <SectionLabel>Data sources</SectionLabel>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">
-                Model and dataset
+                What powers the forecasts
               </h2>
             </div>
             <p className="max-w-2xl text-sm leading-relaxed text-white/68">
-              Full transparency on the model architecture, training dataset,
-              and validation procedure behind every projection.
+              Forecasts are trained on a multi-source dataset that combines
+              market pricing with collector demand signals.
             </p>
           </div>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <StatTile
-              label="Model"
-              value="XGBoost"
-              sublabel="Gradient-boosted decision trees"
+              label="Pricing"
+              value="PriceCharting"
+              sublabel="Sealed product price history across multiple conditions"
             />
             <StatTile
-              label="Horizons"
-              value="1y · 3y · 5y"
-              sublabel="Independent regressors with a stacked 5-year model"
+              label="Marketplace"
+              value="TCGplayer"
+              sublabel="Live market pricing and listing activity"
             />
             <StatTile
-              label="Training rows"
-              value={summary.rows.toLocaleString()}
-              sublabel={`${summary.panelRows.toLocaleString()} rows in the monthly history panel`}
+              label="Demand"
+              value="Community signals"
+              sublabel="Search interest, Reddit, and forum engagement"
             />
             <StatTile
-              label="Feature set"
-              value="35 features"
-              sublabel="Price history, demand, comparables, and provider agreement"
-            />
-          </div>
-
-          <div className="mt-6 grid gap-4 lg:grid-cols-3">
-            <NerdCard
-              title="Model stack"
-              bullets={[
-                `1-year model: ${m1.trainingRows} rows, ${m1.treeCount} trees, MAPE ${m1.crossValidation.mape.toFixed(1)}%.`,
-                `3-year model: ${m3.trainingRows} rows, ${m3.treeCount} trees, MAPE ${m3.crossValidation.mape.toFixed(1)}%.`,
-                `5-year model: ${m5.trainingRows} rows, ${m5.treeCount} trees, MAPE ${m5.crossValidation.mape.toFixed(1)}%.`,
-              ]}
-            />
-            <NerdCard
-              title="Validation and tuning"
-              bullets={[
-                `${m1.crossValidation.folds}-fold time-series cross-validation prevents lookahead leakage.`,
-                `1-year tuning: max_depth ${m1.bestHyperparameters.max_depth}, learning_rate ${m1.bestHyperparameters.learning_rate.toFixed(2)}.`,
-                `3-year tuning: max_depth ${m3.bestHyperparameters.max_depth}, learning_rate ${m3.bestHyperparameters.learning_rate.toFixed(2)}.`,
-                `5-year tuning: max_depth ${m5.bestHyperparameters.max_depth}, learning_rate ${m5.bestHyperparameters.learning_rate.toFixed(2)}.`,
-              ]}
-            />
-            <NerdCard
-              title="Guardrails"
-              bullets={[
-                "Models are trained on forward log-returns rather than raw prices.",
-                "Missing-data and provider-context flags are explicit model inputs.",
-                "Bear scenarios apply an asymmetric reprint-shock haircut, allowing meaningful downside for reprint-prone products.",
-              ]}
+              label="Catalog"
+              value="Set metadata"
+              sublabel="Era, product type, print-run profile, and release date"
             />
           </div>
         </section>
