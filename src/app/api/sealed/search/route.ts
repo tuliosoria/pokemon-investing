@@ -34,25 +34,41 @@ const TERM_ALIASES: Record<string, string[]> = {
 
 // Generic category queries that should return every matching product
 // rather than the top-N ranked subset. Keys are normalized (lowercase,
-// punctuation/diacritics stripped) — `expandCategoryQuery` handles
-// "all ..." prefixes and trailing plurals.
+// punctuation/diacritics stripped) — `expandCategoryQuery` handles the
+// "all ..." prefix; plural forms are listed explicitly to keep matching
+// predictable across irregular plurals (boxes/collections/tins).
 const CATEGORY_QUERIES: Record<string, string[]> = {
   etb: ["elite trainer box", "etb"],
+  etbs: ["elite trainer box", "etb"],
   "elite trainer box": ["elite trainer box", "etb"],
+  "elite trainer boxes": ["elite trainer box", "etb"],
   upc: ["ultra premium collection", "upc"],
+  upcs: ["ultra premium collection", "upc"],
   "ultra premium collection": ["ultra premium collection", "upc"],
+  "ultra premium collections": ["ultra premium collection", "upc"],
   booster: ["booster"],
+  boosters: ["booster"],
   "booster box": ["booster box"],
+  "booster boxes": ["booster box"],
   "booster bundle": ["booster bundle"],
+  "booster bundles": ["booster bundle"],
   "build and battle": ["build and battle"],
   "build and battle box": ["build and battle"],
+  "build and battle boxes": ["build and battle"],
   collection: ["collection"],
+  collections: ["collection"],
   "collection box": ["collection box"],
+  "collection boxes": ["collection box"],
   "premium collection": ["premium collection"],
+  "premium collections": ["premium collection"],
   bundle: ["bundle"],
+  bundles: ["bundle"],
   tin: ["tin"],
+  tins: ["tin"],
   "v box": ["v box"],
+  "v boxes": ["v box"],
   "ex box": ["ex box"],
+  "ex boxes": ["ex box"],
 };
 
 /**
@@ -64,13 +80,7 @@ function expandCategoryQuery(rawQuery: string): string[] | null {
   let normalized = normalize(rawQuery);
   if (normalized.startsWith("all ")) normalized = normalized.slice(4).trim();
   if (!normalized) return null;
-  if (CATEGORY_QUERIES[normalized]) return CATEGORY_QUERIES[normalized];
-  // Trim a trailing plural "s" (boosters → booster, tins → tin)
-  if (normalized.endsWith("s")) {
-    const singular = normalized.slice(0, -1);
-    if (CATEGORY_QUERIES[singular]) return CATEGORY_QUERIES[singular];
-  }
-  return null;
+  return CATEGORY_QUERIES[normalized] ?? null;
 }
 
 // Variant keywords that indicate non-canonical products (penalized in ranking)
