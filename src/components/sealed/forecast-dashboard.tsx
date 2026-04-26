@@ -870,6 +870,18 @@ export function ForecastDashboard() {
     searchInputRef.current?.focus();
   }, [exitSearchMode]);
 
+  const runCategorySearch = useCallback(
+    (query: string) => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      setSearch(query);
+      setHasInteracted(true);
+      setShowingTopBuys(false);
+      setApiQuery(query);
+      void searchApi(query);
+    },
+    [searchApi]
+  );
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -1062,6 +1074,22 @@ export function ForecastDashboard() {
                 <div className="h-4 w-4 rounded-full border-2 border-[hsl(var(--poke-yellow))] border-t-transparent animate-spin" />
               </div>
             )}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => runCategorySearch("All ETBs")}
+              className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40 px-3 py-1.5 text-xs font-medium text-[hsl(var(--foreground))] transition hover:border-[hsl(var(--poke-yellow))] hover:bg-[hsl(var(--muted))]"
+            >
+              All ETBs
+            </button>
+            <button
+              type="button"
+              onClick={() => runCategorySearch("All Booster Boxes")}
+              className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40 px-3 py-1.5 text-xs font-medium text-[hsl(var(--foreground))] transition hover:border-[hsl(var(--poke-yellow))] hover:bg-[hsl(var(--muted))]"
+            >
+              All Booster Boxes
+            </button>
           </div>
         </div>
 
