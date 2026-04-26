@@ -38,20 +38,20 @@ export default function HomePage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-300">
-            <Link href="/calculator">
-              <Button
-                size="lg"
-                className="text-base px-10 py-3 bg-[hsl(var(--poke-red))] text-white hover:opacity-90 shadow-lg hover-scale"
-              >
-                Grading Calculator
-              </Button>
-            </Link>
             <Link href="/sealed-forecast">
               <Button
                 size="lg"
                 className="text-base px-10 py-3 bg-[hsl(var(--poke-blue))] text-white hover:opacity-90 shadow-lg hover-scale"
               >
                 Sealed Forecast
+              </Button>
+            </Link>
+            <Link href="/calculator">
+              <Button
+                size="lg"
+                className="text-base px-10 py-3 bg-[hsl(var(--poke-red))] text-white hover:opacity-90 shadow-lg hover-scale"
+              >
+                Grading Calculator
               </Button>
             </Link>
             <a href="#tools">
@@ -87,45 +87,8 @@ export default function HomePage() {
           </FadeIn>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            {/* Grading pillar */}
-            <FadeIn delay={0}>
-              <div className="hover-lift rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-8 h-full">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-12 h-12 rounded-lg bg-[hsl(var(--poke-red))/0.1] flex items-center justify-center">
-                    <ShieldCheck className="w-6 h-6 text-[var(--poke-red)]" />
-                  </div>
-                  <h3 className="text-xl font-bold">Grading Calculator</h3>
-                </div>
-                <p className="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-5">
-                  Review grading economics using expected value math, estimated
-                  grade distributions, fees, and current market references. The
-                  tool is informational and should be used alongside your own
-                  judgment.
-                </p>
-                <ul className="space-y-2 text-sm text-[hsl(var(--muted-foreground))] mb-6">
-                  <li className="flex items-center gap-2">
-                    <BarChart3 className="w-4 h-4 text-[var(--poke-red)] shrink-0" />
-                    Expected profit &amp; ROI across grade outcomes
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Target className="w-4 h-4 text-[var(--poke-yellow)] shrink-0" />
-                    Break-even PSA 10 probability analysis
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-[var(--poke-blue)] shrink-0" />
-                    Instant decision in under 10 seconds
-                  </li>
-                </ul>
-                <Link href="/calculator">
-                  <Button className="w-full bg-[hsl(var(--poke-red))] text-white hover:opacity-90">
-                    Open Grading Calculator &rarr;
-                  </Button>
-                </Link>
-              </div>
-            </FadeIn>
-
             {/* Sealed pillar */}
-            <FadeIn delay={150}>
+            <FadeIn delay={0}>
               <div className="hover-lift rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-8 h-full">
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-12 h-12 rounded-lg bg-[hsl(var(--poke-blue))/0.1] flex items-center justify-center">
@@ -156,6 +119,43 @@ export default function HomePage() {
                 <Link href="/sealed-forecast">
                   <Button className="w-full bg-[hsl(var(--poke-blue))] text-white hover:opacity-90">
                     Open Sealed Forecast &rarr;
+                  </Button>
+                </Link>
+              </div>
+            </FadeIn>
+
+            {/* Grading pillar */}
+            <FadeIn delay={150}>
+              <div className="hover-lift rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-8 h-full">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-12 h-12 rounded-lg bg-[hsl(var(--poke-red))/0.1] flex items-center justify-center">
+                    <ShieldCheck className="w-6 h-6 text-[var(--poke-red)]" />
+                  </div>
+                  <h3 className="text-xl font-bold">Grading Calculator</h3>
+                </div>
+                <p className="text-sm text-[hsl(var(--muted-foreground))] leading-relaxed mb-5">
+                  Review grading economics using expected value math, estimated
+                  grade distributions, fees, and current market references. The
+                  tool is informational and should be used alongside your own
+                  judgment.
+                </p>
+                <ul className="space-y-2 text-sm text-[hsl(var(--muted-foreground))] mb-6">
+                  <li className="flex items-center gap-2">
+                    <BarChart3 className="w-4 h-4 text-[var(--poke-red)] shrink-0" />
+                    Expected profit &amp; ROI across grade outcomes
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Target className="w-4 h-4 text-[var(--poke-yellow)] shrink-0" />
+                    Break-even PSA 10 probability analysis
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-[var(--poke-blue)] shrink-0" />
+                    Instant decision in under 10 seconds
+                  </li>
+                </ul>
+                <Link href="/calculator">
+                  <Button className="w-full bg-[hsl(var(--poke-red))] text-white hover:opacity-90">
+                    Open Grading Calculator &rarr;
                   </Button>
                 </Link>
               </div>
@@ -263,20 +263,20 @@ export default function HomePage() {
               No sign-up. No paywall. Informational tools only.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/calculator">
-                <Button
-                  size="lg"
-                  className="text-base px-10 py-3 bg-[hsl(var(--poke-red))] text-white hover:opacity-90 shadow-lg hover-scale"
-                >
-                  Grading Calculator
-                </Button>
-              </Link>
               <Link href="/sealed-forecast">
                 <Button
                   size="lg"
                   className="text-base px-10 py-3 bg-[hsl(var(--poke-blue))] text-white hover:opacity-90 shadow-lg hover-scale"
                 >
                   Sealed Forecast
+                </Button>
+              </Link>
+              <Link href="/calculator">
+                <Button
+                  size="lg"
+                  className="text-base px-10 py-3 bg-[hsl(var(--poke-red))] text-white hover:opacity-90 shadow-lg hover-scale"
+                >
+                  Grading Calculator
                 </Button>
               </Link>
             </div>
