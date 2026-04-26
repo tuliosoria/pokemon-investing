@@ -65,12 +65,11 @@ function pricingFromCatalogEntry(
     roundPrice(synced?.newPrice ?? synced?.manualOnlyPrice ?? null) ??
     roundPrice(entry.currentPrice);
   const imageUrl =
-    entry.imageUrl ??
     getKnownSealedOwnedImagePath({
       setId: entry.catalogId,
       pokedataId: entry.pokedataId,
       name: entry.name,
-    });
+    }) ?? entry.imageUrl ?? null;
   return {
     pokedataId: entry.pokedataId,
     name: entry.name,
