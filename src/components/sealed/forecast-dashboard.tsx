@@ -311,7 +311,6 @@ export function ForecastDashboard() {
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [filter, setFilter] = useState<FilterSignal>("All");
   const [scenario, setScenario] = useState<ForecastScenario>("moderate");
-  const [filtersOpen, setFiltersOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [apiQuery, setApiQuery] = useState("");
   const [apiResults, setApiResults] = useState<SetWithForecast[]>([]);
@@ -964,11 +963,6 @@ export function ForecastDashboard() {
     !isSearchMode &&
     isLoadingCuratedForecasts;
 
-  const activeFilterCount =
-    (filter !== "All" ? 1 : 0) +
-    (scenario !== "moderate" ? 1 : 0) +
-    (sortBy !== "roi" || sortDir !== "desc" ? 1 : 0);
-
   return (
     <>
     <div className="space-y-6">
@@ -1003,10 +997,9 @@ export function ForecastDashboard() {
           </div>
         </div>
 
-        {/* Collapsible filters: Recommendation + Scenario + Sort + Curated */}
-        {filtersOpen && (
-          <div className="space-y-3 rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/30 p-3 animate-fade-in">
-            <div className="flex flex-wrap items-center gap-3 text-xs">
+        {/* Filters: Recommendation + Scenario + Sort (always visible) */}
+        <div className="space-y-3 rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/30 p-3">
+          <div className="flex flex-wrap items-center gap-3 text-xs">
               <label className="flex items-center gap-2">
                 <span className="text-[hsl(var(--muted-foreground))] uppercase tracking-wider text-[10px]">
                   Recommendation
@@ -1088,7 +1081,6 @@ export function ForecastDashboard() {
               ))}
             </div>
           </div>
-        )}
       </div>
 
       {/* Results count */}
@@ -1119,19 +1111,6 @@ export function ForecastDashboard() {
           {searchError && (
             <p className="text-xs text-red-400">{searchError}</p>
           )}
-          <button
-            type="button"
-            onClick={() => setFiltersOpen((v) => !v)}
-            aria-expanded={filtersOpen}
-            className="ml-auto inline-flex items-center gap-1.5 rounded-md border border-[hsl(var(--border))] bg-[hsl(var(--background))] px-2.5 py-1 text-xs font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:border-[hsl(var(--poke-yellow))]/40 transition-colors"
-          >
-            <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <line x1="4" y1="6" x2="20" y2="6" />
-              <line x1="7" y1="12" x2="17" y2="12" />
-              <line x1="10" y1="18" x2="14" y2="18" />
-            </svg>
-            Filters{activeFilterCount > 0 ? ` · ${activeFilterCount}` : ""}
-          </button>
         </div>
       )}
 
