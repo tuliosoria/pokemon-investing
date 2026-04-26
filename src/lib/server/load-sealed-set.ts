@@ -14,6 +14,7 @@ import {
   getSyncedPriceChartingEntryBySetId,
 } from "@/lib/domain/pricecharting-catalog";
 import { buildDynamicSetData } from "@/lib/domain/sealed-estimate";
+import { getKnownSealedOwnedImagePath } from "@/lib/domain/sealed-image";
 import { getSealedSetById } from "@/lib/data/sealed-sets";
 import type {
   SealedPricing,
@@ -63,11 +64,18 @@ function pricingFromCatalogEntry(
   const bestPrice =
     roundPrice(synced?.newPrice ?? synced?.manualOnlyPrice ?? null) ??
     roundPrice(entry.currentPrice);
+  const imageUrl =
+    entry.imageUrl ??
+    getKnownSealedOwnedImagePath({
+      setId: entry.catalogId,
+      pokedataId: entry.pokedataId,
+      name: entry.name,
+    });
   return {
     pokedataId: entry.pokedataId,
     name: entry.name,
     releaseDate: entry.releaseDate,
-    imageUrl: entry.imageUrl ?? null,
+    imageUrl,
     priceChartingId: synced?.priceChartingId ?? entry.priceChartingId,
     priceChartingProductName: synced?.productName ?? null,
     priceChartingConsoleName: synced?.consoleName ?? null,
