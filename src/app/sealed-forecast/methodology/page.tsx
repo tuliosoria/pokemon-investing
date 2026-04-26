@@ -163,7 +163,7 @@ export default function MethodologyPage() {
               forecast.
             </p>
 
-            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
               <StatTile
                 label="Model"
                 value="XGBoost"
@@ -173,11 +173,6 @@ export default function MethodologyPage() {
                 label="Horizons"
                 value="1y · 3y · 5y"
                 sublabel="Stacked meta-model"
-              />
-              <StatTile
-                label="Products"
-                value={summary.products.toLocaleString()}
-                sublabel="Sealed SKUs tracked"
               />
               <StatTile
                 label="Training rows"
