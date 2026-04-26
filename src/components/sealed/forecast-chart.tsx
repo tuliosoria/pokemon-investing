@@ -41,7 +41,8 @@ function buildSeries(
     const existing = map.get(p.date) ?? { date: p.date };
     const next: ForecastSeriesPoint = { ...existing, projection: p.value };
     if (spreadPercent > 0) {
-      const delta = p.value * spreadPercent;
+      const fraction = Math.min(spreadPercent / 100, 0.5);
+      const delta = p.value * fraction;
       const low = Math.max(0, p.value - delta);
       const high = p.value + delta;
       next.band = [low, high];
