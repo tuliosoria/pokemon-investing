@@ -1185,17 +1185,6 @@ export function ForecastDashboard() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <button
                 type="button"
-                onClick={() => searchInputRef.current?.focus()}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[hsl(var(--muted))] text-[hsl(var(--foreground))] text-sm font-medium hover:bg-[hsl(var(--muted))]/80 transition-colors"
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="m21 21-4.3-4.3" strokeLinecap="round" />
-                </svg>
-                Start Searching
-              </button>
-              <button
-                type="button"
                 onClick={() => {
                   handleShowTopBuys();
                 }}
