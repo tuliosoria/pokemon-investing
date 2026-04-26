@@ -49,7 +49,7 @@ export function ProductForecastCard({ set, forecast }: ProductForecastCardProps)
       aria-label={`View forecast for ${set.name}`}
       className="group relative flex flex-col overflow-hidden rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] transition-all hover:border-[hsl(var(--poke-yellow))]/60 hover:shadow-lg"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-[hsl(var(--muted))]">
+      <div className="relative aspect-[4/3] overflow-hidden bg-white">
         {set.imageUrl ? (
           <Image
             src={set.imageUrl}
@@ -59,7 +59,7 @@ export function ProductForecastCard({ set, forecast }: ProductForecastCardProps)
             sizes="(max-width: 768px) 50vw, 25vw"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-xs text-[hsl(var(--muted-foreground))]">
+          <div className="flex h-full items-center justify-center text-xs text-slate-400">
             No image
           </div>
         )}
@@ -117,13 +117,7 @@ export function ProductForecastCard({ set, forecast }: ProductForecastCardProps)
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-[11px] text-[hsl(var(--muted-foreground))]">
-          <span>
-            Confidence:{" "}
-            <span className="font-medium text-[hsl(var(--foreground))]">
-              {displayConfidence}
-            </span>
-          </span>
+        <div className="flex items-center justify-end text-[11px] text-[hsl(var(--muted-foreground))]">
           {typeof community === "number" && <span>Community {community}/100</span>}
         </div>
 

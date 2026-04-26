@@ -2,19 +2,15 @@
 
 import Link from "next/link";
 import type { SealedSetData, Forecast } from "@/lib/types/sealed";
-import { SignalBadge, ConfidenceBadge } from "./signal-badge";
+import { SignalBadge } from "./signal-badge";
 import { useSealedTcgplayerUrl } from "./use-sealed-tcgplayer-url";
 import { encodeSealedSlug } from "@/lib/domain/sealed-slug";
-import { deriveDisplayConfidence } from "@/lib/domain/confidence-display";
-
-const CARD_HEADER_OVERLAY =
-  "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(10,15,30,0.92) 100%)";
 
 function PlaceholderArtwork() {
   return (
     <svg
       viewBox="0 0 120 120"
-      className="h-20 w-20 text-[hsl(var(--poke-yellow))]"
+      className="h-20 w-20 text-[hsl(var(--poke-yellow))] opacity-40"
       aria-hidden="true"
     >
       <circle cx="60" cy="60" r="46" fill="none" stroke="currentColor" strokeWidth="4" opacity="0.3" />
@@ -98,29 +94,29 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
       >
         <span className="sr-only">View details</span>
       </Link>
-      <div className="relative h-[200px] flex-shrink-0 overflow-hidden bg-[#0b1220]">
+      <div className="relative h-[200px] flex-shrink-0 overflow-hidden bg-white">
         <div
           className="absolute inset-0 flex items-center justify-center"
-          style={{ background: "radial-gradient(circle at top, #1e2a3a 0%, #0b1220 72%)" }}
+          style={{ background: "radial-gradient(circle at top, #f8fafc 0%, #ffffff 72%)" }}
         >
           <PlaceholderArtwork />
         </div>
         {set.imageUrl && (
-          <>
-            <img
-              key={set.imageUrl}
-              src={set.imageUrl}
-              alt={set.name}
-              className="absolute inset-0 h-full w-full object-contain p-3 transition-opacity duration-300"
-              onError={(event) => {
-                event.currentTarget.onerror = null;
-                event.currentTarget.style.opacity = "0";
-              }}
-            />
-            <div className="absolute inset-0 bg-black/10" />
-          </>
+          <img
+            key={set.imageUrl}
+            src={set.imageUrl}
+            alt={set.name}
+            className="absolute inset-0 h-full w-full object-contain p-3 transition-opacity duration-300"
+            onError={(event) => {
+              event.currentTarget.onerror = null;
+              event.currentTarget.style.opacity = "0";
+            }}
+          />
         )}
-        <div className="absolute inset-0" style={{ background: CARD_HEADER_OVERLAY }} />
+        <div
+          className="absolute inset-x-0 bottom-0 h-2/3"
+          style={{ background: "linear-gradient(to bottom, rgba(10,15,30,0) 0%, rgba(10,15,30,0.85) 75%, rgba(10,15,30,0.95) 100%)" }}
+        />
 
         <div className="absolute left-4 top-4 z-10">
           {isForecastBlocked && blockedBadgeLabel ? (
@@ -203,11 +199,6 @@ export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
                   ${forecast.dollarGain >= 0 ? "+" : ""}
                   {forecast.dollarGain.toLocaleString()}
                 </span>
-              </div>
-              <div>
-                <ConfidenceBadge
-                  confidence={deriveDisplayConfidence({ forecast, set }).confidence}
-                />
               </div>
             </div>
           )}
