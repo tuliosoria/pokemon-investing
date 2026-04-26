@@ -997,7 +997,8 @@ export function ForecastDashboard() {
           </div>
         </div>
 
-        {/* Filters: Recommendation + Scenario + Sort (always visible) */}
+        {/* Filters: Recommendation + Scenario + Sort (only after interaction) */}
+        {hasInteracted && (
         <div className="space-y-3 rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/30 p-3">
           <div className="flex flex-wrap items-center gap-3 text-xs">
               <label className="flex items-center gap-2">
@@ -1081,6 +1082,7 @@ export function ForecastDashboard() {
               ))}
             </div>
           </div>
+        )}
       </div>
 
       {/* Results count */}
