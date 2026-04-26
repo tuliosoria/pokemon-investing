@@ -22,7 +22,6 @@ import type {
 import { SetForecastCard } from "./set-forecast-card";
 import { SkeletonForecastCard } from "./skeleton-forecast-card";
 import { useSealedTcgplayerUrl } from "./use-sealed-tcgplayer-url";
-import { ForecastBreakdownModal } from "./forecast-breakdown-modal";
 import {
   applyForecastScenario,
   SCENARIO_DESCRIPTIONS,
@@ -334,7 +333,7 @@ export function ForecastDashboard() {
   const [topBuysError, setTopBuysError] = useState<string | null>(null);
   const [curatedForecasts, setCuratedForecasts] = useState<SetWithForecast[]>([]);
   const [isLoadingCuratedForecasts, setIsLoadingCuratedForecasts] = useState(true);
-  const [learnMoreId, setLearnMoreId] = useState<string | null>(null);
+  // (modal Quick view removed — cards now navigate to /sealed-forecast/<id>)
 
   // Search: accumulates results, only rendered once complete
   const [searchComplete, setSearchComplete] = useState(false);
@@ -1312,7 +1311,6 @@ export function ForecastDashboard() {
                 <SetForecastCard
                   set={item.result.set}
                   forecast={item.result.forecast}
-                  onLearnMore={() => setLearnMoreId(item.result.set.id)}
                 />
               ) : (
                 <SearchUnavailableCard card={item.card} />
@@ -1334,7 +1332,6 @@ export function ForecastDashboard() {
                 <SetForecastCard
                   set={set}
                   forecast={forecast}
-                  onLearnMore={() => setLearnMoreId(set.id)}
                 />
               </div>
             ))}
@@ -1473,23 +1470,6 @@ export function ForecastDashboard() {
       </div>
     </div>
 
-    {/* Learn More breakdown modal */}
-    {(() => {
-      const allResults = [...curatedForecasts, ...topBuyResults, ...apiResults, ...searchCuratedResults];
-      const matched = allResults.find((r) => r.set.id === learnMoreId);
-      if (!matched) return null;
-      // Show the breakdown using the user's currently selected scenario so
-      // the modal's projected value / ROI line up with what they see on the card.
-      const scenarioForecast = applyForecastScenario(matched.forecast, scenario);
-      return (
-        <ForecastBreakdownModal
-          set={matched.set}
-          forecast={scenarioForecast}
-          open={learnMoreId !== null}
-          onClose={() => setLearnMoreId(null)}
-        />
-      );
-    })()}
     </>
   );
 }

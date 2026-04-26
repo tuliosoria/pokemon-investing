@@ -31,10 +31,9 @@ function PlaceholderArtwork() {
 interface SetForecastCardProps {
   set: SealedSetData;
   forecast: Forecast;
-  onLearnMore?: () => void;
 }
 
-export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardProps) {
+export function SetForecastCard({ set, forecast }: SetForecastCardProps) {
   const [showChart, setShowChart] = useState(false);
   const projectionData = getProjectionData(set, forecast);
   const isForecastBlocked = forecast.status !== "ready";
@@ -94,7 +93,14 @@ export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardP
         : null;
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[hsl(var(--card))] hover-lift shadow-[0_18px_50px_rgba(0,0,0,0.24)]">
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[hsl(var(--card))] hover-lift shadow-[0_18px_50px_rgba(0,0,0,0.24)] transition-colors hover:border-[hsl(var(--poke-yellow))]/40">
+      <Link
+        href={`/sealed-forecast/${set.id}`}
+        aria-label={`View forecast details for ${set.name}`}
+        className="absolute inset-0 z-[1] focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--poke-yellow))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--card))]"
+      >
+        <span className="sr-only">View details</span>
+      </Link>
       <div className="relative h-[200px] flex-shrink-0 overflow-hidden bg-[#0b1220]">
         <div
           className="absolute inset-0 flex items-center justify-center"
@@ -297,33 +303,13 @@ export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardP
         </div>
 
         <div className="mt-auto space-y-3 pt-5">
-          <div className="flex justify-end">
-            <Link
-              href={`/sealed-forecast/${set.id}`}
-              aria-label={`View forecast details for ${set.name}`}
-              className="text-[11px] font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--poke-yellow))] transition-colors"
-            >
-              View details →
-            </Link>
-          </div>
-          {onLearnMore && (
-            <div className="flex justify-end">
-              <button
-                type="button"
-                onClick={onLearnMore}
-                aria-label={`Quick view for ${set.name}`}
-                className="text-[11px] font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--poke-yellow))] transition-colors"
-              >
-                Quick view ↗
-              </button>
-            </div>
-          )}
           {tcgplayerUrl ? (
             <a
               href={tcgplayerUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[hsl(var(--poke-yellow))] px-4 py-2.5 text-sm font-semibold text-[hsl(var(--poke-blue))] transition hover:brightness-105"
+              onClick={(e) => e.stopPropagation()}
+              className="relative z-10 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[hsl(var(--poke-yellow))] px-4 py-2.5 text-sm font-semibold text-[hsl(var(--poke-blue))] transition hover:brightness-105"
             >
               Buy on TCGPlayer
               <span aria-hidden="true">↗</span>
@@ -338,8 +324,11 @@ export function SetForecastCard({ set, forecast, onLearnMore }: SetForecastCardP
             <>
               <button
                 type="button"
-                onClick={() => setShowChart(!showChart)}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[rgba(255,203,5,0.4)] bg-transparent px-4 py-2.5 text-sm font-semibold text-[hsl(var(--poke-yellow))] transition hover:border-[hsl(var(--poke-yellow))] hover:bg-[rgba(255,203,5,0.1)]"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowChart(!showChart);
+                }}
+                className="relative z-10 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[rgba(255,203,5,0.4)] bg-transparent px-4 py-2.5 text-sm font-semibold text-[hsl(var(--poke-yellow))] transition hover:border-[hsl(var(--poke-yellow))] hover:bg-[rgba(255,203,5,0.1)]"
               >
                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                   <path d="M4 16l5-5 4 4 7-7" strokeLinecap="round" strokeLinejoin="round" />
