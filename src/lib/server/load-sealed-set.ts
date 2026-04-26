@@ -107,9 +107,6 @@ export async function loadSealedSetBySlug(
   if (!pokedataId) return null;
 
   const isLocal = isLocalSealedProductId(pokedataId);
-  console.log(
-    `[loadSealedSetBySlug] slug=${slug} pokedataId=${pokedataId} isLocal=${isLocal}`
-  );
 
   // 1) Local bundled catalog (top-buys, offline data) — works without DB
   if (isLocal) {
@@ -117,23 +114,16 @@ export async function loadSealedSetBySlug(
     if (local) {
       return buildDynamicSetData(pricingFromCatalogEntry(local));
     }
-    // Fallback: search the combined local+stored catalog (covers entries
-    // added to DynamoDB but not yet in the static module map).
+    // Fallback: search the combined local+stored catalog.
     try {
       const fullCatalog = await loadSealedSearchCatalog();
       const match = fullCatalog.find((e) => e.pokedataId === pokedataId);
       if (match) {
-        console.log(
-          `[loadSealedSetBySlug] resolved via full catalog: ${match.name}`
-        );
         return buildDynamicSetData(pricingFromCatalogEntry(match));
       }
-    } catch (err) {
-      console.error("[loadSealedSetBySlug] full catalog lookup failed", err);
+    } catch {
+      // Swallow — fall through to Dynamo lookup / null.
     }
-    console.warn(
-      `[loadSealedSetBySlug] local-sealed slug not found in any catalog: ${pokedataId}`
-    );
   }
 
   // 2) DynamoDB-stored product (live PokeData / PriceCharting snapshots)
@@ -143,9 +133,6 @@ export async function loadSealedSetBySlug(
   ]);
 
   if (!meta && !snapshot) {
-    console.warn(
-      `[loadSealedSetBySlug] no curated, local, or DynamoDB record for ${slug}`
-    );
     return null;
   }
 

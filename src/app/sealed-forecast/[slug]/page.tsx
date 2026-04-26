@@ -25,7 +25,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug: rawSlug } = await params;
   const slug = decodeSealedSlug(rawSlug);
-  const set = getSealedSetById(slug);
+  const set = await loadSealedSetBySlug(slug);
   if (!set) return { title: "Product not found — PokeFuture" };
   return {
     title: `${set.name} — Sealed Forecast — PokeFuture`,
