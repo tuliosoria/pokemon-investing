@@ -20,9 +20,58 @@ const SEARCH_RESULT_LIMIT = 20;
 // Abbreviation → full-form expansions for product type aliases
 const TERM_ALIASES: Record<string, string[]> = {
   etb: ["elite trainer box", "etb"],
+  etbs: ["elite trainer box", "etb"],
   upc: ["ultra premium collection", "upc"],
+  upcs: ["ultra premium collection", "upc"],
   bb: ["booster box"],
+  bbs: ["booster box"],
+  boosters: ["booster"],
+  boxes: ["box"],
+  collections: ["collection"],
+  bundles: ["bundle"],
+  tins: ["tin"],
 };
+
+// Generic category queries that should return every matching product
+// rather than the top-N ranked subset. Keys are normalized (lowercase,
+// punctuation/diacritics stripped) — `expandCategoryQuery` handles
+// "all ..." prefixes and trailing plurals.
+const CATEGORY_QUERIES: Record<string, string[]> = {
+  etb: ["elite trainer box", "etb"],
+  "elite trainer box": ["elite trainer box", "etb"],
+  upc: ["ultra premium collection", "upc"],
+  "ultra premium collection": ["ultra premium collection", "upc"],
+  booster: ["booster"],
+  "booster box": ["booster box"],
+  "booster bundle": ["booster bundle"],
+  "build and battle": ["build and battle"],
+  "build and battle box": ["build and battle"],
+  collection: ["collection"],
+  "collection box": ["collection box"],
+  "premium collection": ["premium collection"],
+  bundle: ["bundle"],
+  tin: ["tin"],
+  "v box": ["v box"],
+  "ex box": ["ex box"],
+};
+
+/**
+ * If the raw query is a generic product-type query (e.g. "All ETBs",
+ * "Booster Boxes", "Booster"), return the canonical search terms to use
+ * across the catalog. Otherwise return null.
+ */
+function expandCategoryQuery(rawQuery: string): string[] | null {
+  let normalized = normalize(rawQuery);
+  if (normalized.startsWith("all ")) normalized = normalized.slice(4).trim();
+  if (!normalized) return null;
+  if (CATEGORY_QUERIES[normalized]) return CATEGORY_QUERIES[normalized];
+  // Trim a trailing plural "s" (boosters → booster, tins → tin)
+  if (normalized.endsWith("s")) {
+    const singular = normalized.slice(0, -1);
+    if (CATEGORY_QUERIES[singular]) return CATEGORY_QUERIES[singular];
+  }
+  return null;
+}
 
 // Variant keywords that indicate non-canonical products (penalized in ranking)
 const VARIANT_PENALTY_WORDS = [
@@ -52,8 +101,9 @@ function expandTerms(rawQuery: string): string[] {
   return expanded;
 }
 
-function shouldReturnAllMatches(request: NextRequest): boolean {
-  return request.nextUrl.searchParams.get("all") === "1";
+function shouldReturnAllMatches(request: NextRequest, rawQuery: string): boolean {
+  if (request.nextUrl.searchParams.get("all") === "1") return true;
+  return expandCategoryQuery(rawQuery) !== null;
 }
 
 /**
@@ -155,7 +205,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const cacheKey = `${normalize(q)}|all:${shouldReturnAllMatches(request) ? "1" : "0"}`;
+    const cacheKey = `${normalize(q)}|all:${shouldReturnAllMatches(request, q) ? "1" : "0"}`;
     const normalizedQuery = normalize(q);
 
     const cached = await cacheGet<SealedSearchResult[]>("sealed-search", cacheKey);
@@ -168,8 +218,11 @@ export async function GET(request: NextRequest) {
 
     const catalog = await loadSealedSearchCatalog();
 
-    // Expand aliases and score every product against the local/stored catalog
-    const expandedTerms = expandTerms(q);
+    // Category queries (e.g. "All ETBs", "Booster Boxes") bypass alias
+    // expansion and instead match strictly against the canonical category
+    // phrase so we surface every product of that type.
+    const categoryTerms = expandCategoryQuery(q);
+    const expandedTerms = categoryTerms ?? expandTerms(q);
     const scored = catalog
       .map((product, index) => ({
         product,
@@ -190,7 +243,7 @@ export async function GET(request: NextRequest) {
       return true;
     });
 
-    const limitedResults = shouldReturnAllMatches(request)
+    const limitedResults = shouldReturnAllMatches(request, q)
       ? deduped
       : deduped.slice(0, SEARCH_RESULT_LIMIT);
 
