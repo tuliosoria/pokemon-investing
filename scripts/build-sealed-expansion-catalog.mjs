@@ -189,9 +189,16 @@ async function main() {
   ]);
   const expansionEntries = [];
 
+  const JP_SET_ID_PATTERN = /^(zsv|rsv|zswsh|rswsh)\d/i;
+
   for (const set of sets) {
     const releaseDate = toIsoDate(set.releaseDate);
     if (!releaseDate) {
+      continue;
+    }
+
+    const setId = String(set.id || "").trim();
+    if (setId && JP_SET_ID_PATTERN.test(setId)) {
       continue;
     }
 

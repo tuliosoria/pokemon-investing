@@ -5,6 +5,7 @@ import path from "node:path";
 import { ScanCommand } from "@aws-sdk/lib-dynamodb";
 import searchCatalog from "@/lib/data/sealed-ml/sealed-search-catalog.json";
 import reviewCatalog from "@/lib/data/sealed-ml/sealed-catalog-review.json";
+import jpDenylist from "@/lib/data/sealed-ml/sealed-catalog-jp-denylist.json";
 import { SEALED_SETS } from "@/lib/data/sealed-sets";
 import {
   buildLocalSealedRuntimeId,
@@ -226,6 +227,34 @@ function dedupeCatalogEntries(
   return Array.from(mergedByKey.values());
 }
 
+const JP_DENYLIST_SET_IDS = new Set(
+  ((jpDenylist as { setIds?: string[] }).setIds ?? []).map((id) =>
+    id.trim().toLowerCase()
+  )
+);
+const JP_DENYLIST_CATALOG_IDS = new Set(
+  ((jpDenylist as { catalogIds?: string[] }).catalogIds ?? []).map((id) =>
+    id.trim().toLowerCase()
+  )
+);
+
+function isJapaneseOnlyCatalogEntry(entry: SealedSearchCatalogEntry): boolean {
+  const catalogId = entry.catalogId?.toLowerCase() ?? "";
+  if (catalogId && JP_DENYLIST_CATALOG_IDS.has(catalogId)) {
+    return true;
+  }
+  if (!catalogId) {
+    return false;
+  }
+  for (const setId of JP_DENYLIST_SET_IDS) {
+    if (!setId) continue;
+    if (catalogId === setId || catalogId.startsWith(`${setId}-`)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 const bundledSearchCatalog = (searchCatalog as OwnedSearchCatalogArtifactEntry[]).map(
   (entry) =>
     buildBundledCatalogEntry({
@@ -258,7 +287,7 @@ const optionalExpansionCatalog = loadOptionalExpansionCatalog().map((entry) =>
 const localCatalog = dedupeCatalogEntries([
   ...bundledSearchCatalog,
   ...optionalExpansionCatalog,
-]);
+]).filter((entry) => !isJapaneseOnlyCatalogEntry(entry));
 const localCatalogByRuntimeId = new Map(
   localCatalog.map((entry) => [entry.pokedataId, entry])
 );
@@ -391,7 +420,9 @@ export async function loadSealedSearchCatalog(): Promise<SealedSearchCatalogEntr
     return localCatalog;
   }
 
-  return dedupeCatalogEntries([...localCatalog, ...storedCatalog]);
+  return dedupeCatalogEntries([...localCatalog, ...storedCatalog]).filter(
+    (entry) => !isJapaneseOnlyCatalogEntry(entry)
+  );
 }
 
 export function isLocalSealedProductId(id: string): boolean {

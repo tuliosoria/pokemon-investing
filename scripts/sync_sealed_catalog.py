@@ -400,6 +400,10 @@ def load_expansion_candidates() -> list[dict[str, Any]]:
         if not name or not product_type:
             continue
 
+        set_id = str(item.get("setId") or "").strip()
+        if set_id and re.match(r"^(zsv|rsv|zswsh|rswsh)\d", set_id, re.IGNORECASE):
+            continue
+
         key = build_catalog_key(name, product_type)
         candidate = {
             "catalogId": str(item.get("catalogId") or "").strip() or None,

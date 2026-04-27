@@ -121,6 +121,29 @@ export function buildSealedTcgplayerProductUrl(product: TcgplayerSearchProduct):
     : `https://www.tcgplayer.com/product/${product.productId}`;
 }
 
+function isJapaneseTcgplayerCandidate(product: TcgplayerSearchProduct): boolean {
+  const haystacks = [
+    product.productLineName,
+    product.productLineUrlName,
+    product.productName,
+    product.productUrlName,
+    product.setName,
+    product.setUrlName,
+  ]
+    .map((value) => normalize(value ?? ""))
+    .filter(Boolean);
+
+  for (const value of haystacks) {
+    if (value.includes("japan") || value.includes("japanese")) {
+      return true;
+    }
+    if (value.includes(" jp ") || value.endsWith(" jp")) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function scoreSearchResult(
   product: TcgplayerSearchProduct,
   name: string,
@@ -128,6 +151,10 @@ function scoreSearchResult(
 ): number {
   const candidateName = normalize(product.productName ?? product.productUrlName ?? "");
   if (!candidateName) return Number.NEGATIVE_INFINITY;
+
+  if (isJapaneseTcgplayerCandidate(product)) {
+    return Number.NEGATIVE_INFINITY;
+  }
 
   const query = buildSealedTcgplayerLookupQuery(name, productType);
   const normalizedName = normalize(name);

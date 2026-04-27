@@ -1,0 +1,8 @@
+{
+  "comment": "Japanese-only sealed products to exclude from the English search catalog. Add setIds (Pokemon TCG API set codes) and/or catalogIds for products that have no English release on the market.",
+  "setIds": [
+    "zsv10pt5",
+    "rsv10pt5"
+  ],
+  "catalogIds": []
+}
