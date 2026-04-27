@@ -200,6 +200,10 @@ function scoreSearchResult(
     }
   }
 
+  if (isSingleCardCandidate(product) && normalizedProductType && normalizedProductType !== "single") {
+    return Number.NEGATIVE_INFINITY;
+  }
+
   if (candidateName.includes("single")) score -= 140;
   if (candidateName.includes("lot")) score -= 50;
   if (candidateName.includes("case") && normalizedProductType && normalizedProductType !== "case") {
@@ -207,6 +211,19 @@ function scoreSearchResult(
   }
 
   return score;
+}
+
+const SINGLE_CARD_SUFFIX_PATTERN =
+  /(^|[\s-])(v|vmax|vstar|ex|gx|gx-star|radiant|prime|legend|break|tag-team|delta|holon|amazing-rare)$/i;
+
+function isSingleCardCandidate(product: TcgplayerSearchProduct): boolean {
+  const slug = (product.productUrlName ?? "").toLowerCase();
+  if (slug && SINGLE_CARD_SUFFIX_PATTERN.test(slug.replace(/_/g, "-"))) {
+    return true;
+  }
+  const name = normalize(product.productName ?? "");
+  if (!name) return false;
+  return /(^|\s)(v|vmax|vstar|ex|gx|radiant|prime|legend|break)$/.test(name);
 }
 
 export async function resolveSealedTcgplayerProductUrl(

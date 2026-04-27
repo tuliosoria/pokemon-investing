@@ -37,6 +37,8 @@ const GLOBAL_EXCLUDE_PATTERNS = [
   /trading card game classic/i,
   /jumbo/i,
   /demo pack/i,
+  /shiny vault/i,
+  /trainer gallery/i,
 ];
 
 const BOOSTER_BOX_EXACT_EXCLUDES = new Set([

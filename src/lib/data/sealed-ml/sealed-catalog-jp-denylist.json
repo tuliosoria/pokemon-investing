@@ -1,8 +1,14 @@
 {
-  "comment": "Japanese-only sealed products to exclude from the English search catalog. Add setIds (Pokemon TCG API set codes) and/or catalogIds for products that have no English release on the market.",
+  "comment": "Catalog entries to exclude from English search. JP-only products plus phantom subset SKUs (Shiny Vault, Trainer Gallery, etc.) that the Pokemon TCG API set universe wrongly extrapolates into Booster Box / ETB SKUs.",
   "setIds": [
     "zsv10pt5",
     "rsv10pt5"
   ],
-  "catalogIds": []
+  "catalogIds": [
+    "swsh45sv-booster-box",
+    "swsh45sv-etb",
+    "sma-booster-box",
+    "sma-etb"
+  ]
 }
+
