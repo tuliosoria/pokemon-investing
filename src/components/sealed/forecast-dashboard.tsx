@@ -355,6 +355,7 @@ export function ForecastDashboard() {
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [filter, setFilter] = useState<FilterSignal>("All");
   const [scenario, setScenario] = useState<ForecastScenario>("moderate");
+  const [productTypes, setProductTypes] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState("");
   const [apiQuery, setApiQuery] = useState("");
   const [apiResults, setApiResults] = useState<SetWithForecast[]>([]);
@@ -870,18 +871,6 @@ export function ForecastDashboard() {
     searchInputRef.current?.focus();
   }, [exitSearchMode]);
 
-  const runCategorySearch = useCallback(
-    (query: string) => {
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-      setSearch(query);
-      setHasInteracted(true);
-      setShowingTopBuys(false);
-      setApiQuery(query);
-      void searchApi(query);
-    },
-    [searchApi]
-  );
-
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -933,6 +922,10 @@ export function ForecastDashboard() {
       result = result.filter((r) => r.forecast.signal === filter);
     }
 
+    if (productTypes.size > 0) {
+      result = result.filter((r) => productTypes.has(r.set.productType));
+    }
+
     result = [...result].sort((a, b) => {
       let cmp = 0;
       switch (sortBy) {
@@ -960,7 +953,7 @@ export function ForecastDashboard() {
     });
 
     return result;
-  }, [allSets, filter, scenario, sortBy, sortDir]);
+  }, [allSets, filter, productTypes, scenario, sortBy, sortDir]);
 
   // Determine mode: is this a search result view or a curated/list view?
   const isSearchMode = apiQuery.length >= 2;
@@ -1043,9 +1036,186 @@ export function ForecastDashboard() {
     !isSearchMode &&
     isLoadingCuratedForecasts;
 
+  const productTypeCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const result of allSets) {
+      const type = result.set.productType;
+      if (!type) continue;
+      counts.set(type, (counts.get(type) ?? 0) + 1);
+    }
+    return counts;
+  }, [allSets]);
+
+  const productTypeOptions = useMemo(() => {
+    const order = ["Booster Box", "ETB", "Booster Bundle", "Collection Box", "Booster Pack"];
+    return order
+      .filter((type) => (productTypeCounts.get(type) ?? 0) > 0)
+      .map((type) => ({ type, count: productTypeCounts.get(type) ?? 0 }));
+  }, [productTypeCounts]);
+
+  const toggleProductType = useCallback(
+    (type: string) => {
+      resetVisibleCards();
+      setProductTypes((prev) => {
+        const next = new Set(prev);
+        if (next.has(type)) {
+          next.delete(type);
+        } else {
+          next.add(type);
+        }
+        return next;
+      });
+      setHasInteracted(true);
+      setShowingTopBuys(false);
+    },
+    [resetVisibleCards]
+  );
+
+  const hasActiveFilters =
+    filter !== "All" || scenario !== "moderate" || productTypes.size > 0;
+
+  const resetAllFilters = useCallback(() => {
+    resetVisibleCards();
+    setFilter("All");
+    setScenario("moderate");
+    setProductTypes(new Set());
+  }, [resetVisibleCards]);
+
   return (
     <>
-    <div className="space-y-6">
+    <div className="grid gap-6 md:grid-cols-[260px_minmax(0,1fr)] md:items-start">
+      {/* Left filter sidebar */}
+      <aside className="md:sticky md:top-4 space-y-4 rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/30 p-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-[hsl(var(--foreground))]">
+            Filters
+          </h2>
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={resetAllFilters}
+              className="text-[11px] text-[hsl(var(--poke-yellow))] hover:underline"
+            >
+              Reset
+            </button>
+          )}
+        </div>
+
+        {productTypeOptions.length > 0 && (
+          <div className="space-y-2">
+            <h3 className="text-[10px] font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
+              Product Type
+            </h3>
+            <div className="space-y-1.5">
+              {productTypeOptions.map(({ type, count }) => {
+                const checked = productTypes.has(type);
+                return (
+                  <label
+                    key={type}
+                    className="flex cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-[hsl(var(--muted))]/60"
+                  >
+                    <span className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => toggleProductType(type)}
+                        className="h-4 w-4 rounded border-[hsl(var(--input))] accent-[hsl(var(--poke-yellow))]"
+                      />
+                      <span className={checked ? "font-medium text-[hsl(var(--foreground))]" : "text-[hsl(var(--foreground))]"}>
+                        {type}
+                      </span>
+                    </span>
+                    <span className="text-xs text-[hsl(var(--muted-foreground))]">{count}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        <div className="space-y-2">
+          <h3 className="text-[10px] font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
+            Recommendation
+          </h3>
+          <select
+            value={filter}
+            onChange={(e) => {
+              resetVisibleCards();
+              setFilter(e.target.value as FilterSignal);
+              setHasInteracted(true);
+              setShowingTopBuys(false);
+            }}
+            className="h-9 w-full rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-2.5 pr-8 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
+          >
+            {(["All", "Buy", "Hold", "Sell"] as FilterSignal[]).map((s) => (
+              <option key={s} value={s}>
+                {s === "All" ? "All recommendations" : s}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <h3
+            className="text-[10px] font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]"
+            title={SCENARIO_DESCRIPTIONS[scenario].description}
+          >
+            Scenario
+          </h3>
+          <select
+            value={scenario}
+            onChange={(e) => {
+              resetVisibleCards();
+              setScenario(e.target.value as ForecastScenario);
+              setHasInteracted(true);
+              setShowingTopBuys(false);
+            }}
+            className="h-9 w-full rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-2.5 pr-8 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
+          >
+            {(["pessimist", "moderate", "optimist"] as ForecastScenario[]).map((s) => (
+              <option key={s} value={s}>
+                {SCENARIO_DESCRIPTIONS[s].label} · {SCENARIO_DESCRIPTIONS[s].short}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <h3 className="text-[10px] font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">
+            Sort by
+          </h3>
+          <div className="flex flex-wrap gap-1.5 text-[11px]">
+            {(
+              [
+                ["roi", "ROI"],
+                ["price", "Price"],
+                ["signal", "Recommendation"],
+                ["age", "Age"],
+                ["score", "Score"],
+              ] as [SortField, string][]
+            ).map(([field, label]) => (
+              <button
+                key={field}
+                type="button"
+                onClick={() => toggleSort(field)}
+                className={`rounded-full px-2.5 py-1 font-medium transition-colors ${
+                  sortBy === field
+                    ? "bg-[hsl(var(--poke-yellow))] text-[hsl(var(--poke-blue))]"
+                    : "bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
+                }`}
+              >
+                {label}
+                {sortBy === field && (
+                  <span className="ml-1">{sortDir === "desc" ? "↓" : "↑"}</span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      </aside>
+
+      {/* Main column */}
+      <div className="space-y-6">
       {/* Controls */}
       <div className="space-y-3">
         {/* Search row */}
@@ -1075,110 +1245,7 @@ export function ForecastDashboard() {
               </div>
             )}
           </div>
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => runCategorySearch("All ETBs")}
-              className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40 px-3 py-1.5 text-xs font-medium text-[hsl(var(--foreground))] transition hover:border-[hsl(var(--poke-yellow))] hover:bg-[hsl(var(--muted))]"
-            >
-              All ETBs
-            </button>
-            <button
-              type="button"
-              onClick={() => runCategorySearch("All Booster Boxes")}
-              className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/40 px-3 py-1.5 text-xs font-medium text-[hsl(var(--foreground))] transition hover:border-[hsl(var(--poke-yellow))] hover:bg-[hsl(var(--muted))]"
-            >
-              All Booster Boxes
-            </button>
-          </div>
         </div>
-
-        {/* Filters: Recommendation + Scenario + Sort (only after interaction) */}
-        {hasInteracted && (
-        <div className="space-y-3 rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))]/30 p-3">
-          <div className="flex flex-wrap items-center gap-3 text-xs">
-              <label className="flex items-center gap-2">
-                <span className="text-[hsl(var(--muted-foreground))] uppercase tracking-wider text-[10px]">
-                  Recommendation
-                </span>
-                <select
-                  value={filter}
-                  onChange={(e) => {
-                    resetVisibleCards();
-                    setFilter(e.target.value as FilterSignal);
-                    if (!hasInteracted) {
-                      setHasInteracted(true);
-                      setShowingTopBuys(false);
-                    }
-                  }}
-                  className="h-9 rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-2.5 pr-8 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
-                >
-                  {(["All", "Buy", "Hold", "Sell"] as FilterSignal[]).map((s) => (
-                    <option key={s} value={s}>
-                      {s === "All" ? "All recommendations" : s}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label
-                className="flex items-center gap-2"
-                title={SCENARIO_DESCRIPTIONS[scenario].description}
-              >
-                <span className="text-[hsl(var(--muted-foreground))] uppercase tracking-wider text-[10px]">
-                  Scenario
-                </span>
-                <select
-                  value={scenario}
-                  onChange={(e) => {
-                    resetVisibleCards();
-                    setScenario(e.target.value as ForecastScenario);
-                    if (!hasInteracted) {
-                      setHasInteracted(true);
-                      setShowingTopBuys(false);
-                    }
-                  }}
-                  className="h-9 rounded-md border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-2.5 pr-8 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))]"
-                >
-                  {(["pessimist", "moderate", "optimist"] as ForecastScenario[]).map((s) => (
-                    <option key={s} value={s}>
-                      {SCENARIO_DESCRIPTIONS[s].label} · {SCENARIO_DESCRIPTIONS[s].short}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-
-            <div className="flex flex-wrap gap-2 text-[11px]">
-              <span className="text-[hsl(var(--muted-foreground))] py-1">Sort by:</span>
-              {(
-                [
-                  ["roi", "Projected ROI"],
-                  ["price", "Current Price"],
-                  ["signal", "Recommendation"],
-                  ["age", "Set Age"],
-                  ["score", "Model Score"],
-                ] as [SortField, string][]
-              ).map(([field, label]) => (
-                <button
-                  key={field}
-                  type="button"
-                  onClick={() => toggleSort(field)}
-                  className={`rounded-full px-3 py-1 font-medium transition-colors ${
-                    sortBy === field
-                      ? "bg-[hsl(var(--poke-yellow))] text-[hsl(var(--poke-blue))]"
-                      : "bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
-                  }`}
-                >
-                  {label}
-                  {sortBy === field && (
-                    <span className="ml-1">{sortDir === "desc" ? "↓" : "↑"}</span>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Results count */}
@@ -1472,6 +1539,7 @@ export function ForecastDashboard() {
             </Link>
           </div>
         </div>
+      </div>
       </div>
     </div>
 
