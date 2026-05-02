@@ -105,14 +105,42 @@ gracefully when DynamoDB is unavailable — JSON is the source of truth.
 
 ## 5. Data Sources
 
+**Single source of truth for prices is PriceCharting.** All Pokémon
+card and sealed-product pricing flows through PriceCharting → DynamoDB
+cache → bundled JSON fallback. Do **not** reintroduce PokeData or any
+other pricing provider.
+
 | Source                  | Used for                                          | Auth                      |
 | ----------------------- | ------------------------------------------------- | ------------------------- |
-| **PriceCharting**       | Sealed product current + historical prices        | `PRICECHARTING_API_TOKEN` |
-| Pokemon TCG API (v2)    | Set universe, set IDs, release dates, logos       | `TCG_API_KEY` (optional)  |
+| **PriceCharting**       | **Primary** — sealed + single-card current and historical prices | `PRICECHARTING_API_TOKEN` |
+| **DynamoDB cache**      | Hot tier for prices, trends, models, TCGplayer URLs | IAM (Amplify role)      |
+| **Bundled JSON**        | Cold-start fallback in `src/lib/data/sealed-ml/`  | n/a                       |
+| Pokemon TCG API (v2)    | Set universe, set IDs, release dates, logos (catalog metadata only — never prices) | `TCG_API_KEY` (optional)  |
 | TCGplayer (search HTML) | Resolving the canonical product URL per SKU       | none (rate-limited)       |
 | Reddit (search API)     | Community demand signal (`r/PokemonTCG`, `pkmntcg`)| none, throttled 1 req/s   |
 | Google Trends           | Demand signal via `google-trends-api` package     | none                      |
-| PokeData (legacy)       | Decommissioned — historical seed only             | n/a                       |
+
+**Tiered read pattern (every price/forecast request):**
+
+```
+Request
+   │
+   ▼
+L0 in-process memory (per-Lambda, ~5 min TTL)
+   │ miss
+   ▼
+L1 DynamoDB single-table cache
+   │ miss / stale
+   ▼
+L2 Bundled JSON in src/lib/data/sealed-ml/*.json
+   │ miss
+   ▼
+L3 PriceCharting API (writes back to L1 + L0)
+```
+
+The `pokedataId` string that still appears inside catalog JSON is a
+**legacy stable identifier only** — there is no live PokeData API call
+anywhere in the runtime path.
 
 ---
 
@@ -131,7 +159,6 @@ All scripts live in `scripts/`. Outputs go to
 | `npm run train:sealed-ml`            | Train XGBoost models (1yr + 3yr + 5yr stack) → `model-{1,3,5}yr.json`, `training-summary.json`, `training-dataset.csv` |
 | `npm run retrain:sealed-ml`          | Incremental retrain capturing new outcomes; can publish chunks to DynamoDB if `SEALED_ML_PUBLISH_ENABLED=true` |
 | `npm run backfill:cards:catalog`     | Hydrate single-card catalog (calculator support)        |
-| `npm run backfill:pokedata:sealed`   | Legacy seed                                             |
 | `node scripts/build-community-score.mjs` | Composite Reddit + Trends score → `community-score.json` |
 | `node scripts/fetch-top-chase-cards.mjs` | Per-set most expensive singles → `top-chase-cards.json` |
 | `node scripts/mirror-sealed-images.mjs`  | Mirror PriceCharting product images to public/         |
@@ -347,8 +374,7 @@ Source: `.env.example` and `grep -r process.env src scripts`.
 | `AWS_REGION`                   | yes      | DynamoDB + S3 region (`us-east-1`)                      |
 | `DYNAMODB_TABLE`               | yes      | Single-table name (default `pokeinvest-cache`)          |
 | `PRICECHARTING_API_TOKEN`      | sync     | PriceCharting API auth                                  |
-| `TCG_API_KEY`                  | optional | Pokemon TCG API rate-limit relief                       |
-| `POKEDATA_API_KEY`             | legacy   | Only for legacy backfills; can be omitted               |
+| `TCG_API_KEY`                  | optional | Pokemon TCG API rate-limit relief (catalog metadata only) |
 | `SEALED_ML_MODEL_SOURCE`       | runtime  | `auto` \| `bundled`                                     |
 | `SEALED_ML_PUBLISH_ENABLED`    | retrain  | When `true`, retrainer publishes new model chunks       |
 | `SEALED_ML_OUTPUT_DIR`         | retrain  | Local override for output path                          |
@@ -709,6 +735,271 @@ Important gotchas:
 - **Pre-push hook.** `npm run hooks:install` once per clone; the
   `.githooks/pre-push` will then run `npm run verify` before every
   push.
+- **Pricing provider lock-in.** PriceCharting is the **only** price
+  source for cards and sealed products. DynamoDB and bundled JSON are
+  caches in front of it — never another origin. Do not reintroduce
+  PokeData, TCGplayer scrape pricing, eBay sold-listings, or any
+  alternate provider into the price path.
+
+---
+
+## 18. Architecture Enhancements (recommended for the cloned site)
+
+This section is the result of a comprehensive code review of the
+current implementation. Treat it as the "v2 backlog" you bake into the
+new repo from day one — much of it is cheap to design in early but
+expensive to retrofit later.
+
+For each item: **Current** → **Proposed** → **Payoff** → **Effort
+tier** (Quick win / Medium / Strategic).
+
+### 18.1 Data layer
+
+1. **Make the tiered cache explicit.** Document the L0 → L1 → L2 → L3
+   chain (memory → DynamoDB → bundled JSON → PriceCharting) in code,
+   not just docs. Add a thin `DataSource<T>` interface so the
+   bundled-JSON fallback isn't sprinkled across modules. Payoff: one
+   place to reason about freshness; trivial to swap stores later.
+   *(Strategic.)*
+2. **Catalog versioning.** Add a `BUNDLED_DATA_VERSION` constant +
+   per-record `version` field on DynamoDB items. Skip stale bundled
+   entries when DynamoDB has fresher ones. Prevents the merged catalog
+   from silently serving outdated data. *(Medium.)*
+3. **Shard the catalog.** Today the search catalog is one JSON blob.
+   Split by product type (`catalog-etb.json`, `catalog-booster.json`,
+   …) and lazy-load on demand. Roughly 50% memory savings per request.
+   *(Medium.)*
+4. **Shared catalog cache.** Per-Lambda in-memory caches re-parse on
+   every cold start. Push to a shared cache (Vercel KV / Upstash /
+   DynamoDB DAX) with a 5-minute TTL so warm scale-up is instant.
+   *(Medium.)*
+
+### 18.2 ML pipeline
+
+1. **Lazy-load models by horizon.** The 3-year model dominates the
+   bundle (~5 MB). Use dynamic `import()` keyed on the requested
+   horizon so cold starts don't pay for models the request didn't use.
+   *(Quick win — biggest cold-start win available.)*
+2. **Semantic versioning for models.** Store as `MODEL#<horizon>#<vX.Y.Z>#META`
+   plus an `ACTIVE_VERSION` pointer. Rollback becomes a single pointer
+   write — no retrain. *(Medium.)*
+3. **Per-horizon publish.** Today publish is all-or-nothing across
+   1y/3y/5y. Allow independent promotion so a regressed 5-year model
+   can't block 1-year improvements. *(Medium.)*
+4. **Gzip the chunked model artifacts.** Raw JSON chunks in DynamoDB
+   are ~85% compressible. Cuts chunk count and reassembly cost by ~5x.
+   *(Quick win.)*
+5. **Audit log table.** Append every publish to
+   `SEALED_MODELS_AUDIT#PUBLISH#<ts>` with metrics + prior version.
+   Answers "why did this forecast change?" in one query. *(Quick win.)*
+6. **Hot-swap signal.** Replace 5-minute TTL invalidation with a
+   pub/sub or short-TTL pointer record so newly published models go
+   live in <10 seconds. *(Medium.)*
+7. **Prediction sampling.** Log ~5% of `(features, prediction)` pairs
+   to S3/Athena. Detects model drift before user-facing metrics
+   regress. *(Medium.)*
+
+### 18.3 API layer
+
+1. **Zod everywhere.** Today validation is hand-rolled per route. Move
+   to per-endpoint Zod schemas + a tiny middleware that returns
+   `{ success, data?, error: { code, message } }`. *(Medium — kills a
+   whole class of bugs.)*
+2. **HTTP cache headers.** Add `Cache-Control: public, max-age=…`
+   tuned per endpoint (5 min for search, 30 min for pricing, 1 hour
+   for catalog metadata). 70–90% reduction in API hits via browser +
+   CDN. *(Quick win.)*
+3. **Thin controllers.** The biggest route handlers (`/sealed/pricing`,
+   `/cards/search`) are >500 lines. Extract to `src/lib/api/<feature>/`
+   services so route files stay <150 lines and become independently
+   testable. *(Medium.)*
+4. **Rate limiting.** No protection against bursts or scrapers today.
+   Add token-bucket limiting (e.g. `@upstash/ratelimit`) on
+   `/api/sealed/forecast`, `/api/sealed/tcgplayer`, `/api/cards/*`.
+   *(Quick win.)*
+5. **Cursor-based pagination.** List endpoints today mix hard limits
+   and `?all=1` flags. Standardize on
+   `{ results, pageInfo: { hasMore, cursor } }`. *(Medium.)*
+6. **Explicit `runtime = "nodejs"`** on every route that touches
+   DynamoDB or the model bundle. Today only one route declares it,
+   which makes accidental edge deployment a real risk. *(Quick win.)*
+
+### 18.4 Catalog & search
+
+1. **Inverted index.** Today every search is an O(n) scan over ~3k
+   products. Build a `Map<token, productIds[]>` once at boot. Roughly
+   **50× faster** searches with ~50 lines of code. *(Quick win — top
+   user-facing performance win.)*
+2. **Batch image hydration.** Image-URL lookups currently fan out as
+   N+1 `GetItem` calls. Use a single `BatchGetItem`. ~4× faster image
+   resolution. *(Quick win.)*
+3. **Audit JP denylist.** Only ~10 entries today; sweep the catalog
+   end-to-end and either expand the denylist or attach a `region`
+   field so JP-only SKUs can never leak into the English catalog.
+   *(Medium.)*
+4. **Defer external search.** Stay on the in-memory inverted index
+   until catalog crosses ~10k products or query volume crosses ~1k/day,
+   then consider self-hosted Meilisearch. Don't pay the operational
+   cost prematurely. *(Strategic / conditional.)*
+
+### 18.5 Sync pipelines
+
+1. **Idempotency tokens.** Stamp every sync run with
+   `sync-<date>-<script>` in DynamoDB. Eliminates duplicate writes on
+   retries. *(Quick win.)*
+2. **Structured logging.** Replace `console.log` with Pino JSON logs:
+   `{ operation, durationMs, recordsProcessed, error }`. Makes
+   CloudWatch Insights actually useful. *(Quick win.)*
+3. **Exponential-backoff retry.** Wrap PriceCharting + TCGplayer +
+   Reddit calls in a 3-retry-with-jitter helper. Tolerates 429s and
+   transient network failures without a manual re-run. *(Quick win.)*
+4. **Distributed lock.** Conditional-write a lock row in DynamoDB
+   before each sync to prevent concurrent runs (cron + manual + CI)
+   from corrupting state. *(Medium.)*
+5. **Unified job runner.** Long-term, replace 18 ad-hoc scripts with
+   a Step Functions / Airflow DAG that encodes the dependency chain
+   (`sync-catalog → sync-prices → build-community → train → publish`).
+   *(Strategic.)*
+
+### 18.6 TCGplayer resolver
+
+1. **Timeout + retry.** `fetch()` with no `AbortController` can hang a
+   Lambda forever. Add an 8-second timeout + 3-retry exponential
+   backoff. *(Quick win — borderline critical.)*
+2. **Realistic User-Agent + Referer.** Default Node UA is a bot
+   signal. Send `User-Agent: Mozilla/5.0 …`,
+   `Referer: https://www.tcgplayer.com`. *(Quick win.)*
+3. **Cache key normalization.** The hook-side normalization and
+   server-side key builder don't fully agree, causing avoidable cache
+   misses. Unify into one helper. *(Quick win.)*
+4. **Tighter cache TTL.** Drop from 7 days to 1–2 days so URL changes
+   on TCGplayer's side surface faster. *(Quick win.)*
+5. **Circuit breaker.** Track consecutive failures; after N failures
+   short-circuit to `null` for ~60 s instead of letting a TCGplayer
+   outage cascade into Lambda timeouts. *(Medium.)*
+
+### 18.7 Observability
+
+1. **Structured logs as the foundation.** Same Pino setup as the sync
+   scripts; one logger across app + scripts. *(Quick win.)*
+2. **`X-Response-Time` header on every API route.** ~3-line
+   middleware; CloudWatch can aggregate it for free. *(Quick win.)*
+3. **Five custom CloudWatch metrics.** `ModelMAPE` per horizon,
+   `CacheHitRate`, `APILatencyP50/P95`, `ErrorRate`,
+   `TcgplayerResolverFailures`. Wire alarms only on the last three.
+   *(Medium.)*
+4. **Error-code enumeration.** Replace string error messages with a
+   small `enum` (`E001_CARD_SEARCH_FAILED`, …) so logs aggregate by
+   type. *(Quick win.)*
+
+### 18.8 Testing (currently zero)
+
+Adopt **Vitest** as the single test runner for both unit and API
+smoke tests.
+
+1. **Domain pure-function unit tests.** Highest ROI by far — every
+   file in `src/lib/domain/` is pure. Target ~80% coverage of:
+   `sealed-estimate`, `recommendation`, `confidence-display`,
+   `sealed-tcgplayer`, `grading`. *(Quick win.)*
+2. **Golden-snapshot tests for the forecast.** ~10 representative
+   product fixtures → snapshot the output of
+   `computeForecastWithModels()`. Catches accidental model regressions
+   immediately. *(Quick win.)*
+3. **API smoke tests.** Vitest + MSW for `/api/sealed/forecast`,
+   `/api/sealed/search`, `/api/cards/search`, `/api/health`.
+   *(Medium.)*
+4. **Wire into `npm run verify`.** Add `npm test` to the verify chain
+   so the pre-push hook + Amplify catch regressions. *(Quick win.)*
+
+### 18.9 Type safety
+
+1. **Validate JSON imports with Zod.** Every `import x from "*.json"`
+   currently casts via `as unknown as T`. Run each through a schema on
+   load so schema drift fails fast instead of crashing in production.
+   *(Medium.)*
+2. **Kill `as unknown as T`.** Replace with proper type guards or
+   `satisfies T as const`. Restores the type narrowing those casts
+   defeat. *(Quick win.)*
+3. **Type external API responses.** `groupResults(data: any[])` in
+   card search swallows shape changes from the upstream TCG API. Add
+   a typed parser. *(Quick win.)*
+4. **Versioned DynamoDB items.** Stamp every item with a `schemaV` so
+   readers can fall back gracefully on mismatch. *(Medium.)*
+
+### 18.10 Performance
+
+1. **Lazy-load models** — see §18.2.1. Single biggest cold-start win.
+2. **Inverted index** — see §18.4.1. Single biggest hot-path win.
+3. **Brotli verification.** Confirm Amplify is serving JSON with
+   `Content-Encoding: br` (expected ~85% compression). *(Quick win.)*
+4. **Image strategy.** Move mirrored images out of `public/` into S3 +
+   CloudFront so the deploy bundle stays small and image versioning
+   becomes possible. *(Medium.)*
+
+### 18.11 Security & config
+
+1. **CSRF on POST routes.** Today nothing protects
+   `POST /api/cards/grade-submissions`. Require `X-Requested-With:
+   XMLHttpRequest` (and tighten to a token if the surface grows).
+   *(Medium.)*
+2. **Security headers in `next.config.ts`.** CSP, `X-Frame-Options:
+   DENY`, `X-Content-Type-Options: nosniff`, `HSTS`. *(Quick win.)*
+3. **Move secrets to AWS Secrets Manager.** PriceCharting tokens
+   currently live as plain Amplify env vars. Secrets Manager gives you
+   encryption at rest, rotation, and audit. *(Medium.)*
+4. **`robots.ts` + `sitemap.ts`.** Use the Next.js metadata APIs. At
+   minimum `Disallow: /api/` so search engines don't hammer it.
+   *(Quick win.)*
+5. **Trim `/api/health`.** Don't return table names or region. Public
+   liveness only. *(Quick win.)*
+
+### 18.12 Deployment
+
+1. **Database adapter.** Hide `@aws-sdk/client-dynamodb` behind a
+   `DatabaseAdapter` interface so a future Vercel + Supabase
+   migration is days, not weeks. *(Strategic.)*
+2. **S3 + CloudFront for static assets.** Frees the app bundle from
+   ~140 mirrored product images and lets you version assets. *(Medium.)*
+3. **ISR for product pages.** Add `export const revalidate = 3600` on
+   `src/app/sealed-forecast/[slug]/page.tsx` so prices stay fresh
+   without a redeploy. *(Quick win.)*
+4. **Add a Next.js Dockerfile.** Today only the ML retrainer ships a
+   container. A first-party app Dockerfile unlocks Railway / Fly.io /
+   Kubernetes if you ever want to leave Amplify. *(Quick win.)*
+
+### 18.13 Repo structure
+
+1. **Split `sealed-forecast-ml.ts`.** ~1.7k lines today. Break into
+   `src/lib/domain/sealed-ml/{features,model,scorer,scenarios,index}.ts`.
+   *(Medium.)*
+2. **Split `forecast-dashboard.tsx`.** ~1.5k lines mixing search,
+   filters, grid/list views, detail panel. Move into
+   `src/components/sealed/dashboard/` with one parent + 4 children.
+   *(Medium.)*
+3. **Move hooks to `src/lib/hooks/`.** `use-sealed-tcgplayer-url.ts`
+   currently lives under `components/sealed/`. Hooks are logic, not
+   presentation. *(Quick win.)*
+4. **Consolidate string utilities.** `normalize` / `slugify` are
+   duplicated across `sealed-tcgplayer.ts` and
+   `sealed-catalog-search.ts`. Centralize in `src/lib/utils/string.ts`.
+   *(Quick win.)*
+5. **Introduce `src/lib/api/`.** Mirrors §18.3.3 — extracted
+   validators, services, and middleware live here so route files stay
+   thin. *(Medium.)*
+
+### 18.14 Suggested rollout order for the cloned site
+
+Do these in order. Each tier is independently shippable.
+
+| Tier | Target | Items |
+| ---- | ------ | ----- |
+| **Day 1 (bake into v1)** | Cheap structural decisions you can't easily retrofit | 18.1.1 tiered-cache interface · 18.3.6 explicit `runtime` · 18.13.4 string utils · 18.7.4 error-code enum · 18.5.2 structured logging |
+| **Week 1 quick wins** | Biggest user-visible improvements | 18.2.1 lazy models · 18.4.1 inverted index · 18.3.2 cache headers · 18.6.1+18.6.2 TCGplayer hardening · 18.4.2 batch image fetch · 18.10.3 verify Brotli |
+| **Month 1** | Reliability + correctness | 18.3.1 Zod everywhere · 18.11.1+18.11.2 CSRF + headers · 18.3.3 thin controllers · 18.3.4 rate limiting · 18.2.2 model versioning · 18.13.1 split sealed-forecast-ml |
+| **Quarter 1** | Strategic | 18.12.1 DB adapter · 18.5.5 unified job runner · 18.8 full test suite · 18.7.3 CloudWatch metrics · 18.12.2 S3+CloudFront images |
+
+**The Day 1 + Week 1 work alone gets you ~80% of the user-facing
+improvements at a small fraction of the total effort.**
 
 ---
 
