@@ -379,6 +379,12 @@ add new ones, also add them to that loop and to the Amplify console.
 - **Lambda container (optional)** — scheduled ML retrainer. Source:
   `infra/sealed-ml-retrainer/{Dockerfile,template.yaml}`. Triggered
   via EventBridge cron, writes new model chunks back to DynamoDB.
+- **Custom domain** — use **Amplify custom domains** for production
+  hostnames. If the DNS zone is in Route 53 in the same AWS account,
+  Amplify can create the records and complete ACM certificate validation
+  automatically. Recommended canonical host: the apex domain (for
+  example `pokefuture.com`), with `www` added afterward as an alias or
+  redirect.
 - **IAM** — see `Specs-Driven/DEPLOY_AWS.md`. Amplify deploy user
   needs `AdministratorAccess-Amplify` plus `AdministratorAccess` for
   initial role creation.
@@ -444,6 +450,77 @@ aws amplify list-jobs --app-id <APP_ID> --branch-name main \
   --region us-east-1 --max-items 1 \
   --query 'jobSummaries[0].status' --output text
 ```
+
+### Custom domain / Route 53 cutover
+
+For a cloned site, do **not** hand-wire Route 53 first. Start in
+**Amplify custom domains**, because Amplify manages three things
+together:
+
+1. branch-to-domain mapping
+2. ACM certificate issuance / renewal
+3. Route 53 record creation when the hosted zone is in the same account
+
+Recommended end state:
+
+- `https://yourdomain.com` = canonical production host
+- `https://www.yourdomain.com` = optional secondary host, usually
+  redirecting to the apex
+
+Recommended order:
+
+1. Deploy the site and confirm the default Amplify URL works.
+2. Create the hosted zone in Route 53 if it does not already exist.
+3. Make sure your registrar is using the Route 53 nameservers.
+4. Create the Amplify domain association for the apex domain first.
+5. Wait for the domain status and certificate to become available.
+6. Verify HTTPS on the apex.
+7. Add `www` and choose whether it should serve the same branch or
+   redirect to the apex.
+
+Example CLI flow:
+
+```bash
+aws amplify create-domain-association \
+  --app-id <APP_ID> \
+  --domain-name yourdomain.com \
+  --sub-domain-settings prefix='',branchName=main \
+  --region us-east-1
+```
+
+Add `www` after apex is healthy:
+
+```bash
+aws amplify update-domain-association \
+  --app-id <APP_ID> \
+  --domain-name yourdomain.com \
+  --sub-domain-settings prefix='',branchName=main prefix='www',branchName=main \
+  --region us-east-1
+```
+
+Check status:
+
+```bash
+aws amplify get-domain-association \
+  --app-id <APP_ID> \
+  --domain-name yourdomain.com \
+  --region us-east-1
+```
+
+Inspect resulting Route 53 records:
+
+```bash
+aws route53 list-resource-record-sets \
+  --hosted-zone-id <HOSTED_ZONE_ID>
+```
+
+Important gotchas:
+
+- If the registrar is **not** pointed at the Route 53 hosted zone,
+  certificate validation will stall.
+- ACM issuance can take several minutes.
+- If you add new runtime env vars, also add them to the whitelist loop
+  in `amplify.yml`, or the deployed app will not see them.
 
 ---
 
@@ -579,7 +656,12 @@ aws amplify list-jobs --app-id <APP_ID> --branch-name main \
 1. Add `amplify.yml` (copy verbatim from this repo).
 2. Provision DynamoDB table (`scripts/setup-dynamodb.sh`).
 3. Connect Amplify to the GitHub repo, set env vars in §12.
-4. (Optional) Deploy `infra/sealed-ml-retrainer/` Lambda + EventBridge
+4. After the Amplify app is healthy on its default URL, connect the
+   production domain through **Amplify custom domains**. Use the apex
+   domain as canonical first, then add `www`. If the DNS zone lives in
+   Route 53 in the same AWS account, let Amplify create the records and
+   manage the ACM certificate automatically.
+5. (Optional) Deploy `infra/sealed-ml-retrainer/` Lambda + EventBridge
    cron from `template.yaml`.
 
 ### Phase 10 — Polish
