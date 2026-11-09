@@ -2,3 +2,15 @@ title = "Reviewed default Gitleaks rules"
 [extend]
 useDefault = true
 # No blanket allowlist or baseline. Review narrowly scoped exceptions explicitly.
+
+# Reviewed 2026-11-09; owner @tuliosoria; review due 2027-02-07.
+# Exact non-secret model feature identifiers, verified against featureNames and
+# scripts/train_sealed_ml.py FEATURE_NAMES. Paths AND captured values, not a baseline.
+[[rules]]
+id = "generic-api-key"
+[[rules.allowlists]]
+description = "Reviewed ML feature identifiers only; see docs/security/ci-gates.md"
+condition = "AND"
+paths = ['''(^|/)src/lib/data/sealed-ml/model-(?:1yr|3yr)(?:\.baseline)?\.json$''']
+regexTarget = "secret"
+regexes = ['''^(?:price_momentum_12mo|price_trajectory_24mo|price_trajectory_6mo|price_volatility_12mo|price_volatility_6mo)$''']
