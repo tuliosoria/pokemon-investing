@@ -22,7 +22,9 @@
     "sync:trends": "node scripts/sync-trends.mjs",
     "sync:sealed:expansion": "node scripts/build-sealed-expansion-catalog.mjs",
     "train:sealed-ml": "python3 scripts/train_sealed_ml.py",
-    "retrain:sealed-ml": "python3 scripts/retrain_sealed_ml.py"
+    "retrain:sealed-ml": "python3 scripts/retrain_sealed_ml.py",
+    "test:security-deps": "node scripts/check-security-dependencies.mjs",
+    "test:grading-schema": "node scripts/test-grading-schema.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1032.0",
@@ -36,19 +38,19 @@
     "clsx": "^2.1.1",
     "google-trends-api": "^4.9.2",
     "lucide-react": "^1.8.0",
-    "next": "^16.2.4",
+    "next": "16.4.5",
     "postcss": "^8.5.10",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "react-hook-form": "^7.72.1",
     "recharts": "^3.8.1",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.2",
     "typescript": "^6.0.3",
-    "zod": "^3.25.76"
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "eslint": "^9.39.4",
-    "eslint-config-next": "^16.2.4"
+    "eslint-config-next": "16.4.5"
   }
 }
